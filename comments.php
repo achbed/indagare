@@ -36,9 +36,9 @@
 	
 					<div class="nopassword"><?php _e('This post is password protected. Enter the password to view any comments.', 'thematic') ?></div>
 				
-				</div><!-- #comments -->
-	
 				<?php 
+					print '</div><!-- #collapse -->';
+					print '</div><!-- #comments -->';
 						return;
 					endif; 
 				

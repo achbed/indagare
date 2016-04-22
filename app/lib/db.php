@@ -8,8 +8,8 @@ class CrmDB {
     static function updateUser($user) {
         $passkey = mysql_real_escape_string($user->passkey_id);
         $pk_id = CrmDB::getPasskeyID($passkey); 
-        if ($pk_id=="") {
-        	$pk_id="'".$pk_id."'";
+        if (empty($pk_id)) {
+        	$pk_id="''";
         }
         $connection = self::getConnection();
 
@@ -29,8 +29,8 @@ class CrmDB {
         $state = mysql_real_escape_string($user->primary_state);
         $zip = mysql_real_escape_string($user->primary_postal);
         $country = mysql_real_escape_string($user->primary_country);
-        $wants_emails = mysql_real_escape_string($user->wants_emails);
-        $mLevel = mysql_real_escape_string($user->membership_level + 1);
+        $wants_emails = ( empty($user->wants_emails) ? 0 : 1 );
+        $mLevel = $user->membership_level + 1;
         $mYears = mysql_real_escape_string($user->membership_years);
         $created = mysql_real_escape_string($user->membership_created_at);
         $expires = mysql_real_escape_string($user->membership_expires_at);
@@ -38,27 +38,31 @@ class CrmDB {
         $phone_w = mysql_real_escape_string($user->phone_work);
         $phone_m = mysql_real_escape_string($user->phone_mobile);
         
-        $sql = "UPDATE users SET 
-            login='$login', 
-            email='$email', 
-            crypted_password='$pwd', 
-            salt='$salt', 
-            first_name= '$fname', 
-            last_name='$lname', 
-            middle_initial='$minitial', 
-            prefix='$prefix', 
-            passkey_id=$pk_id,
-            membership_level = $mLevel,
-            membership_created_at = '$created',
-            membership_expires_at = '$expires',
-            primary_street_address='$address', 
-            primary_extended='$address2', 
-            primary_city='$city', 
-            primary_state='$state', 
-            primary_postal='$zip', 
-            primary_country='$country', 
-            wants_emails=$wants_emails 
-            WHERE id = $id";
+        $sql = sprintf( "UPDATE users SET
+            login='%s',
+            email='%s',
+            crypted_password='%s',
+            salt='%s',
+            first_name= '%s',
+            last_name='%s',
+            middle_initial='%s',
+            prefix='%s',
+            passkey_id=%d,
+            membership_level = %d,
+            membership_created_at = '%s',
+            membership_expires_at = '%s',
+            primary_street_address='%s',
+            primary_extended='%s',
+            primary_city='%s',
+            primary_state='%s',
+            primary_postal='%s',
+            primary_country='%s',
+            wants_emails=%d
+            WHERE id=%d",
+            $login, $email, $pwd, $salt, $fname, $lname, $minitial, $prefix, $pk_id,
+            $mLevel, $created, $expires, $address, $address2, $city, $state, $zip, $country,
+            $wants_emails, $id
+            );
         //            membership_years = $mYears,
         //print ($sql . "\n");
         
@@ -622,8 +626,8 @@ class CrmDB {
         $passkey = "false";
         while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
             $passkey = new \indagare\users\Passkey($row["id"], $row["passkey"], 
-                    $row["user_id"], $row["discount"], $row["trial_memberships_remaining"]);
-            $passkey->active = $row["active"];
+                    $row["user_id"], $row["discount"], $row["trial_memberships_remaining"],
+            		$row["active"]);
         }
         mysql_free_result($result);
         mysql_close($connection);
@@ -647,6 +651,7 @@ class CrmDB {
     
     static function decrementTrial($keyID) {
         $key = self::getPasskey($keyID);
+        if ( empty( $key ) || ( $key->trials <= 0 ) ) return;
         $count = $key->trials - 1;
         $connection = self::getConnection();
         $sql = "UPDATE passkeys SET trial_memberships_remaining = $count WHERE passkey = '$keyID'";
@@ -655,6 +660,32 @@ class CrmDB {
         mysql_close($connection);
     }
     
+    static function decrementPasskey( $key ) {
+        if ( empty( $key ) || empty( $key->passkey ) || ( $key->trials <= 0 ) ) return;
+        $connection = self::getConnection();
+        $sql = sprintf("UPDATE passkeys SET trial_memberships_remaining = CASE WHEN trial_memberships_remaining > 0 THEN trial_memberships_remaining - 1 ELSE 0 END WHERE passkey = '%s'", mysql_real_escape_string( $key->passkey ) );
+        $result = mysql_query($sql) or die('Query failed: ' . mysql_error());
+        mysql_close($connection);
+        self::reloadPasskey( $key );
+    }
+
+    static function reloadPasskey( $key ) {
+    	if ( empty( $key ) || empty( $key->passkey ) ) return;
+        $passkey = mysql_real_escape_string( $key->passkey );
+        $connection = self::getConnection();
+        $sql = sprintf( "SELECT * FROM passkeys WHERE passkey = '%s' LIMIT 1", $passkey );
+        $result = mysql_query($sql) or die('Query failed: ' . mysql_error());
+        while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+            $key->id = $row["id"];
+            $key->user_id = $row["user_id"];
+            $key->discount = $row["discount"];
+            $key->trials = $row["trial_memberships_remaining"];
+            $key->active = $row["active"];
+        }
+        mysql_free_result($result);
+        mysql_close($connection);
+    }
+
     static function getItineraries($id) {
         $ret = array();
         $connection = self::getConnection();

@@ -1,4 +1,8 @@
 <?php
+function createThankyouEmailSubject() {
+	return "Welcome to Indagare!";
+}
+
 function createThankyouEmail($name, $street, $city, $state, $zip, $country, $email, $membership) {
     return "<!-- Inliner Build Version 4380b7741bb759d6cb997545f3add21ad48f010b -->
 <!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">

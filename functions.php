@@ -51,6 +51,8 @@ include_once('includes/search-destination.php');
 // add_theme_support( 'thematic_legacy_comment_form' );
 // add_theme_support( 'thematic_legacy_comment_handling' );
 
+// Include an update to allow old-style users to map to new capabilities.
+include_once('includes/induser_caps.php');
 
 /**
  * Define theme setup
@@ -1141,50 +1143,18 @@ global $post;
 		|| is_posttype( 'insidertrip' )
 	) {
 
-		if ( !indagare\users\User::hasUserSession() ) {
-		indagare\cookies\Counter::updateCounter();
+		if ( ! ind_logged_in() ) {
+			indagare\cookies\Counter::updateCounter();
 		}
 
-		if(!indagare\users\User::hasUserSession() && !indagare\cookies\Counter::updateCounter()) {
-//			wp_enqueue_script('show.join.popup');
-?>
-<script>
-jQuery(document).ready(function($) {
-
-	$.magnificPopup.open({
-	  items: {
-		type: 'inline',
-		src: '#lightbox-join', // can be a HTML string, jQuery object, or CSS selector
-		midClick: true
-	  },
-	  modal: true
-	});
-
-});
-</script>
-<?php
+		if( ! ind_logged_in() && ! indagare\cookies\Counter::updateCounter() ) {
+			wp_enqueue_script('show.join.popup');
 	    }
 
 	// archive itinerary - lock out unless visitor is logged-in user
 	} else if ( is_posttype( 'itinerary', POSTTYPE_ARCHIVEONLY ) ) {
-		if( !indagare\users\User::hasUserSession() ) {
-//			wp_enqueue_script('show.join.popup');
-?>
-<script>
-jQuery(document).ready(function($) {
-
-	$.magnificPopup.open({
-	  items: {
-		type: 'inline',
-		src: '#lightbox-join', // can be a HTML string, jQuery object, or CSS selector
-		midClick: true
-	  },
-	  modal: true
-	});
-
-});
-</script>
-<?php
+		if( !current_user_can( 'ind_read_itinerary' ) ) {
+			wp_enqueue_script('show.join.popup');
 	    }
 	}
 
@@ -1291,13 +1261,7 @@ echo $tophotels;
           </li>
           <li id="nav-shop"><a href="http://www.shoplatitude.com/collections/indagare" target="_blank">Shop</a></li>
 <?php
-	if ( indagare\users\User::hasUserSession() ) {
-//          echo '<li><a href="'.get_bloginfo('stylesheet_directory').'/logout.php">Log Out</a></li>'."\n";
-	} else {
-          echo '<li id="nav-login"><a href="#lightbox-login" class="lightbox-inline">Log In</a></li>'."\n";
-	}
-
-	if ( indagare\users\User::hasUserSession() ) {
+	if ( ind_logged_in() ) {
 ?>
           <li id="nav-account" class="loggedin single"><a href="#">Account</a><span class="show-subnav"><a href="#"></a></span>
             <div class="subnav">
@@ -1312,6 +1276,7 @@ echo $tophotels;
           </li>
 <?php
 	} else {
+          echo '<li id="nav-login"><a href="#lightbox-login" class="lightbox-inline">Log In</a></li>'."\n";
 ?>
           <li id="nav-account" class="single"><a href="#">Join</a><span class="show-subnav"><a href="#"></a></span>
             <div class="subnav">
@@ -1325,8 +1290,8 @@ echo $tophotels;
           </li>
 <?php
 	}
-?>
 
+?>
         </ul>
       </section>
       <section id="search-indagare" class="box collapsible">
@@ -3196,7 +3161,7 @@ function childtheme_override_archive_loop() {
 
 		if ( $count > 0 ) {
 
-			if ( indagare\users\User::hasUserSession() ) {
+			if ( current_user_can( 'ind_read_itinerary' ) ) {
 
 				while ( have_posts() ) : the_post();
 
@@ -3731,23 +3696,19 @@ global $post;
 		$content = '';
 
 	} else if ( is_posttype( 'itinerary', POSTTYPE_ARCHIVEONLY ) ) {
+		// title only for logged in user
+		if ( current_user_can( 'ind_read_itinerary' ) ) {
+			$content = '';
 
-			while ( have_posts() ) : the_post();
-
-				// title only for logged in user
-				if ( indagare\users\User::hasUserSession() ) {
-
-					$content = '<h2>'.get_the_title().'</h2>'."\n";
-	//				$content .= '<p>By '.get_the_author_meta( 'display_name', $post->post_author ).' | '.get_the_time( get_option('date_format') ).'</p>'."\n";
-					$content .= '<p>'.get_the_author_meta( 'display_name', $post->post_author ).' | '.get_the_time( get_option('date_format') ).'</p>'."\n";
-
-				} else {
-					$content = '<h2>Members-Only Content</h2>'."\n";
-
-				}
-
-			endwhile;
-
+			while ( have_posts() ) {
+				the_post();
+				// !!ALERT!! This will only display the last one.  Is this what we want??
+				$content = '<h2>'.get_the_title().'</h2>'."\n";
+				$content .= '<p>'.get_the_author_meta( 'display_name', $post->post_author ).' | '.get_the_time( get_option('date_format') ).'</p>'."\n";
+			}
+		} else {
+			$content = '<h2>Members-Only Content</h2>'."\n";
+		}
 	}
 
 	return $content;
@@ -4594,7 +4555,7 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 		$pdfobj = get_field('magazine-pdf');
 
 		$current = ( $paged == 1 && $wp_query->current_post == 0 );
-		$allowed = ( indagare\users\User::hasUserSession() ||
+		$allowed = ( current_user_can( 'ind_read_magazine_archive' ) ||
 					( $current /* && current_user_can( 'ind_read_magazine' ) */ ) );
 
 		$content = '';
@@ -4605,11 +4566,11 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 			$content .=' <a href="'.get_permalink().'">'."\n";
 		}
 
-			if ( $imgsrc ) {
-				$content .='<img src="'.$imgsrc.'" alt="Magazine" />'."\n";
-			} else {
-				$content .= '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-large.png" alt="Article" />'."\n";
-			}
+		if ( $imgsrc ) {
+			$content .='<img src="'.$imgsrc.'" alt="Magazine" />'."\n";
+		} else {
+			$content .= '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-large.png" alt="Article" />'."\n";
+		}
 
 		if ( $allowed ) {
 			$content .= '</a>'."\n";
@@ -4627,23 +4588,23 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 			$content .= '</a>'."\n";
 		}
 
-			$content .='<span class="info">'."\n";
+		$content .='<span class="info">'."\n";
 		if ( $allowed ) {
-					$content .= '<p class="links"><a class="button secondary" target="_blank" href="'.$pdfobj['url'].'">View PDF</a></p>'."\n";
-				}
+			$content .= '<p class="links"><a class="button secondary" target="_blank" href="'.$pdfobj['url'].'">View PDF</a></p>'."\n";
+		}
 
 		if ( $current ) {
-					$content .='<h4>Current Issue: '.$subtitle.'</h4>'."\n";
-				} else {
-					$content .='<h4>'.$subtitle.'</h4>'."\n";
-				}
+			$content .='<h4>Current Issue: '.$subtitle.'</h4>'."\n";
+		} else {
+			$content .='<h4>'.$subtitle.'</h4>'."\n";
+		}
 		if ( $allowed ) {
-					$content .='<h3><a href="'.get_permalink().'">'.get_the_title().'</a></h3>'."\n";
+			$content .='<h3><a href="'.get_permalink().'">'.get_the_title().'</a></h3>'."\n";
 		} else {
 			$content .='<h3>'.get_the_title().'</h3>'."\n";
-				}
-				$content .= $basecontent;
-			$content .='</span><!-- .info -->'."\n";
+		}
+		$content .= $basecontent;
+		$content .='</span><!-- .info -->'."\n";
 
 		$content .= '</div>'."\n";
 
@@ -5068,6 +5029,19 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 	} else if (is_page_template ( 'template-page-user-signup.php' ) ) {
 
 		$content = '';
+
+/*
+		$promocode_value = '';
+
+		$my_query = indmem_getquery_membership();
+		if ( $my_query->have_posts() ) {
+			while ( $my_query->have_posts() ) {
+				$my_query->the_post();
+				include 'render-memberlevel.tpl.php';
+			}
+		}
+		wp_reset_postdata();
+*/
 
 		$rows = get_field('membership-level');
 
@@ -6667,7 +6641,7 @@ jQuery().ready(function($) {
 	 ) {
 
 		// is user logged in
-		if ( !indagare\users\User::hasUserSession() ) {
+		if ( ! ind_logged_in() ) {
 
 			echo '<div id="join-today" class="contain">'."\n";
 				echo '<div class="join-indagare">'."\n";
@@ -6708,40 +6682,40 @@ function childtheme_override_siteinfo() {
     </section>
     <section id="subsidiary">
       <div id="first" class="newsletter-signup-wrapper">
-        <h4>Newsletter</h4>
-        <p>Receive our free email newsletter full of travel news, tips and advice.</p>
+        <h4><?php print __('Newsletter','indagare'); ?></h4>
+        <p><?php print __('Receive our free email newsletter full of travel news, tips and advice.','indagare'); ?></p>
         <form class="newsletter-signup-form">
           <div class="form-combo">
-          	<span class="form-item"><input type="text" name="email" id="newsletter-signup" class="element newsletter-signup-input" placeholder="Your email address" /></span>
+          	<span class="form-item"><input type="text" name="email" id="newsletter-signup" class="element newsletter-signup-input" placeholder="<?php print __('Your email address','indagare'); ?>" /></span>
           </div>
           <div class="buttons">
-          	<button type="submit" class="primary button">Submit</button>
+          	<button type="submit" class="primary button"><?php print __('Submit','indagare'); ?></button>
           </div>
         </form>
       </div>
       <div id="fourth">
-        <h4><a class="colheader" href="/contact/">Connect</a></h4>
+        <h4><a class="colheader" href="/contact/"><?php print __('Connect','indagare'); ?></a></h4>
         <p class="vcard">
           <span class="adr">
             <span class="street-address">950 Third Avenue </span>
             <span class="locality">New York</span>, <span class="region">NY</span> <span class="postal-code">10022</span>
           </span>
           <span class="tel">(212) 988-2611</span>
-          <a class="email" href="mailto:info@indagare.com">Email Us</a>
+          <a class="email" href="mailto:info@indagare.com"><?php print __('Email Us','indagare'); ?></a>
         </p>
         <p class="social">
-          <a id="social-facebook" href="https://www.facebook.com/pages/Indagare-Travel/38863077107"><b class="icon custom-icon" data-icon="&#xe003;"><span>facebook</span></b></a> <a href="https://twitter.com/indagaretravel" id="social-twitter"><b class="icon custom-icon" data-icon="&#xe001;"><span>twitter</span></b></a> <a id="social-instagram" href="http://instagram.com/indagaretravel/"><b class="icon custom-icon" data-icon="&#xe618;"><span>instagram</span></b></a>
+          <a id="social-facebook" href="https://www.facebook.com/pages/Indagare-Travel/38863077107"><b class="icon custom-icon" data-icon="&#xe003;"><span><?php print __('facebook','indagare'); ?></span></b></a> <a href="https://twitter.com/indagaretravel" id="social-twitter"><b class="icon custom-icon" data-icon="&#xe001;"><span><?php print __('twitter','indagare'); ?></span></b></a> <a id="social-instagram" href="http://instagram.com/indagaretravel/"><b class="icon custom-icon" data-icon="&#xe618;"><span><?php print __('instagram','indagare'); ?></span></b></a>
         </p>
       </div>
       <div id="second">
-        <h4><a class="colheader" href="/why-join/">Membership</a></h4>
+        <h4><a class="colheader" href="/why-join/"><?php print __('Membership','indagare'); ?></a></h4>
 <?php
 	$footermembership = wp_nav_menu( array('menu' => 'footer-membership','container' => '','container_id' => '','container_class' => '','menu_class' => 'footer-nav','echo' => false ));
 	echo $footermembership;
 ?>
       </div>
       <div id="third">
-        <h4><a class="colheader" href="/mission/">About</a></h4>
+        <h4><a class="colheader" href="/mission/"><?php print __('About','indagare'); ?></a></h4>
 <?php
 	$footerabout = wp_nav_menu( array('menu' => 'footer-about','container' => '','container_id' => '','container_class' => '','menu_class' => 'footer-nav','echo' => false ));
 	echo $footerabout;
@@ -6795,7 +6769,7 @@ global $count;
 	} // end first visit modal - intro page
 
 	// email signup modal
-    if ( ( indagare\cookies\PageCountAll::getPageCountAll() == 5 || $_GET['modalemail'] ) && !indagare\users\User::hasUserSession() ) {
+    if ( ( indagare\cookies\PageCountAll::getPageCountAll() == 5 || $_GET['modalemail'] ) && ! ind_logged_in() ) {
 ?>
 <div id="lightbox-email-signup" class="lightbox lightbox-two-col lightbox-no-borders white-popup mfp-hide">
 	<header>
@@ -6806,7 +6780,7 @@ global $count;
 
 	<footer>
 		<div id="emailsignup" class="newsletter-signup-wrapper">
-		<form class="login newsletter-signup-form" method="post" novalidate="">
+		<form class="login newsletter-signup-form" method="post" novalidate>
 			<div id="field1-container" class="field">
 			   <input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address">
 			</div>
@@ -6842,14 +6816,14 @@ jQuery(document).ready(function($) {
 	} // endemail signup modal
 
 	// login modal
-	if ( !indagare\users\User::hasUserSession() ) {
+	if ( ! ind_logged_in() ) {
 ?>
 <div id="lightbox-login" class="lightbox white-popup login mfp-hide">
 	<header>
 		<h2>Member Login</h2>
 	</header>
 
-	<form id="form-login" class="login" method="post" novalidate="">
+	<form id="form-login" class="login" method="post" novalidate>
 		<div id="field1-container" class="field">
 			<label for="field1">Username</label>
 			<input type="text" name="usr" id="field1" required="required" placeholder="Your username">
@@ -6877,7 +6851,7 @@ jQuery(document).ready(function($) {
 	} // end login modal
 
 	// content lockout modal
-	if ( !indagare\users\User::hasUserSession() ) {
+	if ( ! ind_logged_in() ) {
 ?>
 <div id="lightbox-join" class="lightbox white-popup mfp-hide">
 	<header>
@@ -6890,7 +6864,7 @@ jQuery(document).ready(function($) {
 		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/join-1.jpg" alt="" />
 		<ul>
 			<li>To enjoy unlimited access to the online content and our Black Book magazines.</li>
-			<li>To receive special rates & amenities at hundreds of hotels and resorts worldwide.</li>
+			<li>To receive special rates &amp; amenities at hundreds of hotels and resorts worldwide.</li>
 			<li>To benefit from customized trip planning from our expert team.</li>
 			<li>To gain access to Insider Trips, events and more.</li>
 		</ul>
@@ -6912,7 +6886,7 @@ jQuery(document).ready(function($) {
 		<h3>Already a Member?</h3>
 		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/join-3.jpg" alt="" />
 
-		<form id="form-login" class="login" method="post" novalidate="">
+		<form id="form-login" class="login" method="post" novalidate>
 			<div id="field1-container" class="field">
 			   <label for="field1">
 					Username or Email
@@ -6939,7 +6913,7 @@ jQuery(document).ready(function($) {
 	<footer class="newsletter-signup-wrapper">
 		<h4>Sign Up: Travel Newsletter</h4>
 		<p>Receive our free, bimonthly e-Newsletter full of travel stories, reviews and insider recommendations.</p>
-		<form class="login newsletter-signup-form" method="post" novalidate="">
+		<form class="login newsletter-signup-form" method="post" novalidate>
 			<div id="field1-container" class="field">
 			   <input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address">
 			</div>
@@ -6956,7 +6930,7 @@ jQuery(document).ready(function($) {
 	} // end content lockout modal
 
 	// lightbox interstitial modals for booking and flights
-	if ( !indagare\users\User::hasUserSession() ) {
+	if ( ! ind_logged_in() ) {
 ?>
 <div id="lightbox-interstitial" class="lightbox lightbox-two-col white-popup mfp-hide contain">
 	<div class="column one-half">
@@ -6964,7 +6938,7 @@ jQuery(document).ready(function($) {
 		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/book-left.jpg" alt="" />
 		<p>You are about to check room availability as a guest. If you would like to take advantage of our member rates and benefits, please <a href="/join/">join Indagare now</a>.</p>
 
-		<form id="book-interstitial" class="book-interstitial login" method="post" novalidate="">
+		<form id="book-interstitial" class="book-interstitial login" method="post" novalidate>
 			<div id="form-submit" class="field clearfix submit">
 			   <input type="submit" value="Book Now" class="button">
 			</div>
@@ -6976,7 +6950,7 @@ jQuery(document).ready(function($) {
 		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/book-right.jpg" alt="" />
 		<p>Sign in to be able to book the best rates and amenities available only to Indagare members. If you do not see the special Indagare plus rates, contact our <a href="/contact/">Bookings Team</a>.</p>
 
-		<form id="form-interstitial" class="login" method="post" novalidate="">
+		<form id="form-interstitial" class="login" method="post" novalidate>
 			<div id="field1-container" class="field">
 			   <label for="field1">
 					Username or Email
@@ -7006,7 +6980,7 @@ jQuery(document).ready(function($) {
 		<h3>Book as a Member</h3>
 		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/book-right-flights.jpg" alt="" />
 
-		<form id="form-interstitial-flights" class="login" method="post" novalidate="">
+		<form id="form-interstitial-flights" class="login" method="post" novalidate>
 			<div id="field1-container" class="field">
 			   <label for="field1">
 					Username or Email
@@ -7083,10 +7057,10 @@ jQuery(document).ready(function($) {
 ?>
 <div id="lightbox-signup-error" class="lightbox white-popup login mfp-hide">
 	<header>
-		<h2>Credit Card Payment Error</h2>
+		<h2 id="signup-error-title">Credit Card Payment Error</h2>
 	</header>
 
-	<p>There was an error verifying your credit card information for payment. Please check the information that you entered and try again.</p>
+	<p id="signup-error-message">There was an error verifying your credit card information for payment. Please check the information that you entered and try again.</p>
 
 </div><!-- #lightbox-signup-error -->
 
@@ -7112,7 +7086,7 @@ jQuery(document).ready(function($) {
 <?php
 
 		// is user logged in
-		if ( indagare\users\User::hasUserSession() ) {
+		if ( ind_logged_in() ) {
 
 			include_once 'app/lib/user.php';
 			include_once 'app/lib/db.php';
@@ -7313,7 +7287,7 @@ echo do_shortcode('[contact-form-7 id="32337" title="Contact Insider Trips"]');
 
 		var ssotokenvalue_default = 'x4T306PLm1KWuXktHqtGzw%3D%3D';
 		var ssotokenvalue = ssotokenvalue_default;
-		<?php if ( indagare\users\User::hasUserSession() ) : ?>
+		<?php if ( ind_logged_in() ) : ?>
 			ssotokenvalue = '<?php echo $_SESSION["SSODATA"] ?>';
 		<?php endif; ?>
 	<?php endif; ?>
@@ -7644,7 +7618,7 @@ function article_meta($postID) {
 	$articlemeta = '<div class="article-meta contain">'."\n";
 
 	// add to favorites
-	if ( indagare\users\User::hasUserSession() ) {
+	if ( ind_logged_in() ) {
 
 		$articlemeta .= '<p class="user-meta">';
 
@@ -7723,6 +7697,8 @@ function sort_by_name(&$query) {
 	if ( $query->is_admin ) return;
 
 	if ( !$query->is_main_query() ) return;
+
+	if ($query->query['post_type'] == 'memberlevel' ) return;
 
 	if ( $query->is_search ) {
 		$query->set( 'posts_per_page', -1);

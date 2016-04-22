@@ -1,6 +1,6 @@
 <?php
 /**
- * Archive Template for Restaurant
+ * Archive Template 
  *
  * Displays an Archive index of post-type items. Other more specific archive templates 
  * may override the display of this template for example the category.php.
@@ -18,7 +18,7 @@
 	thematic_abovecontainer();
 ?>
 
-		<div id="container" class="standard">
+		<div id="container">
 
 		<?php 
 			// action hook for placing content above #content
@@ -37,7 +37,10 @@
         	thematic_above_archiveloop();
 
 			// action hook creating the archive loop
-			thematic_archiveloop();
+            while ( have_posts() ) : 
+            	the_post();
+				include 'render-memberlevel.tpl.php';
+    		endwhile;
 
         	// action hook for placing content below the archive loop
         	thematic_below_archiveloop();

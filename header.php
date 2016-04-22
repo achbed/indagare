@@ -49,47 +49,35 @@
 	wp_head();
 ?>
 </head>
-
 <?php 
 	// Create the body element and dynamic body classes
 	thematic_body();
 
 	// Action hook to place content before opening #wrapper
 	thematic_before(); 
-?>
-	<?php
+
 		// Filter provided for removing output of wrapping element follows the body tag
-		if ( apply_filters( 'thematic_open_wrapper', true ) ) 
+	if ( apply_filters( 'thematic_open_wrapper', true ) ) {
 //  		  echo ( '<div id="wrapper" class="hfeed">' );
+	}
 
 		// Action hook for placing content above the theme header
 		thematic_aboveheader(); 
-	?>
 
-
-		<?php
-			// Filter provided for altering output of the header opening element
 			if ( !is_page_template ( 'template-page-intro.php' ) ) {
 				echo ( apply_filters( 'thematic_open_header',  '<header>' ) );
 			}
-    	?>
 
-
-        	<?php 
 				// Action hook creating the theme header
 				if ( !is_page_template ( 'template-page-intro.php' ) ) {
 					thematic_header();
 				}
-       		?>
        		
-    	<?php  	
     		// Filter provided for altering output of the header closing element
 			if ( !is_page_template ( 'template-page-intro.php' ) ) {
 				echo ( apply_filters( 'thematic_close_header', '</header>' ) );
 			}
-		?>
 		        
-    	<?php
 			// Action hook for placing content below the theme header
 			thematic_belowheader();
 
@@ -98,6 +86,5 @@
 			}
 
     	?>
-    	
 	<div id="main">
 		<div class="candy-wrapper contain">

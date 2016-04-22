@@ -3,6 +3,7 @@
 include_once 'Favorite.php';
 include_once 'db.php';
 include_once 'notifications.php';
+include_once 'passkey.php';
 
 class User {
     
@@ -342,6 +343,16 @@ class Membership {
     }
     
     public function toJSON () {
+    	return json_encode(array(
+    		'id' => $this->id,
+    		'level' => $this->level,
+    		'name' => $this->name,
+    		'discount' => $this->discount,
+    		'p1' => ($this->getMembershipPrice(1) * 100),
+    		'p2' => ($this->getMembershipPrice(2) * 100),
+    		'p3' => ($this->getMembershipPrice(3) * 100),
+    	));
+    	/*
         return "{ id: " . $this->id .
         ", level: " . $this->level . 
         ", name: '" . $this->name .
@@ -350,46 +361,81 @@ class Membership {
         ", p2: " . ($this->getMembershipPrice(2) * 100) .
         ", p3: " . ($this->getMembershipPrice(3) * 100) . 
         "}";
+        */
     }
 }
 
-class Passkey {
-    public $id;
-    public $passkey;
-    public $user_id;
-    public $discount;
-    public $trials;
-    public $active;
-    public $type = 3;
-    
-    public function __construct($id, $pk, $uid, $dis, $trials) {
-        $this->id = $id;
-        $this->passkey = $pk;
-        $this->user_id = $uid;
-        $this->discount = $dis;
-        $this->trials = $trials;
-        $this->setType();
-    }
+define( 'PROMOTION_TYPE_UNKNOWN', 0 );
+define( 'PROMOTION_TYPE_DOLLAR_OFF', 1 );
+define( 'PROMOTION_TYPE_PERCENT_OFF', 2 );
 
-    private function setType() {
-        if ("TRIAL-B" == substr($this->passkey, 0, 7)) {
-                $this->type = 1;
-        }
-        else if ("TRIAL-A" == substr($this->passkey, 0, 7)) {
-                $this->type = 0;
-        }
+class Promotion {
+    
+    /**
+     * The code used for this promotion
+     * @var string
+     */
+    public $code = '';
+
+    /**
+     * The short name of this promotion
+     * @var string
+     */
+    public $name = '';
+
+    /**
+     * The description of this promotion
+     * @var string
+     */
+    public $description = '';
+
+    /**
+     * A short message displayed to the user to alert them about the promotion
+     * @var string
+     */
+    public $message = '';
+
+    /**
+     * The type of discount.  Must be one of:
+     * PROMOTION_TYPE_DOLLAR_OFF
+     * PROMOTION_TYPE_PERCENT_OFF
+     * @var integer
+     */
+    public $type = PROMOTION_TYPE_UNKNOWN;
+
+    /**
+     * The amount of the discount
+     * @var float
+     */
+    public $amount = 0;
+
+    public function __construct($code, $type, $amount, $name = '', $description = '', $message = '') {
+        $this->code = $code;
+        $this->type = $type;
+        $this->amount = $amount;
+        $this->name = ( empty( $name ) ? $code : $name );
+        $this->description = $description;
+        $this->message = $message;
     }
     
-    public static function getPasskey($key) {
-        return \indagare\db\CrmDB::getPasskey($key);
+    /**
+     * Applies the discount to the given rate.
+     *
+     * @param float $rate  The rate to apply the discount to.
+     *
+     * @return float The rate after the discount was applied.
+     */
+    public function apply( $rate ) {
+        $return = floatval( $rate );
+
+        if ( $this->type == PROMOTION_TYPE_DOLLAR_OFF ) {
+            $return -= $amount;
     }
     
-    public static function validatePasskey($key) {
-        $pk = Passkey::getPasskey($key);
-        if ($pk != "false") {
-            return "true";
+        if ( $this->type == PROMOTION_TYPE_PERCENT_OFF ) {
+            $return *= ( 1 - ( $amount / 100 ) );
         }
-        return "false";
+
+        return $return;
     }
 }
-

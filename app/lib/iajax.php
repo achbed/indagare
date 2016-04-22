@@ -17,8 +17,8 @@ $admin_mail_prefix = 'NOTICE: ';
 
 
 $task;
-if ( !empty( $_GET["task"] ) ) {
-	$task = $_GET["task"];
+if ( !empty( $_REQUEST["task"] ) ) {
+	$task = $_REQUEST["task"];
 } else {
 	die( "no task identified" );
 }
@@ -54,7 +54,7 @@ if ( $task == "signup1" ) {
 	$acc->user->phone_home = $_POST['phone'];
 } else if ( $task == "signup21" ) {
 	$acc->user->passkey_id = $_GET["rc"];
-	print indagare\users\Passkey::validatePasskey( $_GET["rc"] );
+	print ( indagare\users\Passkey::validatePasskey( $_GET["rc"] ) ? 'true' : 'false' );
 } else if ( $task == "signup22" ) {
 	$acc = indagare\users\AccountCreator::getAccountCreator( );
 	//print_r($acc);
@@ -112,20 +112,50 @@ if ( $task == "signup1" ) {
 		print "false";
 	}
 } else if ( $task == "chkTrialKey" ) {
-	$acc->user->passkey_id = $_GET["rc"];
+
 	$key = \indagare\db\CrmDB::getPasskey( $_GET["rc"] );
-	if ( $key != "false" ) {
-		if ( $key->type == 3 ) {
+
+	if ( ( $key == "false" ) || ( $key == false ) ) {
 			print "false";
-		} else if ( $key->trials > 0 ) {
+		return;
+	}
+
+	if ( $key->is_valid() ) {
+		$acc->user->passkey_id = $_GET["rc"];
 			print "true";
 			print "|" . $key->type;
-		} else {
-			print "false";
+		return;
 		}
-	} else {
+
 		print "false";
+	return;
+
+} else if ( $task == "chkTrialKey.j" ) {
+	header('Content-Type: application/json');
+	$key = \indagare\db\CrmDB::getPasskey( $_GET["rc"] );
+
+	if ( ( $key == "false" ) || ( $key == false ) ) {
+		print json_encode( array(
+			'valid' => false,
+			'id' => 3,
+			'name' => 'Invalid code',
+			'length' => 'Invalid code',
+		) );
+		return;
 	}
+
+	if ( $key->is_valid() ) {
+		$acc->user->passkey_id = $_GET["rc"];
+	}
+
+	print json_encode( array(
+		'valid' => $key->is_valid(),
+		'id' => $key->type_def['id'],
+		'name' => $key->type_def['name'],
+		'length' => ucwords( substr( $key->type_def['expires'], 1 ) ),
+	) );
+	return;
+
 } else if ( $task == "newTrial" ) {
 	$acc = indagare\users\AccountCreator::getAccountCreator( );
 	$acc->user->login = $_POST['username'];
@@ -146,22 +176,25 @@ if ( $task == "signup1" ) {
 	$acc->user->question_4 = $_POST["next_destination"];
 
 	$key = \indagare\db\CrmDB::getPasskey( $_POST['passKey'] );
-	if ( $key != "false" ) {
-		$mbText = "Trial Membership";
-		if ( $key->trials > 0 ) {
-			if ( $key->type == 1 ) {
-				$mb = \indagare\db\CrmDB::getMembershipByLevel( $acc->user->membership_level + 1 );
-				$acc->user->membership_expires_at = date( 'Y-m-d H:i:s', mktime( 0, 0, 0, date( "m" ), date( "d" ), date( "Y" ) + $acc->user->membership_years ) );
-				$mbText = $mb->name . " - " . $acc->user->membership_years . " years";
-			} else {
-				$acc->user->membership_expires_at = date( 'Y-m-d H:i:s', mktime( 0, 0, 0, date( "m" ), date( "d" ) + 30, date( "Y" ) ) );
-				$mbText = "Trial Membership, 30 days";
-
+	if ( ( $key == "false" ) || ( $key == false ) ) {
+		print "invalid trial code";
+		return;
 			}
-			$uid = \indagare\db\CrmDB::createTrialUser( $acc->user );
-			\indagare\db\CrmDB::decrementTrial( $acc->user->passkey_id );
+	if ( $key->trials <= 0 ) {
+		print "no trials remaining";
+		return;
+	}
 
-			$email_subject = 'Welcome to Indagare!';
+	$new_level = $acc->user->membership_level;
+	$acc->user->membership_level = $key->type_def['membership_level'];
+
+	$acc->user->membership_expires_at = date( 'Y-m-d H:i:s', strtotime( $key->type_def['expires'] ) );
+	$mbText = $key->type_def['name'];
+
+			$uid = \indagare\db\CrmDB::createTrialUser( $acc->user );
+	\indagare\db\CrmDB::decrementPasskey( $key );
+
+	$email_subject = createThankyouEmailSubject();
 			$thankyou = createThankyouEmail( $acc->user->first_name . " " . $acc->user->last_name, $acc->user->primary_street_address, $acc->user->primary_city, $acc->user->primary_state, $acc->user->primary_postal, $acc->user->primary_country, $acc->user->email, $mbText );
 			
 			$email = $acc->user->email;
@@ -181,23 +214,17 @@ if ( $task == "signup1" ) {
 			stream_context_set_default( array( 'http' => array( 'timeout' => $timeout ) ) );
 			$payload = @get_headers( $payloadurl );
 			print "true";
-		} else {
-			print "no trials remaining";
-		}
-	} else {
-		print "invalid trial code";
-	}
-} else if ( $task == "payment" ) {
-	//print "Test";
+} else if ( $task == "newTrial.j" ) {
+	header('Content-Type: application/json');
+
 	$acc = indagare\users\AccountCreator::getAccountCreator( );
-	$acc->user->prefix = $_POST["prefix"];
+
+	$acc->user->prefix = '';
 	$acc->user->first_name = $_POST["fn"];
 	$acc->user->last_name = $_POST["ln"];
-	$acc->user->middle_initial = $_POST["minitial"];
 	$acc->user->email = $_POST["email"];
-	$acc->user->membership_level = $_POST["l"];
-	$acc->user->membership_years = $_POST["y"];
-	$acc->user->passkey_id = $_POST["tgCode"];
+	$acc->user->phone_home = $_POST['phone'];
+
 	$acc->user->login = $_POST['username'];
 	$acc->user->password = $_POST['password'];
 	$acc->user->primary_street_address = $_POST['s_address1'];
@@ -207,10 +234,201 @@ if ( $task == "signup1" ) {
 	$acc->user->primary_postal = $_POST['s_zip'];
 	$acc->user->primary_country = $_POST['s_country'];
 	$acc->user->passkey_id = $_POST['passKey'];
-	$acc->user->question_1 = $_POST["top_destinations"];
-	$acc->user->question_2 = $_POST["fav_hotels"];
-	$acc->user->question_3 = $_POST["reason_travel"];
-	$acc->user->question_4 = $_POST["next_destination"];
+
+
+	$key = new indagare\users\Passkey( $_POST['passKey'] );
+
+	if ( ( $key == "false" ) || ( $key == false ) ) {
+		print json_encode( array(
+			'success' => false,
+			'errmsg' => 'Incorrect trial code.',
+		) );
+		return;
+		}
+
+	if ( $key->trials <= 0 ) {
+		print json_encode( array(
+			'success' => false,
+			'errmsg' => 'No trials remaining on this trial code.',
+		) );
+		return;
+	}
+
+	if ( ! $key->is_valid() ) {
+		print json_encode( array(
+			'success' => false,
+			'errmsg' => 'Invalid trial code.',
+		) );
+		return;
+	}
+
+	$acc->user->membership_level = $key->type_def['membership_level'];
+	$nao = time();
+	$acc->user->membership_created_at = date( 'Y-m-d H:i:s', $nao );
+	$acc->user->membership_expires_at = date( 'Y-m-d H:i:s', strtotime( $key->type_def['expires'], $nao ) );
+	$mbText = $key->type_def['name'];
+
+	$uid = \indagare\db\CrmDB::createTrialUser( $acc->user );
+	\indagare\db\CrmDB::decrementPasskey( $key );
+
+	$email_subject = createThankyouEmailSubject();
+	$thankyou = createThankyouEmail( $acc->user->first_name . " " . $acc->user->last_name, $acc->user->primary_street_address, $acc->user->primary_city, $acc->user->primary_state, $acc->user->primary_postal, $acc->user->primary_country, $acc->user->email, $mbText );
+
+	$email = $acc->user->email;
+	$m = new \indagare\util\IndagareMailer( );
+	$m->sendHtml( $email_subject, $thankyou, $email );
+	if ( ! empty( $debug_mail ) ) {
+		$m->sendHtml( $debug_mail_prefix.$email_subject, $thankyou, $debug_mail );
+	}
+	if ( ! empty( $admin_mail ) ) {
+		$m->sendHtml( $admin_mail_prefix.$email_subject, $thankyou, $admin_mail );
+	}
+
+	$u = \indagare\db\CrmDB::getUserById( $uid );
+	$u->startSession( );
+	$payloadurl = "http://".\indagare\config\Config::$payloadserver."/users/$uid/index_user";
+	$timeout = 5;
+	stream_context_set_default( array( 'http' => array( 'timeout' => $timeout ) ) );
+	$payload = @get_headers( $payloadurl );
+
+	print json_encode( array(
+		'success' => true,
+		'errmsg' => '',
+		'startdate' => date( 'm/d/Y', strtotime( $acc->user->membership_created_at ) ),
+		'enddate' => date( 'm/d/Y', strtotime( $acc->user->membership_expires_at ) ),
+		'name' => $key->type_def['name'],
+		'length' => ucwords( substr( $key->type_def['expires'], 1 ) ),
+	) );
+	return;
+} else if ( $task == "payment.j" ) {
+	//print "Test";
+	$acc = indagare\users\AccountCreator::getAccountCreator( );
+	$acc->user->first_name = $_POST["fn"];
+	$acc->user->last_name = $_POST["ln"];
+	$acc->user->email = $_POST["email"];
+	$acc->user->membership_level = $_POST["l"];
+	$acc->user->membership_years = $_POST["y"];
+	$acc->user->login = $_POST['username'];
+	$acc->user->password = $_POST['password'];
+	$acc->user->primary_street_address = $_POST['s_address1'];
+	$acc->user->primary_street_address2 = $_POST['s_address2'];
+	$acc->user->primary_city = $_POST['s_city'];
+	$acc->user->primary_state = $_POST['s_state'];
+	$acc->user->primary_postal = $_POST['s_zip'];
+	$acc->user->primary_country = $_POST['s_country'];
+	$acc->user->passkey_id = '';
+
+	$nao = time();
+	$order_id = $nao . "_" . rand( 1, 100 );
+
+	$mb = \indagare\db\CrmDB::getMembershipByLevel( $acc->user->membership_level + 1 );
+	if ( isset( $_POST['dc'] ) ) {
+		$disc = floatval( $_POST['dc'] );
+		if ( ( $disc < 0 ) || ( $disc >=100 ) ) {
+			$disc = 0;
+		}
+		$mb->discount = $disc;
+	}
+
+	// form data
+	$myorder["chargetotal"] = $mb->getMembershipPrice( $acc->user->membership_years );
+	$myorder["oid"] = $order_id;
+	$myorder["address1"] = $acc->user->primary_street_address;
+	$myorder["address2"] = $acc->user->primary_street_address2;
+	$myorder["city"] = $acc->user->primary_city;
+	$myorder["state"] = $acc->user->primary_state;
+	$myorder["country"] = $acc->user->primary_country;
+	$myorder["email"] = $acc->user->email;
+	$myorder["zip"] = $acc->user->primary_postal;
+
+	// setup recurring if order is for 1 year
+	if ( $acc->user->membership_years == 1 ) {
+		$myorder["action"] = "SUBMIT";
+		$myorder["installments"] = "1";
+		$myorder["threshold"] = "3";
+		$myorder["startdate"] = "immediate";
+		$myorder["periodicity"] = "yearly";
+	}
+
+	$result = charge_it( $myorder );
+
+	if ( $result["r_approved"] == "APPROVED" )// success
+	{
+		$acc->user->membership_created_at = date( 'Y-m-d H:i:s', $nao );
+		$acc->user->membership_expires_at = date( 'Y-m-d H:i:s', strtotime( '+' . $acc->user->membership_years . ' years', $nao ) );
+
+		try {
+			$uid = \indagare\db\CrmDB::createUser( $acc->user );
+			$oid = \indagare\db\CrmDB::addOrder( $uid, $charge, $result['r_approved'], $nao, $order_id, 1, substr( $_POST["cc_num"], -4 ), $_POST["cc_m"], $_POST["cc_y"] );
+			\indagare\db\CrmDB::addLineItem( $oid, $mb->getMembershipPrice( $acc->user->membership_years ) . '00' );
+
+		} catch(Exception $e) {
+			$m = new \indagare\util\IndagareMailer( );
+			$thankyou = createThankyouEmail( $acc->user->first_name . " " . $acc->user->last_name, $acc->user->primary_street_address, $acc->user->primary_city, $acc->user->primary_state, $acc->user->primary_postal, $acc->user->primary_country, $acc->user->email, $mb->name . " - " . $acc->user->membership_years . " years PRICE: $" . $mb->getMembershipPrice( $acc->user->membership_years ) . ".00" );
+			if ( ! empty( $debug_mail ) ) {
+				$m->sendHtml( $debug_mail_prefix.'Error creating user', $thankyou . " " . $e, $debug_mail );
+			}
+		}
+
+		$email_subject = createThankyouEmailSubject();
+		$thankyou = createThankyouEmail( $acc->user->first_name . " " . $acc->user->last_name, $acc->user->primary_street_address, $acc->user->primary_city, $acc->user->primary_state, $acc->user->primary_postal, $acc->user->primary_country, $acc->user->email, $mb->name . " - " . $acc->user->membership_years . " years PRICE: $" . $mb->getMembershipPrice( $acc->user->membership_years ) . ".00" );
+		$email = $acc->user->email;
+		$m = new \indagare\util\IndagareMailer( );
+		$m->sendHtml( $email_subject, $thankyou, $email );
+		if ( ! empty( $debug_mail ) ) {
+			$m->sendHtml( $debug_mail_prefix.$email_subject, $thankyou, $debug_mail );
+		}
+		if ( ! empty( $admin_mail ) ) {
+			$m->sendHtml( $admin_mail_prefix.$email_subject, $thankyou, $admin_mail );
+		}
+		$payloadurl = "http://".\indagare\config\Config::$payloadserver."/users/$uid/index_user";
+		$timeout = 5;
+		stream_context_set_default( array( 'http' => array( 'timeout' => $timeout ) ) );
+		$payload = @get_headers( $payloadurl );
+
+		$u = \indagare\db\CrmDB::getUserById( $uid );
+		$u->startSession( );
+		$result['startdate'] = $date( 'm/d/Y', strtotime( $acc->user->membership_created_at ) );
+		$result['enddate'] = $date( 'm/d/Y', strtotime( $acc->user->membership_expires_at ) );
+		$result['name'] = $mb->name;
+		$result['length'] = $acc->user->membership_years . ' Year' . ( $acc->user->membership_years > 1 ? 's' : '' );
+	} else {
+		// transaction failed, print the reason
+		if ( ! empty( $debug_mail ) ) {
+			$m = new \indagare\util\IndagareMailer( );
+			$thankyou = createThankyouEmail( $acc->user->first_name . " " . $acc->user->last_name, $acc->user->primary_street_address, $acc->user->primary_city, $acc->user->primary_state, $acc->user->primary_postal, $acc->user->primary_country, $acc->user->email, $mb->name . " - " . $acc->user->membership_years . " years PRICE: $" . $mb->getMembershipPrice( $acc->user->membership_years ) . ".00" );
+			$m->sendHtml( $debug_mail_prefix.'Card Declined', $thankyou . " " . $result["r_approved"] . "-" . $result['r_error'], $debug_mail );
+		}
+		$result['startdate'] = '';
+		$result['enddate'] = '';
+		$result['name'] = $mb->name;
+		$result['length'] = $acc->user->membership_years . ' Year' . ( $acc->user->membership_years > 1 ? 's' : '' );
+	}
+	return json_encode( $result );
+
+} else if ( $task == "payment" ) {
+	//print "Test";
+	$acc = indagare\users\AccountCreator::getAccountCreator( );
+
+	$acc->user->prefix = '';
+	$acc->user->first_name = $_POST["fn"];
+	$acc->user->last_name = $_POST["ln"];
+	$acc->user->email = $_POST["email"];
+	$acc->user->phone_home = $_POST['phone'];
+
+	$acc->user->login = $_POST['username'];
+	$acc->user->password = $_POST['password'];
+	$acc->user->primary_street_address = $_POST['s_address1'];
+	$acc->user->primary_street_address2 = $_POST['s_address2'];
+	$acc->user->primary_city = $_POST['s_city'];
+	$acc->user->primary_state = $_POST['s_state'];
+	$acc->user->primary_postal = $_POST['s_zip'];
+	$acc->user->primary_country = $_POST['s_country'];
+
+	$acc->user->membership_level = $_POST["l"];
+	$acc->user->membership_years = $_POST["y"];
+	$acc->user->passkey_id = $_POST['passKey'];
+
 	$acc->user->secondary_street_address = $_POST['address1'];
 	$acc->user->secondary_street_address2 = $_POST['address2'];
 	$acc->user->secondary_city = $_POST['city'];
@@ -224,6 +442,7 @@ if ( $task == "signup1" ) {
 	if ( isset( $_POST['dc'] ) ) {
 		$mb->discount = $_POST['dc'];
 	}
+
 	//print $mb->toJSON();
 	//echo "mb start";
 	$charge = $mb->getMembershipPrice( $acc->user->membership_years );
@@ -275,7 +494,6 @@ if ( $task == "signup1" ) {
 		$myorder["threshold"] = "3";
 		$myorder["startdate"] = "immediate";
 		$myorder["periodicity"] = "yearly";
-
 	}
 
 	$result = $mylphp->curl_process($myorder);  # use curl methods
@@ -304,7 +522,7 @@ if ( $task == "signup1" ) {
 		}
 		//echo "1";
 
-		$email_subject = 'Welcome to Indagare!';
+		$email_subject = createThankyouEmailSubject();
 		$thankyou = createThankyouEmail( $acc->user->first_name . " " . $acc->user->last_name, $acc->user->primary_street_address, $acc->user->primary_city, $acc->user->primary_state, $acc->user->primary_postal, $acc->user->primary_country, $acc->user->email, $mb->name . " - " . $acc->user->membership_years . " years PRICE: $" . $mb->getMembershipPrice( $acc->user->membership_years ) . ".00" );
 		$email = $acc->user->email;
 		$m = new \indagare\util\IndagareMailer( );
@@ -437,4 +655,45 @@ if ( $task == "signup1" ) {
 		}
 		print $result["r_approved"] . "-" . $result['r_error'];
 	}
+}
+
+/**
+ * Call the payment gateway and charge the card.
+ *
+ * @param array $order The parameters for the order
+ * 			name:  Cardholder name
+ */
+function charge_it( $order ) {
+	// constants
+	$acc = indagare\users\AccountCreator::getAccountCreator( );
+
+	$gateway["host"] = \indagare\config\Config::$pay_host;
+	$gateway["port"] = \indagare\config\Config::$pay_port;
+	$gateway["keyfile"] = \indagare\config\Config::$pay_key;
+	$gateway["configfile"] = \indagare\config\Config::$pay_config;
+
+	// form data
+	$myorder["name"] = $_POST["cc_holder"];
+	$myorder["cardnumber"] = $_POST["cc_num"];
+	$myorder["cardexpmonth"] = $_POST["cc_m"];
+	$myorder["cardexpyear"] = $_POST["cc_y"];
+	$myorder["cvmindicator"] = "provided";
+	$myorder["cvmvalue"] = $_POST["ccv"];
+	$myorder["chargetotal"] = 0;
+	$myorder["ordertype"] = "SALE";
+
+	$args = array_merge( $myorder, $order, $gateway );
+
+	if ( $args['chargetotal'] <= 0 ) {
+		return array(
+			'r_approved' => 'SKIPPED',
+			'r_code' => '0',
+			'r_error' => '0 or negative charge attempted.',
+		);
+	}
+
+	$mylphp = new \lphp( );
+	$result = $mylphp->curl_process( $args );  # use curl methods
+
+	return $result;
 }

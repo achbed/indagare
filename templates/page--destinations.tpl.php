@@ -9,7 +9,7 @@
 // To debug knockout.js:    <pre data-bind="text: ko.toJSON($data, null, 2)"></pre>
 ?>
 <div id="destinationsfilter" style="height:0;">
-	<h3>Filter by:</h3>
+	<h3>Filter by Destination:</h3>
 	<div class="filterwrapper">
 		<select class="customselect" id="selecttop2" data-bind="
 		    value: selectedTopslug, 
@@ -27,6 +27,24 @@
     		optionsValue: 'value',
     		optionsAfterRender: setTid">
 		</select>
+	</div>
+	<h3>Filter by Interest:</h3>
+	<section class="recent-articles contain" data-bind="foreach: listInterests">
+		<article data-bind="attr:{class:'filter ' +classes()}">
+			<a href="" data-bind="{click:$parent.toggle_interest, attr:{value:value}}">
+				<img src="" data-bind="attr:{src:icon}" alt="Interest" />
+				<h3 data-bind="{html: name}"></h3>
+			</a>
+		</article>
+	</section>
+	<h3>Filter by Season:</h3>
+	<div class="filterwrapper iconfilterwrapper" data-bind="foreach: listSeasons">
+		<div data-bind="attr:{class:'iconfilter '+classes()}">
+			<a href="" data-bind="{click:$parent.toggle_season, attr:{value:value}}">
+				<img src="" data-bind="attr:{src:icon}" >
+			</a>
+				<span data-bind="{html: name}"></span>
+		</div>
 	</div>
 </div>
 

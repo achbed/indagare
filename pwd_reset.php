@@ -54,7 +54,7 @@
             <input type="hidden" name="step" value="2">
             <input type="hidden" name="key" value="<?= $key ?>">
             New Password <input type="password" name="pwd"><br>
-            verify Password <input type="tpassword" name="pwd2"><br>
+            verify Password <input type="password" name="pwd2"><br>
             <input type="submit" name="Login">
         </form>
     </body>

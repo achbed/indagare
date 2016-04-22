@@ -80,11 +80,9 @@
 	            	// action hook for inserting content below #post
 	            	thematic_belowpost();
 	            }
-	            ?>
-	            
-			</div><!-- #content -->
-			
-			<?php 
+
+				echo apply_filters( 'thematic_close_id_content', '</div><!-- #content -->' . "\n" );
+
 				// action hook for inserting content below #content
 				thematic_belowcontent(); 
 			?> 

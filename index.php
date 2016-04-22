@@ -19,9 +19,7 @@
 	// action hook for placing content above #container
 	thematic_abovecontainer();
 ?>
-
 		<div id="container">
-
 			<?php
 		    	// action hook for placing content above #content
 				thematic_abovecontent();
@@ -49,11 +47,9 @@
 				
             	// create the navigation below the content
             	thematic_navigation_below();
-            ?>
 
-			</div><!-- #content -->
+            	echo apply_filters( 'thematic_close_id_content', '</div><!-- #content -->' . "\n" );
 
-			<?php
 				// action hook for placing content below #content
 				thematic_belowcontent();
 			?>
