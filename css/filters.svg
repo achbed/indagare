@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
+  <filter id="thin-erode" filterRes="400" filterUnits="objectBoundingBox">
+    <feMorphology radius=".01" operator="erode" in="SourceGraphic" />
+  </filter>
+  <filter id="thin-grey" filterRes="400" filterUnits="objectBoundingBox">
+    <feColorMatrix type="saturate" values="0" in="SourceGraphic" />
+  </filter>
+</svg>

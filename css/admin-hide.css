@@ -1,0 +1,10 @@
+/* hide add new in sidebar */
+#hoteltype-adder { display: none; }
+#benefit-adder { display: none; }
+#editorspick-adder { display: none; }
+#restauranttype-adder { display: none; }
+#mealtype-adder { display: none; }
+#shoptype-adder { display: none; }
+#activitytype-adder { display: none; }
+#column-adder { display: none; }
+#interest-adder { display: none; }

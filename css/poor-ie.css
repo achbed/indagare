@@ -1,0 +1,10 @@
+.candy-wrapper {min-width:930px;}
+.secondary, a.secondary {
+background: transparent;
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#19000000,endColorstr=#19000000)"; /* IE8 */
+      zoom: 1;}
+.secondary:hover, a.secondary:hover {
+background: transparent;
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#7F000000,endColorstr=#7F000000)"; /* IE8 */
+      zoom: 1;
+}

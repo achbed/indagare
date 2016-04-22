@@ -1,0 +1,23 @@
+<div style="font-family:sans-serif;width:720px;">
+<img src="http://indagare.com/images/WelcomeImage.jpg" style="height:340px; width:720px;"/>
+<div style="margin-bottom: 12px;"></div>
+<div style="margin-bottom:12px;">Dear <%= @user.display_name.upcase + "," %></div>
+<div style="margin-bottom:12px;">Welcome to Indagare! We hope that you will enjoy being a part of our travel community. 
+As a member you will have access to our robust <%= link_to 'online editorial content', 'http://www.indagare.com/explore/destinations' %>  and <%= link_to 'digital magazine', 'http://www.indagare.com/magazines/list' %>, featuring staff-scouted destinations around the world, as well as to our boutique, in-house <%= link_to 'travel agency', 'http://www.indagare.com/book_my_trip/article/7500' %>.</div>
+
+<div style="margin-bottom:12px;"><b>To begin using Indagare, click here to create a login and password:</b><div></div>
+<%= link_to 'Create a Login.', @url %></div>
+
+<div style="margin-bottom:12px;">Indagare is a one-stop travel resource. We update the online destination reports and articles daily. And our travel experts help members plan and book memorable journeys, whether it’s a simple resort getaway or a multi-stop European tour. Members booking through Indagare receive benefits at our network of hundreds of luxury hotels and resorts. For instance, we are a preferred partner of Four Seasons Resorts, so all of our members receive special amenities such as complimentary breakfast, room upgrades, spa credits and VIP treatment at any of their hotels.</div>
+
+<div style="margin-bottom:12px;">Please let us know if you are planning a trip, and we would be happy to assist you: 212-
+988-2611.</div>
+
+<div style="margin-bottom:12px;">For tips on how to navigate the site, click here: <%= link_to 'Take a tour.', 'http://www.indagare.com/info/tour' %></div>
+
+Thank you for joining the next generation of travel wisdom.
+<div></div>
+The Indagare Travel Team
+<div style="margin-bottom:12px;"></div>
+<i>"Travel is more than seeing the sights; its a change that goes on, deep and permanent, in the ideas of living." ~Miriam Beard</i>
+</div>

@@ -1,0 +1,7 @@
+/* ========================================================================= */
+/* font-adjustements */
+/* ------------------------------------------------------------------------- */
+@media (-webkit-max-device-pixel-ratio: 1.5),(max-resolution: 144ddpx){
+  #access > ul > li > a, #access-secondary a, #search-indagare label {font-family:'Helvetica Neue Thin','Helvetica Neue',Helvetica,Arial,sans-serif; font-weight:200;}
+  #who-we-are p.highlight, .subnav {font-weight:300;}
+}

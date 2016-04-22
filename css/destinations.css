@@ -1,0 +1,135 @@
+.destinationlist-wrapper {
+  display:block;
+  min-height:270px;
+}
+	
+#destinationlist img {
+	height:200px;
+	width:300px;
+}
+	
+#destinationsfilter {
+	overflow:hidden;
+}
+
+body.map #mapcanvas {
+	background-image: url('../images/indagare_map_bg.jpg');
+	background-position: 0 0;
+	background-size: 100% 100%;
+}
+
+body.map #mapcanvas>div {
+  background:#ccc;  
+}
+
+.iconfilter {	
+  display: table;
+  float: left;
+  margin:0 10px 1em;
+}
+
+.iconfilter.selected a,
+.iconfilter.selected a:link,
+.iconfilter.selected a:active,
+.iconfilter.selected a:hover,
+.iconfilter.selected a:visited {
+  color:#004466;
+/*  background: #def;*/
+  background: #fd522b;
+}
+
+.iconfilter.deselected a,
+.iconfilter.deselected a:link,
+.iconfilter.deselected a:active,
+.iconfilter.deselected a:hover,
+.iconfilter.deselected a:visited {
+  color:#555;
+  background:#eee;
+}
+
+.iconfilter.inactive {
+}
+
+.iconfilterwrapper {
+  clear:both;
+  width:100%;
+  padding:0.5em 0;
+  margin:0;
+}
+
+.iconfilter a {
+  display: inline-block;
+  vertical-align: middle;
+/*  padding: 3px 6px; */
+  margin-right: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  position: relative;
+  height: 2em;
+  width: 2em;
+  overflow:hidden;
+}
+
+.iconfilter a>img {
+	float:left;
+	display:none;
+}
+
+.iconfilter a>span {
+  padding: 0 4px;
+}
+
+.map .recent-articles article {
+	width: 20%;	
+}
+
+.book .interests article {
+	width: 25%;	
+}
+
+article.filter a {
+	border: 1px solid #ccc;
+	padding: 0;
+	background: #000;
+}
+
+.book article.filter span {
+	display: block;
+	border: 1px solid #ccc;
+	padding: 0;
+	background: #000;
+}
+
+
+.recent-articles article.filter img {
+	margin-bottom: .5em;
+}
+
+.filter img { 
+	width: 100%;
+	opacity: 1.0;
+}
+
+.filter.selected img { 
+	opacity: .5;
+}
+
+article.filter h3 {
+	margin-top: 0 !important;
+	margin-left: 0 !important;
+	white-space:nowrap; 
+	overflow:hidden; 
+	text-overflow:ellipsis;
+	text-align: center;
+	color: #fff;
+}
+
+article a {
+	margin-bottom: 2px;
+}
+
+article.selected a {
+/*	background: #def; */ 
+	margin-bottom: 0;
+	border-bottom: 3px solid #fd522b;
+}

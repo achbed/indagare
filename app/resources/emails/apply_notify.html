@@ -1,0 +1,26 @@
+A new application for Indagare:
+
+NAME
+<%= @user.prefix %> <%= @user.first_name %> <%= @user.middle_initial %> <%= @user.last_name %>
+
+PRIMARY ADDRESS
+<%= @user.primary_street_address %>
+<%= @user.primary_extended %>
+<%= @user.primary_city %>, <%= @user.primary_state %> <%= @user.primary_postal %>
+
+EMAIL
+<%= @user.email %>
+
+QUESTIONNAIRE
+1) Tell us your top three destinations.
+<%= @user.question_1 %>
+
+2) Tell us your three favorite hotels.
+<%= @user.question_2 %>
+
+3) What are the three main reasons you travel?
+<%= @user.question_3 %>
+
+4) Where would you like to go next?
+<%= @user.question_4 %>
+
