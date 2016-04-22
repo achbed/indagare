@@ -2,7 +2,7 @@
 /**
  * Archive Template for Activity
  *
- * Displays an Archive index of post-type items. Other more specific archive templates 
+ * Displays an Archive index of post-type items. Other more specific archive templates
  * may override the display of this template for example the category.php.
  *
  * @package Thematic
@@ -20,12 +20,12 @@
 
 		<div id="container" class="standard">
 
-		<?php 
+		<?php
 			// action hook for placing content above #content
 			thematic_abovecontent();
 
-			// filter for manipulating the element that wraps the content 
-			echo apply_filters( 'thematic_open_id_content', '<div id="content">' . "\n\n" ); 
+			// filter for manipulating the element that wraps the content
+			echo apply_filters( 'thematic_open_id_content', '<div id="content">' . "\n\n" );
 
 			// displays the page title
 			thematic_page_title();
@@ -47,17 +47,17 @@
 
 			echo apply_filters( 'thematic_close_id_content', '</div><!-- #content -->' . "\n" );
 
-				// action hook for placing content below #content
-		    	thematic_belowcontent(); 
-		    ?> 
+        	// action hook for placing content below #content
+	    	thematic_belowcontent();
+		    ?>
 
 		</div><!-- #container -->
 
-<?php 
+<?php
 	// action hook for placing content below #container
 	thematic_belowcontainer();
 
-	// calling the standard sidebar 
+	// calling the standard sidebar
 	thematic_sidebar();
 
 	// calling footer.php

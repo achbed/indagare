@@ -601,12 +601,13 @@ if ( is_admin() ) {
 function admin_styles() {
     wp_enqueue_style('admin-style', get_bloginfo('stylesheet_directory') . '/css/admin.css');
     wp_enqueue_style('qtip-style', get_bloginfo('stylesheet_directory') . '/css/jquery.qtip.css');
+    wp_enqueue_style('fontawesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', array(), null);
+
     wp_register_script('admin-js', get_bloginfo('stylesheet_directory').'/js/admin.js', array('jquery'), '', true);
     wp_register_script('tinysort', get_bloginfo('stylesheet_directory').'/js/jquery.tinysort.min.js', array('jquery'), '', true);
     wp_register_script('qtip', get_bloginfo('stylesheet_directory').'/js/jquery.qtip.min.js', array('jquery'), '', true);
 
     wp_enqueue_script('tinysort');
-
     wp_enqueue_script('qtip');
     wp_enqueue_script('admin-js');
 
@@ -617,7 +618,6 @@ function admin_styles() {
 	if ( !current_user_can( 'administrator' ) ) {
 	    wp_enqueue_style('admin-style-hide', get_bloginfo('stylesheet_directory') . '/css/admin-hide.css');
 	}
-
 }
 add_action('admin_enqueue_scripts', 'admin_styles');
 
@@ -737,7 +737,9 @@ add_action('init', 'register_scripts');
 
 function enqueue_scripts() {
 
-  wp_enqueue_script('velocity');
+    wp_enqueue_style('fontawesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', array(), null);
+
+	wp_enqueue_script('velocity');
 	wp_enqueue_script('template-page_footer');
 
 	if ( is_singular() ) {
@@ -7028,6 +7030,7 @@ jQuery(document).ready(function($) {
 
 	<p>There was an error verifying your credit card information for payment. Please check the information that you entered and try again.</p>
 
+	<p class="tiny" id="errordetail"></p>
 </div><!-- #lightbox-signup-error -->
 
 <div id="lightbox-signup-complete" class="lightbox white-popup login mfp-hide">

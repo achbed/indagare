@@ -405,7 +405,9 @@ var account = {
        document.getElementById("s_zip").value = user.postal;
        document.getElementById("s_country").value = user.country;
        //alert(user.contact_pref);
-       document.getElementById("member_level").innerHTML = mbs[user.mb-1].name;
+       user.trial = false;
+       if ( user.mb == 6 ) { user.mb = 1; user.trial = true; }
+       document.getElementById("member_level").innerHTML = (user.trial?'TRIAL - ':'') + mbs[user.mb-1].name;
        document.getElementById("member_exp").innerHTML = user.mb_exp;
        document.getElementById("chkShip").onchange = this.setBillingAddr;
        this.buildMembershipDD(user.mb);

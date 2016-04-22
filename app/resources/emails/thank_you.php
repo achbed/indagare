@@ -333,10 +333,10 @@ function createThankyouEmail($name, $street, $city, $state, $zip, $country, $ema
 													<p align=\"left\" class=\"article-title\" style=\"font-size: 18px; line-height: 24px; color: #000000; font-weight: bold; margin-top: 0px; margin-bottom: 18px; font-family: HelveticaNeue, sans-serif;\">Welcome, $name</p>
 													<div align=\"left\" class=\"article-content\" style=\"font-size: 13px; line-height: 18px; color: #000000; margin-top: 0px; margin-bottom: 18px; font-family: HelveticaNeue, sans-serif;\">
 														<p style=\"margin-bottom: 15px;\">Thank you for your order at Indagare.com. We hope that you will enjoy being a part of our travel community. To get started, visit: <a href=\"http://www.indagare.com\" style=\"color: #000000; font-weight: bold; text-decoration: none;\">www.indagare.com</a></p>
-                                                                                                                
-<p style=\"margin-bottom: 15px;\"><strong>How to Use Indagare</strong><br>Planning an upcoming trip? Our staff scouts the world and helps our members plan 
-everything from a long weekend in LA to a safari in Botswana or a multi-generational 
-birthday in Marrakech. We have a curated network of expert guides and the ability 
+
+<p style=\"margin-bottom: 15px;\"><strong>How to Use Indagare</strong><br>Planning an upcoming trip? Our staff scouts the world and helps our members plan
+everything from a long weekend in LA to a safari in Botswana or a multi-generational
+birthday in Marrakech. We have a curated network of expert guides and the ability
 to create special experiences across the globe.</p>
 
 <p style=\"margin-bottom: 15px;\">All members have access to our curated reviews as well as our bookings department
@@ -345,12 +345,12 @@ amenities at hundreds of luxury hotels. These include Aman, Four Seasons, Orient
 Express, Rosewood, Peninsula, Park Hyatt and many hand-picked by our staff. We
 can also access Platinum and Centurion privileges through American Express.</p>
 
-<p style=\"margin-bottom: 15px;\">Please let us know if you are planning a trip, and we would be happy to assist you: 
-<strong>bookings@indagare.com</strong> or <strong>212-988-2611</strong>. 
+<p style=\"margin-bottom: 15px;\">Please let us know if you are planning a trip, and we would be happy to assist you:
+<strong>bookings@indagare.com</strong> or <strong>212-988-2611</strong>.
 </p>
 
 <p style=\"margin-bottom: 15px;\">Thank you.</p>
-                                                                                                                
+
 <p style=\"margin-bottom: 15px;\">Please find your receipt below. If you have any questions about your order, please email <a href=\"mailto:orders@indagare.com\" style=\"color: #000000; font-weight: bold; text-decoration: none;\">orders@indagare.com</a>.</p>
 
 													</div>
@@ -358,7 +358,7 @@ can also access Platinum and Centurion privileges through American Express.</p>
 											</tr><tr style=\"border-collapse: collapse;\"><td class=\"w580\" width=\"580\" height=\"10\" style=\"border-collapse: collapse; font-family: HelveticaNeue, sans-serif;\"></td></tr></tbody></table><table class=\"w580\" width=\"580\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tbody><tr style=\"border-collapse: collapse;\"><td class=\"w580\" width=\"580\" style=\"border-collapse: collapse; font-family: HelveticaNeue, sans-serif;\">
 													<div align=\"left\" class=\"article-content article-content-nested\" style=\"font-size: 13px; line-height: 18px; color: #000000; margin-top: 0px; margin-bottom: 18px; font-family: HelveticaNeue, sans-serif; border-top-width: 2px; border-top-color: #00a4d3; border-top-style: solid; border-bottom-width: 2px; border-bottom-color: #00a4d3; border-bottom-style: solid; background: #e2f4fe;\">
 														<p style=\"margin: 15px 10px 0;\"><strong>$name</strong></p>
-										
+
 														<p style=\"margin: 15px 10px 0;\">$street<br style=\"line-height: 100%;\" />
 														$city, $state $zip $country<br style=\"line-height: 100%;\" />
 														$email
@@ -707,10 +707,10 @@ function createThankyouRenewEmail($name, $street, $city, $state, $zip, $country,
 													<p align=\"left\" class=\"article-title\" style=\"font-size: 18px; line-height: 24px; color: #000000; font-weight: bold; margin-top: 0px; margin-bottom: 18px; font-family: HelveticaNeue, sans-serif;\">Welcome back, $name</p>
 													<div align=\"left\" class=\"article-content\" style=\"font-size: 13px; line-height: 18px; color: #000000; margin-top: 0px; margin-bottom: 18px; font-family: HelveticaNeue, sans-serif;\">
 														<p style=\"margin-bottom: 15px;\">Thank you for your renewal at Indagare.com. We are thrilled that you have chosen to continue being a part of our travel community<a href=\"http://www.indagare.com\" style=\"color: #000000; font-weight: bold; text-decoration: none;\">www.indagare.com</a></p>
-                                                                                                                
-<p style=\"margin-bottom: 15px;\"><strong>Reminder on How to Use Indagare</strong><br>Planning an upcoming trip? Our staff scouts the world and helps our members plan 
-everything from a long weekend in LA to a safari in Botswana or a multi-generational 
-birthday in Marrakech. We have a curated network of expert guides and the ability 
+
+<p style=\"margin-bottom: 15px;\"><strong>Reminder on How to Use Indagare</strong><br>Planning an upcoming trip? Our staff scouts the world and helps our members plan
+everything from a long weekend in LA to a safari in Botswana or a multi-generational
+birthday in Marrakech. We have a curated network of expert guides and the ability
 to create special experiences across the globe.</p>
 
 <p style=\"margin-bottom: 15px;\">As you know, all members have access to our curated reviews as well as our bookings department
@@ -719,12 +719,12 @@ amenities at hundreds of luxury hotels. These include Aman, Four Seasons, Orient
 Express, Rosewood, Peninsula, Park Hyatt and many hand-picked by our staff. We
 can also access Platinum and Centurion privileges through American Express.</p>
 
-<p style=\"margin-bottom: 15px;\">Please let us know if you are planning a trip, and we would be happy to assist you: 
-<strong>bookings@indagare.com</strong> or <strong>212-988-2611</strong>. 
+<p style=\"margin-bottom: 15px;\">Please let us know if you are planning a trip, and we would be happy to assist you:
+<strong>bookings@indagare.com</strong> or <strong>212-988-2611</strong>.
 </p>
 
 <p style=\"margin-bottom: 15px;\">Thank you.</p>
-                                                                                                                
+
 <p style=\"margin-bottom: 15px;\">Please find your receipt below. If you have any questions about your order, please email <a href=\"mailto:orders@indagare.com\" style=\"color: #000000; font-weight: bold; text-decoration: none;\">orders@indagare.com</a>.</p>
 
 													</div>
@@ -732,7 +732,7 @@ can also access Platinum and Centurion privileges through American Express.</p>
 											</tr><tr style=\"border-collapse: collapse;\"><td class=\"w580\" width=\"580\" height=\"10\" style=\"border-collapse: collapse; font-family: HelveticaNeue, sans-serif;\"></td></tr></tbody></table><table class=\"w580\" width=\"580\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tbody><tr style=\"border-collapse: collapse;\"><td class=\"w580\" width=\"580\" style=\"border-collapse: collapse; font-family: HelveticaNeue, sans-serif;\">
 													<div align=\"left\" class=\"article-content article-content-nested\" style=\"font-size: 13px; line-height: 18px; color: #000000; margin-top: 0px; margin-bottom: 18px; font-family: HelveticaNeue, sans-serif; border-top-width: 2px; border-top-color: #00a4d3; border-top-style: solid; border-bottom-width: 2px; border-bottom-color: #00a4d3; border-bottom-style: solid; background: #e2f4fe;\">
 														<p style=\"margin: 15px 10px 0;\"><strong>$name</strong></p>
-										
+
 														<p style=\"margin: 15px 10px 0;\">$street<br style=\"line-height: 100%;\" />
 														$city, $state $zip $country<br style=\"line-height: 100%;\" />
 														$email
@@ -1081,10 +1081,10 @@ function createThankyouUpgradeEmail($name, $street, $city, $state, $zip, $countr
 													<p align=\"left\" class=\"article-title\" style=\"font-size: 18px; line-height: 24px; color: #000000; font-weight: bold; margin-top: 0px; margin-bottom: 18px; font-family: HelveticaNeue, sans-serif;\">Welcome back, $name</p>
 													<div align=\"left\" class=\"article-content\" style=\"font-size: 13px; line-height: 18px; color: #000000; margin-top: 0px; margin-bottom: 18px; font-family: HelveticaNeue, sans-serif;\">
 														<p style=\"margin-bottom: 15px;\">Thank you for your membership upgrade at Indagare.com. We are thrilled that you have chosen to continue being a part of our travel community<a href=\"http://www.indagare.com\" style=\"color: #000000; font-weight: bold; text-decoration: none;\">www.indagare.com</a></p>
-                                                                                                                
-<p style=\"margin-bottom: 15px;\"><strong>Reminder on How to Use Indagare</strong><br>Planning an upcoming trip? Our staff scouts the world and helps our members plan 
-everything from a long weekend in LA to a safari in Botswana or a multi-generational 
-birthday in Marrakech. We have a curated network of expert guides and the ability 
+
+<p style=\"margin-bottom: 15px;\"><strong>Reminder on How to Use Indagare</strong><br>Planning an upcoming trip? Our staff scouts the world and helps our members plan
+everything from a long weekend in LA to a safari in Botswana or a multi-generational
+birthday in Marrakech. We have a curated network of expert guides and the ability
 to create special experiences across the globe.</p>
 
 <p style=\"margin-bottom: 15px;\">As you know, all members have access to our curated reviews as well as our bookings department
@@ -1093,12 +1093,12 @@ amenities at hundreds of luxury hotels. These include Aman, Four Seasons, Orient
 Express, Rosewood, Peninsula, Park Hyatt and many hand-picked by our staff. We
 can also access Platinum and Centurion privileges through American Express.</p>
 
-<p style=\"margin-bottom: 15px;\">Please let us know if you are planning a trip, and we would be happy to assist you: 
-<strong>bookings@indagare.com</strong> or <strong>212-988-2611</strong>. 
+<p style=\"margin-bottom: 15px;\">Please let us know if you are planning a trip, and we would be happy to assist you:
+<strong>bookings@indagare.com</strong> or <strong>212-988-2611</strong>.
 </p>
 
 <p style=\"margin-bottom: 15px;\">Thank you.</p>
-                                                                                                                
+
 <p style=\"margin-bottom: 15px;\">Please find your receipt below. If you have any questions about your order, please email <a href=\"mailto:orders@indagare.com\" style=\"color: #000000; font-weight: bold; text-decoration: none;\">orders@indagare.com</a>.</p>
 
 													</div>
@@ -1106,7 +1106,7 @@ can also access Platinum and Centurion privileges through American Express.</p>
 											</tr><tr style=\"border-collapse: collapse;\"><td class=\"w580\" width=\"580\" height=\"10\" style=\"border-collapse: collapse; font-family: HelveticaNeue, sans-serif;\"></td></tr></tbody></table><table class=\"w580\" width=\"580\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tbody><tr style=\"border-collapse: collapse;\"><td class=\"w580\" width=\"580\" style=\"border-collapse: collapse; font-family: HelveticaNeue, sans-serif;\">
 													<div align=\"left\" class=\"article-content article-content-nested\" style=\"font-size: 13px; line-height: 18px; color: #000000; margin-top: 0px; margin-bottom: 18px; font-family: HelveticaNeue, sans-serif; border-top-width: 2px; border-top-color: #00a4d3; border-top-style: solid; border-bottom-width: 2px; border-bottom-color: #00a4d3; border-bottom-style: solid; background: #e2f4fe;\">
 														<p style=\"margin: 15px 10px 0;\"><strong>$name</strong></p>
-										
+
 														<p style=\"margin: 15px 10px 0;\">$street<br style=\"line-height: 100%;\" />
 														$city, $state $zip $country<br style=\"line-height: 100%;\" />
 														$email

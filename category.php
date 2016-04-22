@@ -2,7 +2,7 @@
 /**
  * Category Template
  *
- * Displays an archive index of posts assigned to a Category. 
+ * Displays an archive index of posts assigned to a Category.
  *
  * @package Thematic
  * @subpackage Templates
@@ -23,7 +23,7 @@
 				// action hook for placing content above #content
 				thematic_abovecontent();
 
-				// filter for manipulating the element that wraps the content 
+				// filter for manipulating the element that wraps the content
 				echo apply_filters( 'thematic_open_id_content', '<div id="content">' . "\n\n" );
 
 				// displays the page title
@@ -33,20 +33,20 @@
 	        	thematic_navigation_above();
 
 	        	// action hook for placing content above the category loop
-	        	thematic_above_categoryloop();			
+	        	thematic_above_categoryloop();
 
 	        	// action hook creating the category loop
 	        	thematic_categoryloop();
 
 	        	// action hook for placing content below the category loop
-	        	thematic_below_categoryloop();			
+	        	thematic_below_categoryloop();
 
 	        	// create the navigation below the content
 	        	thematic_navigation_below();
 
     	        echo apply_filters( 'thematic_close_id_content', '</div><!-- #content -->' . "\n" );
 
-				// action hook for placing content below #content
+	        	// action hook for placing content below #content
 				thematic_belowcontent();
 			?>
 		</div><!-- #container -->
@@ -55,7 +55,7 @@
 	// action hook for placing content below #container
 	thematic_belowcontainer();
 
-	// calling the standard sidebar 
+	// calling the standard sidebar
 	thematic_sidebar();
 
 	// calling footer.php

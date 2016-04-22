@@ -2,93 +2,75 @@
 <div id="tab-container">
 
     <span id="messages"></span>
-<div class="tab" id="tab1">
-    <h1>Create Account</h1>
-
+	<div class="tab" id="tab1">
+	    <h1>Create Account</h1>
+	
 	    <h3 class="inputgrouptitle trial">Membership Level</h3>
 	
 	    <div id="trialStuff" class="inputgroup trial" style="display:none;">
-    <p><label>Trial Code </label><input type="text" name="tgCode" id="tgCode" value="">
-        <input type="button" name="tgGiftLookup" id="tgGiftLookup" class="button primary" value="Confirm Code">
-        <span id="tg_codeval" class="validate"></span>
-    </p>
-    </div>
+		    <div class="field"><label>Trial Code</label><input type="text" name="tgCode" id="tgCode" value=""><span id="tg_codeval" class="errmsg"></span></div>
+	    </div>
 	    
 	    <div class="inputgroup">
-    <div class="field"><label>Level</label><span class="form-item"><select id="membership_level" class="customselectdyn"></select></span></div>
-    <div class="field"><label>Duration</label><span class="form-item"><select id="membership_years" class="customselectdyn"></select></span></div>
+		    <div class="field noicon"><label>Level</label><span class="form-item membership-level"><select id="membership_level" class="customselectdyn"></select></span></div>
+		    <div class="field noicon"><label>Duration</label><span class="form-item membership-years"><select id="membership_years" class="customselectdyn"></select></span></div>
 	    </div>
-
+	    
 		<div id="accountBlock">
 		    <h3 class="inputgrouptitle">Account Information</h3>
 		    
 		    <div class="inputgroup">
 			    <div class="field"><label></label>All fields are required</div>
-			    <div class="field">
-			    	<label>First name</label>
-			    	<input type="text" name="fn" id="fn" value="">
-			    	<span id="fnval" class="validate"></span>
-    </div>
-			    <div class="field"><label>Last name</label><input type="text" name="ln" id="ln" value=""><span id="lnval" class="validate"></span></div>
-			    <div class="field"><label>Email</label><input type="email" name="email" id="email" value=""><span id="emailval" class="validate"></span></div>
-			    <div class="field"><label>Phone</label><input type="text" name="phone" id="phone" value=""><span id="phoneval" class="validate"></span></div>
-</div>
-</div>
-
-
+			    <div class="field"><label>First name</label><input type="text" name="fn" id="fn" value=""><span class="errmsg">Please enter a first name.</span></div>
+			    <div class="field"><label>Last name</label><input type="text" name="ln" id="ln" value=""><span class="errmsg">Please enter a last name.</span></div>
+			    <div class="field"><label>Email</label><input type="email" name="email" id="email" value=""><span class="errmsg">Please enter a valid email address.</span></div>
+			    <div class="field"><label>Phone</label><input type="text" name="phone" id="phone" value=""><span class="errmsg">Please enter a phone number.</span></div>
+		    </div>
+	    </div>
+	
 		<div id="usernameBlock">
 		    <h3 class="inputgrouptitle">Username / Password</h3>
 		    <div class="inputgroup">
-			    <div class="field"><label>Username</label><input type="text" name="username" id="username" value=""><span id="tab3_username_info" class="validate"></span></div>
-			    <div class="field"><label>Password</label><input type="password" name="pwd1" id="password1"><span id="passval" class="validate validatetext"></span></div>
-			    <div class="field"><label>Verify Password</label><input type="password" name="pwd2" id="password2"></div>
+			    <div class="field"><label>Username</label><input type="text" name="username" id="username" value=""><span id="tab3_username_info" class="errmsg"></span></div>
+			    <div class="field"><label>Password</label><input type="password" name="pwd1" id="password1"><span class="errmsg">Passwords must:<br/><ul>
+					 	<li id="passlen">Be at least 6 characters long</li>
+					 	<li id="passcase">Contain a mix of uppercase and lowercase letters</li>
+					 	<li id="passnum">Contain at least one number</li>
+					 	</ul></span></div>
+			    <div class="field"><label>Verify Password</label><input type="password" name="pwd2" id="password2"><span class="errmsg">Passwords must match.</span></div>
 		    </div>
 	    </div>
-
 	
 		<div id="shippingBlock">
 		    <h3 class="inputgrouptitle">Shipping / Home Address</h3>
 		    <div class="inputgroup">
-			    <div class="field"><label>Street</label><input type="text" name="s_address1" id="s_address1"><span id="shipval" class="validate validatetext"></span></div>
+			    <div class="field"><label>Street</label><input type="text" name="s_address1" id="s_address1"><span class="errmsg">Please enter a full shipping address.</span></div>
 			    <div class="field"><label></label><input type="text" name="s_address2" id="s_address2"></div>
-			    <div class="field"><label>City</label><input type="text" name="s_city" id="s_city"></div>
-			    <div class="field"><label>State/Province</label><input type="text" name="s_state" id="s_state"></div>
-			    <div class="field"><label>Zip/Postal Code</label><input type="text" name="s_zip" id="s_zip"></div>
-			    <div class="field"><label>Country</label><input type="text" name="s_country" id="s_country"></div>
+			    <div class="field"><label>City</label><input type="text" name="s_city" id="s_city"><span class="errmsg">Please enter a city.</span></div>
+			    <div class="field"><label>State/Province</label><input type="text" name="s_state" id="s_state"><span class="errmsg">Please enter a state/province.</span></div>
+			    <div class="field"><label>Zip/Postal Code</label><input type="text" name="s_zip" id="s_zip"><span class="errmsg">Please enter a postal code.</span></div>
+			    <div class="field"><label>Country</label><input type="text" name="s_country" id="s_country"><span class="errmsg">Please enter a country.</span></div>
 		    </div>
 	    </div>
-        
+	    
         <div id="billingBlock">
 	        <h3 class="inputgrouptitle billing">Billing Address</h3>
-		    <div class="inputgroup">
+		    <div class="inputgroup billing">
 		        <div class="field"><label></label><input type="checkbox" name="chkShip" id="chkShip" value="1"> Same as shipping address</div>
-		        <div class="field"><label>Street</label><input type="text" name="address1" id="address1"><span id="billval" class="validate validatetext"></span></div>
-        <div class="field"><label></label><input type="text" name="address2" id="address2"></div>
-		        <div class="field"><label>City</label><input type="text" name="city" id="city"></div>
-		        <div class="field"><label>State/Province</label><input type="text" name="state" id="state"></div>
-		        <div class="field"><label>Zip/Postal Code</label><input type="text" name="zip" id="zip"></div>
-		        <div class="field"><label>Country</label><input type="text" name="country" id="country"></div>
+		        <div class="field"><label>Street</label><input type="text" name="address1" id="address1"><span class="errmsg">Please enter a full billing address.</span></div>
+		        <div class="field"><label></label><input type="text" name="address2" id="address2"></div>
+		        <div class="field"><label>City</label><input type="text" name="city" id="city"><span class="errmsg">Please enter a city.</span></div>
+		        <div class="field"><label>State/Province</label><input type="text" name="state" id="state"><span class="errmsg">Please enter a state/province.</span></div>
+		        <div class="field"><label>Zip/Postal Code</label><input type="text" name="zip" id="zip"><span class="errmsg">Please enter a postal code.</span></div>
+		        <div class="field"><label>Country</label><input type="text" name="country" id="country"><span class="errmsg">Please enter a country.</span></div>
 	        </div>
-
+	
 	        <h3 class="inputgrouptitle billing">Billing Information</h3>
-		    <div class="inputgroup">
-		        <div class="field"><label>Name on Card</label><input type="text" name="cc_holder" id="cc_holder"><span id="ccnameval" class="validate validatetext"></span></div>
-		        <div class="field"><label>Credit Card Number</label><input type="text" name="cc_num" id="cc_num"><span id="ccval" class="validate validatetext"></span></div>
-		        <div class="field"><label>Expiration Date</label><span class="form-item"><select class="small customselect" name="cc_month" id="cc_month">
-            <option value="01">01</option>
-            <option value="02">02</option>
-            <option value="03">03</option>
-            <option value="04">04</option>
-            <option value="05">05</option>
-            <option value="06">06</option>
-            <option value="07">07</option>
-            <option value="08">08</option>
-            <option value="09">09</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>    
-		        </select></span> / <span class="form-item"><select class="small customselect" name="cc_year" id="cc_year"></select></span><span id="ccexpval" class="validate validatetext"></span></div>
-		        <div class="field"><label>CCV</label><input class="small" type="text" name="ccv" id="ccv"><span id="ccccvval" class="validate validatetext"></span></div>
+		    <div class="inputgroup billing">
+		        <div class="field"><label>Name on Card</label><input type="text" name="cc_holder" id="cc_holder"><span class="errmsg">Please enter the cardholder name.</span></div>
+		        <div class="field"><label>Credit Card Number</label><input type="text" name="cc_num" id="cc_num"><span class="errmsg">Please enter a valid credit card number.</span></div>
+		        <div class="field noicon"><label>Expiration Date</label><span id="cc-month-input" class="form-item"><select class="customselectdyn" name="cc_month" id="cc_month"></select></span> / <span id="cc-year-input" class="form-item"><select class="customselectdyn" name="cc_year" id="cc_year"></select></span><span class="errmsg">Please select a valid credit card expiration date.</span></div>
+		        <div class="field ccv-field"><label>CVV</label><input class="small" type="text" name="ccv" id="ccv"><span  class="errmsg">Please enter the security code on the back of your credit card.</span></div>
 			</div>
         </div>
 
@@ -97,18 +79,21 @@
         </div>
         
 	    <div class="inputgroup">
-	        <div class="field"><label></label><input type="checkbox" id="agree2terms"> I have read and agree to the <a href="#" id="view_terms">Terms &amp; Conditions</a> <span id="tab3_TandC_info" class="validate validatetext"></span></div>
-        <div id="terms" style="display: none">
-            <p><strong>Terms</strong><br />
-            If you are not satisfied with your membership, you may cancel within 30 days of purchase and receive a full refund. Otherwise, all membership fees are non-refundable. By clicking on the Complete Payment button below, I authorize Indagare Travel to initiate an electronic debit to my bank account in the amount stated above.</p>
-            <p>In order to set up a an Indagare Travel membership you must provide us with valid credit card information. By submitting such credit card information, you give Indagare Travel permission to charge all fees incurred through your account to the credit card you designate on your registration form. All such fees (including renewal fees) will be charged at the time they are incurred. Renewal fees will be incurred upon the commencement of each renewal term.</p>
-            <p>Indagare Travel will send an e-mail to the e-mail address in your registration form reminding you that your Indagare Travel membership is about to expire. We will send you this notice at least 60 days before the expiration date of your membership. If you do not contact Indagare Travel, as instructed on your e-mail reminder, indicating that you do not wish to renew, Indagare Travel will automatically renew your membership for the same membership term as your previous Indagare Travel membership and charge your credit card on the first day of your renewal membership term. The renewal charge will be equal to the then-current membership fee for your membership term. By registering, you give permission to Indagare Travel to automatically charge your membership fee to your credit card for each renewal term.</p>
-        </div>
-       
-        <div class="field"><label></label><input type="Button" name="subTab3" id="subTab3" class="button primary" value="Submit"></div>
+	        <div class="field noicon"><label></label><input type="checkbox" id="agree2terms"> I have read and agree to the <a href="#" id="view_terms">Terms &amp; Conditions</a> <span class="errmsg">You must check this box to show that you agree to our Terms & Conditions.</span></div>
+	        <div id="terms" style="display: none">
+	            <h4><strong>Terms</strong></h4>
+	            <p>If you are not satisfied with your membership, you may cancel within 30 days of purchase and receive a full refund. Otherwise, all membership fees are non-refundable. By clicking on the Complete Payment button below, I authorize Indagare Travel to initiate an electronic debit to my bank account in the amount stated above.</p>
+	            <p>In order to set up an Indagare Travel membership you must provide us with valid credit card information. By submitting such credit card information, you give Indagare Travel permission to charge all fees incurred through your account to the credit card you designate on your registration form. All such fees (including renewal fees) will be charged at the time they are incurred. Renewal fees will be incurred upon the commencement of each renewal term.</p>
+	            <p>Indagare Travel will send an e-mail to the e-mail address in your registration form reminding you that your Indagare Travel membership is about to expire. We will send you this notice at least 60 days before the expiration date of your membership. If you do not contact Indagare Travel, as instructed on your e-mail reminder, indicating that you do not wish to renew, Indagare Travel will automatically renew your membership for the same membership term as your previous Indagare Travel membership and charge your credit card on the first day of your renewal membership term. The renewal charge will be equal to the then-current membership fee for your membership term. By registering, you give permission to Indagare Travel to automatically charge your membership fee to your credit card for each renewal term.</p>
+	        </div>
+	        
+	        <div class="field"><label></label><input type="Button" name="subTab3" id="subTab3" class="button primary" value="Submit"></div>
 		</div>
     </div>
 </div>
 
+
+<script type="text/javascript" src="/wp-content/themes/indagare/app/js/numeral.min.js"></script>
+<script type="text/javascript" src="/wp-content/themes/indagare/app/js/jquery.scrollTo.js"></script>
 <script type="text/javascript" src="/wp-content/themes/indagare/app/js/jquery.creditCardValidator.js"></script>
 <script type="text/javascript" src="/wp-content/themes/indagare/app/js/signup.js"></script>

@@ -65,7 +65,7 @@ class PasskeyType {
 			'name' => 'Trial Basic Membership, 30 days',
 			'description' => '',
 			'expires' => '+30 days',
-			'membership_level' => 1,
+			'membership_level' => 6,
 			'sort' => 10,
 			'valid' => true,
 		),
@@ -111,7 +111,7 @@ class PasskeyType {
 			'name' => 'Trial Basic Membership, 30 days',
 			'description' => '',
 			'expires' => '+30 days',
-			'membership_level' => 1,
+			'membership_level' => 6,
 			'valid' => true,
 		),
 		array(
@@ -120,7 +120,7 @@ class PasskeyType {
 			'name' => 'Trial Basic Membership, 90 days',
 			'description' => '',
 			'expires' => '+90 days',
-			'membership_level' => 1,
+			'membership_level' => 6,
 			'valid' => true,
 		),
 	);

@@ -2,7 +2,7 @@
 
 namespace indagare\config;
 
-// Stage
+// Development
 class Config {
 
 	public static $baseURL = "www.indagare.com";
@@ -11,7 +11,7 @@ class Config {
 
 	public static $crm_db_server = "172.31.104.11";
 
-	public static $crm_db_user = "staging02";
+	public static $crm_db_user = "staging03";
 
 	public static $crm_db_pwd = "c0mm0nmySQL";
 
@@ -25,11 +25,11 @@ class Config {
 
 	public static $payloadserver = "staging.api.indagare.com";
 
-	public static $mode = 'stage';
+	public static $mode = 'dev';
 
-    public static $external_login_redirect = "http://staging.indagare.com/external-login/";
+	public static $external_login_redirect = "http://dev.indagare.com/external-login/";
 
-	public static $swifttrip_url = 'https://book.indagare.com';
+	public static $swifttrip_url = 'https://indagare.qazone.swifttrip.com';
 
-	public static $bookingform_detailed_id = '75341';
+	public static $bookingform_detailed_id = '75465';
 }
