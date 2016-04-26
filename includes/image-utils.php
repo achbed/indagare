@@ -4,7 +4,7 @@ define( 'SHR_FIRSTIMAGE_ALL', 255 );
 define( 'SHR_FIRSTIMAGE_GALLERY', 1 );
 define( 'SHR_FIRSTIMAGE_CONTENT', 2 );
 define( 'SHR_FIRSTIMAGE_ATTACH', 4 );
-define( 'SHR_FIRSTIMAGE_DEFAULT', ( SHR_FIRSTIMAGE_GALLERY | SHR_FIRSTIMAGE_ATTACH ) );
+define('SHR_FIRSTIMAGE_DEFAULT', ( SHR_FIRSTIMAGE_GALLERY | SHR_FIRSTIMAGE_ATTACH ) );
 
 /**
  * Gets the first image in a gallery and its caption (if any).  If no gallery exists, then it attempts
@@ -30,77 +30,77 @@ function _get_firstimage( $galleryname, $imgsize = 'full', $mode = SHR_FIRSTIMAG
 	$_get_firstimage_recursive = true;
 	
 	if ( $mode & SHR_FIRSTIMAGE_GALLERY ) {
-			// Remove the mode flag, to simplify logic later.
+		// Remove the mode flag, to simplify logic later.
 		$mode = $mode ^ SHR_FIRSTIMAGE_GALLERY;
-			
-			// Get the ID
-			$rowsraw = get_field( $galleryname, $postid, false );
-			if ( !is_array( $rowsraw ) ) {
-				$rowsraw = array( $rowsraw );
-			}
-			if ( !empty( $rowsraw[0] ) ) {
-				// We have an ID from the gallery.
-				$r['id'] = $rowsraw[0];
-				$r['from'] = SHR_FIRSTIMAGE_GALLERY;
+		
+		// Get the ID
+		$rowsraw = get_field( $galleryname, $postid, false );
+		if ( !is_array( $rowsraw ) ) {
+			$rowsraw = array($rowsraw);
+		}
+		if ( !empty( $rowsraw[0] ) ) {
+			// We have an ID from the gallery.
+			$r['id'] = $rowsraw[0];
+			$r['from'] = SHR_FIRSTIMAGE_GALLERY;
 		} else if ( empty( $mode ) ) {
 			// We're only supposed to get a gallery, but we don't have one.
 			return $r;
-			}
 		}
-		
-		// If we don't already have an image ID, try to find one via attachment.
-	if ( empty( $r['id'] ) && ( $mode & SHR_FIRSTIMAGE_ATTACH ) ) {
-			// Remove the mode flag, to simplify logic later.
-		$mode = $mode ^ SHR_FIRSTIMAGE_ATTACH;
-					
-			if ( is_null( $postid ) || ( $postid === false ) ) {
-				// We have no specified post ID.
-				if ( empty( $post->ID ) ) {
-					// We have no global current post either.  Bail.
-					return $r;
-				}
-				$postid = $post->ID;
-			}
-			
-			$r['id'] = get_post_thumbnail_id( $postid );
-			$r['from'] = SHR_FIRSTIMAGE_ATTACH;
-		}
+	}
 	
-		// If we don't already have an image ID, try to find one via post content.
-	if ( empty( $r['id'] ) && ( $mode & SHR_FIRSTIMAGE_CONTENT ) ) {
-			// Remove the mode flag, to simplify logic later.
-		$mode = $mode ^ SHR_FIRSTIMAGE_CONTENT;
-			
-		$r['src'] = _get_firstcontentimage( $postid );
-		if ( !empty( $r['src'] ) || empty( $mode ) ) {
-				// If we already have a source image, or we don't want to continue,
-				$r['from'] = SHR_FIRSTIMAGE_CONTENT;
-				$r['id'] = $postid;
+	// If we don't already have an image ID, try to find one via attachment.
+	if ( empty( $r['id'] ) && ( $mode & SHR_FIRSTIMAGE_ATTACH ) ) {
+		// Remove the mode flag, to simplify logic later.
+		$mode = $mode ^ SHR_FIRSTIMAGE_ATTACH;
+				
+		if ( is_null( $postid ) || ( $postid === false ) ) {
+			// We have no specified post ID.
+			if ( empty( $post->ID ) ) {
+				// We have no global current post either.  Bail.
 				return $r;
 			}
+			$postid = $post->ID;
 		}
 		
-		if( !empty( $r['id'] ) ) {
-			// We have an ID.  Get the image.
-			$imageobj = wp_get_attachment_image_src( $r['id'], $imgsize );
-			
-			if( !is_array( $imageobj ) ) {
-				$imageobj = array( $imageobj );
-			}
-			
-			if ( !empty( $imageobj[0] ) ) {
-				$r['src'] = $imageobj[0];
-			}
-			
-			// We have an image. Get the caption if we're supposed to.
-			if( $caption && !empty( $r['src'] ) ) {
-				$p = get_post( $r['id'] );
-				if( !empty( $p ) && is_object( $p ) ) {
-					$r['caption'] = $p->post_excerpt;
-				}
-			}
+		$r['id'] = get_post_thumbnail_id( $postid );
+		$r['from'] = SHR_FIRSTIMAGE_ATTACH;
 	}
 
+	// If we don't already have an image ID, try to find one via post content.
+	if ( empty( $r['id'] ) && ( $mode & SHR_FIRSTIMAGE_CONTENT ) ) {
+		// Remove the mode flag, to simplify logic later.
+		$mode = $mode ^ SHR_FIRSTIMAGE_CONTENT;
+		
+		$r['src'] = _get_firstcontentimage( $postid );
+		if ( !empty( $r['src'] ) || empty( $mode ) ) {
+			// If we already have a source image, or we don't want to continue,
+			$r['from'] = SHR_FIRSTIMAGE_CONTENT;
+			$r['id'] = $postid;
+			return $r;
+		}
+	}
+		
+	if( !empty( $r['id'] ) ) {
+		// We have an ID.  Get the image.
+		$imageobj = wp_get_attachment_image_src( $r['id'], $imgsize );
+		
+		if( !is_array( $imageobj ) ) {
+			$imageobj = array( $imageobj );
+		}
+		
+		if ( !empty( $imageobj[0] ) ) {
+			$r['src'] = $imageobj[0];
+		}
+		
+		// We have an image. Get the caption if we're supposed to.
+		if( $caption && !empty( $r['src'] ) ) {
+			$p = get_post( $r['id'] );
+			if( !empty( $p ) && is_object( $p ) ) {
+				$r['caption'] = $p->post_excerpt;
+			}
+		}
+	}
+	
 	return $r;
 }
 

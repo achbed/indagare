@@ -37,8 +37,6 @@ This work, like WordPress, is released under GNU General Public License, version
 /*@import url('../thematic/library/styles/plugins.css');*/
 @import url("css/styles.css");
 @import url("css/destinations.css");
-@import url("css/print.css");
-
 /* Overriding Thematic's styles for congruity with WP-Admin > Appearance > Header default header text color settings */
 #blog-description { color: #000; }
 
@@ -48,6 +46,3 @@ This work, like WordPress, is released under GNU General Public License, version
 .wp-admin .col-right { width: 45%; }
 
 .wp-admin .tagcloud { display: none; }
-
-
-
