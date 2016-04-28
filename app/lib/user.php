@@ -3,13 +3,14 @@
 include_once 'Favorite.php';
 include_once 'db.php';
 include_once 'notifications.php';
+include_once 'passkey.php';
 
 class User {
-    
+
     // transient stuff
     private $SSOkey = "iDosK3HfsJY0fdCI";
     private $SSOiv = "0123456789abcdef";
-    
+
     private $id;
     public $login = null;
     public $email;
@@ -44,7 +45,7 @@ class User {
     private $wants_mailings;
     private $created_at;
     private $updated_at;
-    private $remember_token_expires_at; 
+    private $remember_token_expires_at;
     private $billing_country;
     private $referred_by;
     public $passkey_id = null;
@@ -92,34 +93,34 @@ class User {
     private $referred_by_non_member;
     private $sent_welcome_kit_date;
     private $specialist_id;
-    
+
     function __construct($id) {
         $this->id = $id;
     }
-    
+
     public static function requestPwdReset($email) {
         $u = \indagare\db\CrmDB::getUserByEmail($email);
         if ($u != false) {
             $key = sha1($u->email . $u->login);
-            
+
             if(count(\indagare\db\LocalCrmDB::getResetKeyMember($key)) == 0){
                 \indagare\db\LocalCrmDB::addResetKey($u->id, $key);
             }
-            
-            \indagare\notify\EmailNotification::sendResetPWD($key, $email, $u->getDisplayName());          
+
+            \indagare\notify\EmailNotification::sendResetPWD($key, $email, $u->getDisplayName());
             return true;
         }
         return false;
     }
-    
+
     public static function encryptPwd($pwd, $salt) {
         return sha1("--" . $salt . "--" . $pwd . "--");
     }
-    
+
     public static function createSalt($str) {
         return sha1($str);
     }
-    
+
     public static function checkLogin($login) {
     	$additionals=array("membership_status"=>"active","joint"=>"AND");
         $u = \indagare\db\CrmDB::getUser($login,$additionals);
@@ -128,9 +129,9 @@ class User {
         }
         return false;
     }
-    
+
     public static function hasUserSession(){
-        session_start();
+        @session_start();
         //print_r('User' . $_SESSION["userlogin"]);
         if (isset($_SESSION['userlogin'])) {
             return true;
@@ -139,9 +140,9 @@ class User {
             return false;
         }
     }
-    
+
     public static function getSessionUserID() {
-        session_start();
+        @session_start();
         if (isset($_SESSION['userid'])) {
             return $_SESSION['userid'];
         }
@@ -149,9 +150,16 @@ class User {
             return false;
         }
     }
-    
+
+    /**
+     * Returns a User object for the current session's login ID, or false
+     * if not possible.  The User object will contain only name, ID, login,
+     * and password.
+     *
+     * @return \indagare\users\User|false
+     */
     public static function getUserBySession(){
-        session_start();
+        @session_start();
         //print_r('User' . $_SESSION["userlogin"]);
         if (isset($_SESSION['userlogin'])) {
             return \indagare\db\CrmDB::getUser($_SESSION['userlogin']);
@@ -160,30 +168,48 @@ class User {
             return false;
         }
     }
-    
+
+    /**
+     * Returns a User object for the current session's login ID, or false
+     * if not possible.  The User object will be filled out as completely as
+     * possible.
+     *
+     * @return \indagare\users\User|false
+     */
+    public static function getExtendedUserBySession(){
+        @session_start();
+        //print_r('User' . $_SESSION["userlogin"]);
+        if (isset($_SESSION['userlogin'])) {
+            return \indagare\db\CrmDB::getExtendedUser($_SESSION['userlogin']);
+        }
+        else {
+            return false;
+        }
+    }
+
     public static function hasFavorite($post_id) {
         if (count(\indagare\db\CrmDB::getFavorite(User::getSessionUserID(), $post_id)) == 0) {
             return false;
         }
         return true;
     }
-    
+
     public static function addFavorite($post_id) {
-        \indagare\db\CrmDB::createFavorite(new \indagare\users\Favorite(0, $post_id, User::getSessionUserID(), 0, 0));   
+        \indagare\db\CrmDB::createFavorite(new \indagare\users\Favorite(0, $post_id, User::getSessionUserID(), 0, 0));
     }
-    
+
     public static function getFavorites() {
        return \indagare\db\CrmDB::getFavorites(User::getSessionUserID());
     }
-    
+
     public static function removeFavorite($user_id,$post_id) {
         \indagare\db\CrmDB::removeFavorite($user_id,$post_id);
     }
-    
+
     public function getDisplayName() {
         return $this->first_name . " " . $this->last_name;
     }
-    
+
     private function encryptSSOData($str, $key, $iv) {
         $block = mcrypt_get_block_size(MCRYPT_RIJNDAEL_128, 'cbc');
         $str = $this->addpadding($str, $block);
@@ -195,14 +221,14 @@ class User {
         $base64encoded= base64_encode($encrypted);
         return urlencode ($base64encoded);
     }
-    
+
     private function addpadding($string, $blocksize = 16){
         $len = strlen($string);
         $pad = $blocksize - ($len % $blocksize);
         $string .= str_repeat(chr($pad), $pad);
         return $string;
     }
-    
+
     public function validatePwd($pwd) {
         if (User::encryptPwd($pwd, $this->getSalt()) == $this->password) {
             return true;
@@ -211,49 +237,49 @@ class User {
     }
 
     public function startSession() {
-        session_start();
+        @session_start();
         $_SESSION['userlogin'] = $this->login;
         $_SESSION['userid'] = $this->id;
-        $_SESSION['SSODATA'] = $this->encryptSSOData("firstName=" . $this->first_name . 
-                "&lastName=" . $this->last_name . "&email=" . $this->email . "&memberId=" . $this->id, 
+        $_SESSION['SSODATA'] = $this->encryptSSOData("firstName=" . $this->first_name .
+                "&lastName=" . $this->last_name . "&email=" . $this->email . "&memberId=" . $this->id,
                 $this->SSOkey, $this->SSOiv);
         \indagare\db\CrmDB::updateLastLogin($this->id);
         //session_write_close();
     }
-    
+
     public function setLogin($login) {
         $this->login = $login;
     }
-    
+
     public function setPassword($pwd) {
         $this->password = $pwd;
     }
-    
+
     public function getEncryptedPassword() {
         return User::encryptPwd($this->password, $this->getSalt());
     }
-    
+
     public function setSalt($salt) {
         $this->salt = $salt;
     }
-    
+
     private function getSalt() {
         return $this->salt;
     }
-    
+
     public function getID() {
         return $this->id;
     }
-    
+
     public function setID($id) {
         $this->id = $id;
     }
-    
+
     public function toString() {
-        return 'id: ' . $this->id . 
-                ', Login: ' . $this->login . 
+        return 'id: ' . $this->id .
+                ', Login: ' . $this->login .
                 ', first_name: ' . $this->first_name .
-                ', last_name: ' . $this->last_name . 
+                ', last_name: ' . $this->last_name .
                 ', email: ' .
                 $this->email .
                 ', level: ' .
@@ -261,7 +287,7 @@ class User {
                 ', years: ' .
                 $this->membership_years;
     }
-    
+
     public function toJSON() {
         return "{ firstname: '" .
                 $this->first_name .
@@ -277,16 +303,16 @@ class User {
                 $this->membership_years .
         "' }";
     }
-    
-    
+
+
 }
 
 class AccountCreator {
     public $user;
-    
+
     public static function getAccountCreator() {
-        session_start();
-        if (isset($_SESSION["accountCreator"])) {        	
+        @session_start();
+        if (isset($_SESSION["accountCreator"])) {
             return $_SESSION["accountCreator"];
         }
         else {
@@ -297,7 +323,7 @@ class AccountCreator {
             $_SESSION["accountCreator"] = $acc;
             return $acc;
         }
-        
+
     }
 }
 
@@ -309,7 +335,7 @@ class Membership {
     public $p2;
     public $p3;
     public $discount = 0;
-    
+
     function getMembershipPrice($years) {
         $price = 0;
         switch ($years) {
@@ -331,7 +357,7 @@ class Membership {
         }
         return $price;
     }
-    
+
     function __construct($id, $level, $name, $p1, $p2, $p3) {
         $this->id = $id;
         $this->level = $level;
@@ -340,56 +366,101 @@ class Membership {
         $this->p2 = $p2;
         $this->p3 = $p3;
     }
-    
+
     public function toJSON () {
+    	return json_encode(array(
+    		'id' => $this->id,
+    		'level' => $this->level,
+    		'name' => $this->name,
+    		'discount' => $this->discount,
+    		'p1' => ($this->getMembershipPrice(1) * 100),
+    		'p2' => ($this->getMembershipPrice(2) * 100),
+    		'p3' => ($this->getMembershipPrice(3) * 100),
+    	));
+    	/*
         return "{ id: " . $this->id .
-        ", level: " . $this->level . 
+        ", level: " . $this->level .
         ", name: '" . $this->name .
         "', discount: " . $this->discount .
-        ", p1: " . ($this->getMembershipPrice(1) * 100) . 
+        ", p1: " . ($this->getMembershipPrice(1) * 100) .
         ", p2: " . ($this->getMembershipPrice(2) * 100) .
-        ", p3: " . ($this->getMembershipPrice(3) * 100) . 
+        ", p3: " . ($this->getMembershipPrice(3) * 100) .
         "}";
+        */
     }
 }
 
-class Passkey {
-    public $id;
-    public $passkey;
-    public $user_id;
-    public $discount;
-    public $trials;
-    public $active;
-    public $type = 3;
-    
-    public function __construct($id, $pk, $uid, $dis, $trials) {
-        $this->id = $id;
-        $this->passkey = $pk;
-        $this->user_id = $uid;
-        $this->discount = $dis;
-        $this->trials = $trials;
-        $this->setType();
+define( 'PROMOTION_TYPE_UNKNOWN', 0 );
+define( 'PROMOTION_TYPE_DOLLAR_OFF', 1 );
+define( 'PROMOTION_TYPE_PERCENT_OFF', 2 );
+
+class Promotion {
+
+    /**
+     * The code used for this promotion
+     * @var string
+     */
+    public $code = '';
+
+    /**
+     * The short name of this promotion
+     * @var string
+     */
+    public $name = '';
+
+    /**
+     * The description of this promotion
+     * @var string
+     */
+    public $description = '';
+
+    /**
+     * A short message displayed to the user to alert them about the promotion
+     * @var string
+     */
+    public $message = '';
+
+    /**
+     * The type of discount.  Must be one of:
+     * PROMOTION_TYPE_DOLLAR_OFF
+     * PROMOTION_TYPE_PERCENT_OFF
+     * @var integer
+     */
+    public $type = PROMOTION_TYPE_UNKNOWN;
+
+    /**
+     * The amount of the discount
+     * @var float
+     */
+    public $amount = 0;
+
+    public function __construct($code, $type, $amount, $name = '', $description = '', $message = '') {
+        $this->code = $code;
+        $this->type = $type;
+        $this->amount = $amount;
+        $this->name = ( empty( $name ) ? $code : $name );
+        $this->description = $description;
+        $this->message = $message;
     }
 
-    private function setType() {
-        if ("TRIAL-B" == substr($this->passkey, 0, 7)) {
-                $this->type = 1;
+    /**
+     * Applies the discount to the given rate.
+     *
+     * @param float $rate  The rate to apply the discount to.
+     *
+     * @return float The rate after the discount was applied.
+     */
+    public function apply( $rate ) {
+        $return = floatval( $rate );
+
+        if ( $this->type == PROMOTION_TYPE_DOLLAR_OFF ) {
+            $return -= $amount;
         }
-        else if ("TRIAL-A" == substr($this->passkey, 0, 7)) {
-                $this->type = 0;
+
+        if ( $this->type == PROMOTION_TYPE_PERCENT_OFF ) {
+            $return *= ( 1 - ( $amount / 100 ) );
         }
-    }
-    
-    public static function getPasskey($key) {
-        return \indagare\db\CrmDB::getPasskey($key);
-    }
-    
-    public static function validatePasskey($key) {
-        $pk = Passkey::getPasskey($key);
-        if ($pk != "false") {
-            return "true";
-        }
-        return "false";
+
+        return $return;
     }
 }
-

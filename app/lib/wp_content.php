@@ -165,13 +165,14 @@ class WPContent {
             $mb = $_GET["mb"];  
         }
 
-        $showTrial = "false";
-        $trial = "false";
+        $showTrial = false;
+        $trial = "";
         if (isset($_GET["trial"])) {
-            if ("TRIAL-" == substr($_GET["trial"], 0, 6)) {
-                $trial = $_GET["trial"]; 
+            $showTrial = true;
+            if(!empty($_GET["trial"])) {
+            	// Do a string replace to ensure that we don't have JS crashing due to bad input
+            	$trial = str_replace('"', '\"', trim( $_GET["trial"] ) );
             }
-            $showTrial = "true";
         }
         else {
             //echo "mb: " . $acc->user->membership_level;
@@ -196,7 +197,7 @@ class WPContent {
             var mb = " . $mb . "; 
             var dc = " . $discount . ";
             var trialCode = '" . $trial . "';
-            var showTrial = " . $showTrial . ";
+            var showTrial = " . ( $showTrial ? 'true' : 'false' ) . ";
             var reftype = " . $reftype . ";
             var y = " . $mb_y . "; 
             var mbs = " . $mb_js_arr . "; 
@@ -225,8 +226,9 @@ class WPContent {
         	
         }
         $content.="</script>\n";
-        //echo $content;
+
         $content = $content . file_get_contents( $_SERVER['DOCUMENT_ROOT'].'/wp-content/themes/indagare/app/resources/signup.html');   
+
         return $content;
     }
 }

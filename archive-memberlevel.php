@@ -37,7 +37,10 @@
         	thematic_above_archiveloop();
 
 			// action hook creating the archive loop
-			thematic_archiveloop();
+            while ( have_posts() ) :
+            	the_post();
+				include 'render-memberlevel.tpl.php';
+    		endwhile;
 
         	// action hook for placing content below the archive loop
         	thematic_below_archiveloop();
