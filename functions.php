@@ -1425,10 +1425,12 @@ global $post;
 
 		echo '<div class="header magazine search">'."\n";
 			echo '<h2>Search</h2>'."\n";
+			$searchvalue = urldecode( $_GET['s'] );
+			$searchvalue = sanitize_text_field( $searchvalue );
 			if ( $_GET['filter'] ) {
-				echo '<span class="results"><a href="/?s='.$_GET['s'].'">Results for "'.$_GET['s'].'"</a></span>'."\n";
+				echo '<span class="results"><a href="/?s='.$_GET['s'].'">Results for "'.$searchvalue.'"</a></span>'."\n";
 			} else {
-				echo '<span class="results">Results for "'.$_GET['s'].'"</span>'."\n";
+				echo '<span class="results">Results for "'.$searchvalue.'"</span>'."\n";
 			}
 		echo '</div><!-- .header -->'."\n";
 
