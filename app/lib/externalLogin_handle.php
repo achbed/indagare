@@ -1,11 +1,11 @@
-<?php 
-include_once './config.php';
+<?php
+require_once WP_CONTENT_DIR . '/indagare_config.php';
 include_once './user.php';
 include_once './db.php';
 
 if ( isset( $_REQUEST['submit'] ) && $_REQUEST['submit'] == "yes" ) {
 	$return=array();
-	$u = indagare\db\CrmDB::getUser($_POST['username']); 
+	$u = indagare\db\CrmDB::getUser($_POST['username']);
 	if ( $u->validatePwd( $_POST['password'] ) ) {
      $u->startSession();
      //echo "1";
@@ -21,7 +21,7 @@ if ( isset( $_REQUEST['submit'] ) && $_REQUEST['submit'] == "yes" ) {
      $return['url']=$url;
      echo json_encode($return);
 	} else {
-     echo json_encode(array('url'=>""));  	
+     echo json_encode(array('url'=>""));
     }
 }
 

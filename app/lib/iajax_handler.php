@@ -1,12 +1,13 @@
 <?php
 namespace indagare\iajax;
 
+require_once WP_CONTENT_DIR . '/indagare_config.php';
+
 require_once('user.php');
 require_once('db.php');
 require_once('mail.php');
 require_once('Mail.php');
 require_once('lphp.php');
-require_once('config.php');
 require_once('../resources/emails/thank_you.php');
 require_once('../resources/emails/apply.php');
 
