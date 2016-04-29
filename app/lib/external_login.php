@@ -1,5 +1,5 @@
-<?php 
-include_once './config.php';
+<?php
+require_once WP_CONTENT_DIR . '/indagare_config.php';
 include_once './user.php';
 include_once './db.php';
 
@@ -21,7 +21,7 @@ if ( isset( $_REQUEST['submit'] ) && $_REQUEST['submit'] == "yes" ) {
      header("Location: ".$url);
 			exit();
     }
-	}	
+	}
 	header( "Location: " . \indagare\config\Config::$external_login_redirect );
 	exit();
 }

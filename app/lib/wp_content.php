@@ -118,7 +118,7 @@ class WPContent {
         $memberships = \indagare\db\CrmDB::getMemberships();
         $mb_js_arr = array();
         foreach( $memberships as $m ) {
-            $mb_js_arr[] = $m->toJSON();
+            $mb_js_arr[] = $m;
         }
         $content .= "var mbs = " . json_encode( $mb_js_arr ) . ";\n";
         $content .= "</script>\n";
@@ -146,7 +146,7 @@ class WPContent {
         $mb_js_arr = array();
         for ( $i = 0; $i < count($memberships); $i++) {
             $memberships[$i]->discount = $discount;
-            $mb_js_arr[] = $memberships[$i]->toJSON();
+            $mb_js_arr[] = $memberships[$i];
         }
         $mb_js_arr = json_encode( $mb_js_arr );
         $acc = \indagare\users\AccountCreator::getAccountCreator();

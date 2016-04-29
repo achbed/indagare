@@ -1,14 +1,14 @@
 <?php namespace indagare\notify;
 
-    include_once 'mail.php';
+require_once WP_CONTENT_DIR . '/indagare_config.php';
+	include_once 'mail.php';
     include_once 'Mail.php';
-    include_once 'config.php';
 
 class EmailNotification {
     public static function sendResetPWD($key, $email, $user) {
-        
+
         $baseURL = \indagare\config\Config::$baseURL;
-        
+
         $message = "$user,
 
 Please follow the link below to reset your password for Indagare.com:
@@ -18,14 +18,14 @@ http://$baseURL/wp-content/themes/indagare/pwd_reset.php?key=$key
 Thanks,
 The Indagare Team
 http://www.indagare.com";
-        
+
         $m = new \indagare\util\IndagareMailer();
         $m->send('Your Indagare Account', $message, $email);
-        
+
     }
-    
+
     public static function sendNewsletterSignup($email) {
-        
+
         $message = "<p>
 Thank you for joining Indagare&rsquo;s mailing list! Keep an eye on your inbox for exciting travel news and updates from around the globe.
 </p>
@@ -51,10 +51,10 @@ The Indagare Team
 Want the latest news on our travels? Like us on <a href=\"https://www.facebook.com/indagaretravel/\">Facebook</a> and follow us on <a href=\"https://www.instagram.com/indagaretravel/?hl=en\">Instagram</a>.
 </p>
 ";
-        
+
         $m = new \indagare\util\IndagareMailer();
         $m->sendHtml('Your Indagare Newsletter Subscription', $message, $email);
-        
+
     }
 }
 
