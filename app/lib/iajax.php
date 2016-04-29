@@ -1,12 +1,12 @@
 <?php
 namespace indagare\iajax;
 
+require_once WP_CONTENT_DIR . '/indagare_config.php';
 include_once 'user.php';
 include_once 'db.php';
 include_once 'mail.php';
 include_once 'Mail.php';
 include_once 'lphp.php';
-include_once 'config.php';
 include_once '../resources/emails/thank_you.php';
 include_once '../resources/emails/apply.php';
 //require_once('iajax_handler.php');

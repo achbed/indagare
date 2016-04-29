@@ -1,6 +1,6 @@
 <?php namespace indagare\db;
 
-include_once ("config.php");
+require_once WP_CONTENT_DIR . '/indagare_config.php';
 include_once ("user.php");
 
 class CrmDB {
