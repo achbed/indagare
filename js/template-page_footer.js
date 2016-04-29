@@ -173,7 +173,8 @@ jQuery().ready(function($) {
 	// login form for top nav and lockout modal
 	$("#form-login").submit(function(event) {
 
-		var url = theme_path+'/process_login_ajax.php';
+		var url = new String(theme_path);
+		url = url.replace('http:','https:') + '/process_login_ajax.php';
 
 		$.ajax({
 			   type: "POST",

@@ -1,4 +1,9 @@
 <?php
+$http_origin = $_SERVER['HTTP_ORIGIN'];
+
+if (stripos($http_origin,$_SERVER['SERVER_NAME']) !== false ) {
+    header("Access-Control-Allow-Origin: $http_origin");
+}
 include_once 'app/lib/user.php';
 include_once 'app/lib/db.php';
 if (isset($_POST["usr"]) && isset($_POST["pwd"])) {
@@ -21,4 +26,3 @@ if (isset($_POST["usr"]) && isset($_POST["pwd"])) {
 		));
     }
 }
-?>
