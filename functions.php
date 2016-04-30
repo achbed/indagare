@@ -24,6 +24,20 @@ $Indagare_ThemeUpdateChecker = new ThemeUpdateChecker(
 	'indagare', 'http://updates.whiteboardlabs.com/wp/?action=get_metadata&slug=indagare'
 );
 
+/**
+ * Handles the wp_prepare_themes_for_js filter.
+ * We use this to remove the parent theme from the list of themes in
+ * the admin
+ *
+ * @param array $themes
+ * @return array
+ */
+function ws_kill_parent_theme($themes) {
+	unset( $themes['thematic'] );
+	return $themes;
+}
+add_filter( 'wp_prepare_themes_for_js', 'ws_kill_parent_theme' );
+
 /*
  * DEFAULTS
  * These set behaviors for various functions on the site that shouldn't change via user input
