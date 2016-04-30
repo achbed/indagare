@@ -1,7 +1,7 @@
 <?php namespace indagare\notify;
 
-require_once WP_CONTENT_DIR . '/indagare_config.php';
-	include_once 'mail.php';
+require_once 'wpdef.php';
+include_once 'mail.php';
     include_once 'Mail.php';
 
 class EmailNotification {

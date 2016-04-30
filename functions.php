@@ -16,7 +16,7 @@
  * @subpackage ThemeInit
  */
 
-require_once WP_CONTENT_DIR . '/indagare_config.php';
+require_once 'app/lib/wpdef.php';
 
 // Theme updates
 require 'theme-updates/theme-update-checker.php';

@@ -1,7 +1,7 @@
 <?php
 namespace indagare\iajax;
 
-require_once WP_CONTENT_DIR . '/indagare_config.php';
+require_once 'wpdef.php';
 include_once 'user.php';
 include_once 'db.php';
 include_once 'mail.php';

@@ -1,7 +1,7 @@
 <?php
 namespace indagare\iajax;
 
-require_once WP_CONTENT_DIR . '/indagare_config.php';
+require_once 'wpdef.php';
 
 require_once('user.php');
 require_once('db.php');
