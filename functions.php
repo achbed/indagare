@@ -929,11 +929,11 @@ add_action( 'wp_enqueue_scripts', 'enqueue_scripts_here' );
 
 // load https
 function loadhttp() {
-	if (is_page_template ( 'template-page-user-signup-step-two.php' ) ) {
+	//if (is_page_template ( 'template-page-user-signup-step-two.php' ) ) {
 		chkhttps();
-	} else {
-		chkhttp();
-	}
+	//} else {
+	//	chkhttp();
+	//}
 }
 add_action('get_header', 'loadhttp');
 
@@ -1322,7 +1322,11 @@ echo $tophotels;
               <div class="nav-item">
 <?php
 	$account = wp_nav_menu( array('menu' => 'account','container' => '','container_id' => '','container_class' => '','echo' => false ));
-	$account = str_replace('</ul>', '<li><a href="'.get_bloginfo('stylesheet_directory').'/logout.php">Log Out</a></li></ul>', $account);
+	if( is_user_logged_in() ) {
+		$account = str_replace('</ul>', '<li><a href="' . wp_logout_url( get_permalink() ) . '">Log Out</a></li></ul>', $account);
+	} else {
+		$account = str_replace('</ul>', '<li><a href="' . get_bloginfo( 'stylesheet_directory' ) . '/logout.php">Log Out</a></li></ul>', $account);
+	}
 	echo $account;
 ?>
               </div>
