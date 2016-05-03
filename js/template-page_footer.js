@@ -173,15 +173,19 @@ jQuery().ready(function($) {
 	// login form for top nav and lockout modal
 	$("#form-login").submit(function(event) {
 
-		var url = new String(theme_path);
-		url = url.replace('http:','https:') + '/process_login_ajax.php';
+//		var url = new String(theme_path);
+//		url = url.replace('http:','https:') + '/process_login_ajax.php';
 
 		$.ajax({
 			   type: "POST",
-			   url: url,
-			   data: $("#form-login").serialize(),
-			   success: function(data)
-			   {
+			   url: ajax_login_object.ajaxurl,
+			   data: {
+				   'action': 'ajaxlogin',
+				   'username': $("#form-login #field1").val(),
+				   'password': $("#form-login #field2").val(),
+				   'security': $("#form-login #security").val()
+			   },
+			   success: function(data) {
 				   var json = $.parseJSON(data);
 			   
 				   if ( json.login == true ) {

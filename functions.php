@@ -751,9 +751,59 @@ function register_scripts() {
     wp_register_script('velocity', $f.'/js/velocity.min.js', array('jquery'), '', false);
     wp_register_script('show.join.popup', $f.'/js/joinpopup.js', array('jquery'), '', false);
 
+    wp_localize_script( 'template-page_footer', 'ajax_login_object', array(
+    	'ajaxurl' => admin_url( 'admin-ajax.php' ),
+    	'redirecturl' => home_url(),
+    	'loadingmessage' => __('Logging in...')
+    ));
 
 }
 add_action('init', 'register_scripts');
+
+function ajax_login(){
+
+	// First check the nonce, if it fails the function will break
+	check_ajax_referer( 'ajax-login-nonce', 'security' );
+
+	// Nonce is checked, get the POST data and sign user on
+	$info = array();
+	$info['user_login'] = $_POST['username'];
+	$info['user_password'] = $_POST['password'];
+	$info['remember'] = true;
+
+	$user_signon = wp_signon( $info, false );
+	if ( ! is_wp_error($user_signon) ) {
+		echo json_encode( array(
+			'login' => true,
+			'ssotoken' => '',
+			'message' => __( 'Login successful, redirecting...' )
+		) );
+		die();
+	}
+
+	include_once 'app/lib/user.php';
+	include_once 'app/lib/db.php';
+
+	$u = indagare\db\CrmDB::getUser( $_POST["username"] );
+	if ( ( $u != false ) && $u->validatePwd( $_POST["password"] ) ) {
+		$u->startSession();
+
+		echo json_encode( array(
+			'login' => true,
+			'ssotoken' => $_SESSION["SSODATA"],
+			'message' => __( 'Login successful, redirecting...' )
+		) );
+		die();
+	}
+
+	echo json_encode( array(
+		'login' => false,
+		'ssotoken' => '',
+		'message' => __( 'Wrong username or password.' )
+	) );
+	die();
+}
+add_action( 'wp_ajax_nopriv_ajaxlogin', 'ajax_login' );
 
 function enqueue_scripts() {
 
@@ -1433,7 +1483,11 @@ global $post;
 		echo '</div>'."\n";
 		*/
 		$navabout = wp_nav_menu( array('menu' => 'account','container' => 'div','container_id' => '','container_class' => 'header magazine contain','menu_id' => 'subnav-magazine','echo' => false ));
-		$navabout = str_replace('</ul>', '<li><a href="'.get_bloginfo('stylesheet_directory').'/logout.php">Log Out</a></li></ul>', $navabout);
+		if( is_user_logged_in() ) {
+			$navabout = str_replace('</ul>', '<li><a href="' . wp_logout_url( get_permalink() ) . '">Log Out</a></li></ul>', $navabout);
+		} else {
+			$navabout = str_replace('</ul>', '<li><a href="'.get_bloginfo('stylesheet_directory').'/logout.php">Log Out</a></li></ul>', $navabout);
+		}
 		echo $navabout;
 	}
 	// end account pages common navigation
@@ -2353,7 +2407,9 @@ jQuery().ready(function($) {
 			if ( $caption ) {
 				echo '<p class="summary">'.$caption.'</p>'."\n";
 			}
+			if ( ! ind_logged_in() ) {
 				echo '<a class="button primary floatright" href="/join/">Join</a>'."\n";
+			}
 			if ( $overview ) {
 				echo $overview;
 			}
@@ -4640,10 +4696,16 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 			$content .= '<h4 class="more">View this issue</h4>'."\n";
 			$content .= '</div><!-- .rollover -->'."\n";
 			$content .= '</a>'."\n";
-		} else {
+		} else if ( ! ind_logged_in() ) {
 			$content .= '<a href="/join/">'."\n";
 			$content .= '<div class="rollover">'."\n";
 			$content .= '<h4 class="more">Join today to see this issue</h4>'."\n";
+			$content .= '</div><!-- .rollover -->'."\n";
+			$content .= '</a>'."\n";
+		} else {
+			$content .= '<a href="/account/">'."\n";
+			$content .= '<div class="rollover">'."\n";
+			$content .= '<h4 class="more">Upgrade today to see this issue</h4>'."\n";
 			$content .= '</div><!-- .rollover -->'."\n";
 			$content .= '</a>'."\n";
 		}
@@ -6886,12 +6948,12 @@ jQuery(document).ready(function($) {
 	<form id="form-login" class="login" method="post" novalidate>
 		<div id="field1-container" class="field">
 			<label for="field1">Username</label>
-			<input type="text" name="usr" id="field1" required="required" placeholder="Your username">
+			<input type="text" name="username" id="field1" required="required" placeholder="Your username">
 		</div>
 
 		<div id="field2-container" class="field">
 			<label for="field2">Password</label>
-			<input type="password" name="pwd" id="field2" required="required" value="" placeholder="Your password">
+			<input type="password" name="password" id="field2" required="required" value="" placeholder="Your password">
 		</div>
 
 		<div id="form-submit" class="field clearfix submit">
@@ -6903,6 +6965,7 @@ jQuery(document).ready(function($) {
 		<div class="field message">
 		</div>
 
+        <?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
 	</form>
 
 </div><!-- #lightbox-login -->
@@ -6951,14 +7014,14 @@ jQuery(document).ready(function($) {
 			   <label for="field1">
 					Username or Email
 			   </label>
-			   <input type="text" name="usr" id="field1" required="required" placeholder="Your username">
+			   <input type="text" name="username" id="field1" required="required" placeholder="Your username">
 			</div>
 
 			<div id="field2-container" class="field">
 			   <label for="field2">
 					Password
 			   </label>
-			   <input type="password" name="pwd" id="field2" required="required" placeholder="Your password">
+			   <input type="password" name="password" id="field2" required="required" placeholder="Your password">
 			</div>
 
 			<div id="form-submit" class="field clearfix submit">
@@ -6968,7 +7031,9 @@ jQuery(document).ready(function($) {
 
 			<div class="field message">
 			</div>
-		</form>
+
+        	<?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
+   		</form>
 	</div><!-- .column -->
 	<footer class="newsletter-signup-wrapper">
 		<h4>Sign Up: Travel Newsletter</h4>
@@ -7015,14 +7080,14 @@ jQuery(document).ready(function($) {
 			   <label for="field1">
 					Username or Email
 			   </label>
-			   <input type="text" name="usr" id="field1" required="required" placeholder="Your username">
+			   <input type="text" name="username" id="field1" required="required" placeholder="Your username">
 			</div>
 
 			<div id="field2-container" class="field">
 			   <label for="field2">
 					Password
 			   </label>
-			   <input type="password" name="pwd" id="field2" required="required" placeholder="Your password">
+			   <input type="password" name="password" id="field2" required="required" placeholder="Your password">
 			</div>
 
 			<div id="form-submit" class="field clearfix submit">
@@ -7032,7 +7097,9 @@ jQuery(document).ready(function($) {
 
 			<div class="field message">
 			</div>
-		</form>
+
+        	<?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
+        </form>
 	</div><!-- .column -->
 </div><!-- #lightbox-interstitial -->
 <div id="lightbox-interstitial-flights" class="lightbox lightbox-two-col white-popup mfp-hide contain">
@@ -7045,14 +7112,14 @@ jQuery(document).ready(function($) {
 			   <label for="field1">
 					Username or Email
 			   </label>
-			   <input type="text" name="usr" id="field1" required="required" placeholder="Your username">
+			   <input type="text" name="username" id="field1" required="required" placeholder="Your username">
 			</div>
 
 			<div id="field2-container" class="field">
 			   <label for="field2">
 					Password
 			   </label>
-			   <input type="password" name="pwd" id="field2" required="required" placeholder="Your password">
+			   <input type="password" name="password" id="field2" required="required" placeholder="Your password">
 			</div>
 
 			<div id="form-submit" class="field clearfix submit">
@@ -7063,6 +7130,8 @@ jQuery(document).ready(function($) {
 
 			<div class="field message">
 			</div>
+
+			<?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
 		</form>
 	</div><!-- .column -->
 </div><!-- #lightbox-interstitial-flights -->
