@@ -909,7 +909,7 @@ function enqueue_scripts() {
 	}
 
 	// overlay script
-    wp_enqueue_style('magnificpopup-css', get_bloginfo('stylesheet_directory') . '/css/magnific-popup.css');
+   // wp_enqueue_style('magnificpopup-css', get_bloginfo('stylesheet_directory') . '/css/magnific-popup.css');
     wp_enqueue_script('magnificpopup');
 
 

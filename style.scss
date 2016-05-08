@@ -1,4 +1,4 @@
-/*   
+/*!
 Theme Name: Indagare
 Theme URI: http://indagare.com/
 Description: Use this theme to start your Thematic Child Theme development.
@@ -17,42 +17,17 @@ This work, like WordPress, is released under GNU General Public License, version
 
 */
 
-/* Reset browser defaults */
-/*@import url('../thematic/library/styles/reset.css');*/
+// We import everything here so we reduce the number of required calls to 
+// CSS files by the browser
 
-/* Apply basic typography styles */
-/*@import url('../thematic/library/styles/typography.css');*/
+@import 'scss/reset';
+@import 'scss/fonts';
 
-/* Apply a basic layout */
-/*@import url('../thematic/library/layouts/2c-r-fixed.css');*/
+@import 'scss/libraries/magnific-popup';
 
-/* Apply basic image styles */
-/*@import url('../thematic/library/styles/images.css');*/
+@import 'scss/style';
+@import 'scss/destinations';
 
-/* Apply default theme styles and colors */
-/* It's better to actually copy over default.css into this file (or link to a copy in your child theme) if you're going to do anything outrageous */
-/*@import url('../thematic/library/styles/default.css');*/
+@import 'scss/override';
 
-/* Prepare theme for plugins */
-/*@import url('../thematic/library/styles/plugins.css');*/
-
-@import url('css/styles.css');
-@import url('css/destinations.css');
-@import url("css/print.css");
-
-/* Overriding Thematic's styles for congruity with WP-Admin > Appearance > Header default header text color settings */
-#blog-description { color: #000 }
-
-
-/* admin styles */
-.wp-admin .col-left {
-	width: 55%;
-}
-
-.wp-admin .col-right {
-	width: 45%;
-}
-
-.wp-admin .tagcloud {
-	display: none;
-}
+@import 'scss/print';

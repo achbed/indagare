@@ -1,0 +1,20 @@
+/* Overriding Thematic's styles for congruity with WP-Admin > Appearance > Header default header text color settings */
+#blog-description { 
+  color: #000 
+}
+
+
+/* admin styles */
+.wp-admin { 
+  .col-left {
+    width: 55%;
+  }
+
+  .col-right {
+    width: 45%;
+  }
+
+  .tagcloud {
+    display: none;
+  }
+}
