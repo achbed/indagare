@@ -1032,7 +1032,7 @@ class LocalCrmDB {
     public static function addUser($user_id,$birthday,$aname,$aemail,$aphone, $passport) {
         $aname = mysql_real_escape_string($aname);
         $connection = self::getConnection();
-        $sql = "INSERT INTO Users (CRSuserID, Birthday, AssistentName, "
+        $sql = "INSERT INTO Users (id, Birthday, AssistentName, "
                 . "AssistentEmail, AssistentPhone, PassportCountry) VALUES($user_id, '$birthday',"
                 . "'" . mysql_real_escape_string($aname) . "','" . mysql_real_escape_string($aemail) . "','" . mysql_real_escape_string($aphone) . "', '" . mysql_real_escape_string($passport) . "')";
         $result = mysql_query($sql) or die('Query failed: ' . mysql_error());
@@ -1090,8 +1090,8 @@ class LocalCrmDB {
         $connection = self::getConnection();
         $passport = mysql_real_escape_string($passport);
         $sql = "UPDATE Users SET Birthday='$birthday', AssistentName='" . mysql_real_escape_string($aname) . "', "
-                . "AssistentEmail='" . mysql_real_escape_string($aemail) . "', AssistentPhone='" . mysql_real_escape_string($aphone) . "' , PassportCountry='" . mysql_real_escape_string($passport). "' , contact_pref='" . mysql_real_escape_string($contact_pref) . "' , delivery_pref='" . mysql_real_escape_string($delivery_pref) ."'"
-                . "WHERE CRSuserID = $user_id";
+                . "AssistentEmail='" . mysql_real_escape_string($aemail) . "', AssistentPhone='" . mysql_real_escape_string($aphone) . "' , PassportCountry='" . mysql_real_escape_string($passport). "' , contact_preference='" . mysql_real_escape_string($contact_pref) . "' , delivery_preference='" . mysql_real_escape_string($delivery_pref) ."'"
+                . "WHERE id = $user_id";
         //echo $sql;
         $result = mysql_query($sql) or die('Query failed: ' . mysql_error());
         //mysql_free_result($result);
@@ -1101,7 +1101,7 @@ class LocalCrmDB {
     public static function getUser($id) {
         $ret = array();
         $connection = self::getConnection();
-        $sql = "SELECT * FROM Users WHERE CRSuserID = $id";
+        $sql = sprintf("SELECT * FROM Users WHERE id=%d", $id);
         $result = mysql_query($sql) or die('Query failed: ' . mysql_error());
         $ret = mysql_fetch_array($result, MYSQL_ASSOC);
         mysql_free_result($result);
@@ -1158,11 +1158,11 @@ class LocalCrmDB {
     	while ($row=mysql_fetch_array($result, MYSQL_ASSOC)) {
     		unset($row['id']);
     		$firstlastname=array();
-    		$userinfosys=CrmDB::getUserById($row['CRSuserID']);
+    		$userinfosys=CrmDB::getUserById($row['id']);
     		$firstlastname["first_name"]=$userinfosys->first_name;
     		$firstlastname["last_name"]=$userinfosys->last_name;
     		$row=array_merge($firstlastname,$row);
-    		$family1=self::getFamilyMembers($row['CRSuserID'], 1);
+    		$family1=self::getFamilyMembers($row['id'], 1);
     		foreach ($family1 as $keyfamily1=>$valuefamily1)
     		{
     		   foreach ($valuefamily1 as $keycolumn1=>$valuecolumn1)
@@ -1178,12 +1178,12 @@ class LocalCrmDB {
     		  	 {
     		  	 	$row["Family".$valuefamily1['FamilyMemberID']."_"."FFAccounts".$valueffacountsfamily1['FfaID']."_".$keyffcolumnfamily1]=$valueffcolumnfamily1;
     		  	 }
-    		  	 //print_r($row['CRSuserID'].":"."Family".$valuefamily1['FamilyMemberID'].":".$keyffcolumnfamily1.":".$valueffcolumnfamily1."<br/>");
+    		  	 //print_r($row['id'].":"."Family".$valuefamily1['FamilyMemberID'].":".$keyffcolumnfamily1.":".$valueffcolumnfamily1."<br/>");
     		  	}
     		  };
     		};
 
-    		$family2=self::getFamilyMembers($row['CRSuserID'], 2);
+    		$family2=self::getFamilyMembers($row['id'], 2);
     		foreach ($family2 as $keyfamily2=>$valuefamily2)
     		{
     			foreach ($valuefamily2 as $keycolumn2=>$valuecolumn2)
@@ -1200,12 +1200,12 @@ class LocalCrmDB {
     					  $row["Family".$valuefamily2['FamilyMemberID']."_"."FFAccounts".$valueffacountsfamily2['FfaID']."_".$keyffcolumnfamily2]=$valueffcolumnfamily2;
     					}
 
-    					//print_r($row['CRSuserID'].":"."Family".$valuefamily2['FamilyMemberID'].":".$keyffcolumnfamily2.":".$valueffcolumnfamily2."<br/>");
+    					//print_r($row['id'].":"."Family".$valuefamily2['FamilyMemberID'].":".$keyffcolumnfamily2.":".$valueffcolumnfamily2."<br/>");
     				}
     			};
     		};
 
-    		/* $ffcounts=self::getFFAccounts($row['CRSuserID'],1);
+    		/* $ffcounts=self::getFFAccounts($row['id'],1);
     		foreach ($ffcounts as $keyffaccounts=>$valueffacounts)
     		{
     		  foreach ($valueffacounts as $keyffcolumn=>$valueffcolumn)
@@ -1214,7 +1214,7 @@ class LocalCrmDB {
     		  }
     		};
 
-    		$preferences=self::getPreferences($row['CRSuserID']);
+    		$preferences=self::getPreferences($row['id']);
     		foreach ($preferences as $keypreferences=>$valuepreferences)
     		{
     		   foreach ($valuepreferences as $keyprecolumn=>$valueprecolumn)
@@ -1226,7 +1226,7 @@ class LocalCrmDB {
     		$row=array_merge($row,$question);
     		$ret[$seeds] = $row;
     		$answer=$row;
-    		$CRSuserID_answer=$answer['CRSuserID'];
+    		$id_answer=$answer['id'];
     		$question_keys=array_keys($question);
     		//print_r($answer_temp);
     		foreach ($answer as $keyanswertemp=>$valueanswertemp)
@@ -1235,7 +1235,7 @@ class LocalCrmDB {
     		  	switch ($keyanswertemp) {
     		  		case "count":
     		  		 $count_options=array(1=>"Every school holiday plus a summer trip",2=>"One big trip a year","3"=>"2-3 weeks per year plus long weekends","4"=>"4-5 weeks per year plus long weekends","5"=>"6+ weeks a year");
-    		  		 $preferences_count=self::getPreference($CRSuserID_answer,"count");
+    		  		 $preferences_count=self::getPreference($id_answer,"count");
     		  		 if ($preferences_count["value"]!="") {
     		  		 	$answer[$keyanswertemp]=$count_options[$preferences_count["value"]];
     		  		 }
@@ -1247,7 +1247,7 @@ class LocalCrmDB {
     		  		break;
     		  		case "planning_style":
     		   			$planning_style_options=array(1=>"Last minute booker (within one month of travel)",2=>"Average advance planner (within 1-4 months of travel)",3=>"Scheduled traveler (4-8 months)",4=>"Early-booker (8-12 months prior)");
-    		  			$preferences_planning_style=self::getPreference($CRSuserID_answer,"planning_style");
+    		  			$preferences_planning_style=self::getPreference($id_answer,"planning_style");
     		  			if ($preferences_planning_style["value"]!="") {
     		  				$answer[$keyanswertemp]=$planning_style_options[$preferences_planning_style["value"]];
     		  			}
@@ -1258,7 +1258,7 @@ class LocalCrmDB {
     		  		break;
     		  		case "itinerary_pref":
     		  			$itinerary_pref_options=array(1=>"Do you prefer a robust and busy itinerary?",2=>"or a more relaxed schedule with a mix of activities and down time? ");
-    		  			$preferences_itinerary_pref=self::getPreference($CRSuserID_answer,"itinerary_pref");
+    		  			$preferences_itinerary_pref=self::getPreference($id_answer,"itinerary_pref");
     		  			if ($preferences_itinerary_pref["value"]!="") {
     		  				$answer[$keyanswertemp]=$itinerary_pref_options[$preferences_itinerary_pref["value"]];
     		  			}
@@ -1270,7 +1270,7 @@ class LocalCrmDB {
 
     		  		case "itinerary_pref2":
     		  			$itinerary_pref2_options=array(1=>"Do you prefer a robust and busy itinerary?",2=>"or a more relaxed schedule with a mix of activities and down time? ");
-    		  			$preferences_itinerary_pref2=self::getPreference($CRSuserID_answer,"itinerary_pref2");
+    		  			$preferences_itinerary_pref2=self::getPreference($id_answer,"itinerary_pref2");
     		  			if ($preferences_itinerary_pref2["value"]!="") {
     		  				$answer[$keyanswertemp]=$itinerary_pref2_options[$preferences_itinerary_pref2["value"]];
     		  			}
@@ -1281,7 +1281,7 @@ class LocalCrmDB {
     		  		break;
     		  		case "sh_class":
     		  			$sh_class_options=array(1=>"economy",2=>"premium economy",3=>"business",4=>"first");
-    		  			$preferences_sh_class=self::getPreference($CRSuserID_answer,"sh_class");
+    		  			$preferences_sh_class=self::getPreference($id_answer,"sh_class");
     		  			if ($preferences_sh_class["value"]!="") {
     		  				$answer[$keyanswertemp]=$sh_class_options[$preferences_sh_class["value"]];
     		  			}
@@ -1293,7 +1293,7 @@ class LocalCrmDB {
 
     		  		case "sh_seat":
     		  			$sh_seat_options=array(1=>"front",2=>"back",3=>"right",4=>"left");
-    		  			$preferences_sh_seat=self::getPreference($CRSuserID_answer,"sh_seat");
+    		  			$preferences_sh_seat=self::getPreference($id_answer,"sh_seat");
     		  			if ($preferences_sh_seat["value"]!="") {
     		  				$answer[$keyanswertemp]=$sh_seat_options[$preferences_sh_seat["value"]];
     		  			}
@@ -1304,7 +1304,7 @@ class LocalCrmDB {
     		  		break;
     		  		case "sh_location":
     		  			$sh_location_options=array(1=>"window",2=>"aisle",3=>"middle");
-    		  			$preferences_sh_location=self::getPreference($CRSuserID_answer,"sh_location");
+    		  			$preferences_sh_location=self::getPreference($id_answer,"sh_location");
     		  			if ($preferences_sh_location["value"]!="") {
     		  				$answer[$keyanswertemp]=$sh_location_options[$preferences_sh_location["value"]];
     		  			}
@@ -1317,7 +1317,7 @@ class LocalCrmDB {
 
     		  		case "lh_class":
     		  			$lh_class_options=array(1=>"economy",2=>"premium economy",3=>"business",4=>"first");
-    		  			$preferences_lh_class=self::getPreference($CRSuserID_answer,"lh_class");
+    		  			$preferences_lh_class=self::getPreference($id_answer,"lh_class");
     		  			if ($preferences_lh_class["value"]!="") {
     		  				$answer[$keyanswertemp]=$lh_class_options[$preferences_lh_class["value"]];
     		  			}
@@ -1329,7 +1329,7 @@ class LocalCrmDB {
 
     		  		case "lh_seat":
     		  			$lh_seat_options=array(1=>"front",2=>"back",3=>"right",4=>"left");
-    		  			$preferences_lh_seat=self::getPreference($CRSuserID_answer,"lh_seat");
+    		  			$preferences_lh_seat=self::getPreference($id_answer,"lh_seat");
     		  			if ($preferences_lh_seat["value"]!="") {
     		  				$answer[$keyanswertemp]=$lh_seat_options[$preferences_lh_seat["value"]];
     		  			}
@@ -1340,7 +1340,7 @@ class LocalCrmDB {
     		  			break;
     		  		case "lh_location":
     		  			$lh_location_options=array(1=>"window",2=>"aisle",3=>"middle");
-    		  			$preferences_lh_location=self::getPreference($CRSuserID_answer,"sh_location");
+    		  			$preferences_lh_location=self::getPreference($id_answer,"sh_location");
     		  			if ($preferences_lh_location["value"]!="") {
     		  				$answer[$keyanswertemp]=$lh_location_options[$preferences_lh_location["value"]];
     		  			}
@@ -1355,7 +1355,7 @@ class LocalCrmDB {
     		  		   $tws=array();
     		  		   for ($i = 1; $i <= 7; $i++)
     		  		   {
-    		  		   	$preferences_tw=self::getPreference($CRSuserID_answer,"tw".$i);
+    		  		   	$preferences_tw=self::getPreference($id_answer,"tw".$i);
   		   		   	    if (($preferences_tw["value"]!="")&&($preferences_tw["value"]=="on")) {
     		  		   		$tws["tw".$i]=$tw_options["tw".$i];
     		  		   	}
@@ -1377,7 +1377,7 @@ class LocalCrmDB {
     		  			$interestsforall=array();
     		  			for ($i = 1; $i <= 11; $i++)
     		  			{
-    		  			 $preferences_interest=self::getPreference($CRSuserID_answer,"interest".$i);
+    		  			 $preferences_interest=self::getPreference($id_answer,"interest".$i);
     		  			 if (($preferences_interest["value"]!="")&&($preferences_interest["value"]=="on"))
     		  			 {
     		  			 	$interestsforall["interest".$i]=$interest_options["interest".$i];
@@ -1398,7 +1398,7 @@ class LocalCrmDB {
     		  			$features=array();
     		  			foreach ($feature_options as $key_feature=>$value_feature)
     		  			{
-    		  				$preference_feature=self::getPreference($CRSuserID_answer,"features_".$i);
+    		  				$preference_feature=self::getPreference($id_answer,"features_".$i);
     		  				$features[$key_feature]=$feature_options[$key_feature].":".$preference_feature["value"];
     		  			}
     		  			$totalfeatures=implode(",",$features);
@@ -1406,7 +1406,7 @@ class LocalCrmDB {
     		  		break;
 
     		  		default:
-    		  			$preference_others=self::getPreference($CRSuserID_answer,$keyanswertemp);
+    		  			$preference_others=self::getPreference($id_answer,$keyanswertemp);
     		  			$answer[$keyanswertemp]=$preference_others["value"];
     		  		break;
     		  	}
