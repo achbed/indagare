@@ -7236,19 +7236,19 @@ jQuery(document).ready(function($) {
 			wp_reset_postdata();
 
 			if($rows) {
+				echo '<div id="benefits" class="noborder">'."\n";
 				foreach($rows as $level) {
-					if ( $level['membership-link'] == $userlevel ) {
+					if ( $level['membership-link'] <= $userlevel ) {
 
-						echo '<div id="benefits" class="noborder">'."\n";
 						echo '<div class="collapse join">'."\n";
 						echo '<div class="collapsegroup">'."\n";
 						echo $level['membership-details'];
 						echo '</div>'."\n";
 						echo '</div>'."\n";
-						echo '</div>'."\n";
 
 					}
 				}
+				echo '</div>'."\n";
 			}
 ?>
 <script>

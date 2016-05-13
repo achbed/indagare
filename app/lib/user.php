@@ -330,7 +330,7 @@ class AccountCreator {
 
 class Membership {
     private $id;
-    private $level;
+    public $level;
     public $name;
     public $p1;
     public $p2;
