@@ -508,14 +508,11 @@ class AjaxHandler {
 			$order_id = $nao . "_" . rand( 1, 100 );
 
 			$mb = \indagare\db\CrmDB::getMembershipByLevel( $acc->user->membership_level + 1 );
-			$charge = $mb->getMembershipPrice( $acc->user->membership_years );
-			if ( isset( $_POST['dc'] ) ) {
-				$disc = floatval( $_POST['dc'] );
-				if ( ( $disc < 0 ) || ( $disc >=100 ) ) {
-					$disc = 0;
-				}
-				$mb->discount = $disc;
+			$discount = \indagare\users\Discount::findDiscount();
+			if ( $discount->is_valid() ) {
+				$mb->discount = $discount->percent;
 			}
+			$charge = $mb->getMembershipPrice( $acc->user->membership_years );
 
 			$response['name'] = $mb->name;
 			$response['length'] = $acc->user->membership_years . ' Year' . ( $acc->user->membership_years > 1 ? 's' : '' );

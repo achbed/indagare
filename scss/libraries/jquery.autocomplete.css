@@ -1,0 +1,66 @@
+/**
+ * @fileOverview CSS for jquery-autocomplete, the jQuery Autocompleter
+ * @author <a href="mailto:dylan@dyve.net">Dylan Verheul</a>
+ * @license MIT | GPL | Apache 2.0, see LICENSE.txt
+ * @see https://github.com/dyve/jquery-autocomplete
+ */
+.acResults {
+  padding: 0px;
+  background-color: #fff;
+  overflow: hidden;
+  position: absolute;
+  z-index: 10000;
+  width: 100%; }
+
+#magazine-filters .acResults {
+  margin-top: -20px; }
+
+#search-destinations .acResults {
+  margin-top: 1px; }
+
+#search-destinations .acResults ul, #magazine-filters .acResults ul, .acResults ul {
+  float: none;
+  margin: 0px;
+  padding: 0px;
+  list-style-position: outside;
+  list-style: none;
+  border: 1px solid #e0e0e0;
+  border-top: 0 none;
+  border-bottom: 0 none; }
+
+#magazine-filters .acResults ul {
+  width: 225px; }
+
+#search-destinations .acResults ul li,
+#magazine-filters .acResults ul li,
+.acResults ul li {
+  margin: 0px;
+  padding: 4px .715em;
+  cursor: pointer;
+  display: block;
+  overflow: hidden;
+  border-bottom: 1px solid #e0e0e0;
+  color: #333; }
+
+#magazine-filters .acResults ul li {
+  float: none;
+  width: 225px; }
+
+#search-destinations .acResults ul li {
+  float: none;
+  max-width: 250px; }
+
+.acLoading {
+  /*	background : url('indicator.gif') right center no-repeat; */ }
+
+.acSelect {
+  background-color: #e0e0e0;
+  /* 	color: HighlightText; */ }
+
+#choice option {
+  color: #1a1a1a; }
+
+.empty {
+  color: #999; }
+
+/*# sourceMappingURL=jquery.autocomplete.css.map */
