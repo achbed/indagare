@@ -85,13 +85,14 @@ if (!signup) {
 			self.setSelectedMBYears();
        };
 
-		this.createYearOption = function(p, l, d, v) {
+		this.createYearOption = function(p, l, d, v, m) {
+			if(d) p = p * (1-(d/100));
 			var t = "$" + Math.floor(p / 100) + ".00 for " + l + " year";
 			if (l != 1) {
 				t += 's';
            }
 			if (d) {
-				t += ' (' + d + '% discount applied)';
+				t += ' (' + m + ')';
            }
 			jQuery('<option></option>').text(t).val(v).appendTo(self.mbySelect);
 		};
@@ -109,18 +110,18 @@ if (!signup) {
 			self.mbySelect.html('');
 			
 			// Normal list of membership years
-			self.createYearOption(mbs[m].p1, 1, dc, "1");
+			self.createYearOption(mbs[m].p1, 1, dc, "1", dc_msg);
 		
 			// display all years with no discount code
 			if ( dc == 0 ) {
-				self.createYearOption(mbs[m].p2, 2, 0, "2");
-				self.createYearOption(mbs[m].p3, 3, 0, "3");
+				self.createYearOption(mbs[m].p2, 2, 0, "2", '');
+				self.createYearOption(mbs[m].p3, 3, 0, "3", '');
 				self.mbySelect.val(p);
 			} else {
 				self.mbySelect.val("1");
             }
 
-        jQuery('#membership_years').trigger("render");
+			jQuery('#membership_years').trigger("render");
 		};
 
 		this.pad = function(n,l) {
@@ -524,7 +525,7 @@ if (!signup) {
 		this.processPayJq = function() {
 			if (self.processing) {
 				return;
-        }
+			}
 
 			self.processing = true;
 			jQuery('#subTab3').addClass('disabled');
@@ -549,7 +550,8 @@ if (!signup) {
 					cc_m: jQuery("#cc_month").val(),
 					cc_y: jQuery("#cc_year").val(),
 					ccv: jQuery("#ccv").val(),
-					tgCode: jQuery("#tgCode").val()
+					tgCode: jQuery("#tgCode").val(),
+					dc: jQuery("#dc").val()
 			};
 			var cc_month = jQuery("#cc_month");
 			var cc_year = jQuery("#cc_year");
@@ -769,6 +771,7 @@ if (!signup) {
 		jQuery('#membership_years').css("height", "25px");
 		jQuery('#cc_month').css("height", "25px");
 		jQuery('#cc_year').css("height", "25px");
+		jQuery('input#dc').val(dcode);
 	}
 	if (window.addEventListener) {
 		window.addEventListener('DOMContentLoaded', init, false);

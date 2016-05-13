@@ -4,6 +4,7 @@ include_once 'Favorite.php';
 include_once 'db.php';
 include_once 'notifications.php';
 include_once 'passkey.php';
+include_once 'discount.php';
 
 class User {
 

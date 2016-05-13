@@ -130,22 +130,16 @@ class WPContent {
 
         $memberships = \indagare\db\CrmDB::getMemberships();
 
-        // 11/05/2015 New section for discount code
-        $discount = 0; // percent of discount to be applied, if 0 n o dicount is given.
-        if (isset($_GET["dc"])) {
-            if ($_GET["dc"] == "mailinglist") {
-                $discount = 20;
-
-            }
-
-        }
-        // 11/05/2015 End discount code
-
+        $discount = 0;
+    	$discount_obj = \indagare\users\Discount::findDiscount();
+		if ( $discount_obj->is_valid() ) {
+			$discount = $discount_obj->percent;
+		}
 
 
         $mb_js_arr = array();
         for ( $i = 0; $i < count($memberships); $i++) {
-            $memberships[$i]->discount = $discount;
+            $memberships[$i]->discount = $discount->percent;
             $mb_js_arr[] = $memberships[$i];
         }
         $mb_js_arr = json_encode( $mb_js_arr );
@@ -188,7 +182,9 @@ class WPContent {
         $content = "<script type='text/javascript'>
             var rc = '" . $rc . "';
             var mb = " . $mb . ";
-            var dc = " . $discount . ";
+            var dc = " . intval( $discount_obj->percent ) . ";
+            var dcode = '" . str_replace("'","\'",$discount_obj->code) . "';
+            var dc_msg = '" . str_replace("'","\'",$discount_obj->description) . "';
             var trialCode = '" . $trial . "';
             var showTrial = " . ( $showTrial ? 'true' : 'false' ) . ";
             var reftype = " . $reftype . ";

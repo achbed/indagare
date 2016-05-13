@@ -684,6 +684,16 @@ class CrmDB {
         return $passkey;
     }
 
+    /**
+     * Ideally, we load discount codes as stored in the CRM database.
+     * In reality, we die immediately because there's no such concept.
+     * @param anything $key
+     * @return boolean Always false.
+     */
+    static function getDiscount($key) {
+    	return false;
+    }
+
     static function getGiftCode($key) {
         $key = mysql_real_escape_string($key);
         $ret = array();
