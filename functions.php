@@ -1500,7 +1500,7 @@ global $post;
 			$searchvalue = urldecode( $_GET['s'] );
 			$searchvalue = sanitize_text_field( $searchvalue );
 			if ( $_GET['filter'] ) {
-				echo '<span class="results"><a href="/?s='.$_GET['s'].'">Results for "'.$searchvalue.'"</a></span>'."\n";
+				echo '<span class="results"><a href="/?s='.urlencode($searchvalue).'">Results for "'.$searchvalue.'"</a></span>'."\n";
 			} else {
 				echo '<span class="results">Results for "'.$searchvalue.'"</span>'."\n";
 			}
@@ -3609,10 +3609,12 @@ function childtheme_override_search_loop() {
 	global $wp_query;
 
 	$rendered_terms = array();
-	$search = $_GET['s'];
+	$search = urldecode( $_GET['s'] );
+	$search = sanitize_text_field( $search );
 
 	if ( $_GET['filter'] ) {
-		$post_type = $_GET['filter'];
+		$post_type = urldecode( $_GET['filter'] );
+		$post_type = sanitize_key( $post_type );
 	}
 
 	if ( $post_type ) {
@@ -3685,7 +3687,7 @@ function childtheme_override_search_loop() {
 		if ( $group !== 'destinations' ) {
 			if ( empty( $_GET['filter'] ) ) {
 				if ( count( $searchresults[$group] ) > INDG_SEARCHPAGE_SECTIONCOUNT ) {
-					echo '<p class="view-more"><a href="/?s='.$search.'&filter='.$group.'">View All Results</a></p>'."\n";
+					echo '<p class="view-more"><a href="/?s='.urlencode( $search ).'&filter='.$group.'">View All Results</a></p>'."\n";
 					if($group == 'article') {
 						ksort($searchresults[$group]);
 						$newarray = array_slice($searchresults[$group],-8,8,true);
