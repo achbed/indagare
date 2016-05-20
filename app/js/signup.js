@@ -537,6 +537,7 @@ if (!signup) {
 					email: jQuery("#email").val(),
 					l: self.mbSelect.val(),
 					y: self.mbySelect.val(),
+					phone : jQuery('#phone').val(),
 					username: jQuery("#username").val(),
 					password: jQuery("#password1").val(),
 					s_address1: jQuery("#s_address1").val(),

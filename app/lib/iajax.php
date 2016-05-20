@@ -503,6 +503,7 @@ class AjaxHandler {
 			$acc->user->primary_postal = $_POST['s_zip'];
 			$acc->user->primary_country = $_POST['s_country'];
 			$acc->user->passkey_id = '';
+			$acc->user->phone_home = $_POST['phone'];
 
 			$nao = time();
 			$order_id = $nao . "_" . rand( 1, 100 );
@@ -625,6 +626,7 @@ class AjaxHandler {
 		$acc = \indagare\users\AccountCreator::getAccountCreator( );
 		$acc->user->login = $_POST['username'];
 		$acc->user->password = $_POST['password'];
+		$acc->user->phone_home = $_POST['phone'];
 		$acc->user->primary_street_address = $_POST['s_address1'];
 		$acc->user->primary_street_address2 = $_POST['s_address2'];
 		$acc->user->primary_city = $_POST['s_city'];
