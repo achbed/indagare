@@ -761,6 +761,7 @@ function register_scripts() {
 add_action('init', 'register_scripts');
 
 function ajax_login(){
+	header('Content-Type: application/json');
 
 	// First check the nonce, if it fails the function will break
 	check_ajax_referer( 'ajax-login-nonce', 'security' );
@@ -799,7 +800,7 @@ function ajax_login(){
 	echo json_encode( array(
 		'login' => false,
 		'ssotoken' => '',
-		'message' => __( 'Wrong username or password.' )
+		'message' => __( 'Incorrect login - please try again' )
 	) );
 	die();
 }
@@ -6947,7 +6948,11 @@ jQuery(document).ready(function($) {
 		<h2>Member Login</h2>
 	</header>
 
-	<form id="form-login" class="login" method="post" novalidate>
+	<form id="form-login" class="login" method="post" novalidate<?php
+	if (is_page_template ( 'template-page-intro.php' ) ) {
+		print ' data-successurl="/"';
+	}
+	?>>
 		<div id="field1-container" class="field">
 			<label for="field1">Username</label>
 			<input type="text" name="username" id="field1" required="required" placeholder="Your username">

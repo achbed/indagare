@@ -1,7 +1,7 @@
 jQuery().ready(function($) {
 	var thisValue;
 
-    var field = $('input#book-destination');
+	var field = $('input#book-destination');
 		field.click(function() {//Empty the field on focus
 			 thisValue = $(this).val();
 			$(this).attr("value","");
@@ -12,7 +12,7 @@ jQuery().ready(function($) {
 			if($(this).val()=="" || fieldlength.length <= 4) {
 			$(this).val(thisValue);
 			}
-    });
+	});
 
 	$("#dep_date").datepicker({
 		dayNamesMin: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
@@ -155,65 +155,18 @@ jQuery().ready(function($) {
 	}); // end book as guest
 	
 	// book as user
-	$("#form-interstitial").submit(function(event) {
-
-		var url = theme_path+'/process_login_ajax.php';
-
-		$.ajax({
-			   type: "POST",
-			   url: url,
-			   data: $("#form-interstitial").serialize(),
-			   success: function(data)
-			   {
-			   	   var json = $.parseJSON(data);
-			   	   
-				   if ( json.login == true ) {
-				   
-				   		ssotoken = '&ssoToken=' + json.ssotoken;
-				   		
-				   		bookingurl = baseurl + basebooking + ssotoken + departurl + returnurl;
-				   
-						window.location.href = bookingurl;
-
-				   } else {
-
-				   		$('#form-interstitial .message').html('<p>Incorrect login - please try again</p>').fadeIn(1500).fadeOut(1500);
-				   }
-			   }
-			 });
-
-		event.preventDefault();
+	$("#form-interstitial").submit(function(e) {
+		jQuery('#form-interstitial').attr({
+			'data-successurl': baseurl + basebooking + departurl + returnurl
+		});
+		return process_login(e,'#form-interstitial');
+	});	// end book as user form
 	
-	});
-
-	$("#form-interstitial-flights").submit(function(event) {
-
-		var url = theme_path+'/process_login_ajax.php';
-
-		$.ajax({
-			   type: "POST",
-			   url: url,
-			   data: $("#form-interstitial-flights").serialize(),
-			   success: function(data)
-			   {
-			   	   var json = $.parseJSON(data);
-			   	   
-				   if ( json.login == true ) {
-				   
-				   		ssotoken = '&ssoToken=' + json.ssotoken;
-				   		
-				   		bookingurl = baseurl + ssotoken;
-				   
-						window.location.href = bookingurl;
-
-				   } else {
-
-				   		$('#form-interstitial-flights .message').html('<p>Incorrect login - please try again</p>').fadeIn(1500).fadeOut(1500);
-				   }
-			   }
-			 });
-
-		event.preventDefault();
+	$("#form-interstitial-flights").submit(function(e) {
+		jQuery('#form-interstitial-flights').attr({
+			'data-successurl': bookingurl;
+		});
+		return process_login(e,'#form-interstitial-flights');
+	});	// end book flights as user form
 	
-	});	// end book as user	
 });
