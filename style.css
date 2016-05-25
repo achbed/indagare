@@ -19,7 +19,7 @@ This work, like WordPress, is released under GNU General Public License, version
 /* ========================================================================= */
 /* reset CSS */
 /* ------------------------------------------------------------------------- */
-@import url("http://fast.fonts.net/t/1.css?apiType=css&projectid=4134e0b5-372e-4f2a-8a8d-7f0754e7e6e4");
+@import url("https://fast.fonts.net/t/1.css?apiType=css&projectid=4134e0b5-372e-4f2a-8a8d-7f0754e7e6e4");
 * { margin: 0; padding: 0; }
 
 *, *:before, *:after { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; }

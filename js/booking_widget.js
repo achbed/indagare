@@ -164,7 +164,7 @@ jQuery().ready(function($) {
 	
 	$("#form-interstitial-flights").submit(function(e) {
 		jQuery('#form-interstitial-flights').attr({
-			'data-successurl': bookingurl;
+			'data-successurl': bookingurl
 		});
 		return process_login(e,'#form-interstitial-flights');
 	});	// end book flights as user form

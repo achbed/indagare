@@ -230,17 +230,16 @@ function process_login(e,t){
 			'username': jQuery(t+" #field1").val(),
 			'password': jQuery(t+" #field2").val(),
 			'security': jQuery(t+" #security").val()
-		})
-		.done(function(data){
-			if ( data.login ) {
-				if ( data.ssotoken && data.ssotoken != '' ) {
-					r += '&ssoToken='+data.ssotoken;
-				}
-				window.location.href = r;
-			} else {
-				$(t+' .message').html('<p>'.data.message.'</p>').fadeIn(1500).fadeOut(1500);
+		}
+	}).done(function(data){
+		if ( data.login ) {
+			if ( data.ssotoken && data.ssotoken != '' ) {
+				r += '&ssoToken='+data.ssotoken;
 			}
-		)}
+			window.location.href = r;
+		} else {
+			jQuery(t+' .message').html('<p>'+data.message+'</p>').fadeIn(1500).fadeOut(1500);
+		}
 	});
 	return false;
 }
