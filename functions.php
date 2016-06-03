@@ -17,6 +17,7 @@
  */
 
 require_once 'app/lib/wpdef.php';
+require_once 'app/lib/wp_content.php';
 
 // Theme updates
 require 'theme-updates/theme-update-checker.php';
@@ -3902,10 +3903,10 @@ global $post;
 
 // post content format
 function child_singlepost($content) {
-global $post;
-global $wp_query;
+	global $post;
+	global $wp_query;
 
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+	$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 	// start child_singlepost conditional
 	$basecontent = $content;
@@ -5228,11 +5229,7 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 	// sign up step two page
 	} else if (is_page_template ( 'template-page-user-signup-step-two.php' ) ) {
-
-	    include_once 'app/lib/wp_content.php';
-
     	$content = \indagare\wp\WPContent::getContent('signup');
-
 	// end sign up step two page
 
 	// contact page
@@ -5541,17 +5538,10 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 	// my account page
 	} else if ( is_page_template ( 'template-page-account-edit.php' ) ) {
-
-		include_once 'app/lib/wp_content.php';
-
-		if ( indagare\users\User::hasUserSession() ) {
-
+		if ( ind_logged_in() ) {
 			$content = \indagare\wp\WPContent::getContent("account");
-
 		} else {
-
 			$content = '<p>You need to log in to see this page.</p>'."\n";
-
 		}
 
 	// end my account page
@@ -5561,7 +5551,7 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 		$content = '';
 
-		if ( !indagare\users\User::hasUserSession() ) {
+		if ( ! ind_logged_in() ) {
 
 //			header('Location: /' );
 
@@ -7225,20 +7215,21 @@ jQuery(document).ready(function($) {
 		// is user logged in
 		if ( ind_logged_in() ) {
 
-			include_once 'app/lib/user.php';
-			include_once 'app/lib/db.php';
-
-			$userid = \indagare\users\User::getSessionUserID();
-	        $user = \indagare\db\CrmDB::getExtendedUserById($userid);
-	        $userlevel = $user->membership_level;
+	        $userlevel = 99999;
+			if ( \indagare\users\User::hasUserSession() ) {
+				$userid = \indagare\users\User::getSessionUserID();
+		        $user = \indagare\db\CrmDB::getExtendedUserById($userid);
+		        $userlevel = $user->membership_level;
+			}
 
 			$query = new WP_Query( array( 'posts_per_page' => -1, 'post_type' => 'page', 'meta_key' => '_wp_page_template', 'meta_value' => 'template-page-user-signup.php', 'orderby' => 'name', 'order' => 'ASC' ) );
 
-			if ( $query->have_posts() ) while ( $query->have_posts() ) : $query->the_post();
-
-				$rows = get_field('membership-level');
-
-			endwhile; // end of the loop
+			if ( $query->have_posts() ) {
+				while ( $query->have_posts() ) {
+					$query->the_post();
+					$rows = get_field('membership-level');
+				}
+			}
 
 			wp_reset_postdata();
 
