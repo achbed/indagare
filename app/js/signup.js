@@ -208,7 +208,7 @@ if (!signup) {
 				case 'password2':
 					return self.validatePassword();
 				case 'email':
-					return self.validateField('#'+f,/^("[^"]+"|[-a-z0-9+_'][-a-z0-9+\._']*[-a-z0-9+_']|[-a-z0-9+_']+)@[a-z0-9][-a-z0-9]*[a-z0-9]\.[a-z0-9][-a-z0-9]*[a-z0-9]$/i);
+					return self.validateField('#'+f,/^("[^"]+"|[-a-z0-9+_'][-a-z0-9+\._']*[-a-z0-9+_']|[-a-z0-9+_']+)@([a-z0-9][-a-z0-9]*[a-z0-9]\.)+[a-z0-9][-a-z0-9]*[a-z0-9]$/i);
 				case 'cc_num':
 					return self.validateCC();
 				case 'ccv':
