@@ -107,7 +107,8 @@ jQuery().ready(function($) {
 			bookingurl = baseurl + basebooking + ssotoken + departurl + returnurl;
 
 			if(ssotokenvalue != ssotokenvalue_default) {
-				window.location.href = bookingurl;
+//				window.location.href = bookingurl;
+				window.open(bookingurl);
 			} else {
 				$.magnificPopup.open({
 				  items: {
@@ -133,7 +134,8 @@ jQuery().ready(function($) {
 		bookingurl = baseurl + ssotoken;
 
 		if(ssotokenvalue != ssotokenvalue_default) {
-			window.location.href = bookingurl;
+//			window.location.href = bookingurl;
+			window.open(bookingurl);
 		} else {
 			$.magnificPopup.open({
 			  items: {
@@ -150,7 +152,8 @@ jQuery().ready(function($) {
 	
 		event.preventDefault();
 		
-		window.location.href = bookingurl;
+//			window.location.href = bookingurl;
+			window.open(bookingurl);
 	
 	}); // end book as guest
 	

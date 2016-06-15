@@ -225,6 +225,7 @@ function process_login(e,t){
 	jQuery.ajax({
 		type: "POST",
 		url: ajax_login_object.ajaxurl,
+		async: false,
 		data: {
 			'action': 'ajaxlogin',
 			'username': jQuery(t+" #field1").val(),
@@ -241,7 +242,8 @@ function process_login(e,t){
 				}
 				r += 'ssoToken='+data.ssotoken;
 			}
-			window.location.href = r;
+//			window.location.href = r;
+			window.open(r);
 		} else {
 			jQuery(t+' .message').html('<p>'+data.message+'</p>').fadeIn(1500).fadeOut(1500);
 		}
