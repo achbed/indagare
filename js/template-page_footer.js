@@ -234,7 +234,12 @@ function process_login(e,t){
 	}).done(function(data){
 		if ( data.login ) {
 			if ( data.ssotoken && data.ssotoken != '' ) {
-				r += '&ssoToken='+data.ssotoken;
+				if(r.indexOf("?") > -1) {
+					r += "&";
+				} else {
+					r += "?";
+				}
+				r += 'ssoToken='+data.ssotoken;
 			}
 			window.location.href = r;
 		} else {
