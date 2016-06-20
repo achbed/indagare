@@ -4669,7 +4669,7 @@ function child_singlepost($content) {
 
 		$content .= '<article class="magazine detail">'."\n";
 
-		$content .= '<iframe id="issuu" src="http://issuu.com/indagare/docs/'.$issuu.'?mode=window&amp;printButtonEnabled=false&amp;shareButtonEnabled=false&amp;searchButtonEnabled=false&amp;backgroundColor=%23ffffff"></iframe>'."\n";
+		$content .= '<iframe id="issuu" src="https://issuu.com/indagare/docs/'.$issuu.'?mode=window&amp;printButtonEnabled=false&amp;shareButtonEnabled=false&amp;searchButtonEnabled=false&amp;backgroundColor=%23ffffff"></iframe>'."\n";
 
 		$content .= '<h4>'.$subtitle.'</h4>'."\n";
 		$content .= $basecontent;
