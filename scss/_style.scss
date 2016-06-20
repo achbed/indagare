@@ -1917,11 +1917,11 @@ article.magazine .photo-gallery {
 
 	.validate { /* AKB */
 		padding: 3px 10px;
-		color: #fd252a;
+		/*color: #fd252a;*/
 	}
 	
 	.validated { /* AKB */
-		color: #2ab91b;
+		/*color: #2ab91b;*/
 	}
 	
 	div.validate {
@@ -2923,6 +2923,15 @@ body.modalmap #map-buttons-container {
 #tab-container .inputgrouptitle.trial {
 	margin-top: 1.5em;
 }
+
+
+.field.validate {
+  select, option {
+    height:25px;
+    min-height:25px;
+  }
+}
+
 
 .field.validate {
   &.validated {

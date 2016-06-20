@@ -2,7 +2,7 @@ var signup;
 if (!signup) {
 	function signupObj() {
 		var self = this;
-        
+		
 		this.usrNameChk = false;
 		this.mbSelect = false;
 		this.mbySelect = false;
@@ -13,7 +13,7 @@ if (!signup) {
 			if (!self.mbSelect || !self.mbSelect.length) {
 				self.mbSelect = jQuery("#membership_level");
 				self.mbySelect = jQuery("#membership_years");
-    }   
+			}
 		};
 
 		this.initFields = function() {
@@ -23,17 +23,19 @@ if (!signup) {
 				jQuery('.tab').addClass('is-trial');
 			}
 			
-       document.getElementById("ln").value = acc.lastname;
-       document.getElementById("fn").value = acc.firstname;
-       document.getElementById("email").value = acc.email;
-       document.getElementById("refCode").value = rc;
-			
-       if (redirect=="swifttrip") {	   
+			document.getElementById("ln").value = acc.lastname;
+			document.getElementById("fn").value = acc.firstname;
+			document.getElementById("email").value = acc.email;
+			document.getElementById("refCode").value = rc;
+			populateCountries( 'country', 'state', 'United States' );
+			populateCountries( 's_country', 's_state', 'United States' );
+				
+			if (redirect=="swifttrip") {		
 				jQuery("#lightbox-signup-complete")
 						.append(
 								'<input id="backtohotel" type="submit" value="Back to Hotel" class="button">');
-       }
-        };
+			}
+		};
 
 		this.buildButtonEventMgrs = function() {
 			self.selfInit();
@@ -41,12 +43,14 @@ if (!signup) {
 				e.preventDefault();
 				self.validateForm();
 			}).on('click', '#view_terms', function(e) {
-            e.preventDefault();
+			e.preventDefault();
 				jQuery('#terms').toggle();
 			}).on('change', '#tgCode', function(e) {
 				self.tgCodeLookup();
 			}).on('change', '#username', function(e) {
 				self.checkUsername();
+			}).on('change', '#email', function(e) {
+				self.checkEmail();
 			}).on('change', '#membership_level', function(e) {
 				self.setSelectedMBYears();
 			}).on('change', '#chkShip', function(e) {
@@ -58,7 +62,7 @@ if (!signup) {
 			}).on('change','#shippingBlock input', function(e) {
 				self.setAddr();
 			});
-        };
+		};
 
 		this.buildMembershipDD = function() {
 			if(showTrial) {
@@ -67,36 +71,36 @@ if (!signup) {
 			
 			self.selfInit();
 			var s = false;
-       for (var m in mbs) {
+		for (var m in mbs) {
 				jQuery("<option></option>").text(mbs[m].name).val(m).appendTo(self.mbSelect);
 				if ( !s ) {
 					s = m;
-           }
+			}
 				if ( mbs[m].level == mb ) {
 					self.mbSelect.val(m);
 					s = m;
-           }
-           }
+			}
+			}
 			if ( !s ) {
 				self.mbSelect.val(s);
-       }
+		}
 			
 			jQuery('#membership_level').trigger("render");
 			self.setSelectedMBYears();
-       };
+		};
 
 		this.createYearOption = function(p, l, d, v, m) {
 			if(d) p = p * (1-(d/100));
 			var t = "$" + Math.floor(p / 100) + ".00 for " + l + " year";
 			if (l != 1) {
 				t += 's';
-           }
+			}
 			if (d) {
 				t += ' (' + m + ')';
-           }
+			}
 			jQuery('<option></option>').text(t).val(v).appendTo(self.mbySelect);
 		};
-        
+		
 		this.setSelectedMBYears = function() {
 			if(showTrial) {
 				return;
@@ -119,17 +123,17 @@ if (!signup) {
 				self.mbySelect.val(p);
 			} else {
 				self.mbySelect.val("1");
-            }
+			}
 
 			jQuery('#membership_years').trigger("render");
 		};
 
 		this.pad = function(n,l) {
-		    var s = '' + n;
-		    while (s.length < l) {
-		        s = '0' + s;
-		    }
-		    return s;
+			var s = '' + n;
+			while (s.length < l) {
+				s = '0' + s;
+			}
+			return s;
 		};
 
 		this.buildCCYearDD = function() {
@@ -166,7 +170,7 @@ if (!signup) {
 				c.addClass('validate-ok');
 			} else {
 				c.addClass('validate-error');
-        }
+		}
 		};
 		
 		this.validateField = function(f,p,c,m) {
@@ -176,7 +180,7 @@ if (!signup) {
 			if(!p) {
 				if(v) {
 					r = -1;
-        }
+		}
 			} else {
 				v = new String(v);
 				if(v.match(p)) {
@@ -202,13 +206,12 @@ if (!signup) {
 			switch(f) {
 				case 'tgCode':
 				case 'username':
+				case 'email':
 					// We handle these through another path because AJAX.
 					return true;
 				case 'password1':
 				case 'password2':
 					return self.validatePassword();
-				case 'email':
-					return self.validateField('#'+f,/^("[^"]+"|[-a-z0-9+_'][-a-z0-9+\._']*[-a-z0-9+_']|[-a-z0-9+_']+)@([a-z0-9][-a-z0-9]*[a-z0-9]\.)+[a-z0-9][-a-z0-9]*[a-z0-9]$/i);
 				case 'cc_num':
 					return self.validateCC();
 				case 'ccv':
@@ -272,9 +275,21 @@ if (!signup) {
 			return false;
 		};
 		
+		this.usrEmailValid = function() {
+			if(self.usrEmailChk === true) return true;
+			return false;
+		};
+		
 		this.usrNameStatus = function() {
 			if(self.usrNameChk === false) return -1;
 			if(self.usrNameChk === true) return 1;
+			return 2;
+		};
+		
+		this.usrEmailStatus = function() {
+			if(self.usrEmailChk === false) return -1;
+			if(self.usrEmailChk === true) return 1;
+			if(self.usrEmailChk === -4) return 3;
 			return 2;
 		};
 		
@@ -284,6 +299,15 @@ if (!signup) {
 					false, 
 					self.usrNameStatus, 
 					["Please enter a username.","That username is already taken.","Error validating user name.  Try again in a moment."] 
+			);
+		};
+		
+		this.validateEmail = function() {
+			return self.validateField(
+					'#email', 
+					false, 
+					self.usrEmailStatus, 
+					["Please enter an email.","That email is already associated with an account.","Error validating email.  Try again in a moment.","Please enter a valid email address."] 
 			);
 		};
 		
@@ -336,7 +360,7 @@ if (!signup) {
 				t.addClass('passchar-fail').addClass('faildetail');
 			} else {
 				t.removeClass('passchar-fail');
-        }
+		}
 
 			self.fieldValidated( "#password1", r);
 			
@@ -350,7 +374,7 @@ if (!signup) {
 				} else {
 					self.fieldValidated( "#password2", true );
 				}
-            }
+			}
 				
 			return r;
 		};
@@ -366,7 +390,7 @@ if (!signup) {
 				self.fieldValidated('#cc_num',false);
 				self.fieldValidated('#ccv', false);
 				return false;
-            }
+			}
 				
 			self.fieldValidated('#cc_num',true);
 			
@@ -374,12 +398,12 @@ if (!signup) {
 				if ( !cvv ) {
 				self.fieldValidated('#ccv', false);
 				return false;
-            }
+			}
 				
 			if ( cc_result.valid && (cvv.length != cc_result.card_type.cvv_length ) ) {
 				self.fieldValidated('#ccv', false);
 				return false;
-            }
+			}
 			
 			self.fieldValidated('#ccv', true);
 			return true;
@@ -428,14 +452,14 @@ if (!signup) {
 				if(to.length)
 					jQuery.scrollTo(to.first().closest('.inputgroup').parent());
 				return;
-        }
+		}
 
 			if (showTrial) {
 					self.processTrialJq();
 				} else {
 					self.processPayJq();
-            }
-                        };
+			}
+						};
 
 		this.processTrialJq = function() {
 			if (self.processing) {
@@ -477,34 +501,34 @@ if (!signup) {
 						e.preventDefault();
 						window.location = '/welcome/';
 					});
-                        jQuery.magnificPopup.open({
-                              items: {
-                                    type: 'inline',
+						jQuery.magnificPopup.open({
+							  items: {
+									type: 'inline',
 							src : '#lightbox-signup-complete', // can be a HTML
 							// string,
 							// jQuery
 							// object, or
 							// CSS selector
-                                    midClick: true
-                              },
+									midClick: true
+							  },
 						closeOnBgClick: false,
 						enableEscapeKey: false,
 						showCloseBtn: false
-                        });
+						});
 				} else {
 					jQuery('#errordetail').html( jQuery('<span class="errormsg"></span>').text(result.err) );
-                        jQuery.magnificPopup.open({
-                            items: {
-                                type: 'inline',
+						jQuery.magnificPopup.open({
+							items: {
+								type: 'inline',
 							src : '#lightbox-signup-error', // can be a HTML
 							// string, jQuery
 							// object, or CSS
 							// selector
-                                midClick: true
+								midClick: true
 						}
-                        });
+						});
 					jQuery('#subTab3').removeClass('disabled');
-                    }
+					}
 			}).fail(function(x, s, e) {
 				jQuery('#errordetail').html( jQuery('<span class="errormsg"></span>').text(result.err) );
 				jQuery.magnificPopup.open({
@@ -520,7 +544,7 @@ if (!signup) {
 			}).always(function() {
 				self.processing = false;
 			});
-            };
+		};
 
 		this.processPayJq = function() {
 			if (self.processing) {
@@ -531,46 +555,46 @@ if (!signup) {
 			jQuery('#subTab3').addClass('disabled');
 			
 			var args = { 
-					task: "payment_j",
-					fn: jQuery("#fn").val(),
-					ln: jQuery("#ln").val(),
-					email: jQuery("#email").val(),
-					l: self.mbSelect.val(),
-					y: self.mbySelect.val(),
-					phone : jQuery('#phone').val(),
-					username: jQuery("#username").val(),
-					password: jQuery("#password1").val(),
-					s_address1: jQuery("#s_address1").val(),
-					s_address2: jQuery("#s_address2").val(),
-					s_city: jQuery("#s_city").val(),
-					s_state: jQuery("#s_state").val(),
-					s_zip: jQuery("#s_zip").val(),
-					s_country: jQuery("#s_country").val(),
-					cc_holder: jQuery("#cc_holder").val(),
-					cc_num: jQuery("#cc_num").val(),
-					cc_m: jQuery("#cc_month").val(),
-					cc_y: jQuery("#cc_year").val(),
-					ccv: jQuery("#ccv").val(),
-					tgCode: jQuery("#tgCode").val(),
-					dc: jQuery("#dc").val()
+				action: "idj-signup",
+				fn: jQuery("#fn").val(),
+				ln: jQuery("#ln").val(),
+				email: jQuery("#email").val(),
+				l: self.mbSelect.val(),
+				y: self.mbySelect.val(),
+				phone : jQuery('#phone').val(),
+				username: jQuery("#username").val(),
+				password: jQuery("#password1").val(),
+				s_address1: jQuery("#s_address1").val(),
+				s_address2: jQuery("#s_address2").val(),
+				s_city: jQuery("#s_city").val(),
+				s_state: jQuery("#s_state").val(),
+				s_zip: jQuery("#s_zip").val(),
+				s_country: jQuery("#s_country").val(),
+				cc_holder: jQuery("#cc_holder").val(),
+				cc_num: jQuery("#cc_num").val(),
+				cc_m: jQuery("#cc_month").val(),
+				cc_y: jQuery("#cc_year").val(),
+				ccv: jQuery("#ccv").val(),
+				tgCode: jQuery("#tgCode").val(),
+				dc: jQuery("#dc").val()
 			};
 			var cc_month = jQuery("#cc_month");
 			var cc_year = jQuery("#cc_year");
-            var otherparam=["pc","gdsType","cin","cout"];
-            var addparam="";
-            var otherempty=false;
+			var otherparam=["pc","gdsType","cin","cout"];
+			var addparam="";
+			var otherempty=false;
 			for (var i = 0; i < otherparam.length; i++) {
 				if (swifttriparm[otherparam[i]] != undefined) {
 					args[otherparam[i]] = swifttriparm[otherparam[i]];
 				} else {
 					args[otherparam[i]] = '';
-                otherempty=true;   
-              } 	  
-            }
-                        	
+				otherempty=true;	
+			  } 	  
+			}
+							
 			var result = {};
 			
-			jQuery.ajax('/wp-content/themes/indagare/app/lib/iajax.php', {
+			jQuery.ajax('/wp-admin/admin-ajax.php', {
 				method : "POST",
 				data : args
 			}).done(function(d, s, x) {
@@ -580,7 +604,7 @@ if (!signup) {
 					r_approved: 'ERROR',
 					r_code: 0,
 					r_error: 'Error communicating with payment system.'
-                                };	
+								};	
 				jQuery('#subTab3').removeClass('disabled');
 			}).always(function() {
 				var s = false, b = '#lightbox-signup-complete';
@@ -593,10 +617,10 @@ if (!signup) {
 					jQuery('#memberlength>span').html(result.length);
 					jQuery('#memberlevel>span').html(result.name);
 					jQuery('#membercost>span').html(numeral(result.price).format('$0,000.00'));
-                                    
+									
 					jQuery('#membercomplete').on('click', function() {
 						window.location = "/welcome/";
-                        });
+					});
 					b = '#lightbox-signup-complete';
 					s = false;
 				} else {
@@ -604,22 +628,22 @@ if (!signup) {
 					b = '#lightbox-signup-error';
 					s = true;
 					jQuery('#subTab3').removeClass('disabled');
-                    }
-                    	
-                        jQuery.magnificPopup.open({
-                            items: {
-                                type: 'inline',
+					}
+						
+						jQuery.magnificPopup.open({
+							items: {
+								type: 'inline',
 						src : b,
 						midClick : true
-                            },
+							},
 					closeOnBgClick: s,
 					enableEscapeKey: s,
 					showCloseBtn : s
-                        });
+						});
 				
 				self.processing = false;
 			});
-            };
+			};
 
 		this.tgCodeLookup = function() {
 			self.fieldValidating('#tgCode');
@@ -629,15 +653,15 @@ if (!signup) {
 				document.getElementById("tg_codeval").innerHTML = '';
 				self.fieldValidating('#tgCode');
 				return;
-            }
-                   
+			}
+					
 			jQuery("#tg_codeval").html('This is not a valid code.');
 			jQuery.ajax("/wp-content/themes/indagare/app/lib/iajax.php", {
 				method : 'POST',
 						data : {
 					task : "chkTrialKey_j",
 							rc : c
-                    } 
+					} 
 			}).done(function(result) {
 								var mb_select = jQuery("#membership_level");
 								var mby_select = jQuery("#membership_years");
@@ -666,7 +690,7 @@ if (!signup) {
 								} else {
 									t.prop('selected', true).change().trigger(
 											'render');
-        }
+		}
 								self.mbSelect.attr('disabled', 'true');
 
 								var option = document.createElement("option");
@@ -681,7 +705,7 @@ if (!signup) {
 								} else {
 									t.prop('selected', true).change().trigger(
 											'render');
-        }
+		}
 								self.mbySelect.attr('disabled', 'true');
 
 									jQuery(".inputgroup").show();
@@ -694,12 +718,12 @@ if (!signup) {
 
 		this.checkUsername = function() {
 			self.fieldValidating('#username');
-			jQuery.ajax('/wp-content/themes/indagare/app/lib/iajax.php', {
+			jQuery.ajax('/wp-admin/admin-ajax.php', {
 				method: 'POST',
 				data: {
-					task: 'chkLogin_j',
+					action: 'idj-login',
 					login: jQuery("#username").val()
-            }
+			}
 			}).done(function(d, s, x) {
 				self.usrNameChk = d.exists;
 			}).fail(function(x, s, e) {
@@ -709,23 +733,50 @@ if (!signup) {
 			});
 		};
 
+		this.checkEmail = function() {
+			if ( ! self.validateField('#email',/^("[^"]+"|[-a-z0-9+_'][-a-z0-9+\._']*[-a-z0-9+_']|[-a-z0-9+_']+)@([a-z0-9][-a-z0-9]*[a-z0-9]\.)+[a-z0-9][-a-z0-9]*[a-z0-9]$/i) ) {
+				self.usrEmailChk = -4;
+				self.validateEmail();
+				return;
+			}
+			self.fieldValidating('#email');
+			jQuery.ajax('/wp-admin/admin-ajax.php', {
+				method: 'POST',
+				data: {
+					action: 'idj-email',
+					email: jQuery("#email").val()
+			}
+			}).done(function(d, s, x) {
+				self.usrEmailChk = d.exists;
+			}).fail(function(x, s, e) {
+				self.usrEmailChk = null;
+			}).always(function() {
+				self.validateEmail();
+			});
+		};
+
 		this.setAddr = function() {
-        var chkbox = document.getElementById("chkShip");
-        if (chkbox.checked) {
+			var chkbox = document.getElementById("chkShip");
+			if (chkbox.checked) {
 				jQuery("#address1").val(jQuery("#s_address1").val()).attr('readOnly','true');
 				jQuery("#address2").val(jQuery("#s_address2").val()).attr('readOnly','true');
 				jQuery("#city").val(jQuery("#s_city").val()).attr('readOnly','true');
-				jQuery("#state").val(jQuery("#s_state").val()).attr('readOnly','true');
 				jQuery("#zip").val(jQuery("#s_zip").val()).attr('readOnly','true');
 				jQuery("#country").val(jQuery("#s_country").val()).attr('readOnly','true');
+				jQuery('#country').trigger('render');
+				populateStates('country','state');
+				jQuery("#state").val(jQuery("#s_state").val()).attr('readOnly','true');
+				jQuery('#state').trigger('render');
 			} else {
 				jQuery("#address1").removeAttr('readOnly');
 				jQuery("#address2").removeAttr('readOnly');
 				jQuery("#city").removeAttr('readOnly');
-				jQuery("#state").removeAttr('readOnly');
 				jQuery("#zip").removeAttr('readOnly');
 				jQuery("#country").removeAttr('readOnly');
-        }
+				jQuery('#country').trigger('render');
+				jQuery("#state").removeAttr('readOnly');
+				jQuery('#state').trigger('render');
+			}
 		};
 
 		this.checkCCDate = function() {
@@ -736,12 +787,12 @@ if (!signup) {
 				y = Number( d.getFullYear().toString().substr(2, 2) );
 			if ( cy < y ) return false;
 			if ( ( cy == y ) && ( cm <= m ) ) return false;
-            return true;
+			return true;
 		};
-        }   
-        
+	}
+	
 	signup = new signupObj();
-        }
+}
 
 (function() {
 	function init() {

@@ -1613,9 +1613,9 @@ span.customselectdyn:after { content: '\f0d7'; font-family: 'icomoon'; position:
 
 .tab input[type="radio"] { width: auto; margin-right: 5px; }
 
-.validate { /* AKB */ padding: 3px 10px; color: #fd252a; }
+.validate { /* AKB */ padding: 3px 10px; /*color: #fd252a;*/ }
 
-.validated { /* AKB */ color: #2ab91b; }
+.validated { /* AKB */ /*color: #2ab91b;*/ }
 
 div.validate { padding-top: 0; padding-left: 0; margin-bottom: 10px; }
 
@@ -2106,6 +2106,8 @@ body.modalmap #map-buttons-container { position: fixed; right: 1px; /*  bottom: 
 #tab-container .inputgrouptitle { margin-top: 3em; }
 
 #tab-container .inputgrouptitle.trial { margin-top: 1.5em; }
+
+.field.validate select, .field.validate option { height: 25px; min-height: 25px; }
 
 .field.validate.validated { color: black; }
 .field.validate.validated:before, .field.validate.validating:before { font-family: fontawesome; display: block; position: relative; width: 0; z-index: 1; height: 0; overflow: visible; left: 30.75em; top: 0.2em; }

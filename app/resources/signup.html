@@ -48,9 +48,9 @@
 			    <div class="field validate"><label>Street</label><input type="text" name="s_address1" id="s_address1"><span class="errmsg">Please enter a full shipping address.</span></div>
         		<div class="field validate"><label></label><input type="text" name="s_address2" id="s_address2"></div>
 			    <div class="field validate"><label>City</label><input type="text" name="s_city" id="s_city"><span class="errmsg">Please enter a city.</span></div>
-			    <div class="field validate"><label>State/Province</label><input type="text" name="s_state" id="s_state"><span class="errmsg">Please enter a state/province.</span></div>
+			    <div class="field validate noicon"><label>State/Province</label><span class="form-item"><select type="text" name="s_state" id="s_state" class="customselectdyn"></select></span><span class="errmsg">Please select a state/province.</span></div>
 			    <div class="field validate"><label>Zip/Postal Code</label><input type="text" name="s_zip" id="s_zip"><span class="errmsg">Please enter a postal code.</span></div>
-			    <div class="field validate"><label>Country</label><input type="text" name="s_country" id="s_country"><span class="errmsg">Please enter a country.</span></div>
+			    <div class="field validate noicon"><label>Country</label><span class="form-item"><select type="text" name="s_country" id="s_country" class="customselectdyn"></select></span><span class="errmsg">Please select a country.</span></div>
 			</div>
 		</div>
 
@@ -61,16 +61,16 @@
 		        <div class="field validate"><label>Street</label><input type="text" name="address1" id="address1"><span class="errmsg">Please enter a full billing address.</span></div>
         		<div class="field validate"><label></label><input type="text" name="address2" id="address2"></div>
 		        <div class="field validate"><label>City</label><input type="text" name="city" id="city"><span class="errmsg">Please enter a city.</span></div>
-		        <div class="field validate"><label>State/Province</label><input type="text" name="state" id="state"><span class="errmsg">Please enter a state/province.</span></div>
+		        <div class="field validate noicon"><label>State/Province</label><span class="form-item"><select type="text" name="state" id="state" class="customselectdyn"></select></span><span class="errmsg">Please select a state/province.</span></div>
 		        <div class="field validate"><label>Zip/Postal Code</label><input type="text" name="zip" id="zip"><span class="errmsg">Please enter a postal code.</span></div>
-		        <div class="field validate"><label>Country</label><input type="text" name="country" id="country"><span class="errmsg">Please enter a country.</span></div>
+		        <div class="field validate noicon"><label>Country</label><span class="form-item"><select type="text" name="country" id="country" class="customselectdyn"></select></span><span class="errmsg">Please select a country.</span></div>
 	        </div>
 
 	        <h3 class="inputgrouptitle billing">Billing Information</h3>
 		    <div class="inputgroup billing">
 		        <div class="field validate"><label>Name on Card</label><input type="text" name="cc_holder" id="cc_holder"><span class="errmsg">Please enter the cardholder name.</span></div>
 		        <div class="field validate"><label>Credit Card Number</label><input type="text" name="cc_num" id="cc_num"><span class="errmsg">Please enter a valid credit card number.</span></div>
-		        <div class="field noicon"><label>Expiration Date</label><span id="cc-month-input" class="form-item"><select class="customselectdyn" name="cc_month" id="cc_month"></select></span> / <span id="cc-year-input" class="form-item"><select class="customselectdyn" name="cc_year" id="cc_year"></select></span><span class="errmsg">Please select a valid credit card expiration date.</span></div>
+		        <div class="field validate noicon"><label>Expiration Date</label><span id="cc-month-input" class="form-item"><select class="customselectdyn" name="cc_month" id="cc_month"></select></span> / <span id="cc-year-input" class="form-item"><select class="customselectdyn" name="cc_year" id="cc_year"></select></span><span class="errmsg">Please select a valid credit card expiration date.</span></div>
 		        <div class="field validate ccv-field"><label>CVV</label><input class="small" type="text" name="ccv" id="ccv"><span  class="errmsg">Please enter the security code on the back of your credit card.</span></div>
 			</div>
         </div>
@@ -95,6 +95,7 @@
 </div>
 
 
+<script type="text/javascript" src="/wp-content/themes/indagare/app/js/countries.js"></script>
 <script type="text/javascript" src="/wp-content/themes/indagare/app/js/numeral.min.js"></script>
 <script type="text/javascript" src="/wp-content/themes/indagare/app/js/jquery.scrollTo.js"></script>
 <script type="text/javascript" src="/wp-content/themes/indagare/app/js/jquery.creditCardValidator.js"></script>

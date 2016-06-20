@@ -17,7 +17,7 @@ class WPContent {
 	}
 
 	private static function getAccount() {
-		global $user;
+		$wp_userid = get_current_user_id();
 
 		$content = "";
 
@@ -27,28 +27,96 @@ class WPContent {
 		$var_spouse = array();
 		$var_spouseFfa = array();
 
-		if ( ! \indagare\users\User::hasUserSession() ) {
-			$wpuser = new \WP_User($user->ID);
+		$sfid = get_field( 'wpsf_accountid', 'user_' . $wp_userid );
+
+		print_r(array(
+			'$wp_userid' => $wp_userid,
+			'$sfid' => $sfid,
+		));
+
+		if ( ! empty( $sfid ) && class_exists( '\WPSF\Account' ) ) {
+			// Salesforce!
+
+
+			$account = new \WPSF\Account( $sfid );
+
+			$contacts = array_keys( $account->Contacts__x );
+			if ( ! empty( $contacts[0] ) ) {
+				$contact = $account->Contacts__x[$contacts[0]];
+			}
+
+			$passports = array();
+			foreach ( $contact->Passport_Visa__x as $k=>$v ) {
+				$passports[] = $v->toArray();
+			}
+
+
+			// @TODO: Fix this!
+			$memberlevel = 2;
 			$var_user = array(
-				'crmId' => -1,
-				'fname' => $wpuser->first_name,
-				'lname' => $wpuser->last_name,
-				'title' => '',
-				'email' => $wpuser->user_email,
+				'crmId' => $sfid,
+				'data' => $account->toArray(),
+				'fname' => $contact->FirstName,
+				'lname' => $contact->LastName,
+				'title' => $contact->Title,
+				'email' => $contact->Email,
 				'initial' => '',
-				'prefix' => '',
-				'addr1' => '',
+				'prefix' => $contact->Salutation,
+				'addr1' => $contact->MailingStreet,
 				'addr2' => '',
-				'city' => '',
-				'state' => '',
-				'postal' => '',
-				'country' => '',
-				'mb' => '',
-				'mb_exp' => '',
-				'phone_h' => '',
-				'phone_w' => '',
-				'phone_m' => '',
+				'city' => $contact->MailingCity,
+				'state' => $contact->MailingState,
+				'postal' => $contact->MailingPostalCode,
+				'country' => $contact->MailingCountry,
+				'mb' => $memberlevel,
+				'mb_exp' => $account->Membership_End_Date__c,
+				'phone_h' => $contact->HomePhone,
+				'phone_w' => $contact->Phone,
+				'phone_m' => $contact->MobilePhone,
+				'passports' => $passports,
 			);
+
+			$var_userExt = array(
+				'birthday' => $contact->Member_Birthday__c,
+				'assistent' => $contact->AssistantName,
+				'assistentEmail' => $contact->Assistant_Email__c,
+				'assistentPhone' => $contact->AssistantPhone,
+				'passport' => '',
+				'contact_pref' => $contact->Preferred_Method_of_Contact__c,
+				'delivery_pref' => $contact->Preferred_Format_to_Receive_Itineraries__c,
+			);
+
+			foreach ( $contact->Frequent_Travel__x as $k => $v ) {
+				$ff = $v->toArray();
+				$ff = array_merge( array(
+					'id' => $k,
+					'a' => $v->Frequent_Traveler_Program__c,
+					'n' => $v->Frequent_Flyer_Number__c,
+				), $ff );
+				$var_userFFAs[] = $ff;
+			}
+		} else if ( ! \indagare\users\User::hasUserSession() ) {
+				$wpuser = new \WP_User( $wp_userid );
+				$var_user = array(
+					'crmId' => -1,
+					'fname' => $wpuser->first_name,
+					'lname' => $wpuser->last_name,
+					'title' => '',
+					'email' => $wpuser->user_email,
+					'initial' => '',
+					'prefix' => '',
+					'addr1' => '',
+					'addr2' => '',
+					'city' => '',
+					'state' => '',
+					'postal' => '',
+					'country' => '',
+					'mb' => '',
+					'mb_exp' => '',
+					'phone_h' => '',
+					'phone_w' => '',
+					'phone_m' => '',
+				);
 		} else {
 			$userid = \indagare\users\User::getSessionUserID();
 			$crmuser = \indagare\db\CrmDB::getExtendedUserById($userid);

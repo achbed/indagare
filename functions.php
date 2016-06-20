@@ -76,6 +76,29 @@ include_once('includes/search-destination.php');
 include_once('includes/induser_caps.php');
 
 /**
+ * Hide the admin bar for non-admin users
+ */
+add_action('after_setup_theme', 'remove_admin_bar');
+
+function remove_admin_bar() {
+	if (!current_user_can('administrator') && !is_admin()) {
+		show_admin_bar(false);
+	}
+}
+
+add_action('wp','indagare_wp_handle');
+function indagare_wp_handle() {
+	if(function_exists('acf_add_options_page'))
+	acf_add_options_page(array(
+		'page_title' 	=> 'Indagare Settings',
+		'menu_title'	=> 'Indagare Settings',
+		'menu_slug' 	=> 'acf-options',
+		'capability'	=> 'edit_posts',
+		'redirect'		=> false
+	));
+}
+
+/**
  * Define theme setup
  */
 function childtheme_setup() {
@@ -1033,13 +1056,6 @@ $featured = false;
 function headscript() {
 global $post;
 	$upload_dir = wp_upload_dir();
-
-	?>
-	<script type="text/javascript">
-		var theme_path="<?php print get_bloginfo('stylesheet_directory'); ?>";
-		var uploads_path="<?php print $upload_dir['url']; ?>";
-	</script>
-	<?php
 
 	if ( is_singular( 'hotel' ) || is_singular( 'restaurant' ) || is_singular( 'shop' ) || is_singular( 'activity' ) || is_singular( 'article' ) || is_singular( 'offer' ) || is_singular( 'insidertrip' )
 		|| ( is_archive() && get_query_var('post_type') == 'hotel' )

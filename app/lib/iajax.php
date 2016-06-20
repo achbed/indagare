@@ -7,8 +7,8 @@ include_once 'db.php';
 include_once 'mail.php';
 include_once 'Mail.php';
 include_once 'lphp.php';
-include_once '../resources/emails/thank_you.php';
-include_once '../resources/emails/apply.php';
+include_once dirname(dirname(__FILE__)).'/resources/emails/thank_you.php';
+include_once dirname(dirname(__FILE__)).'/resources/emails/apply.php';
 //require_once('iajax_handler.php');
 
 class AjaxHandler {
@@ -116,6 +116,19 @@ class AjaxHandler {
 	 * Adds hooks and loads translations
 	 */
 	public function __construct() {
+		if(function_exists('add_action')) {
+			add_action( 'wp_ajax_idj-email', array( $this, 'chkEmail_wp' ) );
+			add_action( 'wp_ajax_nopriv_idj-email', array( $this, 'chkEmail_wp' ) );
+
+			add_action( 'wp_ajax_idj-login', array( $this, 'chkLogin_wp' ) );
+			add_action( 'wp_ajax_nopriv_idj-login', array( $this, 'chkLogin_wp' ) );
+
+			add_action( 'wp_ajax_idj-signup', array( $this, 'payment_wp' ) );
+			add_action( 'wp_ajax_nopriv_idj-signup', array( $this, 'payment_wp' ) );
+
+			return;
+		}
+
 		if ( empty( $_REQUEST["task"] ) ) {
 			// The request doesnt contain a task.  Die and ignore any other
 			// handlers.
@@ -253,6 +266,64 @@ class AjaxHandler {
 		} else {
 			print "false";
 		}
+	}
+
+	/**
+	 * Validates that the login exists.  Returns a JSON object.
+	 */
+	public static function chkLogin_wp() {
+		header('Content-Type: application/json');
+		$response = array();
+		try {
+			if ( empty( $_POST['login'] ) ) {
+				throw new \Exception( 'Empty input', 0 );
+			}
+			$response['login'] = $_POST['login'];
+			$l = sanitize_key( $_POST['login'] );
+			$response['exists'] = ( username_exists( $l ) !== false );
+		} catch ( \Exception $e ) {
+			$response = array(
+				'err' => $e->getMessage(),
+			);
+
+			$msg = "Response:\r\n" . print_r( $response, true ) . "\r\n\r\n";
+			self::_email_debug('chkLogin_wp: Processing Error', $msg );
+			if ( $e->getCode() != 0 ) {
+				self::_email_error('chkLogin_wp: Processing Error', $msg );
+			}
+		}
+
+		print json_encode( $response );
+		exit();
+	}
+
+	/**
+	 * Validates that the email exists.  Returns a JSON object.
+	 */
+	public static function chkEmail_wp() {
+		header('Content-Type: application/json');
+		$response = array();
+		try {
+			if ( empty( $_POST['email'] ) ) {
+				throw new \Exception( 'Empty input', 0 );
+			}
+			$response['email'] = $_POST['email'];
+			$l = sanitize_email( $_POST['email'] );
+			$response['exists'] = ( email_exists( $l ) !== false );
+		} catch ( \Exception $e ) {
+			$response = array(
+				'err' => $e->getMessage(),
+			);
+
+			$msg = "Response:\r\n" . print_r( $response, true ) . "\r\n\r\n";
+			self::_email_debug('chkLogin_wp: Processing Error', $msg );
+			if ( $e->getCode() != 0 ) {
+				self::_email_error('chkLogin_wp: Processing Error', $msg );
+			}
+		}
+
+		print json_encode( $response );
+		exit();
 	}
 
 	/**
@@ -591,6 +662,117 @@ class AjaxHandler {
 		}
 
 		print json_encode( $response );
+		exit();
+	}
+
+	/**
+	 * Handles payment processing and account setup for a paid membership.
+	 * Returns status as a JSON object.
+	 */
+	public static function payment_wp() {
+		header('Content-Type: application/json');
+		global $acc;
+
+		$response = array(
+			'success' => false,
+			'startdate' => '',
+			'enddate' => '',
+			'name' => '',
+			'length' => '',
+			'price' => '',
+		);
+
+		$u = new \WP_User();
+		$u->user_login = $_POST['username'];
+		$u->user_pass = $_POST['password'];
+		$u->user_email = $_POST['email'];
+		$u->user_firstname = $_POST['fn'];
+		$u->user_lastname = $_POST['ln'];
+		$u->roles = array('subscriber');
+		$id = wp_insert_user( $u );
+
+		if ( is_wp_error( $id ) ) {
+			print json_encode(array(
+				'error' => 'WP user creation failure.',
+				'messages' => $id->get_error_messages(),
+			));
+			exit();
+		}
+
+		// Create and fill in the account object
+		$account = new \WPSF\Account();
+
+		$account['Name'] = $_POST['fn'].' '.$_POST['ln'];
+		$account['WPID__c'] = $id;
+
+		$contact['FirstName'] = $_POST['fn'];
+		$contact['LastName'] = $_POST['ln'];
+		$account['Email__c'] = $_POST['email'];
+		$account['Phone'] = $_POST['phone'];
+
+		$account['BillingStreet'] = $_POST['address1'].(empty($_POST['address2'])?', '.$_POST['address2']:'');
+		$account['BillingCity'] = $_POST['city'];
+		$account['BillingState'] = $_POST['state'];
+		$account['BillingPostalCode'] = $_POST['zip'];
+		$account['BillingCountry'] = $_POST['country'];
+
+		$account['ShippingStreet'] = $_POST['s_address1'].(empty($_POST['s_address2'])?', '.$_POST['s_address2']:'');
+		$account['ShippingCity'] = $_POST['s_city'];
+		$account['ShippingState'] = $_POST['s_state'];
+		$account['ShippingPostalCode'] = $_POST['s_zip'];
+		$account['ShippingCountry'] = $_POST['s_country'];
+
+		// Create and fill in the contact object
+		$contact = new \WPSF\Contact();
+
+		$contact['OtherStreet'] = $account['ShippingStreet'];
+		$contact['OtherCity'] = $account['ShippingCity'];
+		$contact['OtherState'] = $account['ShippingState'];
+		$contact['OtherPostalCode'] = $account['ShippingPostalCode'];
+		$contact['OtherCountry'] = $account['ShippingCountry'];
+
+		$contact['MailingStreet'] = $account['BillingStreet'];
+		$contact['MailingCity'] = $account['BillingCity'];
+		$contact['MailingState'] = $account['BillingState'];
+		$contact['MailingPostalCode'] = $account['BillingPostalCode'];
+		$contact['MailingCountry'] = $account['BillingCountry'];
+
+		$contact['Phone'] = $account['Phone'];
+		$contact['Email'] = $account['Email__c'];
+
+		$account->add_contact( $contact );
+
+		// Save everything to Salesforce
+		$aid = $account->create();
+		if ( is_wp_error( $aid ) ) {
+			wp_delete_user( $id );
+			print json_encode(array(
+				'error'=>'Account creation failure.',
+				'messages' => $aid->get_error_messages(),
+			));
+			exit();
+		}
+
+		/** I HATE WORKAROUNDS LIKE THIS. Just let me save via the name dammit. **/
+		global $wpsf_acf_fields;
+		update_field( $wpsf_acf_fields['wpsf_accountid'], $aid, 'user_'.$id );
+
+		wp_signon(array(
+			'user_login' => $_POST['username'],
+			'user_password' => $_POST['password'],
+			'remember' => true,
+		));
+
+		print json_encode(array(
+			'success'=>'Yay!',
+			'r_approved' => 'APPROVED',
+			'id' => $id,
+			'r_ref' => '',
+			'length' => '',
+			'name' => '',
+			'price' => '',
+		));
+
 		exit();
 	}
 
