@@ -12,8 +12,7 @@
     	</div>
 	    
 	    <div class="inputgroup">
-		    <div class="field noicon"><label>Level</label><span class="form-item membership-level"><select id="membership_level" class="customselectdyn"></select></span></div>
-		    <div class="field noicon"><label>Duration</label><span class="form-item membership-years"><select id="membership_years" class="customselectdyn"></select></span></div>
+		    <div class="field noicon"><label>Membership</label><span class="form-item membership-level"><select id="membership_level" class="customselectdyn"></select></span></div>
 	    </div>
 
 		<div id="accountBlock">
@@ -45,8 +44,7 @@
 		<div id="shippingBlock">
 		    <h3 class="inputgrouptitle">Shipping / Home Address</h3>
 		    <div class="inputgroup">
-			    <div class="field validate"><label>Street</label><input type="text" name="s_address1" id="s_address1"><span class="errmsg">Please enter a full shipping address.</span></div>
-        		<div class="field validate"><label></label><input type="text" name="s_address2" id="s_address2"></div>
+			    <div class="field validate"><label>Street</label><textarea name="s_address1" id="s_address1"></textarea><span class="errmsg">Please enter a full shipping address.</span></div>
 			    <div class="field validate"><label>City</label><input type="text" name="s_city" id="s_city"><span class="errmsg">Please enter a city.</span></div>
 			    <div class="field validate noicon"><label>State/Province</label><span class="form-item"><select type="text" name="s_state" id="s_state" class="customselectdyn"></select></span><span class="errmsg">Please select a state/province.</span></div>
 			    <div class="field validate"><label>Zip/Postal Code</label><input type="text" name="s_zip" id="s_zip"><span class="errmsg">Please enter a postal code.</span></div>
@@ -58,8 +56,7 @@
 	        <h3 class="inputgrouptitle billing">Billing Address</h3>
 		    <div class="inputgroup billing">
 		        <div class="field validate"><label></label><input type="checkbox" name="chkShip" id="chkShip" value="1"> Same as shipping address</div>
-		        <div class="field validate"><label>Street</label><input type="text" name="address1" id="address1"><span class="errmsg">Please enter a full billing address.</span></div>
-        		<div class="field validate"><label></label><input type="text" name="address2" id="address2"></div>
+		        <div class="field validate"><label>Street</label><textarea name="address1" id="address1"></textarea><span class="errmsg">Please enter a full billing address.</span></div>
 		        <div class="field validate"><label>City</label><input type="text" name="city" id="city"><span class="errmsg">Please enter a city.</span></div>
 		        <div class="field validate noicon"><label>State/Province</label><span class="form-item"><select type="text" name="state" id="state" class="customselectdyn"></select></span><span class="errmsg">Please select a state/province.</span></div>
 		        <div class="field validate"><label>Zip/Postal Code</label><input type="text" name="zip" id="zip"><span class="errmsg">Please enter a postal code.</span></div>

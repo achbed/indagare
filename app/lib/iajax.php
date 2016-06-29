@@ -682,6 +682,8 @@ class AjaxHandler {
 			'price' => '',
 		);
 
+		$membership = new \WPSF\Membership( $_POST['l'] );
+
 		$u = new \WP_User();
 		$u->user_login = $_POST['username'];
 		$u->user_pass = $_POST['password'];
@@ -705,18 +707,22 @@ class AjaxHandler {
 		$account['Name'] = $_POST['fn'].' '.$_POST['ln'];
 		$account['WPID__c'] = $id;
 
-		$contact['FirstName'] = $_POST['fn'];
-		$contact['LastName'] = $_POST['ln'];
 		$account['Email__c'] = $_POST['email'];
 		$account['Phone'] = $_POST['phone'];
 
-		$account['BillingStreet'] = $_POST['address1'].(empty($_POST['address2'])?', '.$_POST['address2']:'');
+		$account['Membership__c'] = $_POST['l'];
+		$account['Membership_Level__c'] = $membership['Membership_Level__c'];
+		$account['Membership_Status__c'] = '';
+		$account['Membership_Start_Date__c'] = date('Y-m-d');
+		$account['Membership_End_Date__c'] = date('Y-m-d', strtotime( '+' . $membership['Period__c'] ) );
+
+		$account['BillingStreet'] = $_POST['address1'];
 		$account['BillingCity'] = $_POST['city'];
 		$account['BillingState'] = $_POST['state'];
 		$account['BillingPostalCode'] = $_POST['zip'];
 		$account['BillingCountry'] = $_POST['country'];
 
-		$account['ShippingStreet'] = $_POST['s_address1'].(empty($_POST['s_address2'])?', '.$_POST['s_address2']:'');
+		$account['ShippingStreet'] = $_POST['s_address1'];
 		$account['ShippingCity'] = $_POST['s_city'];
 		$account['ShippingState'] = $_POST['s_state'];
 		$account['ShippingPostalCode'] = $_POST['s_zip'];
@@ -724,21 +730,24 @@ class AjaxHandler {
 
 		// Create and fill in the contact object
 		$contact = new \WPSF\Contact();
+		$contact['FirstName'] = $_POST['fn'];
+		$contact['LastName'] = $_POST['ln'];
 
-		$contact['OtherStreet'] = $account['ShippingStreet'];
-		$contact['OtherCity'] = $account['ShippingCity'];
-		$contact['OtherState'] = $account['ShippingState'];
-		$contact['OtherPostalCode'] = $account['ShippingPostalCode'];
-		$contact['OtherCountry'] = $account['ShippingCountry'];
+		$contact['OtherStreet'] = $_POST['s_address1'];
+		$contact['OtherCity'] = $_POST['s_city'];
+		$contact['OtherState'] = $_POST['s_state'];
+		$contact['OtherPostalCode'] = $_POST['s_zip'];
+		$contact['OtherCountry'] = $_POST['s_country'];
 
-		$contact['MailingStreet'] = $account['BillingStreet'];
-		$contact['MailingCity'] = $account['BillingCity'];
-		$contact['MailingState'] = $account['BillingState'];
-		$contact['MailingPostalCode'] = $account['BillingPostalCode'];
-		$contact['MailingCountry'] = $account['BillingCountry'];
+		$contact['MailingStreet'] = $_POST['address1'];
+		$contact['MailingCity'] = $_POST['city'];
+		$contact['MailingState'] = $_POST['state'];
+		$contact['MailingPostalCode'] = $_POST['zip'];
+		$contact['MailingCountry'] = $_POST['country'];
 
-		$contact['Phone'] = $account['Phone'];
-		$contact['Email'] = $account['Email__c'];
+		$contact['Phone'] = $_POST['phone'];
+		$contact['Email'] = $_POST['email'];
+		$contact['Primary_Contact__c'] = true;
 
 		$account->add_contact( $contact );
 
@@ -753,9 +762,11 @@ class AjaxHandler {
 			exit();
 		}
 
+		$cid = $account['Contacts__x'][0]['Id'];
+
 		/** I HATE WORKAROUNDS LIKE THIS. Just let me save via the name dammit. **/
 		global $wpsf_acf_fields;
-		update_field( $wpsf_acf_fields['wpsf_accountid'], $aid, 'user_'.$id );
+		update_field( $wpsf_acf_fields['wpsf_contactid'], $cid, 'user_'.$id );
 
 		wp_signon(array(
 			'user_login' => $_POST['username'],

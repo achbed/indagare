@@ -44,6 +44,7 @@ input.element:focus {outline: none;}
 
 /* general styles - icons */
 /* ------------------------------------------------------------------------- */
+.loading {text-indent:-9999em;min-height:32px; min-width:32px; background: transparent 50% 50% no-repeat url('images/preloader.gif');}
 b.icon {font-size:1.429em;height:1em;display:inline-block;}
 .form-item b.icon {font-size:1.072em;}
 b.petite {font-size:1.143em;line-height:1;}
@@ -1932,6 +1933,17 @@ article.magazine .photo-gallery {
 	
 	#terms { margin-left: 150px; }
 
+body.page-template-template-page-account-edit {
+  .tab {
+    .field {
+      textarea, input[type="text"] {
+        width: 300px;
+      }
+    }
+  }
+}
+
+
 /*Masonry*/
 #masonry {
 	clear: both;
@@ -3079,4 +3091,83 @@ body.modalmap #map-buttons-container {
 
 .tab.is-trial .trial {
 	display: block !important;
+}
+
+
+
+/* Account Bar stylings */
+
+.expand-button {
+  a.button-item .button-icon::after {
+    content: '\f0d7';
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    text-align: center;
+    font-family: "icomoon";
+    font-weight: 800;
+    font-size:1.375em;
+    padding:0;
+    margin:0;
+    line-height: 1em;
+  }
+  
+  .collapsed & {
+    a.button-item .button-icon::after {
+      content: '\f0da';
+    }
+  }
+  
+  padding-right: 0.5em;
+  display: inline-block;
+  line-height:1em;
+}
+
+.collapsed {
+  height:0px; 
+  overflow:hidden;
+  
+  &.bar-element{
+    height:auto;
+  }
+  
+  &.detail-element {
+    padding:0;
+  }
+}
+
+.detail-element {
+  padding:1em;
+  border-left:1px solid #d2eef2;
+  border-right:1px solid #d2eef2;
+}
+
+.bar-element {
+  background: #d2eef2;
+  padding: 0.5em 1em;
+  
+  &#account-bar {
+    background: #1471c0;
+    color: white;
+    .expand-button{
+      &,a,a:link,a:hover,a:active,a:visited{
+        color: white;
+      }
+    }
+  }
+  
+  >* {
+    float:left;
+  }
+  
+  .bar-item {
+    margin: 0 2em 0 0;
+    label {
+      padding-right:0.5em;
+    }
+  }
+  
+  .bar-item-right {
+    float:right;
+  }
 }

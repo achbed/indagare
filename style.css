@@ -32,6 +32,10 @@ a { outline: none; }
 
 textarea, input, select { outline: none; }
 
+.clearfix::after { content: ""; display: block; clear: both; }
+
+.hide-until-load, .hidden { display: none !important; }
+
 /* ========================================================================= */
 /* fonts */
 /* ------------------------------------------------------------------------- */
@@ -266,6 +270,8 @@ input.element:focus { outline: none; }
 
 /* general styles - icons */
 /* ------------------------------------------------------------------------- */
+.loading { text-indent: -9999em; min-height: 32px; min-width: 32px; background: transparent 50% 50% no-repeat url("images/preloader.gif"); }
+
 b.icon { font-size: 1.429em; height: 1em; display: inline-block; }
 
 .form-item b.icon { font-size: 1.072em; }
@@ -1621,6 +1627,8 @@ div.validate { padding-top: 0; padding-left: 0; margin-bottom: 10px; }
 
 #terms { margin-left: 150px; }
 
+body.page-template-template-page-account-edit .tab .field textarea, body.page-template-template-page-account-edit .tab .field input[type="text"] { width: 300px; }
+
 /*Masonry*/
 #masonry { clear: both; max-width: 940px; margin: 0px 10px; }
 
@@ -2151,6 +2159,25 @@ body.modalmap #map-buttons-container { position: fixed; right: 1px; /*  bottom: 
 .tab.is-trial .billing, .tab.is-trial .billingBlock { display: none !important; }
 
 .tab.is-trial .trial { display: block !important; }
+
+/* Account Bar stylings */
+.expand-button { padding-right: 0.5em; display: inline-block; line-height: 1em; }
+.expand-button a.button-item .button-icon::after { content: '\f0d7'; display: inline-block; height: 1em; width: 1em; text-align: center; font-family: "icomoon"; font-weight: 800; font-size: 1.375em; padding: 0; margin: 0; line-height: 1em; }
+.collapsed .expand-button a.button-item .button-icon::after { content: '\f0da'; }
+
+.collapsed { height: 0px; overflow: hidden; }
+.collapsed.bar-element { height: auto; }
+.collapsed.detail-element { padding: 0; }
+
+.detail-element { padding: 1em; border-left: 1px solid #d2eef2; border-right: 1px solid #d2eef2; }
+
+.bar-element { background: #d2eef2; padding: 0.5em 1em; }
+.bar-element#account-bar { background: #1471c0; color: white; }
+.bar-element#account-bar .expand-button, .bar-element#account-bar .expand-button a, .bar-element#account-bar .expand-button a:link, .bar-element#account-bar .expand-button a:hover, .bar-element#account-bar .expand-button a:active, .bar-element#account-bar .expand-button a:visited { color: white; }
+.bar-element > * { float: left; }
+.bar-element .bar-item { margin: 0 2em 0 0; }
+.bar-element .bar-item label { padding-right: 0.5em; }
+.bar-element .bar-item-right { float: right; }
 
 .destinationlist-wrapper { display: block; min-height: 270px; }
 

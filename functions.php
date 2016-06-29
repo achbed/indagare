@@ -751,7 +751,7 @@ add_action('thematic_child_init','childtheme_no_superfish');
 function register_scripts() {
 	$f = get_bloginfo('stylesheet_directory');
 
-    wp_register_script('tabs', $f.'/js/yetii-min.js', array('jquery'), '', true);
+    wp_register_script('tabs', $f.'/js/yetii-min.js', array('jquery'), '', false);
     wp_register_script('autocomplete', $f.'/js/jquery.autocomplete.mod.js', array('jquery'), '', true);
     wp_register_script('magnificpopup', $f.'/js/jquery.magnific-popup.min.js', array('jquery'), '', true);
     wp_register_script('rslidesalt', $f.'/js/responsiveslides.min.js', array('jquery'), '', true);
@@ -780,7 +780,6 @@ function register_scripts() {
     	'redirecturl' => home_url(),
     	'loadingmessage' => __('Logging in...')
     ));
-
 }
 add_action('init', 'register_scripts');
 
@@ -966,6 +965,7 @@ function enqueue_scripts_here() {
 	global $post;
 
     wp_enqueue_script('customselect');
+    wp_enqueue_script('tabs');
 
 	if (
 		// singular hotel | resaurant | shop | activity | article | offer | insidertrip

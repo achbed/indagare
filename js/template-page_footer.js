@@ -222,6 +222,9 @@ function process_login(e,t){
 	if(!r || r == '') {
 		r = login_redirect;
 	}
+	if(!r || r == '') {
+		r = '/';
+	}
 	jQuery.ajax({
 		type: "POST",
 		url: ajax_login_object.ajaxurl,
@@ -242,10 +245,18 @@ function process_login(e,t){
 				}
 				r += 'ssoToken='+data.ssotoken;
 			}
-//			window.location.href = r;
-			window.open(r);
+			if(r.indexOf('/') === 0 || r.indexOf('.indagare.com/') > -1 ) {
+				window.location.href = r;
+			} else {
+				window.open(r);
+				window.location.reload(); 
+			}
 		} else {
-			jQuery(t+' .message').html('<p>'+data.message+'</p>').fadeIn(1500).fadeOut(1500);
+			if ( ! data ) { 
+				window.location.reload(); 
+			} else {
+				jQuery(t+' .message').html('<p>'+data.message+'</p>').fadeIn(1500).fadeOut(1500);
+			}
 		}
 	});
 	return false;
