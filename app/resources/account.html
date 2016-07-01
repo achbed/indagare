@@ -3,9 +3,9 @@
 	<div class="bar-item"><label class="hidden" for="account-bar-name">Account:</label><span id="account-bar-name" form-data-source="Account" form-data-field="Name"></span></div>
 	<div class="bar-item"><label class="hidden" for="account-bar-status">Membership Level:</label><span id="account-bar-status" form-data-source="Membership" form-data-field="Name"></span></div>
 	<div class="bar-item"><label for="account-bar-end">Valid Through</label><span id="account-bar-end" form-data-source="Account" form-data-field="Membership_End_Date__c"></span></div>
-	<div class="bar-item-right bar-item"><label for="contactpulldown">Contact:</label><select name="contactselect" id="contactselect"></select></div>
+	<div class="bar-item-right bar-item" id="contact-select-bar-item"><label for="contactpulldown">Contact:</label><select name="contactselect" id="contactselect"></select></div>
 </div>
-<div id="account-detail" class="collapsed detail-element tab" collapse-match="#account-bar" collapse-close="#contact-bar,#contact-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
+<div id="account-detail" class="collapsed detail-element" collapse-match="#account-bar" collapse-close="#contact-bar,#contact-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
 	<form id="account-detail-form" form-object="Account" 
    		form-fields="Id,Membership_End_Date__c,
    		BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry,
@@ -15,27 +15,26 @@
 	<form id="account-membership-detail-form" form-object="Membership" form-fields="Id,Name">
 		<div class="loading">Loading...</div>
 	</form>
-       <form id="account-detail-form-cc">
-	    <div class="inputgroup billing hide-until-load">
-	        <div class="field validate"><label>Name on Card</label><input type="text" name="cc_holder" id="cc_holder"><span class="errmsg">Please enter the cardholder name.</span></div>
-	        <div class="field validate"><label>Credit Card Number</label><input type="text" name="cc_num" id="cc_num"><span class="errmsg">Please enter a valid credit card number.</span></div>
-	        <div class="field validate noicon"><label>Expiration Date</label><span id="cc-month-input" class="form-item"><select class="customselectdyn" name="cc_month" id="cc_month"></select></span> / <span id="cc-year-input" class="form-item"><select class="customselectdyn" name="cc_year" id="cc_year"></select></span><span class="errmsg">Please select a valid credit card expiration date.</span></div>
-	        <div class="field validate ccv-field"><label>CVV</label><input class="small" type="text" name="ccv" id="ccv"><span  class="errmsg">Please enter the security code on the back of your credit card.</span></div>
-		</div>
-       </form>
+    <form id="account-detail-form-cc" class="hide-until-load">
+        <div class="field input-field clearfix validate"><label>Name on Card</label><input type="text" name="cc_holder" id="cc_holder"><span class="errmsg">Please enter the cardholder name.</span></div>
+        <div class="field input-field clearfix validate"><label>Credit Card Number</label><input type="text" name="cc_num" id="cc_num"><span class="errmsg">Please enter a valid credit card number.</span></div>
+        <div class="field input-field clearfix validate noicon"><label>Expiration Date</label><span id="cc-month-input" class="form-item"><select class="customselectdyn" name="cc_month" id="cc_month"></select></span> / <span id="cc-year-input" class="form-item"><select class="customselectdyn" name="cc_year" id="cc_year"></select></span><span class="errmsg">Please select a valid credit card expiration date.</span></div>
+        <div class="field input-field clearfix validate ccv-field"><label>CVV</label><input class="small" type="text" name="ccv" id="ccv"><span  class="errmsg">Please enter the security code on the back of your credit card.</span></div>
+    </form>
 </div>
 
 <div id="contact-bar" class="bar-element clearfix" collapse-match="#contact-detail" collapse-close="#account-bar,#account-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
 	<div class="expand-button"><a class="button-item" href="#"><span class="button-icon"></span></a></div>
 	<div class="bar-item">Contact Details</div>
 </div>
-<div id="contact-detail" class="detail-element tab" collapse-match="#contact-bar" collapse-close="#account-bar,#account-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
+<div id="contact-detail" class="detail-element" collapse-match="#contact-bar" collapse-close="#account-bar,#account-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
         <form id="contact" form-object="Contact" 
 		        form-fields="Id,Salutation,FirstName,Middle_Name__c,LastName,Title,Birthdate,Anniversary_Date__c,Referred_by__c,
 		        HomePhone,Phone,MobilePhone,Email,AssistantName,Assistant_Email__c,
 		        MailingStreet,MailingCity,MailingState,MailingPostalCode,MailingCountry,
 		        OtherStreet,OtherCity,OtherState,OtherPostalCode,OtherCountry">
 	        <div class="loading">Loading...</div>
+			<a class="card-save-button card-button-large" href="#">Save</a>
         </form>
 </div>
 
@@ -43,13 +42,14 @@
 	<div class="expand-button"><a class="button-item" href="#"><span class="button-icon"></span></a></div>
 	<div class="bar-item">Preferences</div>
 </div>
-<div id="pref-detail" class="collapsed detail-element tab" collapse-match="#pref-bar" collapse-close="#account-bar,#account-detail,#contact-bar,#contact-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
+<div id="pref-detail" class="collapsed detail-element" collapse-match="#pref-bar" collapse-close="#account-bar,#account-detail,#contact-bar,#contact-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
         <form id="travel-preferences" form-object="Contact" 
         		form-fields="Id,Preferred_Method_of_Contact__c,Phone_Communication_Preferences__c,
         		Preferred_Format_to_Receive_Itineraries__c,Hotel_Style__c,Hotel_Amenities__c,
         		Short_Haul_Class_of_Service__c,Long_Haul_Class_of_Service__c,
-        		Short_Haul_Meal_Choice__c,Long_Haul_Meal_Choice__c">
+        		Meal_Choice__c">
 	        <div class="loading">Loading...</div>
+			<a class="card-save-button card-button-large" href="#">Save</a>
         </form>
 </div>
 
@@ -57,18 +57,19 @@
 	<div class="expand-button"><a class="button-item" href="#"><span class="button-icon"></span></a></div>
 	<div class="bar-item">Travel Documents and Accounts</div>
 </div>
-<div id="profile-detail" class="collapsed detail-element tab" collapse-match="#profile-bar" collapse-close="#account-bar,#account-detail,#contact-bar,#contact-detail,#pref-bar,#pref-detail,#quest-bar,#quest-detail">
-        <form id="travel-profile" form-object="Contact" 
-        		form-fields="">
-	        <div class="loading">Loading...</div>
-        </form>
+<div id="profile-detail" class="collapsed detail-element" collapse-match="#profile-bar" collapse-close="#account-bar,#account-detail,#contact-bar,#contact-detail,#pref-bar,#pref-detail,#quest-bar,#quest-detail">
+	<div id="profile-passports-buttons" class="card-list clearfix">
+		<div class="card-item card-item-button"><a id="profile-passport-new" href="#" class="card-button-large">Add New<br /> Travel Document</a></div>
+		<div class="card-item card-item-button"><a id="profile-freq-new" href="#" class="card-button-large">Add New<br /> Frequent Traveller Account</a></div>
+	</div>
+	<div id="profile-passports" class="card-list clearfix"></div>
 </div>
 
 <div id="quest-bar" class="collapsed bar-element clearfix" collapse-match="#quest-detail" collapse-close="#account-bar,#account-detail,#contact-bar,#contact-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail">
 	<div class="expand-button"><a class="button-item" href="#"><span class="button-icon"></span></a></div>
 	<div class="bar-item">Questionnaire</div>
 </div>
-<div id="quest-detail" class="collapsed detail-element tab" collapse-match="#quest-bar" collapse-close="#account-bar,#account-detail,#contact-bar,#contact-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail">
+<div id="quest-detail" class="collapsed detail-element" collapse-match="#quest-bar" collapse-close="#account-bar,#account-detail,#contact-bar,#contact-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail">
         <form id="questionnaire" form-object="Contact" 
         		form-fields="Id,How_Often_Do_You_Travel__c,How_Do_You_Like_to_Travel__c,
         		Travel_Planning_Style__c,Who_Do_You_Travel_With__c,Prefer_a_Planned_Out_Schedule__c,
@@ -76,8 +77,24 @@
         		Beverage_of_Choice__c,Travel_Memories__c,Pet_Peeves__c,Influences__c,Interests__c,
         		Other_Travel_Preferences__c">
 	        <div class="loading">Loading...</div>
+			<a class="card-save-button card-button-large" href="#">Save</a>
         </form>
 </div>
 
 <script type="text/javascript" src="/wp-content/themes/indagare/app/js/jquery.scrollTo.js"></script>
+<script type="text/javascript" src="/wp-content/themes/indagare/app/js/jquery-confirm.min.js"></script>
 <script type="text/javascript" src="/wp-content/themes/indagare/app/js/account.js"></script>
+
+<div id="new-contact-form" style="display:none !important;">
+<div class="detail-element">
+<form>
+<div id="field-FirstName" class="input-field field clearfix"><input maxlength="40" name="FirstName" id="contactFirstName" type="text"><label for="contactFirstName">First Name</label></div>
+<div id="field-LastName" class="input-field field clearfix"><input maxlength="80" name="LastName" id="contactLastName" type="text"><label for="contactLastName">Last Name</label></div>
+<div id="field-Phone" class="input-field field clearfix"><input maxlength="40" name="Phone" id="contactPhone" type="text"><label for="contactPhone">Business Phone</label></div>
+<div id="field-Email" class="input-field field clearfix"><input maxlength="80" name="Email" id="contactEmail" type="text"><label for="contactEmail">Email</label></div>
+<div id="field-Username" class="input-field field clearfix"><input maxlength="80" name="Username" id="contactUsername" type="text"><label for="contactUsername">Username</label></div>
+<div id="field-Password" class="input-field field clearfix"><input maxlength="80" name="Password" id="contactPassword" type="password"><label for="contactPassword">Password</label></div>
+<div id="field-PasswordVerify" class="input-field field clearfix"><input maxlength="80" name="PasswordVerify" id="contactPasswordVerify" type="password"><label for="contactPasswordVerify">Verify Password</label></div>
+</form>
+</div>
+</div>

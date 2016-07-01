@@ -10,7 +10,6 @@ if(!user) {
 	user = {};
 	user.Account = null;
 	user.Contacts = [];
-	user.isPrimaryContact = null;
 }
 var getting = {};
 
@@ -21,38 +20,173 @@ this.tabber1 = new Yetii({
 });
 */
 
-jQuery(document).ready(function(){
-	jQuery(document).on('change','#contactselect',function(){
-		contactSelectionChange();
-	});
-	jQuery(document).on('click','.expand-button>a',function(e){
-		var p = jQuery(e.target).parents('.bar-element,.detail-element'),
-			a = p.attr('collapse-match'),
-			b = p.attr('collapse-open'),
-			c = p.attr('collapse-close');
-		e.preventDefault();
-		if(b) {
-			jQuery(b).removeClass('collapsed');
-		}
-		if(c) {
-			jQuery(c).addClass('collapsed');
-		}
-		if(p.hasClass('collapsed')){
-			p.removeClass('collapsed');
-			if(a) {
-				jQuery(a).removeClass('collapsed');
-			}
-			jQuery.scrollTo('#account-bar');
-		} else {
-			p.addClass('collapsed');
-			if(a) {
-				jQuery(a).addClass('collapsed');
-			}
-		}
-	});
+jQuery(document).on('click','#profile-passport-new',function(e) {
+	e.preventDefault();
+	var i = newCardItem('passport',blank.PassportVisa);
+	var t = jQuery('#profile-passports');
+	var y = t.find('.card-item-passport').last();
+	if( !y.length ) {
+		t.append(i);
+	} else {
+		y.after(i);
+	}
+	jQuery.scrollTo(i,300,{offset:-25});
+});
+
+jQuery(document).on('click','#profile-freq-new',function(e) {
+	e.preventDefault();
+	var i = newCardItem('freq',blank.FrequentTravel);
+	var t = jQuery('#profile-passports');
+	var y = t.find('.card-item-freq').last();
+	if( !y.length ) {
+		t.append(i);
+	} else {
+		y.after(i);
+	}
+	jQuery.scrollTo(i,300,{offset:-25});
+});
+
+jQuery(document).on('click','.card-save-button',function(e) {
+	e.preventDefault();
+	jQuery(e.target).addClass('processing').prop({disabled:true});
+	var f = jQuery(e.target).parents('form'),
+		type = f.attr('form-object'),
+		postdata = getFormData(f),
+		i,id_set=false,tr_set=(type!='PassportVisa');
 	
+	postdata.push({name:'action',value:'wpsf-putobject'});
+	postdata.push({name:'objectType',value:type});
+	
+	jQuery.ajax("/wp-admin/admin-ajax.php", {
+		method: "POST",
+		data : postdata 
+	}).done(function(result) {
+		if(!result.success) {
+			jQuery.alert({
+				title:'Save failed',
+				content:result.data[0]
+			});
+		} else {
+			f.find('[name=Id]').val(result.data.Id.value);
+		}
+	}).always(function(){
+		jQuery(e.target).removeClass('processing').prop({disabled:false});
+	});
+});
+
+jQuery(document).on('click','.card-delete-button',function(e) {
+	e.preventDefault();
+	var f = jQuery(e.target).parents('form'),
+		type = f.attr('form-object'),
+		id = f.find('input[name=Id]').first().val(),
+		postdata = {action:"wpsf-delobject",Id:id,objectType:type};
+	
+		if((type == 'PassportVisa')||(type == 'FrequentTravel')) {
+			postdata['Contact__c'] = f.find('[name=Contact__c]').first().val();
+		}
+    jQuery.confirm({
+        title: 'Are you sure?',
+        content: 'This cannot be un-done.',
+        keyboardEnabled: true,
+        confirmKeys:[],
+        confirmButton: 'Yes, Delete it',
+        confirmButtonClass: 'btn-danger',
+        cancelButton: 'Cancel',
+    	confirm: function () {
+    		if ( id != '' ) {
+    			jQuery(e.target).addClass('processing').prop({disabled:true});
+    			// We have an Id.  We need to actually delete this.
+    			jQuery.ajax("/wp-admin/admin-ajax.php", {
+    				method: "POST",
+					data : postdata 
+    			}).done(function(result) {
+    				if(!result.success) {
+    					jQuery.alert({
+    						title:'Delete failed',
+    						content:result.data
+    					});
+    				} else {
+            			f.parent().remove();
+    				}
+    			}).always(function(){
+    				jQuery(e.target).removeClass('processing').prop({disabled:false});
+    			});
+    		} else {
+				f.parent().remove();
+    		}
+    	}
+	});
+});
+
+jQuery(document).on('change','#contactselect',function(){
+	if ( jQuery('#contactselect').val() == '' ) {
+		// New account creation selected.  Pop up the dialog!
+	    jQuery.confirm({
+	        title: 'Create New Contact',
+	        content: jQuery('#new-contact-form').html(),
+	        keyboardEnabled: false,
+	        confirmButton: 'Create',
+	        confirmButtonClass: 'btn-info',
+	        cancelButton: 'Cancel',
+        	confirm: function () {
+        		var a = '';
+	        }
+	    });
+	}
+	
+	contactSelectionChange();
+});
+
+jQuery(document).on('click','#contact-select-bar-item',function(e){
+	e.preventDefault();
+	e.stopPropagation();
+});
+
+jQuery(document).on('click','.bar-element',function(e){
+	var p = jQuery(e.currentTarget),
+		a = p.attr('collapse-match'),
+		b = p.attr('collapse-open'),
+		c = p.attr('collapse-close');
+	e.preventDefault();
+	if(b) {
+		jQuery(b).removeClass('collapsed');
+	}
+	if(c) {
+		jQuery(c).addClass('collapsed');
+	}
+	if(p.hasClass('collapsed')){
+		p.removeClass('collapsed');
+		if(a) {
+			jQuery(a).removeClass('collapsed');
+		}
+		jQuery.scrollTo('#account-bar',300,{offset:-25});
+	} else {
+		p.addClass('collapsed');
+		if(a) {
+			jQuery(a).addClass('collapsed');
+		}
+	}
+});
+	
+jQuery(document).ready(function(){
 	getAccount();
 });
+
+function getFormData(f) {
+	var r = [];
+	jQuery(f).find('select,input,textarea').each(function(x,i){
+		var j = jQuery(i), n = j.attr('name'), v = j.val(), t = j.attr('picker');
+		if(n) {
+			if(t == 'date') {
+				v = jQuery(j).datepicker('getDate');
+				if(v)
+					v = v.toISOString();
+			}
+			r.push({name:n,value:v});
+		}
+	});
+	return r;
+}
 
 function getAccount() {
 	if(getting.account) return;
@@ -67,7 +201,6 @@ function getAccount() {
 		user.Contacts = user.Account.Contacts__x;
 		jQuery('[form-object]').addClass('needs-reload');
 		updateAccountBar();
-		updateForms();
 		getting.account = false;
 		updateContacts();
 	});
@@ -87,24 +220,13 @@ function updateContacts() {
 			.html(i.Name.value)
 			.appendTo('#contactselect');
 	}
+	if ( user.Account.IsPrimaryContact__x ) {
+		jQuery('<option></option>')
+			.attr({value:''})
+			.html('Add new contact...')
+			.appendTo('#contactselect');
+	}
 	jQuery('#contactselect').val( user.Contacts[first].Id.value ).trigger('change');
-}
-
-function isPrimaryContact() {
-	if(user.isPrimaryContact) {
-		return true;
-	}
-	if(user.isPrimaryContact === false) {
-		return false;
-	}
-	var c;
-	for(c in user.Contacts) {
-		if(user.Contacts[c].IsCurrentUser__x.value) {
-			user.isPrimaryContact = user.Contacts[c].Primary_Contact__c.value;
-			return user.isPrimaryContact;
-		}
-	}
-	return null;
 }
 
 function contactSelectionChange() {
@@ -127,7 +249,6 @@ function contactData(id) {
 	return null;
 }
 
-
 function updateAccountBar() {
 	jQuery('#account-bar').find('[form-data-field]').each(function(x,f){
 		var d = jQuery(f).attr('form-data-source');
@@ -141,11 +262,57 @@ function updateAccountBar() {
 	});
 }
 
+function newCardItem(y,i) {
+	var c=jQuery('<div></div>').addClass('card-item card-item-'+y),
+		f=jQuery('<form></form>'),
+		z=[],x;
+	switch(y) {
+		case 'passport':
+			f.attr('form-object',"PassportVisa");
+			z = [
+			     'Id',
+			    // 'Name',
+			     'RecordTypeId',
+			     'Contact__c',
+			     'Country__c',
+			     'Expiry_Date__c',
+			     'Legal_Name__c',
+			     'Number__c'
+		    ];
+			break;
+			
+		case 'freq':
+			f.attr('form-object',"FrequentTravel");
+			z = [
+			     'Id',
+			     'Contact__c',
+			     'Name',
+			     //'RecordTypeId',
+			     'Assistant_Email__c',
+			     'Assistant_Name__c',
+			     'Assistant_Phone__c',
+			     'Frequent_Traveler_Program__c',
+			     'Frequent_Flyer_Number__c',
+		    ];
+			break;
+	}
+	for(x in i) {
+		if(jQuery.inArray(x,z) >= 0)
+			f.append(makeInput('carditem-',i[x],false));
+	}
+	f.find('input[name="Contact__c"]').val( jQuery('#contactselect').val() );
+	
+	jQuery('<a></a>').attr('href','#').html('Delete Item').addClass('card-delete-button card-button-large').appendTo(f);
+	jQuery('<a></a>').attr('href','#').html('Save Item').addClass('card-save-button card-button-large').appendTo(f);
+	f.appendTo(c);
+	
+	return c;
+}
 
 function updateForms() {
 	jQuery('[form-fields]').filter('.needs-reload').each(function(x,f){
 		var i, 
-			p = isPrimaryContact(),
+			p = user.Account.IsPrimaryContact__x,
 			d = null,
 			y = jQuery(f).attr('id'),
 			z = jQuery(f).attr('form-fields'),
@@ -155,6 +322,21 @@ function updateForms() {
 			case 'Contact':
 				d = contactData(jQuery(f).attr('form-record-id'));
 				p = p || d.IsCurrentUser__x.value;
+				
+				jQuery('#profile-passports').empty();
+				
+				if(!!d && d['Passport_Visa__x']) {
+					for ( i in d['Passport_Visa__x'] ) {
+						jQuery('#profile-passports').append(newCardItem('passport',d['Passport_Visa__x'][i]));
+					}
+				}
+				
+				if(!!d && d['Frequent_Travel__x']) {
+					for ( i in d['Frequent_Travel__x'] ) {
+						jQuery('#profile-passports').append(newCardItem('freq',d['Frequent_Travel__x'][i]));
+					}
+				}
+				
 				break;
 				
 			case 'Account':
@@ -167,13 +349,13 @@ function updateForms() {
 		}
 		z = new String(z).split(',');
 		jQuery(f).find('.loading').remove();
-		jQuery(f).find('.hide-until-load').removeClass('hide-until-load');
+		jQuery(f).parent().find('.hide-until-load').removeClass('hide-until-load');
 		if(!d) return;
 		for(i in z) {
 			var k = jQuery.trim(z[i]);
 			if(d.hasOwnProperty(k)) {
 				jQuery(f).find('#field-'+d[k].name).remove();
-				jQuery(f).append(makeInput(y,d[k],!p));
+				jQuery(f).find('.card-save-button').before(makeInput(y,d[k],!p));
 			}
 		}
 		
@@ -186,6 +368,8 @@ function updateForms() {
 		
 		jQuery(f).removeClass('needs-reload');
 	});
+	
+	jQuery.scrollTo('#account-bar',300,{offset:-25});
 }
 
 /**
@@ -198,19 +382,14 @@ function updateForms() {
 function makeInput(p,l,t) {
 	var i,y,s,o,e;
 	
-	if ( l['name'] == 'Id' ) {
+	var neverShow = ['Id','Contact__c','AccountId'];
+	
+	if ( jQuery.inArray( l['name'], neverShow ) >= 0 ) {
 		// Never show ID fields
 		l['type'] = 'hidden';
 	}
 	
 	o = jQuery('<div></div>').addClass('input-field field clearfix').attr('id','field-'+l['name']);
-	if( l['type'] != 'hidden' ) {
-		jQuery('<label></label>').html(l['label']).attr({
-			'for':p+l['name']
-		}).appendTo(o);
-	} else {
-		o.addClass('hidden');
-	}
 
 	e = l['type'];
 	if(t) {
@@ -262,42 +441,108 @@ function makeInput(p,l,t) {
 			}
 			
 			break;
+			
+		case 'multipicklist':
+			s = jQuery('<div></div>')
+				.addClass('checkboxes clearfix')
+				.attr({'id':p+l['name']});
+			
+			for ( i in l['picklistValues'] ) {
+				var w = jQuery('<div></div>').addClass('checkbox-item');
+				y = l['picklistValues'][i];
+				if ( ! y['active'] ) 
+					continue;
+				
+				var chkbox = jQuery('<input></input>').attr({
+					'name':l['name'],
+					'type':'checkbox'
+				});
+				
+				if(l['value'] == y['value']) {
+					chkbox.prop({'checked':true});
+				}
+				
+				var label = jQuery('<div></div>')
+					.addClass('checkbox-label')
+					.html(y['label']);
+				
+				jQuery('<label></label>')
+					.append(chkbox)
+					.append(label)
+					.addClass('checkbox')
+					.attr({
+						'value':y['value'],
+						'validfor':y['validFor']
+					})
+					.appendTo(w);
+				w.appendTo(s);
+			}
+			break;
 		
 		case 'select':
 		case 'country':
-		case 'multipicklist':
 		case 'picklist':
 			s = jQuery('<select></select>')
-				.prop('disabled',( ! l['updateable'] ) )
 				.attr({
 					'id':p+l['name'],
 					'name':l['name']
-			});
+				})
+				.prop('disabled',( ! l['updateable'] ) );
+			
 			if(l['controllingField']) {
 				s.attr('controlfield',l['controllingField']);
 			}
 			
-			if(l['type'] == 'multipicklist') {
-				s.prop('multiple', true);
-			}
-			
-			if(l['nillable'] && (l['type'] != 'multipicklist')) {
+			if ( l['nillable'] ) {
 				jQuery('<option></option>').html('Choose an option...').attr('value','').appendTo(s);
 			}
+			
 			for ( i in l['picklistValues'] ) {
 				y = l['picklistValues'][i];
 				if ( ! y['active'] ) 
 					continue;
-				jQuery('<option></option>').html(y['label']).attr({
-					'value':y['value'],
-					'validfor':y['validFor']
-				}).appendTo(s);
+				
+				jQuery('<option></option>')
+					.html(y['label'])
+					.attr({
+						'value':y['value'],
+						'validfor':y['validFor']
+					})
+					.appendTo(s);
 			}
 			
 			if(l['value']) {
 				jQuery(s).val(l['value']);
 			} else if (l['defaultValue']) {
 				jQuery(s).val(l['defaultValue']);
+			}
+
+			break;
+			
+		case 'date':
+			s = jQuery('<input></input>')
+				.prop('disabled',( ! l['updateable'] ) )
+				.attr({
+					'id':p+l['name'],
+					'name':l['name'],
+					'type':(l['type']=='hidden'?'hidden':'text'),
+					'picker':'date'
+			});
+		
+			if(l['value']) {
+				if(Array.isArray(l['value'])) {
+					jQuery(s).val(l['value'].join(', '));
+				} else {
+					jQuery(s).val(l['value']);
+				}
+			} else if (l['defaultValue']) {
+				jQuery(s).val(l['defaultValue']);
+			}
+
+			if(t) {
+				s.prop({'disabled':true,'readonly':true});
+			} else {
+				jQuery(s).datepicker({dateFormat:"mm/dd/yy"});
 			}
 
 			break;
@@ -330,5 +575,12 @@ function makeInput(p,l,t) {
 	}
 	
 	jQuery(s).appendTo(o);
+	if( l['type'] != 'hidden' ) {
+		jQuery('<label></label>').html(l['label']).attr({
+			'for':p+l['name']
+		}).appendTo(o);
+	} else {
+		o.addClass('hidden');
+	}
 	return o;
 }

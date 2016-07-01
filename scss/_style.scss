@@ -3124,7 +3124,7 @@ body.modalmap #map-buttons-container {
 }
 
 .collapsed {
-  height:0px; 
+  height: 0px;
   overflow:hidden;
   
   &.bar-element{
@@ -3138,17 +3138,101 @@ body.modalmap #map-buttons-container {
 
 .detail-element {
   padding:1em;
-  border-left:1px solid #d2eef2;
-  border-right:1px solid #d2eef2;
+  border: 1px solid #bae0e5;
+  border-top: none;
+  
+  &#account-detail {
+    border: 1px solid #1471c0;
+    border-top: none;
+  }
+  
+  label {
+    display: block;
+    position: absolute;
+    top: 0;
+    font-size: 75%;
+    margin-top: 0.625em;
+    left:1.5em;
+    color: #888;
+    z-index:0;
+    
+    &.checkbox {
+      position: relative;
+      font-size: 100%;
+      margin: 0;
+      width: auto;
+      display: block;
+    }  
+  }
+  
+  div.checkboxes,
+  select,
+  textarea,
+  input {
+    width: 100%;
+    border: 2px solid #E7E7E7;
+    padding: 1.5em 1em 0.5em;
+    -webkit-border-radius: 0.25em;
+    border-radius: 0.25em;
+    display: block;
+    position: relative;
+    background: transparent;
+    z-index:1;
+  }
+  
+
+  div.checkboxes {
+    input[type="checkbox"] {
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+      margin: 0.5em 1em 0.5em 0;
+      position: relative;
+      top: 0.125em;
+    }
+    
+    .checkbox-label {
+        display: inline-block;
+        position: relative;
+    }
+    
+    .checkbox-item {
+      width:90%;
+      max-width:20em;
+      float:left;
+      display:block;
+      padding:0;
+      margin:0.125em;
+      text-align:left;
+    }
+    
+    text-align:center;
+  }
+
+  textarea {resize: vertical;}
+
+  .input-field {
+    width: 100%;
+    position: relative;
+    padding: .125em 0;
+  }
 }
 
 .bar-element {
   background: #d2eef2;
   padding: 0.5em 1em;
+  cursor: pointer;
+  border: 1px solid #bae0e5;
+  border-top: none;
+  border-bottom: none;
   
   &#account-bar {
     background: #1471c0;
     color: white;
+    border: 1px solid #1471c0;
+    border-top: none;
+    border-bottom: none;
+    
     .expand-button{
       &,a,a:link,a:hover,a:active,a:visited{
         color: white;
@@ -3169,5 +3253,101 @@ body.modalmap #map-buttons-container {
   
   .bar-item-right {
     float:right;
+  }
+}
+
+
+#profile-detail {
+  padding: 0;
+}
+
+.card-list {
+  width: 100%;
+  padding:0;
+  margin:0;
+  text-align: center;
+  position: relative;
+}
+
+.card-item {
+  max-width: 20em;
+  width: 90%;
+  border: 0.5em solid #eee;
+  background: #fff;
+  padding: 0.5em;
+  margin: 1em;
+  display:inline-block;
+  text-align: center;
+  border-radius: 0.5em;
+  position: relative;
+  &.card-item-button {
+    background: #eee;
+  }
+}
+
+a.card-button-large {
+  &:link,
+  &:hover,
+  &:active,
+  &:visited {
+    width: 100%;
+    text-align:center;
+    padding:.5em 0;
+    background:green;
+    border-radius: 0.25em;
+    color: white;
+    display:inline-block;
+    position: relative;
+    margin-top: 1em;
+  }
+
+  &.card-delete-button {
+    background: #aa0000;
+  }
+  &.processing {
+    background: #888 url('images/preloader.gif') no-repeat center;
+    text-indent: -999em;
+  }
+}
+
+.card-list a.card-button-large {
+  width: 90%;
+}
+
+.jconfirm .jconfirm-box {
+    max-width: 90%;
+    width: 25em;
+    margin: 0 auto;
+}
+
+button.btn {
+    padding: 1em;
+    margin: 0 1em;
+    cursor: pointer;
+    border-radius: 0.25em;
+    text-transform: none !important;
+
+  &.btn-info {
+    background:#00aa00;
+    color:white !important;
+    &:hover, &:active {
+      background:#009900;
+    }
+  }
+  
+  &.btn-warning {
+    background:#ffe500;
+    color:black !important;
+    &:hover, &:active {
+      background:#e5cf00;
+    }
+  }
+  
+  &.btn-danger {
+    background:#aa0000;
+    color:white !important;
+    &:hover, &:active {
+      background:#880000;
+    }
   }
 }

@@ -757,7 +757,7 @@ function register_scripts() {
     wp_register_script('rslidesalt', $f.'/js/responsiveslides.min.js', array('jquery'), '', true);
     wp_register_script('imagesloaded', $f.'/js/imagesloaded.pkgd.min.js', array('jquery'), '', true);
     wp_register_script('masonry', $f.'/js/masonry.pkgd.min.js', array('jquery'), '', true);
-    wp_register_script('datepicker', $f.'/js/jquery-ui-1.10.3.custom.min.js', array('jquery'), '', true);
+    wp_register_script('datepicker', $f.'/js/jquery-ui-1.10.3.custom.min.js', array('jquery'), '', false);
 //    wp_register_script('qtip', $f.'/js/jquery.qtip.min.js', array('jquery'), '', true);
 //    wp_register_script('responsivemap', $f.'/js/jquery.rwdImageMaps.min.js', array('jquery'), '', true);
     wp_register_script('customselect', $f.'/js/jquery.customSelect.min.js', array('jquery'), '', true);
@@ -835,6 +835,8 @@ function enqueue_scripts() {
 
 	wp_enqueue_script('velocity');
 	wp_enqueue_script('template-page_footer');
+	wp_enqueue_style('datepicker-css', get_bloginfo('stylesheet_directory') . '/css/jquery-ui-1.10.3.custom.css');
+	wp_enqueue_script('datepicker');
 
 	if ( is_singular() ) {
 		$destinationstree = destinationstree();

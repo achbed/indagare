@@ -17,7 +17,17 @@ class WPContent {
 	}
 
 	private static function getAccount() {
-		$content = file_get_contents( $_SERVER['DOCUMENT_ROOT'].'/wp-content/themes/indagare/app/resources/account.html');
+		$content = "<script>\n";
+		$content .= "var blank = {};\n";
+		$a = new \WPSF\Contact();
+		$content .= "blank.Contact = " . json_encode( $a->toArray(), JSON_PRETTY_PRINT ) . ";\n";
+		$a = new \WPSF\PassportVisa();
+		$content .= "blank.PassportVisa = " . json_encode( $a->toArray(), JSON_PRETTY_PRINT ) . ";\n";
+		$a = new \WPSF\FrequentTravel();
+		$content .= "blank.FrequentTravel = " . json_encode( $a->toArray(), JSON_PRETTY_PRINT ) . ";\n";
+		$content .= "</script>\n";
+
+		$content .= file_get_contents( $_SERVER['DOCUMENT_ROOT'].'/wp-content/themes/indagare/app/resources/account.html');
 		return $content;
 	}
 
