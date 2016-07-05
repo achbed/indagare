@@ -203,12 +203,13 @@ if (!signup) {
 				break;
 			case 'chkShip':
 				if (!c) {
-					// If we're turning OFF, revalidate.
+					// If we're turning OFF, revalidate and show.
 					self.validateField('#address1');
 					self.validateField('#city');
 					self.validateField('#state');
 					self.validateField('#zip');
 					self.validateField('#country');
+					jQuery('#address1,#city,#state,#zip,#country').closest('.field').show();
 				} else {
 					// If we're turning ON, clear any validation
 					self.fieldClearValidate('#address1');
@@ -216,6 +217,7 @@ if (!signup) {
 					self.fieldClearValidate('#state');
 					self.fieldClearValidate('#zip');
 					self.fieldClearValidate('#country');
+					jQuery('#address1,#city,#state,#zip,#country').closest('.field').hide();
 				}
 				// And never validate the checkbox itself.
 				return true;
@@ -361,7 +363,7 @@ if (!signup) {
 			self.fieldValidating('#ccv');
 
 			var cc_result = jQuery("#cc_num")
-					.validateCreditCard( /* {accept:['amex','visa','mastercard','discover','jcb']} */);
+					.validateCreditCard( {accept:['amex','visa','visa_electron','mastercard','maestro','discover','jcb']} );
 			if (!cc_result.valid) {
 				self.fieldValidated('#cc_num', false);
 				self.fieldValidated('#ccv', false);
@@ -369,6 +371,7 @@ if (!signup) {
 			}
 
 			self.fieldValidated('#cc_num', true);
+			jQuery('#cc_type').val(cc_result.card_type.name);
 
 			var cvv = jQuery('#ccv').val();
 			if (!cvv) {
@@ -458,12 +461,11 @@ if (!signup) {
 					username : jQuery('#username').val(),
 					password : jQuery('#password1').val(),
 					s_address1 : jQuery('#s_address1').val(),
-					s_address2 : '',
 					s_city : jQuery('#s_city').val(),
 					s_state : jQuery('#s_state').val(),
 					s_zip : jQuery('#s_zip').val(),
 					s_country : jQuery('#s_country').val(),
-					passKey : jQuery('#refCode').val()
+					passKey : jQuery('#refCode').val(),
 				}
 			}).done(
 					function(d, s, x) {
@@ -551,20 +553,32 @@ if (!signup) {
 				phone : jQuery('#phone').val(),
 				username : jQuery("#username").val(),
 				password : jQuery("#password1").val(),
+				address1 : jQuery('#address1').val(),
+				city : jQuery('#city').val(),
+				state : jQuery('#state').val(),
+				zip : jQuery('#zip').val(),
+				country : jQuery('#country').val(),
 				s_address1 : jQuery("#s_address1").val(),
-				s_address2 : '',
 				s_city : jQuery("#s_city").val(),
 				s_state : jQuery("#s_state").val(),
 				s_zip : jQuery("#s_zip").val(),
 				s_country : jQuery("#s_country").val(),
-				cc_holder : jQuery("#cc_holder").val(),
-				cc_num : jQuery("#cc_num").val(),
-				cc_m : jQuery("#cc_month").val(),
-				cc_y : jQuery("#cc_year").val(),
-				ccv : jQuery("#ccv").val(),
+				//cc_name : jQuery('#cc_holder').val(),
+				cc_num : jQuery('#cc_num').val(),
+				cc_mon : jQuery('#cc_month').val(),
+				cc_yr : jQuery('#cc_year').val(),
+				cc_cvv : jQuery('#ccv').val(),
+				cc_type : jQuery('#cc_type').val(),
 				tgCode : jQuery("#tgCode").val(),
 				dc : jQuery("#dc").val()
 			};
+			if(jQuery('#chkShip').prop('checked')) {
+				args.address1 = args.s_address1;
+				args.city = args.s_city;
+				args.state = args.s_state;
+				args.zip = args.s_zip;
+				args.country = args.s_country;
+			}
 			var cc_month = jQuery("#cc_month");
 			var cc_year = jQuery("#cc_year");
 			var otherparam = [ "pc", "gdsType", "cin", "cout" ];

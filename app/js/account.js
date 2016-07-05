@@ -118,6 +118,8 @@ jQuery(document).on('click','.card-delete-button',function(e) {
 	});
 });
 
+var progressDialog = null;
+
 jQuery(document).on('change','#contactselect',function(){
 	if ( jQuery('#contactselect').val() == '' ) {
 		// New account creation selected.  Pop up the dialog!
@@ -129,7 +131,16 @@ jQuery(document).on('change','#contactselect',function(){
 	        confirmButtonClass: 'btn-info',
 	        cancelButton: 'Cancel',
         	confirm: function () {
-        		var a = '';
+        		createNewContact(this.$content);
+        		progressDialog = jQuery.alert({
+        			title:'Creating contact',
+        			content:'Please wait...',
+        			closeIcon: false,
+        			confirmButton:'',
+        			cancelButton:'',
+        			confirmButtonClass:'hidden',
+        			cancelButtonClass:'hidden',
+        		});
 	        }
 	    });
 	}
@@ -265,19 +276,19 @@ function updateAccountBar() {
 function newCardItem(y,i) {
 	var c=jQuery('<div></div>').addClass('card-item card-item-'+y),
 		f=jQuery('<form></form>'),
+		p='carditem-'+getIdFromObject(i),
 		z=[],x;
 	switch(y) {
 		case 'passport':
 			f.attr('form-object',"PassportVisa");
 			z = [
 			     'Id',
-			    // 'Name',
-			     'RecordTypeId',
 			     'Contact__c',
+			     'RecordTypeId',
 			     'Country__c',
-			     'Expiry_Date__c',
 			     'Legal_Name__c',
-			     'Number__c'
+			     'Number__c',
+			     'Expiry_Date__c'
 		    ];
 			break;
 			
@@ -287,18 +298,18 @@ function newCardItem(y,i) {
 			     'Id',
 			     'Contact__c',
 			     'Name',
-			     //'RecordTypeId',
-			     'Assistant_Email__c',
-			     'Assistant_Name__c',
-			     'Assistant_Phone__c',
+			     'Carrier_Hotel_Operator__c',
 			     'Frequent_Traveler_Program__c',
 			     'Frequent_Flyer_Number__c',
+			     'Assistant_Email__c',
+			     'Assistant_Name__c',
+			     'Assistant_Phone__c'
 		    ];
 			break;
 	}
 	for(x in i) {
 		if(jQuery.inArray(x,z) >= 0)
-			f.append(makeInput('carditem-',i[x],false));
+			f.append(makeInput(p,i[x],false));
 	}
 	f.find('input[name="Contact__c"]').val( jQuery('#contactselect').val() );
 	
@@ -309,8 +320,50 @@ function newCardItem(y,i) {
 	return c;
 }
 
+function getIdFromObject(i){
+	var x,d;
+	for(x in i) {
+		if(i[x]['name']=='Id') {
+			return (i[x]['value']?i[x]['value']:'noid');
+		}
+	}
+}
+
+function createNewContact(f) {
+	var postdata = {
+		action: 'idj-newcontact',
+		fn: f.find('[name="FirstName"]').val(),
+		ln: f.find('[name="LastName"]').val(),
+		phone: f.find('[name="Phone"]').val(),
+		email: f.find('[name="Email"]').val(),
+		username: f.find('[name="Username"]').val(),
+		password: f.find('[name="Password"]').val()
+	};
+	
+	jQuery.ajax("/wp-admin/admin-ajax.php", {
+		method: "POST",
+		data : postdata
+	}).done(function(result) {
+		if(progressDialog) {
+			progressDialog.close();
+		}
+		if(!result.success) {
+			jQuery.alert({
+				title:'Creation failed',
+				content:result.data[0]
+			});
+			return false;
+		}
+		
+		user.Contacts.push(result.data);
+		updateContacts();
+		jQuery('#contactselect').val( result.data.Id.value ).trigger('change');
+	});
+}
+
 function updateForms() {
-	jQuery('[form-fields]').filter('.needs-reload').each(function(x,f){
+	jQuery('[form-fields] .auto-created-field').remove();
+	jQuery('[form-fields]').each(function(x,f){
 		var i, 
 			p = user.Account.IsPrimaryContact__x,
 			d = null,
@@ -380,8 +433,19 @@ function updateForms() {
  * @returns The form element.
  */
 function makeInput(p,l,t) {
-	var i,y,s,o,e;
-	
+	var i=1,y,s,o,e,d=p+'-'+l['name'],f;
+
+	while(jQuery('#'+d).length>0) {
+		i++;
+		d = p + '-' + l['name']+'-'+i;
+	}
+	i = 1;
+	f = 'field-' + d;
+	while(jQuery('#'+f).length>0) {
+		i++;
+		f = 'field-' + d + '-' + i;
+	}
+
 	var neverShow = ['Id','Contact__c','AccountId'];
 	
 	if ( jQuery.inArray( l['name'], neverShow ) >= 0 ) {
@@ -389,7 +453,7 @@ function makeInput(p,l,t) {
 		l['type'] = 'hidden';
 	}
 	
-	o = jQuery('<div></div>').addClass('input-field field clearfix').attr('id','field-'+l['name']);
+	o = jQuery('<div></div>').addClass('input-field field clearfix auto-created-field').attr('id',f);
 
 	e = l['type'];
 	if(t) {
@@ -411,7 +475,7 @@ function makeInput(p,l,t) {
 					'checked':l['value']
 				})
 				.attr({
-					'id':p+l['name'],
+					'id':d,
 					'name':l['name'],
 					'maxlength':l['length'],
 					'type':'checkbox'
@@ -425,7 +489,7 @@ function makeInput(p,l,t) {
 			s = jQuery('<textarea></textarea>')
 			.prop('disabled',( ! l['updateable'] ) )
 			.attr({
-				'id':p+l['name'],
+				'id':d,
 				'name':l['name'],
 				'maxlength':l['length']
 			});
@@ -445,7 +509,7 @@ function makeInput(p,l,t) {
 		case 'multipicklist':
 			s = jQuery('<div></div>')
 				.addClass('checkboxes clearfix')
-				.attr({'id':p+l['name']});
+				.attr({'id':d});
 			
 			for ( i in l['picklistValues'] ) {
 				var w = jQuery('<div></div>').addClass('checkbox-item');
@@ -484,7 +548,7 @@ function makeInput(p,l,t) {
 		case 'picklist':
 			s = jQuery('<select></select>')
 				.attr({
-					'id':p+l['name'],
+					'id':d,
 					'name':l['name']
 				})
 				.prop('disabled',( ! l['updateable'] ) );
@@ -523,7 +587,7 @@ function makeInput(p,l,t) {
 			s = jQuery('<input></input>')
 				.prop('disabled',( ! l['updateable'] ) )
 				.attr({
-					'id':p+l['name'],
+					'id':d,
 					'name':l['name'],
 					'type':(l['type']=='hidden'?'hidden':'text'),
 					'picker':'date'
@@ -531,7 +595,7 @@ function makeInput(p,l,t) {
 		
 			if(l['value']) {
 				if(Array.isArray(l['value'])) {
-					jQuery(s).val(l['value'].join(', '));
+					jQuery(s).val(l['value'][0]);
 				} else {
 					jQuery(s).val(l['value']);
 				}
@@ -542,7 +606,20 @@ function makeInput(p,l,t) {
 			if(t) {
 				s.prop({'disabled':true,'readonly':true});
 			} else {
-				jQuery(s).datepicker({dateFormat:"mm/dd/yy"});
+				var args = {
+						dateFormat:"yy-mm-dd",
+						changeYear:true,
+						changeMonth:true
+				};
+				if(l['name'] == 'Birthdate') {
+					var year = new Date().getFullYear();
+					var minyear = Math.max(1900,year - 125);
+					args.yearRange = ''+minyear+':'+year;
+				}
+				if(jQuery(s).val()) {
+					args.defaultDate = new Date(jQuery(s).val());
+				}
+				jQuery(s).datepicker(args);
 			}
 
 			break;
@@ -551,7 +628,7 @@ function makeInput(p,l,t) {
 			s = jQuery('<input></input>')
 				.prop('disabled',( ! l['updateable'] ) )
 				.attr({
-					'id':p+l['name'],
+					'id':d,
 					'name':l['name'],
 					'maxlength':l['length'],
 					'type':(l['type']=='hidden'?'hidden':'text')
@@ -577,7 +654,7 @@ function makeInput(p,l,t) {
 	jQuery(s).appendTo(o);
 	if( l['type'] != 'hidden' ) {
 		jQuery('<label></label>').html(l['label']).attr({
-			'for':p+l['name']
+			'for':d
 		}).appendTo(o);
 	} else {
 		o.addClass('hidden');

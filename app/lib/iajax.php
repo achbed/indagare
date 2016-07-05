@@ -101,7 +101,7 @@ class AjaxHandler {
 		return self::_email( self::$error_mail_prefix . $subject, $body, self::$error_mail );
 	}
 
-/**
+	/**
 	 * Returns the main instance of the class, creating it if needed.
 	 * @return \indagare\iajax\AjaxHandler
 	 */
@@ -125,6 +125,9 @@ class AjaxHandler {
 
 			add_action( 'wp_ajax_idj-signup', array( $this, 'payment_wp' ) );
 			add_action( 'wp_ajax_nopriv_idj-signup', array( $this, 'payment_wp' ) );
+
+			add_action( 'wp_ajax_idj-newcontact', array( $this, 'newcontact_wp' ) );
+			add_action( 'wp_ajax_nopriv_idj-newcontact', array( $this, 'newcontact_wp' ) );
 
 			return;
 		}
@@ -192,80 +195,6 @@ class AjaxHandler {
 		$result = $mylphp->curl_process( $args );  # use curl methods
 
 		return $result;
-	}
-
-	/**
-	 * DEPRECIATED: Handles processing input from the first tab of the
-	 * signup form.
-	 */
-	public static function signup1() {
-		global $acc;
-
-		$acc = \indagare\users\AccountCreator::getAccountCreator( );
-
-		$acc->user->prefix = $_POST["prefix"];
-		$acc->user->first_name = $_POST["fn"];
-		$acc->user->last_name = $_POST["ln"];
-		$acc->user->middle_initial = $_POST["minitial"];
-		$acc->user->email = $_POST["email"];
-		$acc->user->membership_level = $_POST["l"];
-		$acc->user->membership_years = $_POST["y"];
-		$acc->user->passkey_id = $_POST["tgCode"];
-		$acc->user->primary_street_address = $_POST['s_address1'];
-		$acc->user->primary_street_address2 = $_POST['s_address2'];
-		$acc->user->primary_city = $_POST['s_city'];
-		$acc->user->primary_state = $_POST['s_state'];
-		$acc->user->primary_postal = $_POST['s_zip'];
-		$acc->user->primary_country = $_POST['s_country'];
-		$acc->user->phone_home = $_POST['phone'];
-	}
-
-	/**
-	 * DEPRECIATED: Validates the passkey and sets it for the current user
-	 * if valid. Used by the second tab of the signup form.
-	 */
-	public static function signup21() {
-		global $acc;
-
-		if ( \indagare\users\Passkey::validatePasskey( $_REQUEST["rc"] ) ) {
-			$acc->user->passkey_id = $_REQUEST["rc"];
-			print "true";
-			return;
-		}
-
-		print "false";
-	}
-
-	/**
-	 * DEPRECIATED: Handles processing input from the non-passkey portion of
-	 *  the second tab of the signup form.
-	 */
-	public static function signup22() {
-		global $acc,$name,$email,$phone,$address;
-
-		$acc = \indagare\users\AccountCreator::getAccountCreator( );
-		//print_r($acc);
-		$acc->user->question_1 = $_POST["top_destinations"];
-		$acc->user->question_2 = $_POST["fav_hotels"];
-		$acc->user->question_3 = $_POST["reason_travel"];
-		$acc->user->question_4 = $_POST["next_destination"];
-		//print_r($acc);
-		$name = $acc->user->prefix . " " . $acc->user->first_name . " " . $acc->user->middle_initial . " " . $acc->user->last_name;
-		$email = $acc->user->email;
-		$phone = $acc->user->phone_home;
-		$address = $acc->user->primary_street_address . ", " . $acc->user->primary_street_address2 . ", " . $acc->user->primary_postal . " " . $acc->user->primary_city . " " . $acc->user->primary_state . ", " . $acc->user->primary_country;
-	}
-
-	/**
-	 * DEPRECIATED:  Validates that the login exists.
-	 */
-	public static function chkLogin() {
-		$u = \indagare\users\User::checkLogin( $_POST["login"] );
-		if ( $u ) {
-			print "true";
-		} else {
-			print "false";
-		}
 	}
 
 	/**
@@ -705,7 +634,6 @@ class AjaxHandler {
 		$account = new \WPSF\Account();
 
 		$account['Name'] = $_POST['fn'].' '.$_POST['ln'];
-		$account['WPID__c'] = $id;
 
 		$account['Email__c'] = $_POST['email'];
 		$account['Phone'] = $_POST['phone'];
@@ -727,6 +655,24 @@ class AjaxHandler {
 		$account['ShippingState'] = $_POST['s_state'];
 		$account['ShippingPostalCode'] = $_POST['s_zip'];
 		$account['ShippingCountry'] = $_POST['s_country'];
+
+		$cc_types = array(
+			'amex' => 'American Express',
+			'diners_club_carte_blanche' => 'Diners Club Carte Blanche',
+			'diners_club_international' => 'Diners Club International',
+			'jcb' => 'JCB',
+			'visa_electron' => 'Visa Electron',
+			'visa' => 'Visa',
+			'mastercard' => 'Mastercard',
+			'maestro' => 'Maestro',
+			'discover' => 'Discover',
+		);
+
+		$account['Credit_Card_Number__c'] = $_POST['cc_num'];
+		$account['Credit_Card_Month__c'] = $_POST['cc_mon'];
+		$account['Credit_Card_Year__c'] = $_POST['cc_yr'];
+		$account['Card_CVV_Number__c'] = $_POST['cc_cvv'];
+		$account['Credit_Card_Type__c'] = $cc_types[$_POST['cc_type']];
 
 		// Create and fill in the contact object
 		$contact = new \WPSF\Contact();
@@ -785,6 +731,68 @@ class AjaxHandler {
 		));
 
 		exit();
+	}
+
+	/**
+	 * Handles payment processing and account setup for a paid membership.
+	 * Returns status as a JSON object.
+	 */
+	public static function newcontact_wp() {
+		header('Content-Type: application/json');
+
+		$wpid = get_current_user_id();
+		$aid = get_field( 'wpsf_contactid', 'user_' . $wpid );
+		$account = \WPSF\Contact::get_account( $aid );
+
+		if ( is_wp_error( $account ) || empty( $account ) ) {
+			return wp_send_json_error( $account );
+		}
+
+		if ( empty( $account['Contacts__x'][$aid] ) ) {
+			return wp_send_json_error( new \WP_Error('Malformed account data') );
+		}
+		if ( empty( $account['Contacts__x'][$aid]['Primary_Contact__c'] ) ) {
+			// Not the primary contact.  Disallow.
+			return wp_send_json_error( new \WP_Error('Permission denied') );
+		}
+
+
+		$u = new \WP_User();
+		$u->user_login = $_POST['username'];
+		$u->user_pass = $_POST['password'];
+		$u->user_email = $_POST['email'];
+		$u->user_firstname = $_POST['fn'];
+		$u->user_lastname = $_POST['ln'];
+		$u->roles = array('subscriber');
+		$id = wp_insert_user( $u );
+
+		if ( is_wp_error( $id ) ) {
+			return wp_send_json_error( new \WP_Error('WP User creation failed') );
+		}
+
+		// Create and fill in the contact object
+		$contact = new \WPSF\Contact();
+		$contact['FirstName'] = $_POST['fn'];
+		$contact['LastName'] = $_POST['ln'];
+
+		$contact['Phone'] = $_POST['phone'];
+		$contact['Email'] = $_POST['email'];
+		$contact['Primary_Contact__c'] = false;
+		$contact['AccountId'] = $account['Id'];
+
+		// Save everything to Salesforce
+		$cid = $contact->create();
+		if ( is_wp_error( $cid ) ) {
+			wp_delete_user( $id );
+			return wp_send_json_error( new \WP_Error('Contact creation failed') );
+		}
+
+		/** I HATE WORKAROUNDS LIKE THIS. Just let me save via the name dammit. **/
+		global $wpsf_acf_fields;
+		update_field( $wpsf_acf_fields['wpsf_contactid'], $cid, 'user_'.$id );
+
+		$contact = new \WPSF\Contact( $cid );
+		return wp_send_json_success( $contact->toArray() );
 	}
 
 	/**

@@ -2354,15 +2354,17 @@ body.modalmap #map-buttons-container { position: fixed; right: 1px; /*  bottom: 
 
 .detail-element { padding: 1em; border: 1px solid #bae0e5; border-top: none; }
 .detail-element#account-detail { border: 1px solid #1471c0; border-top: none; }
-.detail-element label { display: block; position: absolute; top: 0; font-size: 75%; margin-top: 0.625em; left: 1.5em; color: #888; z-index: 0; }
+.detail-element label { display: block; position: absolute; top: 0; font-size: 75%; padding-top: 0.625em; padding-left: 1.5em; color: #888; z-index: 0; width: 100%; }
 .detail-element label.checkbox { position: relative; font-size: 100%; margin: 0; width: auto; display: block; }
 .detail-element div.checkboxes, .detail-element select, .detail-element textarea, .detail-element input { width: 100%; border: 2px solid #E7E7E7; padding: 1.5em 1em 0.5em; -webkit-border-radius: 0.25em; border-radius: 0.25em; display: block; position: relative; background: transparent; z-index: 1; }
+.detail-element select + label:after { content: '\f0d7'; display: block; position: absolute; font-size: 1.5em; font-family: icomoon; top: 0; right: 0; padding-top: 1em; padding-right: 0.5em; }
 .detail-element div.checkboxes { text-align: center; }
 .detail-element div.checkboxes input[type="checkbox"] { width: 1em; height: 1em; display: inline-block; margin: 0.5em 1em 0.5em 0; position: relative; top: 0.125em; }
 .detail-element div.checkboxes .checkbox-label { display: inline-block; position: relative; }
 .detail-element div.checkboxes .checkbox-item { width: 90%; max-width: 20em; float: left; display: block; padding: 0; margin: 0.125em; text-align: left; }
 .detail-element textarea { resize: vertical; }
-.detail-element .input-field { width: 100%; position: relative; padding: .125em 0; }
+.detail-element > form > *, .detail-element .input-field { width: 100%; position: relative; padding: .125em 0; display: block; float: left; }
+.detail-element #contact .input-field { max-width: 100%; width: auto; }
 
 .bar-element { background: #d2eef2; padding: 0.5em 1em; cursor: pointer; border: 1px solid #bae0e5; border-top: none; border-bottom: none; }
 .bar-element#account-bar { background: #1471c0; color: white; border: 1px solid #1471c0; border-top: none; border-bottom: none; }
@@ -2372,18 +2374,20 @@ body.modalmap #map-buttons-container { position: fixed; right: 1px; /*  bottom: 
 .bar-element .bar-item label { padding-right: 0.5em; }
 .bar-element .bar-item-right { float: right; }
 
+.jconfirm-box .detail-element { border: none; }
+
 #profile-detail { padding: 0; }
 
 .card-list { width: 100%; padding: 0; margin: 0; text-align: center; position: relative; }
 
-.card-item { max-width: 20em; width: 90%; border: 0.5em solid #eee; background: #fff; padding: 0.5em; margin: 1em; display: inline-block; text-align: center; border-radius: 0.5em; position: relative; }
+.card-item { max-width: 20em; width: 90%; border: 0.5em solid #eee; background: #fff; padding: 0.5em; margin: 1em; display: inline-block; float: left; text-align: center; border-radius: 0.5em; position: relative; }
 .card-item.card-item-button { background: #eee; }
 
 a.card-button-large:link, a.card-button-large:hover, a.card-button-large:active, a.card-button-large:visited { width: 100%; text-align: center; padding: .5em 0; background: green; border-radius: 0.25em; color: white; display: inline-block; position: relative; margin-top: 1em; }
 a.card-button-large.card-delete-button { background: #aa0000; }
 a.card-button-large.processing { background: #888 url("images/preloader.gif") no-repeat center; text-indent: -999em; }
 
-.card-list a.card-button-large { width: 90%; }
+.card-list .card-item-button a.card-button-large { width: 90%; margin-top: 0; }
 
 .jconfirm .jconfirm-box { max-width: 90%; width: 25em; margin: 0 auto; }
 
@@ -2394,6 +2398,15 @@ button.btn.btn-warning { background: #ffe500; color: black !important; }
 button.btn.btn-warning:hover, button.btn.btn-warning:active { background: #e5cf00; }
 button.btn.btn-danger { background: #aa0000; color: white !important; }
 button.btn.btn-danger:hover, button.btn.btn-danger:active { background: #880000; }
+
+#contact #field-contact-Birthdate, #contact #field-contact-HomePhone, #contact #field-contact-AssistantName, #contact #field-contact-MailingStreet, #contact #field-contact-OtherStreet { clear: both; }
+#contact #field-contact-Salutation { width: 7em; }
+#contact #field-contact-Title { width: 12em; }
+#contact #field-contact-FirstName, #contact #field-contact-LastName { width: 23em; }
+#contact #field-contact-AssistantName, #contact #field-contact-Birthdate, #contact #field-contact-Anniversary_Date__c, #contact #field-contact-Assistant_Email__c { width: 32.5em; }
+#contact #field-contact-MailingCity, #contact #field-contact-MailingState, #contact #field-contact-MailingPostalCode, #contact #field-contact-MailingCountry, #contact #field-contact-OtherCity, #contact #field-contact-OtherState, #contact #field-contact-OtherPostalCode, #contact #field-contact-OtherCountry { width: 16.25em; }
+#contact #field-contact-MobilePhone, #contact #field-contact-Phone, #contact #field-contact-HomePhone { width: 21.66em; }
+#contact #field-contact-Email, #contact #field-contact-MailingStreet, #contact #field-contact-OtherStreet { width: 65em; }
 
 .destinationlist-wrapper { display: block; min-height: 270px; }
 

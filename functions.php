@@ -248,6 +248,15 @@ function childtheme_header_style() {
 }
 
 
+function ajax_export_destinations() {
+	export_destinations( true );
+	export_hotels( true );
+	wp_send_json_success();
+}
+add_action( 'wp_ajax_do-export', 'ajax_export_destinations' );
+add_action( 'wp_ajax_nopriv_do-export', 'ajax_export_destinations' );
+
+
 /**
  * Custom Image Header Admin Callback
  *
@@ -8165,7 +8174,7 @@ function export_hotels( $flush = true ) {
 
 	global $post;
 
-	if ( $post->post_type == 'hotel' ) {
+	//if ( $post->post_type == 'hotel' ) {
 
 		$args = array('numberposts' => -1, 'post_type' => 'hotel', 'orderby' => 'name', 'order' => 'ASC', 'post_status' => 'publish', 'fields' => 'ids');
 		$hotels = get_posts($args);
@@ -8218,7 +8227,7 @@ function export_hotels( $flush = true ) {
 
 		$jsonhotelsurls = json_encode($datahotelsurls);
 		file_put_contents( $_SERVER['DOCUMENT_ROOT'].'/export/datahotelsurls.json', $jsonhotelsurls);
-	}
+	//}
 
 	export_bookingwidget();
 }

@@ -3151,10 +3151,11 @@ body.modalmap #map-buttons-container {
     position: absolute;
     top: 0;
     font-size: 75%;
-    margin-top: 0.625em;
-    left:1.5em;
+    padding-top: 0.625em;
+    padding-left:1.5em;
     color: #888;
     z-index:0;
+    width:100%;
     
     &.checkbox {
       position: relative;
@@ -3180,6 +3181,17 @@ body.modalmap #map-buttons-container {
     z-index:1;
   }
   
+  select+label:after {
+    content: '\f0d7';
+    display: block;
+    position: absolute;
+    font-size: 1.5em;
+    font-family: icomoon;
+    top: 0;
+    right: 0;
+    padding-top: 1em;
+    padding-right: 0.5em;
+  }
 
   div.checkboxes {
     input[type="checkbox"] {
@@ -3211,10 +3223,18 @@ body.modalmap #map-buttons-container {
 
   textarea {resize: vertical;}
 
+  >form>*,
   .input-field {
     width: 100%;
     position: relative;
     padding: .125em 0;
+    display: block;
+    float: left;
+  }
+  
+  #contact .input-field {
+    max-width:100%;
+    width:auto;
   }
 }
 
@@ -3256,6 +3276,10 @@ body.modalmap #map-buttons-container {
   }
 }
 
+.jconfirm-box .detail-element {
+  border: none;
+}
+
 
 #profile-detail {
   padding: 0;
@@ -3277,6 +3301,7 @@ body.modalmap #map-buttons-container {
   padding: 0.5em;
   margin: 1em;
   display:inline-block;
+  float:left;
   text-align: center;
   border-radius: 0.5em;
   position: relative;
@@ -3310,8 +3335,9 @@ a.card-button-large {
   }
 }
 
-.card-list a.card-button-large {
+.card-list .card-item-button a.card-button-large {
   width: 90%;
+  margin-top:0;
 }
 
 .jconfirm .jconfirm-box {
@@ -3349,5 +3375,60 @@ button.btn {
     &:hover, &:active {
       background:#880000;
     }
+  }
+}
+
+$formwidth:65em;
+// Account Field widths
+#contact  {
+  #field-contact-Birthdate,
+  #field-contact-HomePhone,
+  #field-contact-AssistantName,
+  #field-contact-MailingStreet,
+  #field-contact-OtherStreet {
+    clear:both;
+  }
+  
+  #field-contact-Salutation {
+      width: 7em;
+  }
+  
+  #field-contact-Title {
+      width: 12em;
+  }
+  
+  #field-contact-FirstName,
+  #field-contact-LastName {
+      width: floor( ( $formwidth - 7 - 12 ) / 2 * 100 ) / 100;
+  }
+  
+  #field-contact-AssistantName,
+  #field-contact-Birthdate,
+  #field-contact-Anniversary_Date__c,
+  #field-contact-Assistant_Email__c {
+      width: floor( $formwidth / 2 * 100 ) / 100;
+  }
+  
+  #field-contact-MailingCity,
+  #field-contact-MailingState,
+  #field-contact-MailingPostalCode,
+  #field-contact-MailingCountry,
+  #field-contact-OtherCity,
+  #field-contact-OtherState,
+  #field-contact-OtherPostalCode,
+  #field-contact-OtherCountry {
+      width: floor( $formwidth / 4 * 100 ) / 100;
+  }
+  
+  #field-contact-MobilePhone,
+  #field-contact-Phone,
+  #field-contact-HomePhone {
+      width: floor( $formwidth / 3 * 100 ) / 100;
+  }
+  
+  #field-contact-Email,
+  #field-contact-MailingStreet,
+  #field-contact-OtherStreet {
+      width:$formwidth;
   }
 }
