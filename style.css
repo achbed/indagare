@@ -2345,18 +2345,17 @@ body.modalmap #map-buttons-container { position: fixed; right: 1px; /*  bottom: 
 
 /* Account Bar stylings */
 .expand-button { padding-right: 0.5em; display: inline-block; line-height: 1em; }
-.expand-button a.button-item .button-icon::after { content: '\f0d7'; display: inline-block; height: 1em; width: 1em; text-align: center; font-family: "icomoon"; font-weight: 800; font-size: 1.375em; padding: 0; margin: 0; line-height: 1em; }
+.expand-button a.button-item .button-icon::after { content: '\f0d7'; display: inline-block; height: 1em; width: 1em; text-align: center; font-family: "icomoon"; font-weight: 800; font-size: 1.375em; padding: 0; margin: 0; line-height: 1em; color: #333; }
 .collapsed .expand-button a.button-item .button-icon::after { content: '\f0da'; }
 
 .collapsed { height: 0px; overflow: hidden; }
 .collapsed.bar-element { height: auto; }
 .collapsed.detail-element { padding: 0; }
 
-.detail-element { padding: 1em; border: 1px solid #bae0e5; border-top: none; }
-.detail-element#account-detail { border: 1px solid #1471c0; border-top: none; }
+.detail-element { padding: 1em; border: 1px solid #ccc; border-top: none; }
 .detail-element label { display: block; position: absolute; top: 0; font-size: 75%; padding-top: 0.625em; padding-left: 1.5em; color: #888; z-index: 0; width: 100%; }
-.detail-element label.checkbox { position: relative; font-size: 100%; margin: 0; width: auto; display: block; }
-.detail-element div.checkboxes, .detail-element select, .detail-element textarea, .detail-element input { width: 100%; border: 2px solid #E7E7E7; padding: 1.5em 1em 0.5em; -webkit-border-radius: 0.25em; border-radius: 0.25em; display: block; position: relative; background: transparent; z-index: 1; }
+.detail-element label.checkbox { position: relative; font-size: 100%; margin: 0; width: auto; display: block; padding-top: 0.5em; padding-bottom: 0.5em; }
+.detail-element div.checkboxes, .detail-element select, .detail-element textarea, .detail-element input { width: 100%; border: 2px solid #ccc; padding: 1.5em 1em 0.5em; -webkit-border-radius: 0.25em; border-radius: 0.25em; display: block; position: relative; background: transparent; z-index: 1; }
 .detail-element select + label:after { content: '\f0d7'; display: block; position: absolute; font-size: 1.5em; font-family: icomoon; top: 0; right: 0; padding-top: 1em; padding-right: 0.5em; }
 .detail-element div.checkboxes { text-align: center; }
 .detail-element div.checkboxes input[type="checkbox"] { width: 1em; height: 1em; display: inline-block; margin: 0.5em 1em 0.5em 0; position: relative; top: 0.125em; }
@@ -2366,9 +2365,9 @@ body.modalmap #map-buttons-container { position: fixed; right: 1px; /*  bottom: 
 .detail-element > form > *, .detail-element .input-field { width: 100%; position: relative; padding: .125em 0; display: block; float: left; }
 .detail-element #contact .input-field { max-width: 100%; width: auto; }
 
-.bar-element { background: #d2eef2; padding: 0.5em 1em; cursor: pointer; border: 1px solid #bae0e5; border-top: none; border-bottom: none; }
-.bar-element#account-bar { background: #1471c0; color: white; border: 1px solid #1471c0; border-top: none; border-bottom: none; }
-.bar-element#account-bar .expand-button, .bar-element#account-bar .expand-button a, .bar-element#account-bar .expand-button a:link, .bar-element#account-bar .expand-button a:hover, .bar-element#account-bar .expand-button a:active, .bar-element#account-bar .expand-button a:visited { color: white; }
+.bar-element { background: #f1f1f1; padding: 0.5em 1em; cursor: pointer; border: 1px solid #ccc; border-top: none; border-bottom: none; }
+.bar-element#status-bar { background: #1471c0; color: white; border: 1px solid #1471c0; border-top: none; border-bottom: none; cursor: auto; }
+.bar-element#status-bar .expand-button, .bar-element#status-bar .expand-button a, .bar-element#status-bar .expand-button a:link, .bar-element#status-bar .expand-button a:hover, .bar-element#status-bar .expand-button a:active, .bar-element#status-bar .expand-button a:visited { color: white; }
 .bar-element > * { float: left; }
 .bar-element .bar-item { margin: 0 2em 0 0; }
 .bar-element .bar-item label { padding-right: 0.5em; }

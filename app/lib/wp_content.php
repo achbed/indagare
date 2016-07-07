@@ -4,7 +4,6 @@ include_once 'user.php';
 include_once 'db.php';
 
 class WPContent {
-
 	public static function getContent($page) {
 		switch ($page) {
 			case "signup" :
@@ -19,6 +18,8 @@ class WPContent {
 	private static function getAccount() {
 		$content = "<script>\n";
 		$content .= "var blank = {};\n";
+		$a = new \WPSF\Account();
+		$content .= "blank.Account = " . json_encode( $a->toArray(), JSON_PRETTY_PRINT ) . ";\n";
 		$a = new \WPSF\Contact();
 		$content .= "blank.Contact = " . json_encode( $a->toArray(), JSON_PRETTY_PRINT ) . ";\n";
 		$a = new \WPSF\PassportVisa();

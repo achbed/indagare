@@ -1,9 +1,12 @@
-<div id="account-bar" class="collapsed bar-element clearfix" collapse-match="#account-detail" collapse-close="#contact-bar,#contact-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
-	<div class="expand-button"><a class="button-item" href="#"><span class="button-icon"></span></a></div>
+<div id="status-bar" class="bar-element clearfix">
+	<div class="bar-item-right bar-item" id="contact-select-bar-item" style="display:none;"><label for="contactpulldown">Contact:</label><select name="contactselect" id="contactselect"></select></div>
 	<div class="bar-item"><label class="hidden" for="account-bar-name">Account:</label><span id="account-bar-name" form-data-source="Account" form-data-field="Name"></span></div>
 	<div class="bar-item"><label class="hidden" for="account-bar-status">Membership Level:</label><span id="account-bar-status" form-data-source="Membership" form-data-field="Name"></span></div>
 	<div class="bar-item"><label for="account-bar-end">Valid Through</label><span id="account-bar-end" form-data-source="Account" form-data-field="Membership_End_Date__c"></span></div>
-	<div class="bar-item-right bar-item" id="contact-select-bar-item"><label for="contactpulldown">Contact:</label><select name="contactselect" id="contactselect"></select></div>
+</div>
+<div id="account-bar" class="collapsed bar-element clearfix" collapse-match="#account-detail" collapse-close="#contact-bar,#contact-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
+	<div class="expand-button"><a class="button-item" href="#"><span class="button-icon"></span></a></div>
+	<div class="bar-item">Membership Details</div>
 </div>
 <div id="account-detail" class="collapsed detail-element clearfix" collapse-match="#account-bar" collapse-close="#contact-bar,#contact-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
 	<form id="account-detail-form" form-object="Account" 
@@ -15,12 +18,6 @@
 	<form id="account-membership-detail-form" form-object="Membership" form-fields="Id,Name">
 		<div class="loading">Loading...</div>
 	</form>
-    <form id="account-detail-form-cc" class="hide-until-load">
-        <div class="field input-field clearfix validate"><label>Name on Card</label><input type="text" name="cc_holder" id="cc_holder"><span class="errmsg">Please enter the cardholder name.</span></div>
-        <div class="field input-field clearfix validate"><label>Credit Card Number</label><input type="text" name="cc_num" id="cc_num"><span class="errmsg">Please enter a valid credit card number.</span></div>
-        <div class="field input-field clearfix validate noicon"><label>Expiration Date</label><span id="cc-month-input" class="form-item"><select class="customselectdyn" name="cc_month" id="cc_month"></select></span> / <span id="cc-year-input" class="form-item"><select class="customselectdyn" name="cc_year" id="cc_year"></select></span><span class="errmsg">Please select a valid credit card expiration date.</span></div>
-        <div class="field input-field clearfix validate ccv-field"><label>CVV</label><input class="small" type="text" name="ccv" id="ccv"><span  class="errmsg">Please enter the security code on the back of your credit card.</span></div>
-    </form>
 </div>
 
 <div id="contact-bar" class="bar-element clearfix" collapse-match="#contact-detail" collapse-close="#account-bar,#account-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">

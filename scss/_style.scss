@@ -3110,6 +3110,7 @@ body.modalmap #map-buttons-container {
     padding:0;
     margin:0;
     line-height: 1em;
+    color:#333;
   }
   
   .collapsed & {
@@ -3138,13 +3139,8 @@ body.modalmap #map-buttons-container {
 
 .detail-element {
   padding:1em;
-  border: 1px solid #bae0e5;
+  border: 1px solid #ccc;
   border-top: none;
-  
-  &#account-detail {
-    border: 1px solid #1471c0;
-    border-top: none;
-  }
   
   label {
     display: block;
@@ -3163,6 +3159,8 @@ body.modalmap #map-buttons-container {
       margin: 0;
       width: auto;
       display: block;
+      padding-top:0.5em;
+      padding-bottom:0.5em;
     }  
   }
   
@@ -3171,7 +3169,7 @@ body.modalmap #map-buttons-container {
   textarea,
   input {
     width: 100%;
-    border: 2px solid #E7E7E7;
+    border: 2px solid #ccc;
     padding: 1.5em 1em 0.5em;
     -webkit-border-radius: 0.25em;
     border-radius: 0.25em;
@@ -3239,19 +3237,20 @@ body.modalmap #map-buttons-container {
 }
 
 .bar-element {
-  background: #d2eef2;
+  background: #f1f1f1;
   padding: 0.5em 1em;
   cursor: pointer;
-  border: 1px solid #bae0e5;
+  border: 1px solid #ccc;
   border-top: none;
   border-bottom: none;
   
-  &#account-bar {
+  &#status-bar {
     background: #1471c0;
     color: white;
     border: 1px solid #1471c0;
     border-top: none;
     border-bottom: none;
+    cursor:auto;
     
     .expand-button{
       &,a,a:link,a:hover,a:active,a:visited{

@@ -5,24 +5,18 @@ if (!Array.isArray) {
   };
 }
 
-var user;
-if(!user) {
-	user = {};
-	user.Account = null;
-	user.Contacts = [];
+var SFData;
+if(!SFData) {
+	SFData = {};
+	SFData.Account = null;
+	SFData.Contacts = [];
+	SFData.def = {};
 }
 var getting = {};
 
-/*
-this.tabber1 = new Yetii({
-        id: 'tab-container',
-        class: 'tab'
-});
-*/
-
 jQuery(document).on('click','#profile-passport-new',function(e) {
 	e.preventDefault();
-	var i = newCardItem('passport',blank.PassportVisa);
+	var i = newCardItem('passport',getBlank('PassportVisa'));
 	var t = jQuery('#profile-passports');
 	var y = t.find('.card-item-passport').last();
 	if( !y.length ) {
@@ -35,7 +29,7 @@ jQuery(document).on('click','#profile-passport-new',function(e) {
 
 jQuery(document).on('click','#profile-freq-new',function(e) {
 	e.preventDefault();
-	var i = newCardItem('freq',blank.FrequentTravel);
+	var i = newCardItem('freq',getBlank('FrequentTravel'));
 	var t = jQuery('#profile-passports');
 	var y = t.find('.card-item-freq').last();
 	if( !y.length ) {
@@ -54,6 +48,12 @@ jQuery(document).on('click','.card-save-button',function(e) {
 		postdata = getFormData(f),
 		i,id_set=false,tr_set=(type!='PassportVisa');
 	
+	for(i in postdata) {
+		if(i == 'Id') {
+			id_set = !!(postdata[i]);
+		}
+	}
+	
 	postdata.push({name:'action',value:'wpsf-putobject'});
 	postdata.push({name:'objectType',value:type});
 	
@@ -67,7 +67,62 @@ jQuery(document).on('click','.card-save-button',function(e) {
 				content:result.data[0]
 			});
 		} else {
-			f.find('[name=Id]').val(result.data.Id.value);
+			var newId = result.data.Id;
+			f.find('[name=Id]').val(newId);
+			switch(type) {
+				case 'Contact':
+					if(!id_set) {
+						SFData.Contacts.push(result.data);
+						return;
+					}
+					
+					for ( i in SFData.Contacts ) {
+						if ( SFData.Contacts[i].Id == newId ) {
+							SFData.Contacts[i] = result.data;
+							return;
+						}
+					}
+					break;
+					
+				case 'PassportVisa':
+					for ( i in SFData.Contacts ) {
+						if ( SFData.Contacts[i].Id != result.data.Contact__c )
+							continue;
+						
+						if(!id_set) {
+							SFData.Contacts[i].Passport_Visa__x.push(result.data);
+							return;
+						}
+						
+						for ( j in SFData.Contacts[i].Passport_Visa__x ) {
+							if ( SFData.Contacts[i].Passport_Visa__x[j].Id == newId ) {
+								SFData.Contacts[i].Passport_Visa__x[j] = result.data;
+								return;
+							}
+						}
+					}
+					break;
+					
+				case 'FrequentTravel':
+					for ( i in SFData.Contacts ) {
+						if ( SFData.Contacts[i].Id != result.data.Contact__c )
+							continue;
+						
+						if(!id_set) {
+							SFData.Contacts[i].Frequent_Travel__x.push(result.data);
+							return;
+						}
+						
+						for ( j in SFData.Contacts[i].Frequent_Travel__x ) {
+							if ( SFData.Contacts[i].Frequent_Travel__x[j].Id != newId )
+								continue;
+							
+							SFData.Contacts[i].Frequent_Travel__x[j] = result.data;
+							return;
+						}
+					}
+					break;
+			}
 		}
 	}).always(function(){
 		jQuery(e.target).removeClass('processing').prop({disabled:false});
@@ -107,6 +162,7 @@ jQuery(document).on('click','.card-delete-button',function(e) {
     					});
     				} else {
             			f.parent().remove();
+            			// @TODO: Remove from the data stream too.
     				}
     			}).always(function(){
     				jQuery(e.target).removeClass('processing').prop({disabled:false});
@@ -148,6 +204,67 @@ jQuery(document).on('change','#contactselect',function(){
 	contactSelectionChange();
 });
 
+jQuery(document).on('change','select',function(e){
+	var n=jQuery(e.target).attr('name');
+	updateControlledSelect(n);
+});
+
+function updateControlledSelect(n) {
+	if(!n) {
+		jQuery('select[controlfield]').each(function(x,i){
+			updateControlledSelect(jQuery(i).attr('controlfield'));
+		})
+		return;
+	}
+
+	jQuery('select[controlfield="'+n+'"]').each(function(x,i){
+		i = jQuery(i);
+		if(!i.siblings('.select-data').length) {
+			jQuery('<div></div>').addClass('hidden select-data').html(i.html()).appendTo(i.parent());
+		}
+		
+		var p = parseInt(jQuery('select[name="'+n+'"]').prop('selectedIndex'));
+		i.html('');
+		i.siblings('.select-data').first().children('option').each(function(x,c){
+			c = jQuery(c);
+			var f = c.attr('validfor');
+			if(!f) {
+				i.append(c.clone());
+				return;
+			}
+			
+			var jj=hexMapMatch(f,p);
+			if(jj)
+				i.append(c.clone());
+		});
+		if(i.children().length == 1) {
+			i.html('').append(jQuery('<option></option>').attr('value',''));
+		}
+		var r = i.attr('startvalue');
+		if(r && i.find('[value="'+r+'"]').length) {
+			i.val(r);
+		}
+	});
+}
+
+function hexMapMatch(a,b) {
+	var c=a.split(''),d,e=0;
+	d=parseInt(c.pop(),16);
+	e=1;
+	b--;
+	while(b>0) {
+		e <<= 1;
+		b--;
+		if(e>8) {
+			if(!c.length) 
+				return 0;
+			d=parseInt(c.pop(),16);
+			e=1;
+		}
+	};
+	return d&e;
+}
+
 jQuery(document).on('click','#contact-select-bar-item',function(e){
 	e.preventDefault();
 	e.stopPropagation();
@@ -158,6 +275,9 @@ jQuery(document).on('click','.bar-element',function(e){
 		a = p.attr('collapse-match'),
 		b = p.attr('collapse-open'),
 		c = p.attr('collapse-close');
+	if(p.attr('id') == 'status-bar') {
+		return;
+	}
 	e.preventDefault();
 	if(b) {
 		jQuery(b).removeClass('collapsed');
@@ -183,15 +303,36 @@ jQuery(document).ready(function(){
 	getAccount();
 });
 
+jQuery.ajax("/wp-admin/admin-ajax.php",{ data:{ action:'wpsf-getdef' } })
+	.done(function(result) {
+		if(result.success) {
+			SFData.def = result.data;
+		}
+	});
+
 function getFormData(f) {
 	var r = [];
 	jQuery(f).find('select,input,textarea').each(function(x,i){
-		var j = jQuery(i), n = j.attr('name'), v = j.val(), t = j.attr('picker');
+		var j = jQuery(i), n = j.attr('name'), v = j.val(), t;
 		if(n) {
-			if(t == 'date') {
-				v = jQuery(j).datepicker('getDate');
+			if ( j.attr('picker') == 'date' ) {
+				v = j.datepicker('getDate');
 				if(v)
 					v = v.toISOString();
+			} else if( j.attr('type') == 'checkbox' ) {
+				// Checkbox!  
+				if ( ! j.prop('checked') ) {
+					return;
+				}
+				
+				// Try to append the value
+				for(t in r) {
+					if(t == n) {
+						r[t] += ';' + j.attr('check-value');
+						return;
+					}
+				}
+				v = j.attr('check-value');
 			}
 			r.push({name:n,value:v});
 		}
@@ -207,9 +348,9 @@ function getAccount() {
 			action : "wpsf-getaccount",
 		} 
 	}).done(function(result) {
-		user.Account = result.data;
-		user.Membership = user.Account.Membership__x;
-		user.Contacts = user.Account.Contacts__x;
+		SFData.Account = result.data;
+		SFData.Membership = SFData.Account.Membership__x;
+		SFData.Contacts = SFData.Account.Contacts__x;
 		jQuery('[form-object]').addClass('needs-reload');
 		updateAccountBar();
 		getting.account = false;
@@ -217,31 +358,43 @@ function getAccount() {
 	});
 }
 
+function getBlank(i) {
+	if(!SFData.def.hasOwnProperty(i)) {
+		return {};
+	}
+	var r={},x;
+	for(x in SFData.def[i]) {
+		r[x] = SFData.def[i][x].defaultValue;
+	}
+	return r;
+}
+
 function updateContacts() {
-	if ( ! user.Contacts ) {
+	if ( ! SFData.Contacts ) {
 		return;
 	}
 	jQuery('#contactselect').html('');
 	var first = null;
-	for( c in user.Contacts ) {
+	for( c in SFData.Contacts ) {
 		if(!first) first = c;
-		var i = user.Contacts[c];
+		var i = SFData.Contacts[c];
 		jQuery('<option></option>')
-			.attr({value:i.Id.value})
-			.html(i.Name.value)
+			.attr({value:i.Id})
+			.html(i.Name)
 			.appendTo('#contactselect');
 	}
-	if ( user.Account.IsPrimaryContact__x ) {
+	if ( SFData.Account.IsPrimaryContact__x ) {
 		jQuery('<option></option>')
 			.attr({value:''})
 			.html('Add new contact...')
 			.appendTo('#contactselect');
+		jQuery('#contact-select-bar-item').show();
 	}
-	jQuery('#contactselect').val( user.Contacts[first].Id.value ).trigger('change');
+	jQuery('#contactselect').val( SFData.Contacts[first].Id ).trigger('change');
 }
 
 function contactSelectionChange() {
-	if ( ! user.Contacts ) {
+	if ( ! SFData.Contacts ) {
 		return;
 	}
 	var id = jQuery('#contactselect').val();
@@ -252,22 +405,22 @@ function contactSelectionChange() {
 }
 
 function contactData(id) {
-	for(c in user.Contacts) {
-		if ( id == user.Contacts[c].Id.value ) {
-			return user.Contacts[c];
+	for(c in SFData.Contacts) {
+		if ( id == SFData.Contacts[c].Id ) {
+			return SFData.Contacts[c];
 		}
 	}
 	return null;
 }
 
 function updateAccountBar() {
-	jQuery('#account-bar').find('[form-data-field]').each(function(x,f){
+	jQuery('.bar-element').find('[form-data-field]').each(function(x,f){
 		var d = jQuery(f).attr('form-data-source');
-		if(!d || !user.hasOwnProperty(d)) return;
-		d = user[d];
+		if(!d || !SFData.hasOwnProperty(d)) return;
+		d = SFData[d];
 		var i = jQuery(f).attr('form-data-field'), h='';
 		if(d.hasOwnProperty(i)) {
-			h = d[i].value;
+			h = d[i];
 		}
 		jQuery(f).html(h);
 	});
@@ -277,10 +430,10 @@ function newCardItem(y,i) {
 	var c=jQuery('<div></div>').addClass('card-item card-item-'+y),
 		f=jQuery('<form></form>'),
 		p='carditem-'+getIdFromObject(i),
-		z=[],x;
+		z=[],x,o;
 	switch(y) {
 		case 'passport':
-			f.attr('form-object',"PassportVisa");
+			o = "PassportVisa";
 			z = [
 			     'Id',
 			     'Contact__c',
@@ -293,7 +446,7 @@ function newCardItem(y,i) {
 			break;
 			
 		case 'freq':
-			f.attr('form-object',"FrequentTravel");
+			o = "FrequentTravel";
 			z = [
 			     'Id',
 			     'Contact__c',
@@ -307,9 +460,10 @@ function newCardItem(y,i) {
 		    ];
 			break;
 	}
+	f.attr('form-object',o);
 	for(x in i) {
 		if(jQuery.inArray(x,z) >= 0)
-			f.append(makeInput(p,i[x],false));
+			f.append(makeInput(SFData.def[o][x],p,i[x],false));
 	}
 	f.find('input[name="Contact__c"]').val( jQuery('#contactselect').val() );
 	
@@ -323,8 +477,8 @@ function newCardItem(y,i) {
 function getIdFromObject(i){
 	var x,d;
 	for(x in i) {
-		if(i[x]['name']=='Id') {
-			return (i[x]['value']?i[x]['value']:'noid');
+		if(x=='Id') {
+			return (i[x]?i[x]:'noid');
 		}
 	}
 }
@@ -355,9 +509,9 @@ function createNewContact(f) {
 			return false;
 		}
 		
-		user.Contacts.push(result.data);
+		SFData.Contacts.push(result.data);
 		updateContacts();
-		jQuery('#contactselect').val( result.data.Id.value ).trigger('change');
+		jQuery('#contactselect').val( result.data.Id ).trigger('change');
 	});
 }
 
@@ -365,7 +519,7 @@ function updateForms() {
 	jQuery('[form-fields] .auto-created-field').remove();
 	jQuery('[form-fields]').each(function(x,f){
 		var i, 
-			p = user.Account.IsPrimaryContact__x,
+			p = SFData.Account.IsPrimaryContact__x,
 			d = null,
 			y = jQuery(f).attr('id'),
 			z = jQuery(f).attr('form-fields'),
@@ -374,7 +528,7 @@ function updateForms() {
 		switch(a) {
 			case 'Contact':
 				d = contactData(jQuery(f).attr('form-record-id'));
-				p = p || d.IsCurrentUser__x.value;
+				p = p || d.IsCurrentUser__x;
 				
 				jQuery('#profile-passports').empty();
 				
@@ -393,11 +547,11 @@ function updateForms() {
 				break;
 				
 			case 'Account':
-				d = user.Account;
+				d = SFData.Account;
 				break;
 				
 			case 'Membership':
-				d = user.Membership;
+				d = SFData.Membership;
 				break;
 		}
 		z = new String(z).split(',');
@@ -406,38 +560,34 @@ function updateForms() {
 		if(!d) return;
 		for(i in z) {
 			var k = jQuery.trim(z[i]);
-			if(d.hasOwnProperty(k)) {
-				jQuery(f).find('#field-'+d[k].name).remove();
-				jQuery(f).find('.card-save-button').before(makeInput(y,d[k],!p));
+			if(d.hasOwnProperty(k) && SFData.def[a].hasOwnProperty(k)) {
+				jQuery(f).find('[field-instance="'+SFData.def[a][k].name+'"]').remove();
+				var element = makeInput(SFData.def[a][k],y,d[k],!p);
+				jQuery(f).find('.card-save-button').before(element);
 			}
 		}
-		
-		/*
-		jQuery('<button></button>').attr({
-			'type':'submit',
-			'value':'Submit'
-		}).html('Submit').appendTo(f);
-		*/
 		
 		jQuery(f).removeClass('needs-reload');
 	});
 	
+	updateControlledSelect();
 	jQuery.scrollTo('#account-bar',300,{offset:-25});
 }
 
 /**
- * Returns a form element for a given field object and prefix
- * @param p string. ID prefix
- * @param l Object. The field to create an form element for
- * @param t Boolean.  Whether or not the field should be text only and not changable.
- * @returns The form element.
+ * Returns a rendered form element for a given field object and prefix
+ * @param a object. The definition object for the field to render
+ * @param p string. ID prefix for the rendered field input box
+ * @param l mixed. The value for the field
+ * @param t boolean.  Whether or not the field should be text only and not changable.
+ * @returns string. The form element.
  */
-function makeInput(p,l,t) {
-	var i=1,y,s,o,e,d=p+'-'+l['name'],f;
+function makeInput(a,p,l,t) {
+	var i=1,y,s,o,e,d=p+'-'+a['name'],f;
 
 	while(jQuery('#'+d).length>0) {
 		i++;
-		d = p + '-' + l['name']+'-'+i;
+		d = p + '-' + a['name']+'-'+i;
 	}
 	i = 1;
 	f = 'field-' + d;
@@ -448,36 +598,40 @@ function makeInput(p,l,t) {
 
 	var neverShow = ['Id','Contact__c','AccountId'];
 	
-	if ( jQuery.inArray( l['name'], neverShow ) >= 0 ) {
+	if ( jQuery.inArray( a['name'], neverShow ) >= 0 ) {
 		// Never show ID fields
-		l['type'] = 'hidden';
+		a['type'] = 'hidden';
 	}
 	
-	o = jQuery('<div></div>').addClass('input-field field clearfix auto-created-field').attr('id',f);
+	o = jQuery('<div></div>').addClass('input-field field clearfix auto-created-field').attr({'id':f,'field-instance':a['name']});
 
-	e = l['type'];
+	e = a['type'];
 	if(t) {
 		switch(e) {
 			case 'select':
-			case 'country':
-			case 'state':
 			case 'multipicklist':
 			case 'picklist':
+			case 'country':
+			case 'state':
 				e = 'text';
 		}
 	}
+	
+	v = l;
+	if( !v || ( v == 'null' ) ) v = a['defaultValue'];
+	if( v == 'null' ) v = '';
 	
 	switch(e) {
 		case 'boolean':
 			s = jQuery('<input></input>')
 				.prop({
-					'disabled':( ! l['updateable'] ),
-					'checked':l['value']
+					'disabled':( ! a['updateable'] ),
+					'checked':!!v
 				})
 				.attr({
 					'id':d,
-					'name':l['name'],
-					'maxlength':l['length'],
+					'name':a['name'],
+					'maxlength':a['length'],
 					'type':'checkbox'
 			});
 			if(t) {
@@ -487,18 +641,14 @@ function makeInput(p,l,t) {
 			
 		case 'textarea':
 			s = jQuery('<textarea></textarea>')
-			.prop('disabled',( ! l['updateable'] ) )
+			.prop('disabled',( ! a['updateable'] ) )
 			.attr({
 				'id':d,
-				'name':l['name'],
-				'maxlength':l['length']
+				'name':a['name'],
+				'maxlength':a['length']
 			});
 			
-			if(l['value']) {
-				jQuery(s).val(l['value']);
-			} else if (l['defaultValue']) {
-				jQuery(s).val(l['defaultValue']);
-			}
+			jQuery(s).val(v);
 			
 			if(t) {
 				s.prop({'disabled':true,'readonly':true});
@@ -510,19 +660,21 @@ function makeInput(p,l,t) {
 			s = jQuery('<div></div>')
 				.addClass('checkboxes clearfix')
 				.attr({'id':d});
+			var values = new String(v).split(';');
 			
-			for ( i in l['picklistValues'] ) {
+			for ( i in a['picklistValues'] ) {
 				var w = jQuery('<div></div>').addClass('checkbox-item');
-				y = l['picklistValues'][i];
+				y = a['picklistValues'][i];
 				if ( ! y['active'] ) 
 					continue;
 				
 				var chkbox = jQuery('<input></input>').attr({
-					'name':l['name'],
-					'type':'checkbox'
+					'name':a['name'],
+					'type':'checkbox',
+					'check-value':y['value']
 				});
 				
-				if(l['value'] == y['value']) {
+				if(jQuery.inArray(y['value'],values) != -1) {
 					chkbox.prop({'checked':true});
 				}
 				
@@ -544,25 +696,25 @@ function makeInput(p,l,t) {
 			break;
 		
 		case 'select':
-		case 'country':
 		case 'picklist':
 			s = jQuery('<select></select>')
 				.attr({
 					'id':d,
-					'name':l['name']
+					'name':a['name'],
+					'startvalue':v
 				})
-				.prop('disabled',( ! l['updateable'] ) );
+				.prop('disabled',( ! a['updateable'] ) );
 			
-			if(l['controllingField']) {
-				s.attr('controlfield',l['controllingField']);
+			if(a['controllingField']) {
+				s.attr('controlfield',a['controllingField']);
 			}
 			
-			if ( l['nillable'] ) {
+			if ( a['nillable'] ) {
 				jQuery('<option></option>').html('Choose an option...').attr('value','').appendTo(s);
 			}
 			
-			for ( i in l['picklistValues'] ) {
-				y = l['picklistValues'][i];
+			for ( i in a['picklistValues'] ) {
+				y = a['picklistValues'][i];
 				if ( ! y['active'] ) 
 					continue;
 				
@@ -575,33 +727,86 @@ function makeInput(p,l,t) {
 					.appendTo(s);
 			}
 			
-			if(l['value']) {
-				jQuery(s).val(l['value']);
-			} else if (l['defaultValue']) {
-				jQuery(s).val(l['defaultValue']);
-			}
+			jQuery(s).val(v);
 
 			break;
-			
-		case 'date':
-			s = jQuery('<input></input>')
-				.prop('disabled',( ! l['updateable'] ) )
+
+		case 'country':
+			s = jQuery('<select></select>')
 				.attr({
 					'id':d,
-					'name':l['name'],
-					'type':(l['type']=='hidden'?'hidden':'text'),
+					'name':a['name'],
+					'startvalue':v
+				})
+				.prop('disabled',( ! a['updateable'] ) );
+			
+			if ( a['nillable'] ) {
+				jQuery('<option></option>').html('Choose an option...').attr('value','').appendTo(s);
+			}
+			
+			for ( i in SFData.def.Countries ) {
+				y = SFData.def.Countries[i];
+				if ( ! y['active'] ) 
+					continue;
+				
+				jQuery('<option></option>')
+					.html(y['label'])
+					.attr({
+						'value':y['value'],
+						'validfor':y['validFor']
+					})
+					.appendTo(s);
+			}
+			
+			jQuery(s).val(v);
+	
+			break;
+
+
+		case 'state':
+			s = jQuery('<select></select>')
+				.attr({
+					'id':d,
+					'name':a['name'],
+					'controlfield':a['controllingField'],
+					'startvalue':v
+				})
+				.prop('disabled',( ! a['updateable'] ) );
+			
+			if ( a['nillable'] ) {
+				jQuery('<option></option>').html('Choose an option...').attr('value','').appendTo(s);
+			}
+			
+			for ( i in SFData.def.States ) {
+				y = SFData.def.States[i];
+				if ( ! y['active'] ) 
+					continue;
+				
+				jQuery('<option></option>')
+					.html(y['label'])
+					.attr({
+						'value':y['value'],
+						'validfor':y['validFor']
+					})
+					.appendTo(s);
+			}
+			
+			jQuery(s).val(v);
+	
+			break;
+
+		case 'date':
+			s = jQuery('<input></input>')
+				.prop('disabled',( ! a['updateable'] ) )
+				.attr({
+					'id':d,
+					'name':a['name'],
+					'type':(a['type']=='hidden'?'hidden':'text'),
 					'picker':'date'
 			});
-		
-			if(l['value']) {
-				if(Array.isArray(l['value'])) {
-					jQuery(s).val(l['value'][0]);
-				} else {
-					jQuery(s).val(l['value']);
-				}
-			} else if (l['defaultValue']) {
-				jQuery(s).val(l['defaultValue']);
-			}
+			
+			v = new String(v).split('T')[0];
+			jQuery(s).val(v);
 
 			if(t) {
 				s.prop({'disabled':true,'readonly':true});
@@ -611,7 +816,7 @@ function makeInput(p,l,t) {
 						changeYear:true,
 						changeMonth:true
 				};
-				if(l['name'] == 'Birthdate') {
+				if(a['name'] == 'Birthdate') {
 					var year = new Date().getFullYear();
 					var minyear = Math.max(1900,year - 125);
 					args.yearRange = ''+minyear+':'+year;
@@ -626,23 +831,15 @@ function makeInput(p,l,t) {
 			
 		default:
 			s = jQuery('<input></input>')
-				.prop('disabled',( ! l['updateable'] ) )
+				.prop('disabled',( ! a['updateable'] ) )
 				.attr({
 					'id':d,
-					'name':l['name'],
-					'maxlength':l['length'],
-					'type':(l['type']=='hidden'?'hidden':'text')
+					'name':a['name'],
+					'maxlength':a['length'],
+					'type':(a['type']=='hidden'?'hidden':'text')
 			});
 		
-			if(l['value']) {
-				if(Array.isArray(l['value'])) {
-					jQuery(s).val(l['value'].join(', '));
-				} else {
-					jQuery(s).val(l['value']);
-				}
-			} else if (l['defaultValue']) {
-				jQuery(s).val(l['defaultValue']);
-			}
+			jQuery(s).val(v);
 
 			if(t) {
 				s.prop({'disabled':true,'readonly':true});
@@ -652,8 +849,8 @@ function makeInput(p,l,t) {
 	}
 	
 	jQuery(s).appendTo(o);
-	if( l['type'] != 'hidden' ) {
-		jQuery('<label></label>').html(l['label']).attr({
+	if( a['type'] != 'hidden' ) {
+		jQuery('<label></label>').html(a['label']).attr({
 			'for':d
 		}).appendTo(o);
 	} else {
