@@ -348,10 +348,13 @@ function getAccount() {
 			action : "wpsf-getaccount",
 		} 
 	}).done(function(result) {
+		if(!result.success) {
+			alert('Error loading account data!');
+			return;
+		}
 		SFData.Account = result.data;
 		SFData.Membership = SFData.Account.Membership__x;
 		SFData.Contacts = SFData.Account.Contacts__x;
-		jQuery('[form-object]').addClass('needs-reload');
 		updateAccountBar();
 		getting.account = false;
 		updateContacts();
@@ -398,9 +401,7 @@ function contactSelectionChange() {
 		return;
 	}
 	var id = jQuery('#contactselect').val();
-	jQuery('[form-object=Contact]')
-		.attr('form-record-id', id)
-		.addClass('needs-reload');
+	jQuery('[form-object=Contact]').attr('form-record-id', id);
 	updateForms();
 }
 
@@ -414,6 +415,9 @@ function contactData(id) {
 }
 
 function updateAccountBar() {
+	jQuery('[form-object=Account]').attr('form-record-id', SFData.Account.Id);
+	jQuery('[form-object=Membership]').attr('form-record-id', SFData.Membership.Id);
+
 	jQuery('.bar-element').find('[form-data-field]').each(function(x,f){
 		var d = jQuery(f).attr('form-data-source');
 		if(!d || !SFData.hasOwnProperty(d)) return;
@@ -529,6 +533,7 @@ function updateForms() {
 			case 'Contact':
 				d = contactData(jQuery(f).attr('form-record-id'));
 				p = p || d.IsCurrentUser__x;
+				p = !p;
 				
 				jQuery('#profile-passports').empty();
 				
@@ -548,22 +553,30 @@ function updateForms() {
 				
 			case 'Account':
 				d = SFData.Account;
+				p = false;
 				break;
 				
 			case 'Membership':
 				d = SFData.Membership;
+				p = true;
 				break;
 		}
 		z = new String(z).split(',');
 		jQuery(f).find('.loading').remove();
 		jQuery(f).parent().find('.hide-until-load').removeClass('hide-until-load');
 		if(!d) return;
+		var tgt = jQuery(f).find('.card-save-button');
+		if(!tgt.length) p = true;
 		for(i in z) {
 			var k = jQuery.trim(z[i]);
 			if(d.hasOwnProperty(k) && SFData.def[a].hasOwnProperty(k)) {
 				jQuery(f).find('[field-instance="'+SFData.def[a][k].name+'"]').remove();
-				var element = makeInput(SFData.def[a][k],y,d[k],!p);
-				jQuery(f).find('.card-save-button').before(element);
+				var element = makeInput(SFData.def[a][k],y,d[k],p);
+				if(tgt.length) {
+					tgt.before(element);
+				} else {
+					jQuery(f).append(element);
+				}
 			}
 		}
 		

@@ -3150,7 +3150,7 @@ body.modalmap #map-buttons-container {
     padding-top: 0.625em;
     padding-left:1.5em;
     color: #888;
-    z-index:0;
+    z-index:2;
     width:100%;
     
     &.checkbox {
@@ -3234,6 +3234,11 @@ body.modalmap #map-buttons-container {
     max-width:100%;
     width:auto;
   }
+}
+
+textarea[readonly] {
+    background: #e7e7e7;
+    color: #555;
 }
 
 .bar-element {

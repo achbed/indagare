@@ -10,13 +10,14 @@
 </div>
 <div id="account-detail" class="collapsed detail-element clearfix" collapse-match="#account-bar" collapse-close="#contact-bar,#contact-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
 	<form id="account-detail-form" form-object="Account" 
-   		form-fields="Id,Membership_End_Date__c,
+   		form-fields="Id,Name,
    		BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry,
+   		Phone,Email__c,Membership_Status__c,Membership_Start_Date__c,
+   		Credit_Card_Number__c,Credit_Card_Month__c,Credit_Card_Year__c
    		">
        		<div class="loading">Loading...</div>
 	</form>
 	<form id="account-membership-detail-form" form-object="Membership" form-fields="Id,Name">
-		<div class="loading">Loading...</div>
 	</form>
 </div>
 
