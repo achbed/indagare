@@ -3097,6 +3097,8 @@ body.modalmap #map-buttons-container {
 
 /* Account Bar stylings */
 
+/*
+
 .expand-button {
   a.button-item .button-icon::after {
     content: '\f0d7';
@@ -3436,3 +3438,286 @@ $formwidth:65em;
       width:$formwidth;
   }
 }
+*/
+$green: #55ab3f;
+$gray: #808080;
+$black: #000000;
+$blue: #00aeef;
+$orange: #da420b;
+$cyan: #abe1fa;
+$white: #ffffff;
+$formwidth:65em;
+
+#account-tab-container {
+  background: $white;
+  
+      -webkit-transition-duration: 1s;
+       -moz-transition-duration: 1s;
+         -o-transition-duration: 1s;
+            transition-duration: 1s;
+
+  .tab {
+    
+    .field  {
+      margin:0;
+    }
+    
+    label {
+      display: block;
+      margin: 0;
+      min-width: 0;
+      float: none;
+      }
+  }
+  
+  h2 {
+    font-size: 2em;
+    margin: 1em 0 0.5em;
+    width: 100%;
+    display: block;
+    border-bottom: 1px solid $black;
+    padding: 0 0 0.25em;
+    font-weight: 200;
+  }
+
+  ul#account-tab-container-nav {
+    font-size:0.875em;
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid $black;
+    margin: 0;
+    padding: 0;
+    color:$gray;
+    
+    a,a:link,a:visited{
+      color:$gray;
+    }
+    
+    >li {
+      float:left;
+      margin:0 2em 0 0;
+      padding:0 0 0.25em;
+      list-style: none;
+      
+      &.activeli {
+        border-bottom: 3px solid $black;
+        margin-bottom: -2px;
+
+        a,a:link,a:visited {
+          color:$black;
+        }
+      }
+    }
+  }
+  
+
+  form {
+    a.form-edit-link,
+    a.form-save-button { 
+      color:$blue;
+      font-size:0.875em;
+      clear:both;
+    }
+
+    a.form-edit-link { display:block; }
+    a.form-save-button { display:none; }
+    
+    label {
+      display: block;
+      position: absolute;
+      top: 0;
+      padding-top: 0em;
+      padding-left:0em;
+      color: $black;
+      font-weight:bold;
+      z-index:2;
+      width:100%;
+      &:after {
+        content:':';
+      }
+    }
+    
+    div.checkboxes,
+    select,
+    textarea,
+    input {
+      width: 100%;
+      border: 1px solid $white;
+      padding: 1em 0 0.5em;
+      -webkit-border-radius: 0;
+      border-radius: 0;
+      display: block;
+      position: relative;
+      background: transparent;
+      z-index:1;
+      color:$black;
+    }
+
+  div.checkboxes {
+    input[type="checkbox"] {
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+      margin: 0.5em 1em 0.5em 0;
+      position: relative;
+      top: 0.125em;
+    }
+    
+    .checkbox-label {
+        display: inline-block;
+        position: relative;
+    }
+    
+    .checkbox-item {
+      width:90%;
+      max-width:20em;
+      float:left;
+      display:block;
+      padding:0;
+      margin:0.125em;
+      text-align:left;
+    }
+    
+    text-align:center;
+  }
+
+  textarea {resize: vertical;}
+
+  >form>*,
+  .input-field {
+    width: 100%;
+    position: relative;
+    padding: .125em 0;
+    display: block;
+    float: left;
+  }
+  
+
+
+    &.editing {
+      a.form-edit-link { display:none; }
+      a.form-save-button { 
+        display:block; 
+        padding:1em 3em;
+        background: $green;
+        color: white;
+        text-align:center;
+        &.processing {
+          color: $gray;
+          background: transparent 50% 50% no-repeat url('images/preloader.gif');
+          text-indent:-9999em;
+        }
+      }
+      
+      label {
+        font-size: 75%;
+        padding-top: 0.625em;
+        padding-left:1.5em;
+        color: $gray;
+      }
+        
+      div.checkboxes,
+      select,
+      textarea,
+      input {
+        border: 1px solid $gray;
+        padding: 1.5em 1em 0.5em;
+        color: $black;
+      }
+      
+  select+label:after {
+    content: '\f0d7';
+    display: block;
+    position: absolute;
+    font-size: 1.5em;
+    font-family: icomoon;
+    top: 0;
+    right: 0;
+    padding-top: 1em;
+    padding-right: 0.5em;
+  }
+
+    }
+  }
+
+  #field-contact-Birthdate,
+  #field-contact-HomePhone,
+  #field-contact-AssistantName,
+  #field-contact-MailingStreet,
+  #field-contact-OtherStreet {
+    clear:both;
+  }
+  
+  #field-contact-Salutation {
+      width: 7em;
+  }
+  
+  #field-contact-Title {
+      width: 12em;
+  }
+  
+  #field-contact-FirstName,
+  #field-contact-LastName {
+      width: floor( ( $formwidth - 7 - 12 ) / 2 * 100 ) / 100;
+  }
+  
+  #field-contact-AssistantName,
+  #field-contact-Birthdate,
+  #field-contact-Anniversary_Date__c,
+  #field-contact-Assistant_Email__c {
+      width: floor( $formwidth / 2 * 100 ) / 100;
+  }
+  
+  .form-save-button,
+  #field-contact-MailingCity,
+  #field-contact-MailingState,
+  #field-contact-MailingPostalCode,
+  #field-contact-MailingCountry,
+  #field-contact-OtherCity,
+  #field-contact-OtherState,
+  #field-contact-OtherPostalCode,
+  #field-contact-OtherCountry {
+      width: floor( $formwidth / 4 * 100 ) / 100;
+  }
+  
+  #field-contact-MobilePhone,
+  #field-contact-Phone,
+  #field-contact-HomePhone {
+      width: floor( $formwidth / 3 * 100 ) / 100;
+  }
+  
+  #field-contact-Email,
+  #field-contact-MailingStreet,
+  #field-contact-OtherStreet {
+      width:$formwidth;
+  }
+
+}
+
+#account-display-contact-wrapper {
+  position: relative;
+  
+  select {
+    font-size: 2em;
+    font-weight: 200;
+    font-family: 'Helvetica Neue',Arial,sans-serif;
+    padding: 0 1em 0 0;
+    margin: 0;
+    display: inline-block;
+    z-index: 2;
+    position: relative;
+    background: transparent;  }
+
+  &:after {
+    content: '\f0d7';
+    font-size: 2em;
+    color: #00aeef;
+    display: inline-block;
+    font-family: icomoon;
+    z-index: 1;
+    margin: 0 0 0 -1em;
+    line-height: 1em;
+    position: relative;
+      }
+}
+

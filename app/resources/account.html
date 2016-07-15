@@ -1,22 +1,133 @@
+<h1 class="hidden">Account Details</h1>
+<div id="account-tab-container">
+    <ul id="account-tab-container-nav" class="clearfix">
+	    <li><a href="#dashboard">Dashboard</a></li>
+	    <li><a href="#billing">Billing</a></li>
+	    <li><a href="#contact">Contact Details</a></li>
+	    <li><a href="#prefs">Travel Preferences</a></li>
+	    <li><a href="#accounts">Travel Accounts</a></li>
+    </ul>
+
+	<div class="loading">Loading...</div>
+	
+    <div id="account-header-display">
+	    <div id="account-isprimary-display" data-source-object="Account" data-display-if="IsPrimaryContact__x=true" style="display:none;">Primary Account</div>
+	    <div id="account-display-contact-wrapper"><select name="contactselect" id="contactselect"></select></div>
+		<div id="account-display-membership-level">
+			<label class="hidden" for="account-bar-status">Membership
+				Level:</label><span id="account-bar-status" data-source-object="Membership"
+				data-display-field="Name"></span>
+		</div>
+		<div class="renew-wrapper" data-source-object="Account" data-display-if="IsPrimaryContact__x=true" style="display:none;"><a href="#billing">Upgrade/Renew Membership</a></div>
+   		<div class="valid-through">
+   			<label for="account-bar-end">Valid Through</label>
+   			<span id="account-bar-end" data-source-object="Account"
+			data-display-field="Membership_End_Date__c"></span>
+	    </div>
+   		<div class="member-since">
+   			<label for="account-bar-end">Member Since</label>
+   			<span id="account-bar-end" data-source-object="Account"
+			data-display-field="Member_Since__c"></span>
+	    </div>
+    </div>
+    
+    <div class="tab" id="dashboard">
+	    <h2>Get Inspired</h2>
+	    <p>A list of recent articles goes here</p>
+    </div>
+	
+    <div class="tab" id="billing">
+	    <h2>Membership Information</h2>
+	    <div>
+			<form id="account-membership-detail-form" data-source-object="Membership" data-edit-field="Id,Name"></form>
+			<P>@TODO: membership pulldown</P>
+	    </div>
+	    
+	    <h2>Billing Address</h2>
+	    <div>
+			<form id="account-detail-form" data-source-object="Account"
+				data-edit-field="Id,Name,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry">
+				<a class="form-save-button" href="#">Save</a>
+				<a class="form-edit-link" href="#">Edit Billing Address</a>
+			</form>
+	    </div>
+	    
+	    <h2>Payment Type</h2>
+	    <div>
+			<form id="account-detail-form" data-source-object="Account"
+				data-edit-field="Id,Name,Credit_Card_Type__c,Credit_Card_Number__c,Credit_Card_Month__c,Credit_Card_Year__c">
+				<a class="form-save-button" href="#">Save</a>
+				<a class="form-edit-link" href="#">Edit Card Information</a>
+			</form>
+	    </div>
+    </div>
+	
+    <div class="tab" id="contact">
+	    <h2>Contact Details</h2>
+    	<form id="contact" data-source-object="Contact"
+			data-edit-field="Id,Salutation,FirstName,LastName,Title,Birthdate,Anniversary_Date__c">
+			<a class="form-save-button" href="#">Save</a>
+			<a class="form-edit-link" href="#">Edit Contact Details</a>
+	    </form>
+	    
+	    <h2>Address</h2>
+    	<form id="contact" data-source-object="Contact"
+			data-edit-field="Id,
+		        MailingStreet,MailingCity,MailingState,MailingPostalCode,MailingCountry,
+		        OtherStreet,OtherCity,OtherState,OtherPostalCode,OtherCountry">
+			<a class="form-save-button" href="#">Save</a>
+			<a class="form-edit-link" href="#">Edit Address</a>
+	    </form>
+	    
+	    <h2>Email</h2>
+    	<form id="contact" data-source-object="Contact"
+			data-edit-field="Id,Email,AssistantName,Assistant_Email__c">
+			<a class="form-save-button" href="#">Save</a>
+			<a class="form-edit-link" href="#">Edit Email</a>
+	    </form>
+	    
+	    <h2>Telephone</h2>
+    	<form id="contact" data-source-object="Contact"
+			data-edit-field="Id,
+		        HomePhone,Phone,MobilePhone">
+			<a class="form-save-button" href="#">Save</a>
+			<a class="form-edit-link" href="#">Edit Telephone</a>
+	    </form>
+	    
+	    
+    </div>
+	
+    <div class="tab" id="prefs">
+	    <h2>Preferences Tab</h2>
+	    <p>A list of recent articles goes here</p>
+    </div>
+	
+    <div class="tab" id="accounts">
+	    <h2>Travel Accounts Tab</h2>
+	    <p>A list of recent articles goes here</p>
+    </div>
+	
+</div>
+
+<!-- 
 <div id="status-bar" class="bar-element clearfix">
 	<div class="bar-item-right bar-item" id="contact-select-bar-item"
 		style="display: none;">
-		<label for="contactpulldown">Contact:</label><select
-			name="contactselect" id="contactselect"></select>
+		<label for="contactpulldown">Contact:</label>
 	</div>
 	<div class="bar-item">
 		<label class="hidden" for="account-bar-name">Account:</label><span
-			id="account-bar-name" form-data-source="Account"
+			id="account-bar-name" data-source-object="Account"
 			form-data-field="Name"></span>
 	</div>
 	<div class="bar-item">
 		<label class="hidden" for="account-bar-status">Membership
-			Level:</label><span id="account-bar-status" form-data-source="Membership"
+			Level:</label><span id="account-bar-status" data-source-object="Membership"
 			form-data-field="Name"></span>
 	</div>
 	<div class="bar-item">
 		<label for="account-bar-end">Valid Through</label><span
-			id="account-bar-end" form-data-source="Account"
+			id="account-bar-end" data-source-object="Account"
 			form-data-field="Membership_End_Date__c"></span>
 	</div>
 </div>
@@ -31,16 +142,16 @@
 <div id="account-detail" class="collapsed detail-element clearfix"
 	collapse-match="#account-bar"
 	collapse-close="#contact-bar,#contact-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
-	<form id="account-detail-form" form-object="Account"
-		form-fields="Id,Name,
+	<form id="account-detail-form" data-source-object="Account"
+		data-edit-field="Id,Name,
    		BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry,
    		Phone,Email__c,Membership_Status__c,Membership_Start_Date__c,
    		Credit_Card_Number__c,Credit_Card_Month__c,Credit_Card_Year__c
    		">
 		<div class="loading">Loading...</div>
 	</form>
-	<form id="account-membership-detail-form" form-object="Membership"
-		form-fields="Id,Name"></form>
+	<form id="account-membership-detail-form" data-source-object="Membership"
+		data-edit-field="Id,Name"></form>
 </div>
 
 <div id="contact-bar" class="bar-element clearfix"
@@ -51,11 +162,11 @@
 	</div>
 	<div class="bar-item">Contact Details</div>
 </div>
-<div id="contact-detail" class="detail-element clearfix"
+<div id="contact-detail" class="collapsed detail-element clearfix"
 	collapse-match="#contact-bar"
 	collapse-close="#account-bar,#account-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
-	<form id="contact" form-object="Contact"
-		form-fields="Id,Salutation,FirstName,Middle_Name__c,LastName,Title,Birthdate,Anniversary_Date__c,Referred_by__c,
+	<form id="contact" data-source-object="Contact"
+		data-edit-field="Id,Salutation,FirstName,Middle_Name__c,LastName,Title,Birthdate,Anniversary_Date__c,Referred_by__c,
 		        HomePhone,Phone,MobilePhone,Email,AssistantName,Assistant_Email__c,
 		        MailingStreet,MailingCity,MailingState,MailingPostalCode,MailingCountry,
 		        OtherStreet,OtherCity,OtherState,OtherPostalCode,OtherCountry">
@@ -75,8 +186,8 @@
 <div id="pref-detail" class="collapsed detail-element clearfix"
 	collapse-match="#pref-bar"
 	collapse-close="#account-bar,#account-detail,#contact-bar,#contact-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
-	<form id="travel-preferences" form-object="Contact"
-		form-fields="Id,Preferred_Method_of_Contact__c,Phone_Communication_Preferences__c,
+	<form id="travel-preferences" data-source-object="Contact"
+		data-edit-field="Id,Preferred_Method_of_Contact__c,Phone_Communication_Preferences__c,
         		Preferred_Format_to_Receive_Itineraries__c,Hotel_Style__c,Hotel_Amenities__c,
         		Short_Haul_Class_of_Service__c,Long_Haul_Class_of_Service__c,
         		Meal_Choice__c">
@@ -122,8 +233,8 @@
 <div id="quest-detail" class="collapsed detail-element clearfix"
 	collapse-match="#quest-bar"
 	collapse-close="#account-bar,#account-detail,#contact-bar,#contact-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail">
-	<form id="questionnaire" form-object="Contact"
-		form-fields="Id,How_Often_Do_You_Travel__c,How_Do_You_Like_to_Travel__c,
+	<form id="questionnaire" data-source-object="Contact"
+		data-edit-field="Id,How_Often_Do_You_Travel__c,How_Do_You_Like_to_Travel__c,
         		Travel_Planning_Style__c,Who_Do_You_Travel_With__c,Prefer_a_Planned_Out_Schedule__c,
         		Prefer_Doing_Things_on_Own__c,Allergies_Food_Restrictions__c,Type_of_Restaurants_Preferred__c,
         		Beverage_of_Choice__c,Travel_Memories__c,Pet_Peeves__c,Influences__c,Interests__c,
@@ -133,12 +244,19 @@
 	</form>
 </div>
 
+ -->
+
 <script type="text/javascript"
 	src="/wp-content/themes/indagare/app/js/jquery.scrollTo.js"></script>
 <script type="text/javascript"
 	src="/wp-content/themes/indagare/app/js/jquery-confirm.min.js"></script>
 <script type="text/javascript"
 	src="/wp-content/themes/indagare/app/js/account.js"></script>
+<script>
+var tabber1 = new Yetii({
+	id: 'account-tab-container'
+});
+</script>
 
 <div id="new-contact-form" style="display: none !important;">
 	<div class="detail-element clearfix">

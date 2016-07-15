@@ -40,11 +40,18 @@ jQuery(document).on('click','#profile-freq-new',function(e) {
 	jQuery.scrollTo(i,300,{offset:-25});
 });
 
-jQuery(document).on('click','.card-save-button',function(e) {
+jQuery(document).on('click','.form-edit-link',function(e){
+	e.preventDefault();
+	var y=jQuery(e.target).closest('form');
+	y.addClass('editing');
+	updateDisabledState(y);
+});
+
+jQuery(document).on('click','.form-save-button',function(e) {
 	e.preventDefault();
 	jQuery(e.target).addClass('processing').prop({disabled:true});
-	var f = jQuery(e.target).parents('form'),
-		type = f.attr('form-object'),
+	var f = jQuery(e.target).closest('form'),
+		type = f.attr('data-source-object'),
 		postdata = getFormData(f),
 		i,id_set=false,tr_set=(type!='PassportVisa');
 	
@@ -125,14 +132,17 @@ jQuery(document).on('click','.card-save-button',function(e) {
 			}
 		}
 	}).always(function(){
-		jQuery(e.target).removeClass('processing').prop({disabled:false});
+		var t=jQuery(e.target),y=t.closest('form');
+		t.removeClass('processing').prop({disabled:false});
+		y.removeClass('editing');
+		updateDisabledState(y);
 	});
 });
 
 jQuery(document).on('click','.card-delete-button',function(e) {
 	e.preventDefault();
 	var f = jQuery(e.target).parents('form'),
-		type = f.attr('form-object'),
+		type = f.attr('data-source-object'),
 		id = f.find('input[name=Id]').first().val(),
 		postdata = {action:"wpsf-delobject",Id:id,objectType:type};
 	
@@ -355,7 +365,6 @@ function getAccount() {
 		SFData.Account = result.data;
 		SFData.Membership = SFData.Account.Membership__x;
 		SFData.Contacts = SFData.Account.Contacts__x;
-		updateAccountBar();
 		getting.account = false;
 		updateContacts();
 	});
@@ -401,7 +410,7 @@ function contactSelectionChange() {
 		return;
 	}
 	var id = jQuery('#contactselect').val();
-	jQuery('[form-object=Contact]').attr('form-record-id', id);
+	jQuery('[data-source-object=Contact]').attr('form-record-id', id);
 	updateForms();
 }
 
@@ -412,22 +421,6 @@ function contactData(id) {
 		}
 	}
 	return null;
-}
-
-function updateAccountBar() {
-	jQuery('[form-object=Account]').attr('form-record-id', SFData.Account.Id);
-	jQuery('[form-object=Membership]').attr('form-record-id', SFData.Membership.Id);
-
-	jQuery('.bar-element').find('[form-data-field]').each(function(x,f){
-		var d = jQuery(f).attr('form-data-source');
-		if(!d || !SFData.hasOwnProperty(d)) return;
-		d = SFData[d];
-		var i = jQuery(f).attr('form-data-field'), h='';
-		if(d.hasOwnProperty(i)) {
-			h = d[i];
-		}
-		jQuery(f).html(h);
-	});
 }
 
 function newCardItem(y,i) {
@@ -464,7 +457,7 @@ function newCardItem(y,i) {
 		    ];
 			break;
 	}
-	f.attr('form-object',o);
+	f.attr('data-source-object',o);
 	for(x in i) {
 		if(jQuery.inArray(x,z) >= 0)
 			f.append(makeInput(SFData.def[o][x],p,i[x],false));
@@ -519,15 +512,87 @@ function createNewContact(f) {
 	});
 }
 
+function handleDisplayIf() {
+	jQuery('[data-display-if]').each(function(x,f){
+		var d = jQuery(f).attr('data-source-object');
+		if(!d || !SFData.hasOwnProperty(d)) return;
+		d = SFData[d];
+		var i = jQuery(f).attr('data-display-if'), q=i.split('='), i=q[0], v=q[1], h='';
+		if(d.hasOwnProperty(i)) {
+			if(v == 'null') {
+				if(!d[i]) {
+					jQuery(f).show();
+				} else {
+					jQuery(f).hide();
+				}
+				return;
+			}
+			
+			if(v == '!null') {
+				if(!!d[i]) {
+					jQuery(f).show();
+				} else {
+					jQuery(f).hide();
+				}
+				return;
+			}
+			
+			if(v == 'true') v=true;
+			if(v == 'false') v=false;
+			if(v == d[i]) {
+				jQuery(f).show();
+			} else {
+				jQuery(f).hide();
+			}
+		} else {
+			jQuery(f).hide();
+		}
+	});
+}
+
+function handleDisplayField() {
+	jQuery('[data-display-field]').each(function(x,f){
+		var d = jQuery(f).attr('data-source-object');
+		if(!d || !SFData.hasOwnProperty(d)) return;
+		d = SFData[d];
+		var i = jQuery(f).attr('data-display-field'), h='';
+		if(d.hasOwnProperty(i)) {
+			h = d[i];
+		}
+		jQuery(f).html(h);
+	});
+}
+
+function updateDisabledState(d) {
+	if(!d) { d = document; }
+	jQuery(d).find('input,select,textarea').each(function(x,i){
+		var j=jQuery(i), f=j.closest('form');
+		if(!f.length){
+			j.prop({disabled:false,readonly:false});
+			return;			
+		}
+		
+		if(f.hasClass('editing')) {
+			j.prop({disabled:false,readonly:false});
+			return;
+		}
+		
+		j.prop({disabled:true,readonly:true});
+	});
+}
+
 function updateForms() {
-	jQuery('[form-fields] .auto-created-field').remove();
-	jQuery('[form-fields]').each(function(x,f){
+	handleDisplayIf();
+	handleDisplayField();
+	
+	jQuery('[data-edit-field] .auto-created-field').remove();
+	jQuery('[data-edit-field]').each(function(x,f){
 		var i, 
 			p = SFData.Account.IsPrimaryContact__x,
 			d = null,
 			y = jQuery(f).attr('id'),
-			z = jQuery(f).attr('form-fields'),
-			a = jQuery(f).attr('form-object');
+			z = jQuery(f).attr('data-edit-field'),
+			a = jQuery(f).attr('data-source-object');
 		if(!y||!y.length) return;
 		switch(a) {
 			case 'Contact':
@@ -565,7 +630,7 @@ function updateForms() {
 		jQuery(f).find('.loading').remove();
 		jQuery(f).parent().find('.hide-until-load').removeClass('hide-until-load');
 		if(!d) return;
-		var tgt = jQuery(f).find('.card-save-button');
+		var tgt = jQuery(f).find('.form-save-button');
 		if(!tgt.length) p = true;
 		for(i in z) {
 			var k = jQuery.trim(z[i]);
@@ -584,7 +649,7 @@ function updateForms() {
 	});
 	
 	updateControlledSelect();
-	jQuery.scrollTo('#account-bar',300,{offset:-25});
+	updateDisabledState();
 }
 
 /**

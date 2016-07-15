@@ -2344,70 +2344,97 @@ body.modalmap #map-buttons-container { position: fixed; right: 1px; /*  bottom: 
 .tab.is-trial .trial { display: block !important; }
 
 /* Account Bar stylings */
-.expand-button { padding-right: 0.5em; display: inline-block; line-height: 1em; }
-.expand-button a.button-item .button-icon::after { content: '\f0d7'; display: inline-block; height: 1em; width: 1em; text-align: center; font-family: "icomoon"; font-weight: 800; font-size: 1.375em; padding: 0; margin: 0; line-height: 1em; color: #333; }
-.collapsed .expand-button a.button-item .button-icon::after { content: '\f0da'; }
+/*
 
-.collapsed { height: 0px; overflow: hidden; }
-.collapsed.bar-element { height: auto; }
-.collapsed.detail-element { padding: 0; }
+.expand-button { a.button-item .button-icon::after { content: '\f0d7'; display: inline-block; height: 1em; width: 1em; text-align: center; font-family: "icomoon"; font-weight: 800; font-size:1.375em; padding:0; margin:0; line-height: 1em; color:#333; }  .collapsed & { a.button-item .button-icon::after { content: '\f0da'; } }  padding-right: 0.5em; display: inline-block; line-height:1em;
+}
 
-.detail-element { padding: 1em; border: 1px solid #ccc; border-top: none; }
-.detail-element label { display: block; position: absolute; top: 0; font-size: 75%; padding-top: 0.625em; padding-left: 1.5em; color: #888; z-index: 2; width: 100%; }
-.detail-element label.checkbox { position: relative; font-size: 100%; margin: 0; width: auto; display: block; padding-top: 0.5em; padding-bottom: 0.5em; }
-.detail-element div.checkboxes, .detail-element select, .detail-element textarea, .detail-element input { width: 100%; border: 2px solid #ccc; padding: 1.5em 1em 0.5em; -webkit-border-radius: 0.25em; border-radius: 0.25em; display: block; position: relative; background: transparent; z-index: 1; }
-.detail-element select + label:after { content: '\f0d7'; display: block; position: absolute; font-size: 1.5em; font-family: icomoon; top: 0; right: 0; padding-top: 1em; padding-right: 0.5em; }
-.detail-element div.checkboxes { text-align: center; }
-.detail-element div.checkboxes input[type="checkbox"] { width: 1em; height: 1em; display: inline-block; margin: 0.5em 1em 0.5em 0; position: relative; top: 0.125em; }
-.detail-element div.checkboxes .checkbox-label { display: inline-block; position: relative; }
-.detail-element div.checkboxes .checkbox-item { width: 90%; max-width: 20em; float: left; display: block; padding: 0; margin: 0.125em; text-align: left; }
-.detail-element textarea { resize: vertical; }
-.detail-element > form > *, .detail-element .input-field { width: 100%; position: relative; padding: .125em 0; display: block; float: left; }
-.detail-element #contact .input-field { max-width: 100%; width: auto; }
+.collapsed { height: 0px; overflow:hidden;  &.bar-element{ height:auto; }  &.detail-element { padding:0; }
+}
 
-textarea[readonly] { background: #e7e7e7; color: #555; }
+.detail-element { padding:1em; border: 1px solid #ccc; border-top: none;  label { display: block; position: absolute; top: 0; font-size: 75%; padding-top: 0.625em; padding-left:1.5em; color: #888; z-index:2; width:100%;  &.checkbox { position: relative; font-size: 100%; margin: 0; width: auto; display: block; padding-top:0.5em; padding-bottom:0.5em; }   }  div.checkboxes, select, textarea, input { width: 100%; border: 2px solid #ccc; padding: 1.5em 1em 0.5em; -webkit-border-radius: 0.25em; border-radius: 0.25em; display: block; position: relative; background: transparent; z-index:1; }  select+label:after { content: '\f0d7'; display: block; position: absolute; font-size: 1.5em; font-family: icomoon; top: 0; right: 0; padding-top: 1em; padding-right: 0.5em; }
+ div.checkboxes { input[type="checkbox"] { width: 1em; height: 1em; display: inline-block; margin: 0.5em 1em 0.5em 0; position: relative; top: 0.125em; }  .checkbox-label { display: inline-block; position: relative; }  .checkbox-item { width:90%; max-width:20em; float:left; display:block; padding:0; margin:0.125em; text-align:left; }  text-align:center; }
+ textarea {resize: vertical;}
+ >form>*, .input-field { width: 100%; position: relative; padding: .125em 0; display: block; float: left; }  #contact .input-field { max-width:100%; width:auto; }
+}
 
-.bar-element { background: #f1f1f1; padding: 0.5em 1em; cursor: pointer; border: 1px solid #ccc; border-top: none; border-bottom: none; }
-.bar-element#status-bar { background: #1471c0; color: white; border: 1px solid #1471c0; border-top: none; border-bottom: none; cursor: auto; }
-.bar-element#status-bar .expand-button, .bar-element#status-bar .expand-button a, .bar-element#status-bar .expand-button a:link, .bar-element#status-bar .expand-button a:hover, .bar-element#status-bar .expand-button a:active, .bar-element#status-bar .expand-button a:visited { color: white; }
-.bar-element > * { float: left; }
-.bar-element .bar-item { margin: 0 2em 0 0; }
-.bar-element .bar-item label { padding-right: 0.5em; }
-.bar-element .bar-item-right { float: right; }
+textarea[readonly] { background: #e7e7e7; color: #555;
+}
 
-.jconfirm-box .detail-element { border: none; }
+.bar-element { background: #f1f1f1; padding: 0.5em 1em; cursor: pointer; border: 1px solid #ccc; border-top: none; border-bottom: none;  &#status-bar { background: #1471c0; color: white; border: 1px solid #1471c0; border-top: none; border-bottom: none; cursor:auto;  .expand-button{ &,a,a:link,a:hover,a:active,a:visited{ color: white; } } }  >* { float:left; }  .bar-item { margin: 0 2em 0 0; label { padding-right:0.5em; } }  .bar-item-right { float:right; }
+}
 
-#profile-detail { padding: 0; }
+.jconfirm-box .detail-element { border: none;
+}
 
-.card-list { width: 100%; padding: 0; margin: 0; text-align: center; position: relative; }
 
-.card-item { max-width: 20em; width: 90%; border: 0.5em solid #eee; background: #fff; padding: 0.5em; margin: 1em; display: inline-block; float: left; text-align: center; border-radius: 0.5em; position: relative; }
-.card-item.card-item-button { background: #eee; }
+#profile-detail { padding: 0;
+}
 
-a.card-button-large:link, a.card-button-large:hover, a.card-button-large:active, a.card-button-large:visited { width: 100%; text-align: center; padding: .5em 0; background: green; border-radius: 0.25em; color: white; display: inline-block; position: relative; margin-top: 1em; }
-a.card-button-large.card-delete-button { background: #aa0000; }
-a.card-button-large.processing { background: #888 url("images/preloader.gif") no-repeat center; text-indent: -999em; }
+.card-list { width: 100%; padding:0; margin:0; text-align: center; position: relative;
+}
 
-.card-list .card-item-button a.card-button-large { width: 90%; margin-top: 0; }
+.card-item { max-width: 20em; width: 90%; border: 0.5em solid #eee; background: #fff; padding: 0.5em; margin: 1em; display:inline-block; float:left; text-align: center; border-radius: 0.5em; position: relative; &.card-item-button { background: #eee; }
+}
 
-.jconfirm .jconfirm-box { max-width: 90%; width: 25em; margin: 0 auto; }
+a.card-button-large { &:link, &:hover, &:active, &:visited { width: 100%; text-align:center; padding:.5em 0; background:green; border-radius: 0.25em; color: white; display:inline-block; position: relative; margin-top: 1em; }
+ &.card-delete-button { background: #aa0000; } &.processing { background: #888 url('images/preloader.gif') no-repeat center; text-indent: -999em; }
+}
 
-button.btn { padding: 1em; margin: 0 1em; cursor: pointer; border-radius: 0.25em; text-transform: none !important; }
-button.btn.btn-info { background: #00aa00; color: white !important; }
-button.btn.btn-info:hover, button.btn.btn-info:active { background: #009900; }
-button.btn.btn-warning { background: #ffe500; color: black !important; }
-button.btn.btn-warning:hover, button.btn.btn-warning:active { background: #e5cf00; }
-button.btn.btn-danger { background: #aa0000; color: white !important; }
-button.btn.btn-danger:hover, button.btn.btn-danger:active { background: #880000; }
+.card-list .card-item-button a.card-button-large { width: 90%; margin-top:0;
+}
 
-#contact #field-contact-Birthdate, #contact #field-contact-HomePhone, #contact #field-contact-AssistantName, #contact #field-contact-MailingStreet, #contact #field-contact-OtherStreet { clear: both; }
-#contact #field-contact-Salutation { width: 7em; }
-#contact #field-contact-Title { width: 12em; }
-#contact #field-contact-FirstName, #contact #field-contact-LastName { width: 23em; }
-#contact #field-contact-AssistantName, #contact #field-contact-Birthdate, #contact #field-contact-Anniversary_Date__c, #contact #field-contact-Assistant_Email__c { width: 32.5em; }
-#contact #field-contact-MailingCity, #contact #field-contact-MailingState, #contact #field-contact-MailingPostalCode, #contact #field-contact-MailingCountry, #contact #field-contact-OtherCity, #contact #field-contact-OtherState, #contact #field-contact-OtherPostalCode, #contact #field-contact-OtherCountry { width: 16.25em; }
-#contact #field-contact-MobilePhone, #contact #field-contact-Phone, #contact #field-contact-HomePhone { width: 21.66em; }
-#contact #field-contact-Email, #contact #field-contact-MailingStreet, #contact #field-contact-OtherStreet { width: 65em; }
+.jconfirm .jconfirm-box { max-width: 90%; width: 25em; margin: 0 auto;
+}
+
+button.btn { padding: 1em; margin: 0 1em; cursor: pointer; border-radius: 0.25em; text-transform: none !important;
+ &.btn-info { background:#00aa00; color:white !important; &:hover, &:active { background:#009900; } }  &.btn-warning { background:#ffe500; color:black !important; &:hover, &:active { background:#e5cf00; } }  &.btn-danger { background:#aa0000; color:white !important; &:hover, &:active { background:#880000; } }
+}
+
+$formwidth:65em;
+// Account Field widths
+#contact  { #field-contact-Birthdate, #field-contact-HomePhone, #field-contact-AssistantName, #field-contact-MailingStreet, #field-contact-OtherStreet { clear:both; }  #field-contact-Salutation { width: 7em; }  #field-contact-Title { width: 12em; }  #field-contact-FirstName, #field-contact-LastName { width: floor( ( $formwidth - 7 - 12 ) / 2 * 100 ) / 100; }  #field-contact-AssistantName, #field-contact-Birthdate, #field-contact-Anniversary_Date__c, #field-contact-Assistant_Email__c { width: floor( $formwidth / 2 * 100 ) / 100; }  #field-contact-MailingCity, #field-contact-MailingState, #field-contact-MailingPostalCode, #field-contact-MailingCountry, #field-contact-OtherCity, #field-contact-OtherState, #field-contact-OtherPostalCode, #field-contact-OtherCountry { width: floor( $formwidth / 4 * 100 ) / 100; }  #field-contact-MobilePhone, #field-contact-Phone, #field-contact-HomePhone { width: floor( $formwidth / 3 * 100 ) / 100; }  #field-contact-Email, #field-contact-MailingStreet, #field-contact-OtherStreet { width:$formwidth; }
+}
+*/
+#account-tab-container { background: #ffffff; -webkit-transition-duration: 1s; -moz-transition-duration: 1s; -o-transition-duration: 1s; transition-duration: 1s; }
+#account-tab-container .tab .field { margin: 0; }
+#account-tab-container .tab label { display: block; margin: 0; min-width: 0; float: none; }
+#account-tab-container h2 { font-size: 2em; margin: 1em 0 0.5em; width: 100%; display: block; border-bottom: 1px solid #000000; padding: 0 0 0.25em; font-weight: 200; }
+#account-tab-container ul#account-tab-container-nav { font-size: 0.875em; display: block; width: 100%; border-bottom: 1px solid #000000; margin: 0; padding: 0; color: #808080; }
+#account-tab-container ul#account-tab-container-nav a, #account-tab-container ul#account-tab-container-nav a:link, #account-tab-container ul#account-tab-container-nav a:visited { color: #808080; }
+#account-tab-container ul#account-tab-container-nav > li { float: left; margin: 0 2em 0 0; padding: 0 0 0.25em; list-style: none; }
+#account-tab-container ul#account-tab-container-nav > li.activeli { border-bottom: 3px solid #000000; margin-bottom: -2px; }
+#account-tab-container ul#account-tab-container-nav > li.activeli a, #account-tab-container ul#account-tab-container-nav > li.activeli a:link, #account-tab-container ul#account-tab-container-nav > li.activeli a:visited { color: #000000; }
+#account-tab-container form a.form-edit-link, #account-tab-container form a.form-save-button { color: #00aeef; font-size: 0.875em; clear: both; }
+#account-tab-container form a.form-edit-link { display: block; }
+#account-tab-container form a.form-save-button { display: none; }
+#account-tab-container form label { display: block; position: absolute; top: 0; padding-top: 0em; padding-left: 0em; color: #000000; font-weight: bold; z-index: 2; width: 100%; }
+#account-tab-container form label:after { content: ':'; }
+#account-tab-container form div.checkboxes, #account-tab-container form select, #account-tab-container form textarea, #account-tab-container form input { width: 100%; border: 1px solid #ffffff; padding: 1em 0 0.5em; -webkit-border-radius: 0; border-radius: 0; display: block; position: relative; background: transparent; z-index: 1; color: #000000; }
+#account-tab-container form div.checkboxes { text-align: center; }
+#account-tab-container form div.checkboxes input[type="checkbox"] { width: 1em; height: 1em; display: inline-block; margin: 0.5em 1em 0.5em 0; position: relative; top: 0.125em; }
+#account-tab-container form div.checkboxes .checkbox-label { display: inline-block; position: relative; }
+#account-tab-container form div.checkboxes .checkbox-item { width: 90%; max-width: 20em; float: left; display: block; padding: 0; margin: 0.125em; text-align: left; }
+#account-tab-container form textarea { resize: vertical; }
+#account-tab-container form > form > *, #account-tab-container form .input-field { width: 100%; position: relative; padding: .125em 0; display: block; float: left; }
+#account-tab-container form.editing a.form-edit-link { display: none; }
+#account-tab-container form.editing a.form-save-button { display: block; padding: 1em 3em; background: #55ab3f; color: white; text-align: center; }
+#account-tab-container form.editing a.form-save-button.processing { color: #808080; background: transparent 50% 50% no-repeat url("images/preloader.gif"); text-indent: -9999em; }
+#account-tab-container form.editing label { font-size: 75%; padding-top: 0.625em; padding-left: 1.5em; color: #808080; }
+#account-tab-container form.editing div.checkboxes, #account-tab-container form.editing select, #account-tab-container form.editing textarea, #account-tab-container form.editing input { border: 1px solid #808080; padding: 1.5em 1em 0.5em; color: #000000; }
+#account-tab-container form.editing select + label:after { content: '\f0d7'; display: block; position: absolute; font-size: 1.5em; font-family: icomoon; top: 0; right: 0; padding-top: 1em; padding-right: 0.5em; }
+#account-tab-container #field-contact-Birthdate, #account-tab-container #field-contact-HomePhone, #account-tab-container #field-contact-AssistantName, #account-tab-container #field-contact-MailingStreet, #account-tab-container #field-contact-OtherStreet { clear: both; }
+#account-tab-container #field-contact-Salutation { width: 7em; }
+#account-tab-container #field-contact-Title { width: 12em; }
+#account-tab-container #field-contact-FirstName, #account-tab-container #field-contact-LastName { width: 23em; }
+#account-tab-container #field-contact-AssistantName, #account-tab-container #field-contact-Birthdate, #account-tab-container #field-contact-Anniversary_Date__c, #account-tab-container #field-contact-Assistant_Email__c { width: 32.5em; }
+#account-tab-container .form-save-button, #account-tab-container #field-contact-MailingCity, #account-tab-container #field-contact-MailingState, #account-tab-container #field-contact-MailingPostalCode, #account-tab-container #field-contact-MailingCountry, #account-tab-container #field-contact-OtherCity, #account-tab-container #field-contact-OtherState, #account-tab-container #field-contact-OtherPostalCode, #account-tab-container #field-contact-OtherCountry { width: 16.25em; }
+#account-tab-container #field-contact-MobilePhone, #account-tab-container #field-contact-Phone, #account-tab-container #field-contact-HomePhone { width: 21.66em; }
+#account-tab-container #field-contact-Email, #account-tab-container #field-contact-MailingStreet, #account-tab-container #field-contact-OtherStreet { width: 65em; }
+
+#account-display-contact-wrapper { position: relative; }
+#account-display-contact-wrapper select { font-size: 2em; font-weight: 200; font-family: 'Helvetica Neue',Arial,sans-serif; padding: 0 1em 0 0; margin: 0; display: inline-block; z-index: 2; position: relative; background: transparent; }
+#account-display-contact-wrapper:after { content: '\f0d7'; font-size: 2em; color: #00aeef; display: inline-block; font-family: icomoon; z-index: 1; margin: 0 0 0 -1em; line-height: 1em; position: relative; }
 
 .destinationlist-wrapper { display: block; min-height: 270px; }
 
