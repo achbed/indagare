@@ -4,15 +4,14 @@ if (!signup) {
 		var self = this;
 
 		this.usrNameChk = false;
+		this.usrEmailChk = -4;
 		this.mbSelect = false;
-		this.mbySelect = false;
 		this.processing = false;
 		this.validatingForm = false;
 
 		this.selfInit = function() {
 			if (!self.mbSelect || !self.mbSelect.length) {
-				self.mbSelect = jQuery("#membership_level");
-				self.mbySelect = jQuery("#membership_years");
+				self.mbSelect = jQuery('#Membership_Level__c');
 			}
 		};
 
@@ -23,7 +22,6 @@ if (!signup) {
 				jQuery('.tab').addClass('is-trial');
 			}
 
-			populateCountries('country', 'state', 'United States');
 			populateCountries('s_country', 's_state', 'United States');
 
 			if (redirect == "swifttrip") {
@@ -43,32 +41,43 @@ if (!signup) {
 				jQuery('#terms').toggle();
 			}).on('change', '#tgCode', function(e) {
 				self.tgCodeLookup();
-			}).on('change', '#username', function(e) {
+			}).on('change', '#wp-username', function(e) {
 				self.checkUsername();
-			}).on('change', '#email', function(e) {
+			}).on('change', '#contact-HomePhone', function(e) {
+				self.formatPhone();
+			}).on('change', '#contact-Email', function(e) {
 				self.checkEmail();
-			}).on('change', '#membership_level', function(e) {
-				self.setSelectedMBYears();
-			}).on('change', '#chkShip', function(e) {
-				self.setAddr();
-			}).on('change', 'input', function(e) {
+			}).on('change', '#Membership_Level__c', function(e) {
+				//self.setSelectedMBYears();
+			}).on('change', 'input,select,textarea', function(e) {
 				self.validateThisField(jQuery(this).attr('id'));
-			}).on('change', 'select', function(e) {
-				self.validateThisField(jQuery(this).attr('id'));
-			}).on('change', '#shippingBlock input', function(e) {
-				self.setAddr();
 			});
 		};
+		
+		this.formatPhone = function() {
+			var n = jQuery('#contact-HomePhone').val(),r = /[^0-9]/gi,c=n.replace(r,'');
+			 if(c.length != 10){
+				 // We don't have 10 digits to work with, so just return the input value 
+				 return;
+			 }  
+			 n = '('+c.substring(0,3)+') '+c.substring(3,6)+'-'+c.substring(6,10);
+			 jQuery('#contact-HomePhone').val(n);
+		}
 
 		this.buildMembershipDD = function() {
+			self.selfInit();
+			
 			if (showTrial) {
+				self.mbSelect.parent().addClass('iform-row-2col').removeClass('iform-row-1col');
 				return;
 			}
 
-			self.selfInit();
+			self.mbSelect.parent().addClass('iform-row-1col').removeClass('iform-row-2col');
+			jQuery('#field-account-tgCode').hide();
+			mbs = mbs.sort(function(a,b){if(a.Amount != b.Amount) return a.Amount>b.Amount; return a.Type>b.Type;});
 			for ( var m in mbs ) {
 				jQuery("<option></option>")
-					.text(mbs[m]['Name'])
+					.text(mbs[m]['Type']+' - '+mbs[m]['Period']+' - $'+mbs[m]['Amount'])
 					.val(mbs[m]['Id'])
 					.attr({
 						'data-type':mbs[m]['Type'],
@@ -79,20 +88,7 @@ if (!signup) {
 					.appendTo(self.mbSelect);
 			}
 
-			jQuery('#membership_level').trigger("render");
-		};
-
-		this.createYearOption = function(p, l, d, v, m) {
-			if (d)
-				p = p * (1 - (d / 100));
-			var t = "$" + Math.floor(p / 100) + ".00 for " + l + " year";
-			if (l != 1) {
-				t += 's';
-			}
-			if (d) {
-				t += ' (' + m + ')';
-			}
-			jQuery('<option></option>').text(t).val(v).appendTo(self.mbySelect);
+			jQuery('#Membership_Level__c').trigger("render");
 		};
 
 		this.pad = function(n, l) {
@@ -173,54 +169,24 @@ if (!signup) {
 		};
 
 		this.validateThisField = function(f) {
-			var c = document.getElementById("chkShip").checked;
 			switch (f) {
-			case 'tgCode':
-			case 'username':
-			case 'email':
-				// We handle these through another path because AJAX.
-				return true;
-			case 'password1':
-			case 'password2':
-				return self.validatePassword();
-			case 'cc_num':
-				return self.validateCC();
-			case 'ccv':
-				return self.validateCC();
-			case 'cc_month':
-			case 'cc_year':
-				return self.validateCCExp();
-			case 'agree2terms':
-				return self.validateTermAcceptance();
-			case 'address1':
-			case 'city':
-			case 'state':
-			case 'zip':
-			case 'country':
-				if (c) {
+				case 'tgCode':
+				case 'wp-username':
+				case 'contact-Email':
+					// We handle these through another path because AJAX.
 					return true;
-				}
-				break;
-			case 'chkShip':
-				if (!c) {
-					// If we're turning OFF, revalidate and show.
-					self.validateField('#address1');
-					self.validateField('#city');
-					self.validateField('#state');
-					self.validateField('#zip');
-					self.validateField('#country');
-					jQuery('#address1,#city,#state,#zip,#country').closest('.field').show();
-				} else {
-					// If we're turning ON, clear any validation
-					self.fieldClearValidate('#address1');
-					self.fieldClearValidate('#city');
-					self.fieldClearValidate('#state');
-					self.fieldClearValidate('#zip');
-					self.fieldClearValidate('#country');
-					jQuery('#address1,#city,#state,#zip,#country').closest('.field').hide();
-				}
-				// And never validate the checkbox itself.
-				return true;
+				case 'wp-password1':
+				case 'wp-password2':
+					return self.validatePassword();
+				case 'cc_num':
+					return self.validateCC();
+				case 'ccv':
+					return self.validateCC();
+				case 'cc_month':
+				case 'cc_year':
+					return self.validateCCExp();
+				case 'agree2terms':
+					return self.validateTermAcceptance();
 			}
 			return self.validateField('#' + f);
 		};
@@ -270,16 +236,16 @@ if (!signup) {
 		};
 
 		this.validateUsername = function() {
-			return self.validateField('#username', false, self.usrNameStatus, [
+			return self.validateField('#wp-username', false, self.usrNameStatus, [
 					"Please enter a username.",
-					"That username is already taken.",
+					"That username is already associated with an account. Please try again, or <a href=\"/wp-login.php\">log in</a>.",
 					"Error validating user name.  Try again in a moment." ]);
 		};
 
 		this.validateEmail = function() {
-			return self.validateField('#email', false, self.usrEmailStatus, [
+			return self.validateField('#contact-Email', false, self.usrEmailStatus, [
 					"Please enter an email.",
-					"That email is already associated with an account.",
+					"That email is already associated with an account. Please try again, or <a href=\"/wp-login.php\">log in</a>.",
 					"Error validating email.  Try again in a moment.",
 					"Please enter a valid email address." ]);
 		};
@@ -291,9 +257,9 @@ if (!signup) {
 				numbers : true,
 				specialChars : false
 			};
-			var p = jQuery("#password1").val(), r = true, t = jQuery(
-					"#password1").closest(".field").find(".errmsg"), v = jQuery(
-					"#password2").closest(".field").find(".errmsg");
+			var p = jQuery("#wp-password1").val(), r = true, t = jQuery(
+					"#wp-password1").closest(".field").find(".errmsg"), v = jQuery(
+					"#wp-password2").closest(".field").find(".errmsg");
 			jQuery('#passlen_num').text(settings.minLength);
 			if (settings.minLength < 1)
 				jQuery('#passlen').remove();
@@ -305,10 +271,10 @@ if (!signup) {
 				jQuery('#passchar').remove();
 			t.removeClass('faildetail');
 
-			self.fieldClearValidate("#password1");
-			self.fieldClearValidate("#password2");
+			self.fieldClearValidate("#wp-password1");
+			self.fieldClearValidate("#wp-password2");
 
-			self.fieldValidating("#password1");
+			self.fieldValidating("#wp-password1");
 
 			if (p.length < settings.minLength) {
 				r = false;
@@ -339,17 +305,17 @@ if (!signup) {
 				t.removeClass('passchar-fail');
 			}
 
-			self.fieldValidated("#password1", r);
+			self.fieldValidated("#wp-password1", r);
 
-			var pv = jQuery("#password2").val();
+			var pv = jQuery("#wp-password2").val();
 			if (((p != '') && (pv != '')) || self.validatingForm) {
-				self.fieldValidating("#password2");
+				self.fieldValidating("#wp-password2");
 
 				if ((p != pv) || (p == '')) {
-					self.fieldValidated("#password2", false);
+					self.fieldValidated("#wp-password2", false);
 					r = false;
 				} else {
-					self.fieldValidated("#password2", true);
+					self.fieldValidated("#wp-password2", true);
 				}
 			}
 
@@ -396,16 +362,10 @@ if (!signup) {
 
 			// jQuery('.validate').text('');
 
-			complete = self.validateThisField('fn') && complete;
-			complete = self.validateThisField('ln') && complete;
-			complete = self.validateThisField('email') && complete;
-			complete = self.validateThisField('phone') && complete;
-
-			complete = self.validateThisField('s_address1') && complete;
-			complete = self.validateThisField('s_city') && complete;
-			complete = self.validateThisField('s_state') && complete;
-			complete = self.validateThisField('s_zip') && complete;
-			complete = self.validateThisField('s_country') && complete;
+			complete = self.validateThisField('contact-FirstName') && complete;
+			complete = self.validateThisField('contact-LastName') && complete;
+			complete = (self.usrEmailStatus() == -1) && complete;
+			complete = self.validateThisField('contact-HomePhone') && complete;
 
 			complete = self.validateUsername() && complete;
 			complete = self.validatePassword() && complete;
@@ -413,16 +373,14 @@ if (!signup) {
 			complete = self.validateTermAcceptance() && complete;
 
 			if (!showTrial) {
+				complete = self.validateThisField('s_address1') && complete;
+				complete = self.validateThisField('s_city') && complete;
+				complete = self.validateThisField('s_state') && complete;
+				complete = self.validateThisField('s_zip') && complete;
+				complete = self.validateThisField('s_country') && complete;
 
-				complete = self.validateThisField('address1') && complete;
-				complete = self.validateThisField('city') && complete;
-				complete = self.validateThisField('state') && complete;
-				complete = self.validateThisField('zip') && complete;
-				complete = self.validateThisField('country') && complete;
-
-				complete = self.validateThisField('cc_holder') && complete;
-				complete = self.validateThisField('cc_num') && complete;
-				complete = self.validateThisField('cc_month') && complete;
+				complete = self.validateCC() && complete;
+				complete = self.checkCCDate() && complete;
 			}
 
 			self.validatingForm = false;
@@ -453,19 +411,19 @@ if (!signup) {
 			jQuery.ajax('/wp-content/themes/indagare/app/lib/iajax.php', {
 				method : "POST",
 				data : {
-					task : "newTrial_j",
-					fn : jQuery('#fn').val(),
-					ln : jQuery('#ln').val(),
-					email : jQuery('#email').val(),
-					phone : jQuery('#phone').val(),
-					username : jQuery('#username').val(),
-					password : jQuery('#password1').val(),
-					s_address1 : jQuery('#s_address1').val(),
-					s_city : jQuery('#s_city').val(),
-					s_state : jQuery('#s_state').val(),
-					s_zip : jQuery('#s_zip').val(),
-					s_country : jQuery('#s_country').val(),
-					passKey : jQuery('#refCode').val(),
+					task : "payment_wp",
+					fn : jQuery('#contact-FirstName').val(),
+					ln : jQuery('#contact-LastName').val(),
+					email : jQuery('#contact-Email').val(),
+					phone : jQuery('#contact-HomePhone').val(),
+					username : jQuery('#wp-username').val(),
+					password : jQuery('#wp-password1').val(),
+					address1 : jQuery('#s_address1').val(),
+					city : jQuery('#s_city').val(),
+					state : jQuery('#s_state').val(),
+					zip : jQuery('#s_zip').val(),
+					country : jQuery('#s_country').val(),
+					trialcode : jQuery('#refCode').val(),
 				}
 			}).done(
 					function(d, s, x) {
@@ -545,14 +503,14 @@ if (!signup) {
 
 			var args = {
 				action : "idj-signup",
-				fn : jQuery("#fn").val(),
-				ln : jQuery("#ln").val(),
-				email : jQuery("#email").val(),
+				mode : "create",
+				fn : jQuery("#contact-FirstName").val(),
+				ln : jQuery("#contact-LastName").val(),
+				email : jQuery("#contact-Email").val(),
 				l : self.mbSelect.val(),
-				y : self.mbySelect.val(),
-				phone : jQuery('#phone').val(),
-				username : jQuery("#username").val(),
-				password : jQuery("#password1").val(),
+				phone : jQuery('#contact-HomePhone').val(),
+				username : jQuery("#wp-username").val(),
+				password : jQuery("#wp-password1").val(),
 				address1 : jQuery('#address1').val(),
 				city : jQuery('#city').val(),
 				state : jQuery('#state').val(),
@@ -569,8 +527,7 @@ if (!signup) {
 				cc_yr : jQuery('#cc_year').val(),
 				cc_cvv : jQuery('#ccv').val(),
 				cc_type : jQuery('#cc_type').val(),
-				tgCode : jQuery("#tgCode").val(),
-				dc : jQuery("#dc").val()
+				trialid : jQuery("#tgCode").val()
 			};
 			if(jQuery('#chkShip').prop('checked')) {
 				args.address1 = args.s_address1;
@@ -678,24 +635,19 @@ if (!signup) {
 				return;
 			}
 
-			jQuery("#tg_codeval").html('This is not a valid code.');
 			jQuery
-					.ajax("/wp-content/themes/indagare/app/lib/iajax.php", {
+					.ajax('/wp-admin/admin-ajax.php', {
 						method : 'POST',
 						data : {
-							task : "chkTrialKey_j",
+							action : "idj-trial",
 							rc : c
 						}
 					})
 					.done(
 							function(result) {
-								var mb_select = jQuery("#membership_level");
-								var mby_select = jQuery("#membership_years");
+								var mb_select = jQuery("#Membership_Level__c");
 
 								if (!result.valid) {
-									jQuery(".inputgroup").hide();
-									jQuery(".inputgrouptitle").hide();
-
 									self.fieldValidated('#tgCode', false);
 									return;
 								}
@@ -706,9 +658,9 @@ if (!signup) {
 
 								var option = document.createElement("option");
 								option.text = result.name;
-								option.value = "trial - " + result.name;
+								option.value = result.name;
 								option.selected = "selected";
-								var t = jQuery('#membership_level>option[value="'
+								var t = jQuery('#Membership_Level__c>option[value="'
 										+ option.value + '"]');
 								if (t.length == 0) {
 									self.mbSelect.append(option).trigger(
@@ -718,21 +670,6 @@ if (!signup) {
 											'render');
 								}
 								self.mbSelect.attr('disabled', 'true');
-
-								var option = document.createElement("option");
-								option.text = result.length;
-								option.value = "trial - " + result.length;
-								option.selected = 'true';
-								var t = jQuery('#membership_years>option[value="'
-										+ option.value + '"]');
-								if (t.length == 0) {
-									self.mbySelect.append(option).trigger(
-											'render');
-								} else {
-									t.prop('selected', true).change().trigger(
-											'render');
-								}
-								self.mbySelect.attr('disabled', 'true');
 
 								jQuery(".inputgroup").show();
 								jQuery(".inputgrouptitle").show();
@@ -747,12 +684,12 @@ if (!signup) {
 		};
 
 		this.checkUsername = function() {
-			self.fieldValidating('#username');
+			self.fieldValidating('#wp-username');
 			jQuery.ajax('/wp-admin/admin-ajax.php', {
 				method : 'POST',
 				data : {
 					action : 'idj-login',
-					login : jQuery("#username").val()
+					login : jQuery("#wp-username").val()
 				}
 			}).done(function(d, s, x) {
 				self.usrNameChk = d.exists;
@@ -766,18 +703,18 @@ if (!signup) {
 		this.checkEmail = function() {
 			if (!self
 					.validateField(
-							'#email',
+							'#contact-Email',
 							/^("[^"]+"|[-a-z0-9+_'][-a-z0-9+\._']*[-a-z0-9+_']|[-a-z0-9+_']+)@([a-z0-9][-a-z0-9]*[a-z0-9]\.)+[a-z0-9][-a-z0-9]*[a-z0-9]$/i)) {
 				self.usrEmailChk = -4;
 				self.validateEmail();
 				return;
 			}
-			self.fieldValidating('#email');
+			self.fieldValidating('#contact-Email');
 			jQuery.ajax('/wp-admin/admin-ajax.php', {
 				method : 'POST',
 				data : {
 					action : 'idj-email',
-					email : jQuery("#email").val()
+					email : jQuery("#contact-Email").val()
 				}
 			}).done(function(d, s, x) {
 				self.usrEmailChk = d.exists;
@@ -832,14 +769,13 @@ if (!signup) {
 
 (function() {
 	function init() {
+		signup.selfInit();
+		
 		if (!showTrial) {
-			jQuery(".inputgroup").show();
-			jQuery(".inputgrouptitle").show();
-			jQuery(".inputgroup.trial").hide();
+			jQuery('#signup-form-container').addClass('signup');
 		} else {
-			jQuery(".inputgroup").hide();
-			jQuery(".inputgrouptitle").hide();
-			jQuery(".trial").show();
+			jQuery('#signup-form-container').addClass('trial');
+			signup.mbSelect.prop('disabled',true).prop('readonly',true);
 		}
 
 		signup.initFields();
@@ -851,15 +787,6 @@ if (!signup) {
 		}
 		signup.buildButtonEventMgrs();
 		signup.buildCCYearDD();
-
-		jQuery('.customselectdyn').customSelect();
-		jQuery('.customselectdyn').wrap(
-				'<span class="customSelectWrap"></span>');
-		jQuery('#membership_level').css("height", "25px");
-		jQuery('#membership_years').css("height", "25px");
-		jQuery('#cc_month').css("height", "25px");
-		jQuery('#cc_year').css("height", "25px");
-		jQuery('input#dc').val(dcode);
 	}
 	if (window.addEventListener) {
 		window.addEventListener('DOMContentLoaded', init, false);

@@ -1,6 +1,8 @@
 <?php
 namespace indagare\iajax;
 
+use WPSF\Contact;
+
 require_once 'wpdef.php';
 include_once 'user.php';
 include_once 'db.php';
@@ -117,6 +119,9 @@ class AjaxHandler {
 	 */
 	public function __construct() {
 		if(function_exists('add_action')) {
+			add_action( 'wp_ajax_idj-trial', array( $this, 'chkTrialKey_wp' ) );
+			add_action( 'wp_ajax_nopriv_idj-trial', array( $this, 'chkTrialKey_wp' ) );
+
 			add_action( 'wp_ajax_idj-email', array( $this, 'chkEmail_wp' ) );
 			add_action( 'wp_ajax_nopriv_idj-email', array( $this, 'chkEmail_wp' ) );
 
@@ -149,53 +154,24 @@ class AjaxHandler {
 			return;
 		}
 
-		if ( substr( $task, -2 ) == '_j' ) {
+		if ( in_array( substr( $task, -2 ), array( 'wp', '_j' ) ) ) {
 			header('Content-Type: application/json');
 		}
 
 		return $this->{$task}();
 	}
 
-	/**
-	 * Call the payment gateway and charge the card.
-	 *
-	 * @param array $order The parameters for the order
-	 * 			name:  Cardholder name
-	 */
-	protected static function _charge_it( $order ) {
-		// constants
-		$acc = \indagare\users\AccountCreator::getAccountCreator( );
-
-		$gateway["host"] = \indagare\config\Config::$pay_host;
-		$gateway["port"] = \indagare\config\Config::$pay_port;
-		$gateway["keyfile"] = \indagare\config\Config::$pay_key;
-		$gateway["configfile"] = \indagare\config\Config::$pay_config;
-
-		// form data
-		$myorder["name"] = $_POST["cc_holder"];
-		$myorder["cardnumber"] = $_POST["cc_num"];
-		$myorder["cardexpmonth"] = $_POST["cc_m"];
-		$myorder["cardexpyear"] = $_POST["cc_y"];
-		$myorder["cvmindicator"] = "provided";
-		$myorder["cvmvalue"] = $_POST["ccv"];
-		$myorder["chargetotal"] = 0;
-		$myorder["ordertype"] = "SALE";
-
-		$args = array_merge( $myorder, $order, $gateway );
-
-		if ( $args['chargetotal'] <= 0 ) {
-			return array(
-				'r_approved' => 'SKIPPED',
-				'r_code' => '0',
-				'r_error' => '0 or negative charge attempted.',
-			);
-		}
-
-		$mylphp = new \lphp( );
-		$result = $mylphp->curl_process( $args );  # use curl methods
-
-		return $result;
-	}
+	private static $cc_types = array(
+		'amex' => 'American Express',
+		'diners_club_carte_blanche' => 'Diners Club Carte Blanche',
+		'diners_club_international' => 'Diners Club International',
+		'jcb' => 'JCB',
+		'visa_electron' => 'Visa Electron',
+		'visa' => 'Visa',
+		'mastercard' => 'Mastercard',
+		'maestro' => 'Maestro',
+		'discover' => 'Discover',
+	);
 
 	/**
 	 * Validates that the login exists.  Returns a JSON object.
@@ -216,9 +192,9 @@ class AjaxHandler {
 			);
 
 			$msg = "Response:\r\n" . print_r( $response, true ) . "\r\n\r\n";
-			self::_email_debug('chkLogin_wp: Processing Error', $msg );
+			self::_email_debug(__FUNCTION__.': Processing Error', $msg );
 			if ( $e->getCode() != 0 ) {
-				self::_email_error('chkLogin_wp: Processing Error', $msg );
+				self::_email_error(__FUNCTION__.': Processing Error', $msg );
 			}
 		}
 
@@ -245,38 +221,9 @@ class AjaxHandler {
 			);
 
 			$msg = "Response:\r\n" . print_r( $response, true ) . "\r\n\r\n";
-			self::_email_debug('chkLogin_wp: Processing Error', $msg );
+			self::_email_debug(__FUNCTION__.': Processing Error', $msg );
 			if ( $e->getCode() != 0 ) {
-				self::_email_error('chkLogin_wp: Processing Error', $msg );
-			}
-		}
-
-		print json_encode( $response );
-		exit();
-	}
-
-	/**
-	 * Validates that the login exists.  Returns a JSON object.
-	 */
-	public static function chkLogin_j() {
-		$response = array();
-		try {
-			if ( empty( $_POST['login'] ) ) {
-				throw new \Exception( 'Empty input', 0 );
-			}
-			$response['login'] = $_POST['login'];
-
-			$u = \indagare\users\User::checkLogin( $_POST["login"] );
-			$response['exists'] = ! empty( $u );
-		} catch ( \Exception $e ) {
-			$response = array(
-				'err' => $e->getMessage(),
-			);
-
-			$msg = "Response:\r\n" . print_r( $response, true ) . "\r\n\r\n";
-			self::_email_debug('chkLogin_j: Processing Error', $msg );
-			if ( $e->getCode() != 0 ) {
-				self::_email_error('chkLogin_j: Processing Error', $msg );
+				self::_email_error(__FUNCTION__.': Processing Error', $msg );
 			}
 		}
 
@@ -288,12 +235,13 @@ class AjaxHandler {
 	 * Validates that a trial key exists, and returns various information
 	 * about it.
 	 */
-	public static function chkTrialKey_j() {
+	public static function chkTrialKey_wp() {
+		header('Content-Type: application/json');
 		global $acc;
 
 		$response = array(
 				'valid' => false,
-				'id' => 3,
+				'id' => 0,
 				'name' => 'Invalid code',
 				'length' => 'Invalid code',
 		);
@@ -301,39 +249,33 @@ class AjaxHandler {
 		try {
 			if(!isset($_REQUEST["rc"]) || empty($_REQUEST["rc"])) {
 				throw new \Exception( 'Empty input', 0 );
-
 			}
 
-			$acc = \indagare\users\AccountCreator::getAccountCreator( );
-			$key = \indagare\db\CrmDB::getPasskey( $_REQUEST["rc"] );
+			$codes = \WPSF\TrialCode::get_code( $_REQUEST['rc'] );
 
-			if ( ( $key == "false" ) || ( $key == false ) ) {
+			if ( is_wp_error( $codes ) || empty( $codes[0]['Id'] ) ) {
 				throw new \Exception( 'Invalid code', 0 );
 			}
 
-			if ( $key->is_valid() ) {
-				$acc->user->passkey_id = $_REQUEST["rc"];
-			}
-
 			$response = array(
-				'valid' => $key->is_valid(),
-				'id' => $key->type_def['id'],
-				'name' => $key->type_def['name'],
-				'length' => ucwords( substr( $key->type_def['expires'], 1 ) ),
+				'valid' => true,
+				'id' => $codes[0]['Id'],
+				'name' => $codes[0]['Name'],
+				'length' => $codes[0]['Period'],
 			);
 		} catch( \Exception $e ) {
 			$response = array(
 				'valid' => false,
-				'id' => 3,
+				'id' => 0,
 				'name' => $e->getMessage(),
 				'length' => $e->getMessage(),
 				'err' => $e->getMessage(),
 			);
 
 			$msg = "Response:\r\n" . print_r( $response, true ) . "\r\n\r\n";
-			self::_email_debug('chkTrialKey_j: Processing Error', $msg );
+			self::_email_debug( __FUNCTION__ . ': Processing Error', $msg );
 			if ( $e->getCode() != 0 ) {
-				self::_email_error('chkTrialKey_j: Processing Error', $msg );
+				self::_email_error( __FUNCTION__ . ': Processing Error', $msg );
 			}
 		}
 
@@ -342,256 +284,114 @@ class AjaxHandler {
 	}
 
 	/**
-	 * Handles creation and setup of a new trial or complementary
-	 * membership.  Returns the result as a JSON object.
+	 * Creates a wordpress account
+	 *
+	 * @return integer|\WP_Error The ID of the new account, or WP_Error on failure.
 	 */
-	public static function newTrial_j() {
-		global $acc;
-
-		$response = array(
-			'success' => false,
-			'startdate' => '',
-			'enddate' => '',
-			'name' => '',
-			'length' => '',
-			'price' => '',
-		);
-
-		try {
-			$acc = \indagare\users\AccountCreator::getAccountCreator( );
-
-			if(empty($_POST["fn"])) throw new \Exception( 'Empty first name', 0 );
-			if(empty($_POST["ln"])) throw new \Exception( 'Empty last name', 0 );
-			if(empty($_POST["email"])) throw new \Exception( 'Empty email', 0 );
-			if(empty($_POST["phone"])) throw new \Exception( 'Empty phone', 0 );
-			if(empty($_POST["username"])) throw new \Exception( 'Empty username', 0 );
-			if(empty($_POST["password"])) throw new \Exception( 'Empty password', 0 );
-			if(empty($_POST["s_address1"])) throw new \Exception( 'Empty s_address1', 0 );
-			if(empty($_POST["s_city"])) throw new \Exception( 'Empty s_city', 0 );
-			if(empty($_POST["s_state"])) throw new \Exception( 'Empty s_state', 0 );
-			if(empty($_POST["s_zip"])) throw new \Exception( 'Empty s_zip', 0 );
-			if(empty($_POST["s_country"])) throw new \Exception( 'Empty s_country', 0 );
-			if(empty($_POST["passKey"])) throw new \Exception( 'Empty passKey', 0 );
-
-			$u = \indagare\users\User::checkLogin( $_POST["username"] );
-			if(!empty($u)) throw new \Exception( 'Username exists', 0 );
-
-			$acc->user->prefix = '';
-			$acc->user->first_name = $_POST["fn"];
-			$acc->user->last_name = $_POST["ln"];
-			$acc->user->email = $_POST["email"];
-			$acc->user->phone_home = $_POST['phone'];
-
-			$acc->user->login = $_POST['username'];
-			$acc->user->password = $_POST['password'];
-			$acc->user->primary_street_address = $_POST['s_address1'];
-			$acc->user->primary_street_address2 = (empty($_POST['s_address2'])?'':$_POST['s_address2']);
-			$acc->user->primary_city = $_POST['s_city'];
-			$acc->user->primary_state = $_POST['s_state'];
-			$acc->user->primary_postal = $_POST['s_zip'];
-			$acc->user->primary_country = $_POST['s_country'];
-			$acc->user->passkey_id = $_POST['passKey'];
-
-			$key = new \indagare\users\Passkey( $_POST['passKey'] );
-
-			if ( ( $key == "false" ) || ( $key == false ) ) {
-				throw new \Exception('Incorrect trial code.',0);
-			}
-
-			if ( $key->trials <= 0 ) {
-				throw new \Exception('No trials remaining on this trial code.',0);
-			}
-
-			if ( ! $key->is_valid() ) {
-				throw new \Exception('Invalid trial code.',0);
-			}
-
-			$nao = time();
-			$acc->user->membership_created_at = date( 'Y-m-d H:i:s', $nao );
-			$acc->user->membership_expires_at = date( 'Y-m-d H:i:s', strtotime( $key->type_def['expires'], $nao ) );
-			$acc->user->membership_level = $key->type_def['membership_level'];
-
-			$response['price'] = 0;
-			$response['name'] = $key->type_def['name'];
-			$response['length'] = ucwords( substr( $key->type_def['expires'], 1 ) );
-			$response['startdate'] = date( 'm/d/Y', strtotime( $acc->user->membership_created_at ) );
-			$response['enddate'] = date( 'm/d/Y', strtotime( $acc->user->membership_expires_at ) );
-
-			// Create the account and decrement the passkey
-			$uid = \indagare\db\CrmDB::createTrialUser( $acc->user );
-			$response['success'] = true;
-
-			\indagare\db\CrmDB::decrementPasskey( $key );
-
-			// Send the user payload.  No clue what's in that.
-			$payloadurl = "http://".\indagare\config\Config::$payloadserver."/users/$uid/index_user";
-			$timeout = 5;
-			stream_context_set_default( array( 'http' => array( 'timeout' => $timeout ) ) );
-			$payload = @get_headers( $payloadurl );
-
-			// Initiate the user session immediately!
-			$u = \indagare\db\CrmDB::getUserById( $uid );
-			$u->startSession( );
-
-			$email_subject = createThankyouEmailSubject();
-			$thankyou = createThankyouEmail( $acc->user->first_name . " " . $acc->user->last_name, $acc->user->primary_street_address, $acc->user->primary_city, $acc->user->primary_state, $acc->user->primary_postal, $acc->user->primary_country, $acc->user->email, $key->type_def['name'] );
-
-			self::_email( $email_subject, $thankyou, $acc->user->email );
-			self::_email_admin( $email_subject, $thankyou );
-			self::_email_debug( $email_subject, $thankyou );
-
-			//throw new \Exception('debug',0);
-		} catch( \Exception $e ) {
-			$response = array_merge( array( 'success' => false ), $response, array(
-				'err' => $e->getMessage(),
-			) );
-
-			$msg = "Response:\r\n" . print_r( $response, true ) . "\r\n\r\n";
-			if(!empty($key)) $msg .= "Key:\r\n" . print_r( $key, true ) . "\r\n\r\n";
-			$msg .= "ACC:\r\n" . print_r( $acc, true ) . "\r\n\r\n";
-
-			if($e->getMessage() == 'debug') {
-				$response['$acc'] = $acc;
-				if(!empty($nao)) $response['$nao'] = $nao;
-				if(!empty($key)) $response['$key'] = $key;
-				if(!empty($uid)) $response['$uid'] = $uid;
-				if(!empty($payload)) $response['$payload'] = $payload;
-				if(!empty($u)) $response['$u'] = $u;
-				if(!empty($email_subject)) $response['$email_subject'] = $email_subject;
-				if(!empty($thankyou)) $response['$thankyou'] = $thankyou;
-			}
-
-			self::_email_debug('newTrial_j: Processing Error', $msg );
-			if ( $e->getCode() != 0 ) {
-				self::_email_error('newTrial_j: Processing Error', $msg );
-			}
-		}
-
-		print json_encode( $response );
-		exit();
+	private static function create_wp_account() {
+		$u = new \WP_User();
+		$u->user_login = $_POST['username'];
+		$u->user_pass = $_POST['password'];
+		$u->user_email = $_POST['email'];
+		$u->user_firstname = $_POST['fn'];
+		$u->user_lastname = $_POST['ln'];
+		$u->roles = array('subscriber');
+		return wp_insert_user( $u );
 	}
 
 	/**
-	 * Handles payment processing and account setup for a paid membership.
-	 * Returns status as a JSON object.
+	 * Creates a new contact object from form data.
+	 *
+	 * @param integer $wpid  The Wordpress account ID for this Contact
+	 *
+	 * @return \WPSF\Contact The contact object with filled in data.
 	 */
-	public static function payment_j() {
-		global $acc;
+	private static function generate_sf_contact( $wpid = null ) {
+		// Create and fill in the contact object
+		$contact = new \WPSF\Contact();
+		$contact['FirstName'] = $_POST['fn'];
+		$contact['LastName'] = $_POST['ln'];
+		$contact['Phone'] = $_POST['phone'];
+		$contact['Email'] = $_POST['email'];
+		$contact['WP_Username__c'] = $_POST['username'];
+		$contact['WPID__c'] = $wpid;
 
-		$response = array(
-			'success' => false,
-			'startdate' => '',
-			'enddate' => '',
-			'name' => '',
-			'length' => '',
-			'price' => '',
-		);
-		try {
-			//print "Test";
-			$acc = \indagare\users\AccountCreator::getAccountCreator( );
-			$acc->user->first_name = $_POST["fn"];
-			$acc->user->last_name = $_POST["ln"];
-			$acc->user->email = $_POST["email"];
-			$acc->user->membership_level = $_POST["l"];
-			$acc->user->membership_years = $_POST["y"];
-			$acc->user->login = $_POST['username'];
-			$acc->user->password = $_POST['password'];
-			$acc->user->primary_street_address = $_POST['s_address1'];
-			$acc->user->primary_street_address2 = $_POST['s_address2'];
-			$acc->user->primary_city = $_POST['s_city'];
-			$acc->user->primary_state = $_POST['s_state'];
-			$acc->user->primary_postal = $_POST['s_zip'];
-			$acc->user->primary_country = $_POST['s_country'];
-			$acc->user->passkey_id = '';
-			$acc->user->phone_home = $_POST['phone'];
-
-			$nao = time();
-			$order_id = $nao . "_" . rand( 1, 100 );
-
-			$mb = \indagare\db\CrmDB::getMembershipByLevel( $acc->user->membership_level + 1 );
-			$discount = \indagare\users\Discount::findDiscount();
-			if ( $discount->is_valid() ) {
-				$mb->discount = $discount->percent;
-			}
-			$charge = $mb->getMembershipPrice( $acc->user->membership_years );
-
-			$response['name'] = $mb->name;
-			$response['length'] = $acc->user->membership_years . ' Year' . ( $acc->user->membership_years > 1 ? 's' : '' );
-			$response['price'] = $charge;
-
-			// form data
-			$myorder["chargetotal"] = $charge;
-			$myorder["oid"] = $order_id;
-			$myorder["address1"] = $acc->user->primary_street_address;
-			$myorder["address2"] = $acc->user->primary_street_address2;
-			$myorder["city"] = $acc->user->primary_city;
-			$myorder["state"] = $acc->user->primary_state;
-			$myorder["country"] = $acc->user->primary_country;
-			$myorder["email"] = $acc->user->email;
-			$myorder["zip"] = $acc->user->primary_postal;
-
-			// setup recurring if order is for 1 year
-			if ( $acc->user->membership_years == 1 ) {
-				$myorder["action"] = "SUBMIT";
-				$myorder["installments"] = "1";
-				$myorder["threshold"] = "3";
-				$myorder["startdate"] = "immediate";
-				$myorder["periodicity"] = "yearly";
-			}
-
-			$acc->user->membership_created_at = date( 'Y-m-d H:i:s', $nao );
-			$acc->user->membership_expires_at = date( 'Y-m-d H:i:s', strtotime( '+' . $acc->user->membership_years . ' years', $nao ) );
-
-			$response['startdate'] = date( 'm/d/Y', strtotime( $acc->user->membership_created_at ) );
-			$response['enddate'] = date( 'm/d/Y', strtotime( $acc->user->membership_expires_at ) );
-
-			$result = self::_charge_it( $myorder );
-			$response = array_merge( $response, $result );
-			$response['success'] = false;
-
-			if ( $response["r_approved"] != "APPROVED" ) {
-				throw new \Exception( $response['r_error'] );
-			}
-
-			// Create the account and store the payment record
-			$uid = \indagare\db\CrmDB::createUser( $acc->user );
-			$oid = \indagare\db\CrmDB::addOrder( $uid, $charge, $response['r_approved'], $nao, $order_id, 1, substr( $_POST["cc_num"], -4 ), $_POST["cc_m"], $_POST["cc_y"] );
-			\indagare\db\CrmDB::addLineItem( $oid, $charge . '00' );
-			$response['success'] = true;
-
-			// Send the user payload.  No clue what's in that.
-			$payloadurl = "http://".\indagare\config\Config::$payloadserver."/users/$uid/index_user";
-			$timeout = 5;
-			stream_context_set_default( array( 'http' => array( 'timeout' => $timeout ) ) );
-			$payload = @get_headers( $payloadurl );
-
-			// Initiate the user session immediately!
-			$u = \indagare\db\CrmDB::getUserById( $uid );
-			$u->startSession( );
-
-			// Do emails last! That way a failed email doesnt result in a charged card with an error notice.
-			$email_subject = createThankyouEmailSubject();
-			$thankyou = createThankyouEmail( $acc->user->getDisplayName(), $acc->user->primary_street_address, $acc->user->primary_city, $acc->user->primary_state, $acc->user->primary_postal, $acc->user->primary_country, $acc->user->email, $mb->name . " - " . $acc->user->membership_years . " years PRICE: $" . $charge . ".00" );
-
-			self::_email( $email_subject, $thankyou, $acc->user->email );
-			self::_email_admin( $email_subject, $thankyou );
-			self::_email_debug( $email_subject, $thankyou );
-		} catch( \Exception $e ) {
-			$response = array_merge( array( 'success' => false ), $response, array(
-				'err' => $e->getMessage(),
-			) );
-
-			$msg = "Response:\r\n" . print_r( $response, true ) . "\r\n\r\n";
-			$msg .= "ACC:\r\n" . print_r( $acc, true ) . "\r\n\r\n";
-			$msg .= "MyOrder:\r\n". print_r( $myorder, true ) . "\r\n\r\n";
-			self::_email_debug('payment_j: Processing Error', $msg );
-			if ( $e->getCode() != 0 ) {
-				self::_email_error('payment_j: Processing Error', $msg );
-			}
+		if(isset($_POST['address1'])) {
+			$contact['MailingStreet'] = $_POST['address1'];
+			$contact['MailingCity'] = $_POST['city'];
+			$contact['MailingState'] = $_POST['state'];
+			$contact['MailingPostalCode'] = $_POST['zip'];
+			$contact['MailingCountry'] = $_POST['country'];
 		}
 
-		print json_encode( $response );
-		exit();
+		if(isset($_POST['s_address1'])) {
+			$contact['OtherStreet'] = $_POST['s_address1'];
+			$contact['OtherCity'] = $_POST['s_city'];
+			$contact['OtherState'] = $_POST['s_state'];
+			$contact['OtherPostalCode'] = $_POST['s_zip'];
+			$contact['OtherCountry'] = $_POST['s_country'];
+		}
+
+		return $contact;
+	}
+
+	/**
+	 * Creates a Salesforce Account object (including Contact record) from the
+	 * current input form data.
+	 *
+	 * @param integer $wpid The Wordpress account ID
+	 *
+	 * @return \WPSF\Account|\WP_Error The account object on success, or WP_Error on failure.
+	 */
+	private static function create_sf_account( $wpid = null, $trial = null ) {
+		$membership = null;
+		if ( ! empty( $trial['Membership'] ) ) {
+			$membership = $trial['Membership'];
+		} else {
+			$membership = new \WPSF\Membership( $_POST['l'] );
+		}
+
+		// Create and fill in the account object
+		$account = new \WPSF\Account();
+
+		$account['Name'] = $_POST['fn'].' '.$_POST['ln'];
+		$account['Type'] = $account->picklistValue( 'Type', 'Customer' );
+
+		$account['Email__c'] = $_POST['email'];
+		$account['Phone'] = $_POST['phone'];
+
+		$account['Membership__c'] = $membership['Id'];
+		$account['Membership_Level__c'] = $account->picklistValue( 'Membership_Level__c', $membership['Membership_Level__c'] );
+		$account['Membership_Status__c'] = $account->picklistValue( 'Membership_Status__c', 'Unrenewed' );
+		$account['Membership_Start_Date__c'] = date( 'Y-m-d');
+		$account['Member_Since__c'] = date( 'Y-m-d' );
+		$account['Is_Renewal__c'] = true;
+		$account['Membership_End_Date__c'] = date( 'Y-m-d' );
+
+		if(isset($_POST['address1'])) {
+			$account['BillingStreet'] = $_POST['address1'];
+			$account['BillingCity'] = $_POST['city'];
+			$account['BillingState'] = $_POST['state'];
+			$account['BillingPostalCode'] = $_POST['zip'];
+			$account['BillingCountry'] = $_POST['country'];
+		}
+
+		if ( ! empty( $_POST['cc_num'] ) ) {
+			$account['Credit_Card_Number__c'] = $_POST['cc_num'];
+			$account['Credit_Card_Month__c'] = $_POST['cc_mon'];
+			$account['Credit_Card_Year__c'] = $_POST['cc_yr'];
+			$account['Card_CVV_Number__c'] = $_POST['cc_cvv'];
+			$account['Credit_Card_Type__c'] = self::$cc_types[$_POST['cc_type']];
+		}
+
+		$contact = self::generate_sf_contact( $wpid );
+
+		$contact['Primary_Contact__c'] = true;
+
+		$account->add_contact( $contact );
+
+		// Save everything to Salesforce
+		return $account->create();
 	}
 
 	/**
@@ -603,146 +403,143 @@ class AjaxHandler {
 		global $acc;
 
 		$response = array(
-			'success' => false,
-			'startdate' => '',
-			'enddate' => '',
-			'name' => '',
-			'length' => '',
-			'price' => '',
-		);
-
-		$membership = new \WPSF\Membership( $_POST['l'] );
-
-		$u = new \WP_User();
-		$u->user_login = $_POST['username'];
-		$u->user_pass = $_POST['password'];
-		$u->user_email = $_POST['email'];
-		$u->user_firstname = $_POST['fn'];
-		$u->user_lastname = $_POST['ln'];
-		$u->roles = array('subscriber');
-		$id = wp_insert_user( $u );
-
-		if ( is_wp_error( $id ) ) {
-			print json_encode(array(
-				'error' => 'WP user creation failure.',
-				'messages' => $id->get_error_messages(),
-			));
-			exit();
-		}
-
-		// Create and fill in the account object
-		$account = new \WPSF\Account();
-
-		$account['Name'] = $_POST['fn'].' '.$_POST['ln'];
-
-		$account['Email__c'] = $_POST['email'];
-		$account['Phone'] = $_POST['phone'];
-
-		$account['Membership__c'] = $_POST['l'];
-		$account['Membership_Level__c'] = $membership['Membership_Level__c'];
-		$account['Membership_Status__c'] = '';
-		$account['Membership_Start_Date__c'] = date('Y-m-d');
-		$account['Membership_End_Date__c'] = date('Y-m-d', strtotime( '+' . $membership['Period__c'] ) );
-
-		$account['BillingStreet'] = $_POST['address1'];
-		$account['BillingCity'] = $_POST['city'];
-		$account['BillingState'] = $_POST['state'];
-		$account['BillingPostalCode'] = $_POST['zip'];
-		$account['BillingCountry'] = $_POST['country'];
-
-		$account['ShippingStreet'] = $_POST['s_address1'];
-		$account['ShippingCity'] = $_POST['s_city'];
-		$account['ShippingState'] = $_POST['s_state'];
-		$account['ShippingPostalCode'] = $_POST['s_zip'];
-		$account['ShippingCountry'] = $_POST['s_country'];
-
-		$cc_types = array(
-			'amex' => 'American Express',
-			'diners_club_carte_blanche' => 'Diners Club Carte Blanche',
-			'diners_club_international' => 'Diners Club International',
-			'jcb' => 'JCB',
-			'visa_electron' => 'Visa Electron',
-			'visa' => 'Visa',
-			'mastercard' => 'Mastercard',
-			'maestro' => 'Maestro',
-			'discover' => 'Discover',
-		);
-
-		$account['Credit_Card_Number__c'] = $_POST['cc_num'];
-		$account['Credit_Card_Month__c'] = $_POST['cc_mon'];
-		$account['Credit_Card_Year__c'] = $_POST['cc_yr'];
-		$account['Card_CVV_Number__c'] = $_POST['cc_cvv'];
-		$account['Credit_Card_Type__c'] = $cc_types[$_POST['cc_type']];
-
-		// Create and fill in the contact object
-		$contact = new \WPSF\Contact();
-		$contact['FirstName'] = $_POST['fn'];
-		$contact['LastName'] = $_POST['ln'];
-
-		$contact['OtherStreet'] = $_POST['s_address1'];
-		$contact['OtherCity'] = $_POST['s_city'];
-		$contact['OtherState'] = $_POST['s_state'];
-		$contact['OtherPostalCode'] = $_POST['s_zip'];
-		$contact['OtherCountry'] = $_POST['s_country'];
-
-		$contact['MailingStreet'] = $_POST['address1'];
-		$contact['MailingCity'] = $_POST['city'];
-		$contact['MailingState'] = $_POST['state'];
-		$contact['MailingPostalCode'] = $_POST['zip'];
-		$contact['MailingCountry'] = $_POST['country'];
-
-		$contact['Phone'] = $_POST['phone'];
-		$contact['Email'] = $_POST['email'];
-		$contact['Primary_Contact__c'] = true;
-
-		$account->add_contact( $contact );
-
-		// Save everything to Salesforce
-		$aid = $account->create();
-		if ( is_wp_error( $aid ) ) {
-			wp_delete_user( $id );
-			print json_encode(array(
-				'error'=>'Account creation failure.',
-				'messages' => $aid->get_error_messages(),
-			));
-			exit();
-		}
-
-		$cid = $account['Contacts__x'][0]['Id'];
-
-		/** I HATE WORKAROUNDS LIKE THIS. Just let me save via the name dammit. **/
-		global $wpsf_acf_fields;
-		update_field( $wpsf_acf_fields['wpsf_contactid'], $cid, 'user_'.$id );
-
-		wp_signon(array(
-			'user_login' => $_POST['username'],
-			'user_password' => $_POST['password'],
-			'remember' => true,
-		));
-
-		print json_encode(array(
-			'success'=>'Yay!',
-			'r_approved' => 'APPROVED',
-			'id' => $id,
+			'success' => true,
+			'r_approved' => '',
+			'id' => '',
 			'r_ref' => '',
 			'length' => '',
+			'membertype' => '',
 			'name' => '',
 			'price' => '',
-		));
+			'cardnum' => '',
+			'cardtype' => '',
+			'message' => '',
+		);
 
-		exit();
+		$trial = null;
+		if ( ! empty( $_POST['trialid'] ) ) {
+			$trial = \WPSF\TrialCode::get_code( $_POST['trialid'] );
+			if ( empty( $trial ) || is_wp_error( $trial ) )  {
+				$trial = null;
+			} else {
+				$trial = $trial[0];
+			}
+		}
+
+		$acct_type = 'Membership';
+		if ( ! empty( $trial['Id'] ) ) {
+			if ( $trial['Type'] == 'Trial' ) {
+				$acc_type = 'Trial Membership';
+			} else if ( floatval( $trial['Amount'] ) <= 0 ) {
+				$acc_type = 'Complementary Membership';
+			}
+		}
+
+		if ( $_POST['mode'] != 'update' ) {
+			// We are creating new.
+			$id = self::create_wp_account();
+			if ( is_wp_error( $id ) ) {
+				print json_encode(array(
+					'error' => 'WP user creation failure.',
+					'messages' => $id->get_error_messages(),
+				));
+				exit();
+			}
+
+			$aid = self::create_sf_account( $id, $trial );
+			if ( is_wp_error( $aid ) ) {
+				wp_delete_user( $id );
+				print json_encode(array(
+					'error'=>'Account creation failure.',
+					'messages' => $aid->get_error_messages(),
+				));
+				exit();
+			}
+			$account = new \WPSF\Account( $aid );
+			$cid = $account['Contacts__x'][0]['Id'];
+
+			/** I HATE WORKAROUNDS LIKE THIS. Just let me save via the name dammit. **/
+			global $wpsf_acf_fields;
+			update_field( $wpsf_acf_fields['wpsf_contactid'], $cid, 'user_'.$id );
+
+			wp_signon(array(
+				'user_login' => $_POST['username'],
+				'user_password' => $_POST['password'],
+				'remember' => true,
+			));
+
+		} else {
+			// We are updating an existing account.
+			$account = \WPSF\Contact::get_account_wp();
+
+			if ( ! empty( $_POST['cc_num'] ) && ( strpos( $_POST['cc_num'], '*' ) !== false ) ) {
+				// We're updating card info too.  Do that first.
+				$account['Credit_Card_Number__c'] = $_POST['cc_num'];
+				$account['Credit_Card_Month__c'] = $_POST['cc_mon'];
+				$account['Credit_Card_Year__c'] = $_POST['cc_yr'];
+				$account['Card_CVV_Number__c'] = $_POST['cc_cvv'];
+				$account['Credit_Card_Type__c'] = self::$cc_types[$_POST['cc_type']];
+			}
+
+			$acct_type = 'Renewal';
+			if ( ! empty( $_POST['l'] ) ) {
+				if ( $account['Membership__c'] != $_POST['l'] ) {
+					$acct_type = 'Upgrade';
+					$account['Membership_old__c'] = $account['Membership__c'];
+					$account['Membership__c'] = $_POST['l'];
+				}
+			}
+
+			$account->update();
+		}
+
+		$charge = \WPSF\Payment::charge_account( $account, $acct_type );
+
+		if ( empty( $charge ) ) {
+			$response['success'] = false;
+		} else if ( $charge instanceof \WPSF\Payment ) {
+			// Well, the charge made it through the system.  Time to see what's in it.
+			$response = array_merge( $response, $charge->toResult() );
+		} else if ( $charge instanceof \WPSF\Account ) {
+			// Well, the charge made it through the system but returned an account.
+
+			if ( ! empty( $charge['Membership__x']['Period__c'] ) ) {
+				$response['length'] = $charge['Membership__x']['Period__c'];
+			}
+
+			if ( ! empty( $charge['Membership__x']['Membership_Type__c'] ) ) {
+				$response['membertype'] = $charge['Membership__x']['Membership_Type__c'];
+			}
+
+			if ( ! empty( $charge['Membership__x']['Name'] ) ) {
+				$response['name'] = $charge['Membership__x']['Name'];
+			}
+		} else {
+			$response['message'] = $charge;
+		}
+
+		if ( ! $response['status'] ) {
+			if ( $_POST['mode'] == 'update' ) {
+				// We are in update mode, and we have a failure.  Put the old membership data back.
+				$account = \WPSF\Contact::get_account_wp();
+				$account['Membership__c'] = $account['Membership_old__c'];
+				$account['Membership_old__c'] = null;
+				$account->update();
+			}
+			return wp_send_json_error( $response );
+		}
+
+		return wp_send_json_success( $response );
 	}
 
 	/**
-	 * Handles payment processing and account setup for a paid membership.
-	 * Returns status as a JSON object.
+	 * Handles creating a new contact and account setup.
+	 *
+	 * @return string JSON string with the status of the
 	 */
 	public static function newcontact_wp() {
 		header('Content-Type: application/json');
-
-		$wpid = get_current_user_id();
-		$aid = get_field( 'wpsf_contactid', 'user_' . $wpid );
-		$account = \WPSF\Contact::get_account( $aid );
+		$account = \WPSF\Contact::get_account_wp();
 
 		if ( is_wp_error( $account ) || empty( $account ) ) {
 			return wp_send_json_error( $account );
@@ -756,27 +553,13 @@ class AjaxHandler {
 			return wp_send_json_error( new \WP_Error('Permission denied') );
 		}
 
-
-		$u = new \WP_User();
-		$u->user_login = $_POST['username'];
-		$u->user_pass = $_POST['password'];
-		$u->user_email = $_POST['email'];
-		$u->user_firstname = $_POST['fn'];
-		$u->user_lastname = $_POST['ln'];
-		$u->roles = array('subscriber');
-		$id = wp_insert_user( $u );
-
+		$id = self::create_wp_account();
 		if ( is_wp_error( $id ) ) {
 			return wp_send_json_error( new \WP_Error('WP User creation failed') );
 		}
 
 		// Create and fill in the contact object
-		$contact = new \WPSF\Contact();
-		$contact['FirstName'] = $_POST['fn'];
-		$contact['LastName'] = $_POST['ln'];
-
-		$contact['Phone'] = $_POST['phone'];
-		$contact['Email'] = $_POST['email'];
+		$contact = self::generate_sf_contact( $id );
 		$contact['Primary_Contact__c'] = false;
 		$contact['AccountId'] = $account['Id'];
 
@@ -793,355 +576,6 @@ class AjaxHandler {
 
 		$contact = new \WPSF\Contact( $cid );
 		return wp_send_json_success( $contact->toArray() );
-	}
-
-	/**
-	 * Validates that a trial key is valid, and returns the type if it does.
-	 */
-	public static function chkTrialKey() {
-		global $acc;
-		$acc = \indagare\users\AccountCreator::getAccountCreator( );
-		$key = \indagare\db\CrmDB::getPasskey( $_REQUEST["rc"] );
-
-		if ( ( $key == "false" ) || ( $key == false ) ) {
-			print "false";
-			return;
-		}
-
-		if ( $key->is_valid() ) {
-			$acc->user->passkey_id = $_REQUEST["rc"];
-			print "true";
-			print "|" . $key->type;
-			return;
-		}
-
-		print "false";
-	}
-
-	/**
-	 * Creates a new trial membership.
-	 */
-	public static function newTrial() {
-		global $acc;
-
-		$acc = \indagare\users\AccountCreator::getAccountCreator( );
-		$acc->user->login = $_POST['username'];
-		$acc->user->password = $_POST['password'];
-		$acc->user->phone_home = $_POST['phone'];
-		$acc->user->primary_street_address = $_POST['s_address1'];
-		$acc->user->primary_street_address2 = $_POST['s_address2'];
-		$acc->user->primary_city = $_POST['s_city'];
-		$acc->user->primary_state = $_POST['s_state'];
-		$acc->user->primary_postal = $_POST['s_zip'];
-		$acc->user->primary_country = $_POST['s_country'];
-		$acc->user->passkey_id = $_POST['passKey'];
-		$acc->user->membership_level = 0;
-		$acc->user->membership_years = 1;
-		$acc->user->membership_created_at = date( 'Y-m-d H:i:s' );
-		$acc->user->question_1 = $_POST["top_destinations"];
-		$acc->user->question_2 = $_POST["fav_hotels"];
-		$acc->user->question_3 = $_POST["reason_travel"];
-		$acc->user->question_4 = $_POST["next_destination"];
-
-		$key = \indagare\db\CrmDB::getPasskey( $_POST['passKey'] );
-		if ( ( $key == "false" ) || ( $key == false ) ) {
-			print "invalid trial code";
-			return;
-		}
-		if ( $key->trials <= 0 ) {
-			print "no trials remaining";
-			return;
-		}
-
-		$new_level = $acc->user->membership_level;
-		$acc->user->membership_level = $key->type_def['membership_level'];
-
-		$acc->user->membership_expires_at = date( 'Y-m-d H:i:s', strtotime( $key->type_def['expires'] ) );
-		$mbText = $key->type_def['name'];
-
-		$uid = \indagare\db\CrmDB::createTrialUser( $acc->user );
-		\indagare\db\CrmDB::decrementPasskey( $key );
-
-		$email_subject = createThankyouEmailSubject();
-		$thankyou = createThankyouEmail( $acc->user->first_name . " " . $acc->user->last_name, $acc->user->primary_street_address, $acc->user->primary_city, $acc->user->primary_state, $acc->user->primary_postal, $acc->user->primary_country, $acc->user->email, $mbText );
-
-		$email = $acc->user->email;
-		$m = new \indagare\util\IndagareMailer( );
-		$m->sendHtml( $email_subject, $thankyou, $email );
-		if ( ! empty( self::$debug_mail ) ) {
-			$m->sendHtml( self::$debug_mail_prefix.$email_subject, $thankyou, self::$debug_mail );
-		}
-		if ( ! empty( self::$admin_mail ) ) {
-			$m->sendHtml( self::$admin_mail_prefix.$email_subject, $thankyou, self::$admin_mail );
-		}
-
-		$u = \indagare\db\CrmDB::getUserById( $uid );
-		$u->startSession( );
-		$payloadurl = "http://".\indagare\config\Config::$payloadserver."/users/$uid/index_user";
-		$timeout = 5;
-		stream_context_set_default( array( 'http' => array( 'timeout' => $timeout ) ) );
-		$payload = @get_headers( $payloadurl );
-		print "true";
-	}
-
-	/**
-	 * Handles payment processing and setup of new accounts
-	 */
-	public static function payment() {
-		global $acc;
-
-		$acc = \indagare\users\AccountCreator::getAccountCreator( );
-
-		$acc->user->prefix = '';
-		$acc->user->first_name = $_POST["fn"];
-		$acc->user->last_name = $_POST["ln"];
-		$acc->user->email = $_POST["email"];
-		$acc->user->phone_home = $_POST['phone'];
-
-		$acc->user->login = $_POST['username'];
-		$acc->user->password = $_POST['password'];
-		$acc->user->primary_street_address = $_POST['s_address1'];
-		$acc->user->primary_street_address2 = $_POST['s_address2'];
-		$acc->user->primary_city = $_POST['s_city'];
-		$acc->user->primary_state = $_POST['s_state'];
-		$acc->user->primary_postal = $_POST['s_zip'];
-		$acc->user->primary_country = $_POST['s_country'];
-
-		$acc->user->membership_level = $_POST["l"];
-		$acc->user->membership_years = $_POST["y"];
-		$acc->user->passkey_id = $_POST['passKey'];
-
-		$acc->user->secondary_street_address = $_POST['address1'];
-		$acc->user->secondary_street_address2 = $_POST['address2'];
-		$acc->user->secondary_city = $_POST['city'];
-		$acc->user->secondary_state = $_POST['state'];
-		$acc->user->secondary_postal = $_POST['zip'];
-		$acc->user->secondary_country = $_POST['country'];
-
-		$order_id = time( ) + "_" + rand( 1, 100 );
-
-		$mb = \indagare\db\CrmDB::getMembershipByLevel( $acc->user->membership_level + 1 );
-		if ( isset( $_POST['dc'] ) ) {
-			$mb->discount = $_POST['dc'];
-		}
-
-		//print $mb->toJSON();
-		//echo "mb start";
-		$charge = $mb->getMembershipPrice( $acc->user->membership_years );
-		//print $charge;
-
-		// 1909749438,staging.linkpt.net"1129
-		// 1001177025,secure.linkpt.net:1129
-		$mylphp = new \lphp( );
-
-
-		// constants
-		/*$myorder["host"]	   = "secure.linkpt.net";
-		 $myorder["port"]	   = "1129";
-		 $myorder["keyfile"] = "/home/client02/firstdata/1001177025.pem";
-		 $myorder["configfile"] = "1001177025"; */
-
-		//$myorder["debug"] = true;
-		//$myorder["debugging"] = true;
-
-		$myorder["host"] = \indagare\config\Config::$pay_host;
-		$myorder["port"] = \indagare\config\Config::$pay_port;
-		$myorder["keyfile"] = \indagare\config\Config::$pay_key;
-		$myorder["configfile"] = \indagare\config\Config::$pay_config;
-
-		// form data
-		$myorder["name"] = $_POST["cc_holder"];
-		$myorder["cardnumber"] = $_POST["cc_num"];
-		$myorder["cardexpmonth"] = $_POST["cc_m"];
-		$myorder["cardexpyear"] = $_POST["cc_y"];
-		$myorder["cvmindicator"] = "provided";
-		$myorder["cvmvalue"] = $_POST["ccv"];
-		$myorder["chargetotal"] = $charge;
-		$myorder["ordertype"] = "SALE";
-
-		$myorder["oid"] = $order_id;
-
-		$myorder["address1"] = $acc->user->primary_street_address;
-		$myorder["address2"] = $acc->user->primary_street_address2;
-		$myorder["city"] = $acc->user->primary_city;
-		$myorder["state"] = $acc->user->primary_state;
-		$myorder["country"] = $acc->user->primary_country;
-		$myorder["email"] = $acc->user->email;
-		$myorder["zip"] = $acc->user->primary_postal;
-
-		// setup recurring if order is for 1 year
-		if ( $acc->user->membership_years == 1 ) {
-			$myorder["action"] = "SUBMIT";
-			$myorder["installments"] = "1";
-			$myorder["threshold"] = "3";
-			$myorder["startdate"] = "immediate";
-			$myorder["periodicity"] = "yearly";
-		}
-
-		$response = $mylphp->curl_process($myorder);  # use curl methods
-
-		if ( $result["r_approved"] == "APPROVED" )// success
-		{
-			print $result["r_approved"] . "-" . $result['r_code'] . "-";
-			$acc->user->membership_created_at = date( 'Y-m-d H:i:s' );
-			$acc->user->membership_expires_at = date( 'Y-m-d H:i:s', mktime( 0, 0, 0, date( "m" ), date( "d" ), date( "Y" ) + $acc->user->membership_years ) );
-			//print "create user\n";
-
-			try {
-				$uid = \indagare\db\CrmDB::createUser( $acc->user );
-				//print "$uid, create order\n";
-				//print_r($acc->user->getID());
-				$uid = \indagare\db\CrmDB::updateUserQuestion( $acc->user, $uid );
-				$oid = \indagare\db\CrmDB::addOrder( $uid, $charge, $result['r_approved'], time( ), $order_id, 1, substr( $_POST["cc_num"], - 4 ), $_POST["cc_m"], $_POST["cc_y"] );
-				\indagare\db\CrmDB::addLineItem( $oid, $mb->getMembershipPrice( $acc->user->membership_years ) . '00' );
-
-			} catch(\Exception $e) {
-				$m = new \indagare\util\IndagareMailer( );
-				$thankyou = createThankyouEmail( $acc->user->first_name . " " . $acc->user->last_name, $acc->user->primary_street_address, $acc->user->primary_city, $acc->user->primary_state, $acc->user->primary_postal, $acc->user->primary_country, $acc->user->email, $mb->name . " - " . $acc->user->membership_years . " years PRICE: $" . $mb->getMembershipPrice( $acc->user->membership_years ) . ".00" );
-				if ( ! empty( self::$debug_mail ) ) {
-					$m->sendHtml( self::$debug_mail_prefix.'Error creating user', $thankyou . " " . $e, self::$debug_mail );
-				}
-			}
-			//echo "1";
-
-			$email_subject = createThankyouEmailSubject();
-			$thankyou = createThankyouEmail( $acc->user->first_name . " " . $acc->user->last_name, $acc->user->primary_street_address, $acc->user->primary_city, $acc->user->primary_state, $acc->user->primary_postal, $acc->user->primary_country, $acc->user->email, $mb->name . " - " . $acc->user->membership_years . " years PRICE: $" . $mb->getMembershipPrice( $acc->user->membership_years ) . ".00" );
-			$email = $acc->user->email;
-			$m = new \indagare\util\IndagareMailer( );
-			$m->sendHtml( $email_subject, $thankyou, $email );
-			if ( ! empty( self::$debug_mail ) ) {
-				$m->sendHtml( self::$debug_mail_prefix.$email_subject, $thankyou, self::$debug_mail );
-			}
-			if ( ! empty( self::$admin_mail ) ) {
-				$m->sendHtml( self::$admin_mail_prefix.$email_subject, $thankyou, self::$admin_mail );
-			}
-			$payloadurl = "http://".\indagare\config\Config::$payloadserver."/users/$uid/index_user";
-			$timeout = 5;
-			stream_context_set_default( array( 'http' => array( 'timeout' => $timeout ) ) );
-			$payload = @get_headers( $payloadurl );
-			/* if($file_headers[0] == 'HTTP/1.0 200 OK')
-			 {
-
-			 }
-			 else
-			 {
-
-			 } */
-
-			$u = \indagare\db\CrmDB::getUserById( $uid );
-			$u->startSession( );
-			//echo "1";
-			//echo "-sso:".$_SESSION["SSODATA"];
-			//print "Status: $result[r_approved]<br>\n";
-			//echo $payload;
-
-		} else {
-			// transaction failed, print the reason
-			$m = new \indagare\util\IndagareMailer( );
-			$thankyou = createThankyouEmail( $acc->user->first_name . " " . $acc->user->last_name, $acc->user->primary_street_address, $acc->user->primary_city, $acc->user->primary_state, $acc->user->primary_postal, $acc->user->primary_country, $acc->user->email, $mb->name . " - " . $acc->user->membership_years . " years PRICE: $" . $mb->getMembershipPrice( $acc->user->membership_years ) . ".00" );
-			if ( ! empty( self::$debug_mail ) ) {
-				$m->sendHtml( self::$debug_mail_prefix.'Card Declined', $thankyou . " " . $result["r_approved"] . "-" . $result['r_error'], self::$debug_mail );
-			}
-			print $result["r_approved"] . "-" . $result['r_error'];
-		}
-	}
-
-	/**
-	 * Handles renewal of existing accounts
-	 */
-	public static function renew() {
-		global $acc;
-
-		$user = \indagare\db\CrmDB::getExtendedUserById( $_POST["userid"] );
-
-		$oldMb = $user->membership_level;
-
-		$user->primary_street_address = $_POST['s_address1'];
-		$user->primary_street_address2 = $_POST['s_address2'];
-		$user->primary_city = $_POST['s_city'];
-		$user->primary_state = $_POST['s_state'];
-		$user->primary_postal = $_POST['s_zip'];
-		$user->primary_country = $_POST['s_country'];
-		$user->membership_years = $_POST['mb_y'];
-		$user->membership_level = $_POST['mb'];
-		$order_id = time( ) + "_" + rand( 1, 100 );
-
-		$mb = \indagare\db\CrmDB::getMembershipByLevel( $user->membership_level );
-		//print $mb->toJSON();
-		$charge = $mb->getMembershipPrice( $user->membership_years );
-		//print $charge;
-
-		$mylphp = new \lphp( );
-
-		$myorder["host"] = \indagare\config\Config::$pay_host;
-		$myorder["port"] = \indagare\config\Config::$pay_port;
-		$myorder["keyfile"] = \indagare\config\Config::$pay_key;
-		$myorder["configfile"] = \indagare\config\Config::$pay_config;
-
-		// form data
-		$myorder["name"] = $_POST["cc_holder"];
-		$myorder["cardnumber"] = $_POST["cc_num"];
-		$myorder["cardexpmonth"] = $_POST["cc_m"];
-		$myorder["cardexpyear"] = $_POST["cc_y"];
-		$myorder["cvmindicator"] = "provided";
-		$myorder["cvmvalue"] = $_POST["ccv"];
-		$myorder["chargetotal"] = $charge;
-		$myorder["ordertype"] = "SALE";
-
-		$myorder["oid"] = $order_id;
-
-		$myorder["address1"] = $user->primary_street_address;
-		$myorder["address2"] = $user->primary_street_address2;
-		$myorder["city"] = $user->primary_city;
-		$myorder["state"] = $user->primary_state;
-		$myorder["country"] = $user->primary_country;
-		$myorder["email"] = $user->email;
-		$myorder["zip"] = $user->primary_postal;
-
-		$result = $mylphp->curl_process( $myorder );
-		# use curl methods
-
-		if ( $result["r_approved"] == "APPROVED" ) {
-			// success
-			print $result["r_approved"] . "-" . $result['r_code'] . "-";
-			$user->membership_expires_at = date( 'Y-m-d H:i:s', mktime( 0, 0, 0, date( "m" ), date( "d" ), date( "Y" ) + $user->membership_years ) );
-			//print "create user\n";
-			$uid = \indagare\db\CrmDB::updateUserExp( $user );
-			$uid = \indagare\db\CrmDB::updateUserMB( $user );
-
-			//print "$uid, create order\n";
-			$oid = \indagare\db\CrmDB::addOrder( $uid, $charge, $result['r_approved'], time( ), $order_id, 1, substr( $_POST["cc_num"], - 4 ), $_POST["cc_m"], $_POST["cc_y"] );
-
-			\indagare\db\CrmDB::addLineItem( $oid, $mb->getMembershipPrice( $acc->user->membership_years ) . '00' );
-
-			$email_subject = 'Welcome back to Indagare!';
-			if ( $oldMb < $user->membership_level ) {
-				$thankyou = createThankyouUpgradeEmail( $user->first_name . " " . $user->last_name, $user->primary_street_address, $user->primary_city, $user->primary_state, $user->primary_postal, $user->primary_country, $user->email, $mb->name . " - " . $user->membership_years . " years PRICE: $" . $mb->getMembershipPrice( $user->membership_years ) . ".00" );
-				$email_subject = 'Welcome to a new level of service at Indagare!';
-			} else {
-				$thankyou = createThankyouRenewEmail( $user->first_name . " " . $user->last_name, $user->primary_street_address, $user->primary_city, $user->primary_state, $user->primary_postal, $user->primary_country, $user->email, $mb->name . " - " . $user->membership_years . " years PRICE: $" . $mb->getMembershipPrice( $user->membership_years ) . ".00" );
-			}
-			$email = $user->email;
-			$m = new \indagare\util\IndagareMailer( );
-			$m->sendHtml( $email_subject, $thankyou, $email );
-			if ( ! empty( self::$debug_mail ) ) {
-				$m->sendHtml( self::$debug_mail_prefix.$email_subject, $thankyou, self::$debug_mail );
-			}
-			if ( ! empty( self::$admin_mail ) ) {
-				$m->sendHtml( self::$admin_mail_prefix.$email_subject, $thankyou, self::$admin_mail );
-			}
-
-			//print "Status: $result[r_approved]<br>\n";
-
-		} else {
-			// transaction failed, print the reason
-			$m = new \indagare\util\IndagareMailer( );
-			$thankyou = createThankyouEmail( $acc->user->first_name . " " . $acc->user->last_name, $acc->user->primary_street_address, $acc->user->primary_city, $acc->user->primary_state, $acc->user->primary_postal, $acc->user->primary_country, $acc->user->email, $mb->name . " - " . $acc->user->membership_years . " years PRICE: $" . $mb->getMembershipPrice( $acc->user->membership_years ) . ".00" );
-			if ( ! empty( self::$debug_mail ) ) {
-				$m->sendHtml( self::$debug_mail_prefix.'Card Declined', $thankyou . " " . $result["r_approved"] . "-" . $result['r_error'], self::$debug_mail );
-			}
-			print $result["r_approved"] . "-" . $result['r_error'];
-		}
 	}
 }
 

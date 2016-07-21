@@ -16,19 +16,83 @@ class WPContent {
 	}
 
 	private static function getAccount() {
+		$json_mode = 0;//JSON_PRETTY_PRINT;
+
 		$content = "<script>\n";
-		$content .= "var blank = {};\n";
+
+		$a = \WPSF\Contact::get_account_wp( $wpid );
+		if(empty($a)) {
+			$a = new \WPSF\Contact();
+		}
+		$content .= "var SFData = {};\n";
+		$content .= "SFData.Account = " . json_encode( $a->toArray(false), $json_mode ) . ";\n";
+		$content .= "SFData.Membership = SFData.Account.Membership__x;\n";
+		$content .= "SFData.Contacts = SFData.Account.Contacts__x;\n";
+		$content .= "SFData.initLoad = true;\n";
+
+		$a = \WPSF\Membership::get_all();
+		$content .= "SFData.MembershipList = " . json_encode( $a, $json_mode ) . ";\n";
+
+		$content .= "SFData.def={\n";
+
 		$a = new \WPSF\Account();
-		$content .= "blank.Account = " . json_encode( $a->toArray(), JSON_PRETTY_PRINT ) . ";\n";
+		$content .= "Account:" . json_encode( $a->toArray(), $json_mode ) . ",\n";
+
 		$a = new \WPSF\Contact();
-		$content .= "blank.Contact = " . json_encode( $a->toArray(), JSON_PRETTY_PRINT ) . ";\n";
+		$content .= "Contact:" . json_encode( $a->toArray(), $json_mode ) . ",\n";
+
 		$a = new \WPSF\PassportVisa();
-		$content .= "blank.PassportVisa = " . json_encode( $a->toArray(), JSON_PRETTY_PRINT ) . ";\n";
+		$content .= "PassportVisa:" . json_encode( $a->toArray(), $json_mode ) . ",\n";
+
 		$a = new \WPSF\FrequentTravel();
-		$content .= "blank.FrequentTravel = " . json_encode( $a->toArray(), JSON_PRETTY_PRINT ) . ";\n";
+		$content .= "FrequentTravel:" . json_encode( $a->toArray(), $json_mode ) . ",\n";
+
+		$a = new \WPSF\Membership();
+		$content .= "Membership:" . json_encode( $a->toArray(), $json_mode ) . ",\n";
+
+		$a = \WPSF\Countries::countryPicklistValues();
+		$content .= "Countries:" . json_encode( $a, $json_mode ) . ",\n";
+
+		$a = \WPSF\Countries::statePicklistValues();
+		$content .= "States:" . json_encode( $a, $json_mode ) . "\n";
+
+		$content .= "};\n";
 		$content .= "</script>\n";
 
 		$content .= file_get_contents( $_SERVER['DOCUMENT_ROOT'].'/wp-content/themes/indagare/app/resources/account.html');
+
+		$front = get_option('page_on_front');
+		$rows = get_field('home-featured', $front );
+
+		if($rows) {
+			$content .= '<section class="related-articles contain" id="articles-for-dashboard" style="display:none";>'."\n";
+
+			$count = 0;
+			foreach($rows as $row) {
+				$count++;
+				if($count > 4) break;
+
+						$imageobj = $row['home-featured-image'];
+						$image = $imageobj['sizes']['thumb-large'];
+
+						$content .= '<article>'."\n";
+							$content .= '<a href="'.$row['home-featured-url'].'">'."\n";
+								if ( $image ) {
+									$content .= '<img src="'.$image.'" alt="Related" />'."\n";
+								}
+								$content .= '<span class="info">'."\n";
+									$content .= '<h4>'.$row['home-featured-heading'].'</h4>'."\n";
+									$content .= '<h3>'.$row['home-featured-title'].'</h3>'."\n";
+								$content .= '</span><!-- .info -->'."\n";
+							$content .= '</a>'."\n";
+						$content .= '</article>'."\n";
+			}
+
+			$content .= '</section>'."\n";
+		}
+
+		$content .= "<script>jQuery('#articles-for-dashboard').appendTo('#dashboard>div').show();</script>";
+
 		return $content;
 	}
 

@@ -29,7 +29,7 @@ h2 a, h3 a, h4 a, h5 a, a h1, a h2, a p {text-decoration:none;}
 label, .label {display:inline-block;}
 input, select, textarea, .button {font-size:1em;display:inline-block;border:0 none;padding-left:.715em;padding-right:.715em;position:relative;}
 input, select, textarea, button, .button {font-family:Arial,sans-serif;border:0 none;}
-select {-webkit-appearance: none;}
+select {-webkit-appearance: none;-moz-appearance: none; &::-ms-expand{display:none;}}
 .element {/*35px height and line-height mtatch*/height:2.5em;line-height:1;/**/overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 .buttons {text-align:right;}
 .buttons .button {margin-left:.5em;}
@@ -2945,6 +2945,7 @@ body.modalmap #map-buttons-container {
 }
 
 
+.input-field,
 .field.validate {
   &.validated {
   	color: black;
@@ -2968,9 +2969,12 @@ body.modalmap #map-buttons-container {
       color: #090;
   }
   
-  &.validated.validate-error:before {
+  &.validated.validate-error {
+    background: #fee;
+    &:before {
       content: "\f057";
       color: #c00;
+    }
   }
   
   span.errmsg,
@@ -3447,8 +3451,9 @@ $orange: #da420b;
 $cyan: #abe1fa;
 $white: #ffffff;
 $formwidth:65em;
+$columnwidth:5em;
 
-#account-tab-container {
+#account-tab-container, #signup-form-container {
   background: $white;
   
       -webkit-transition-duration: 1s;
@@ -3458,16 +3463,13 @@ $formwidth:65em;
 
   .tab {
     
-    .field  {
-      margin:0;
-    }
-    
     label {
       display: block;
       margin: 0;
       min-width: 0;
       float: none;
-      }
+      padding: 0 0.075em;
+    }
   }
   
   h2 {
@@ -3478,6 +3480,7 @@ $formwidth:65em;
     border-bottom: 1px solid $black;
     padding: 0 0 0.25em;
     font-weight: 200;
+    clear:both;
   }
 
   ul#account-tab-container-nav {
@@ -3510,17 +3513,42 @@ $formwidth:65em;
     }
   }
   
-
+  #account-header-display {
+    margin: 2em 0 1em;
+    label {
+      margin: 0 0.5em 0 0;
+      font-weight: 400;
+    }
+    
+    [data-display-field] {
+      font-weight: 600;
+    }
+    
+    #account-display-membership-level, .valid-through {
+      margin-top:0.5em;
+    }
+    
+    #new-contact-link {
+      color: $blue;
+      font-size: 0.875em;
+    }
+    .renew-wrapper a {
+      color:$orange;
+      font-size: 0.875em;
+    }
+  }
+  
   form {
     a.form-edit-link,
-    a.form-save-button { 
+    a.form-save-button, 
+    a.form-cancel-button { 
       color:$blue;
       font-size:0.875em;
       clear:both;
     }
 
     a.form-edit-link { display:block; }
-    a.form-save-button { display:none; }
+    a.form-save-button, a.form-cancel-button { display:none; }
     
     label {
       display: block;
@@ -3530,7 +3558,7 @@ $formwidth:65em;
       padding-left:0em;
       color: $black;
       font-weight:bold;
-      z-index:2;
+      z-index:1;
       width:100%;
       &:after {
         content:':';
@@ -3549,7 +3577,7 @@ $formwidth:65em;
       display: block;
       position: relative;
       background: transparent;
-      z-index:1;
+      z-index:2;
       color:$black;
     }
 
@@ -3576,6 +3604,13 @@ $formwidth:65em;
       padding:0;
       margin:0.125em;
       text-align:left;
+      label {
+        position: relative;
+        font-weight: 400;
+        &:after {
+          content:'';
+        }
+      }
     }
     
     text-align:center;
@@ -3587,7 +3622,7 @@ $formwidth:65em;
   .input-field {
     width: 100%;
     position: relative;
-    padding: .125em 0;
+    padding: 0;
     display: block;
     float: left;
   }
@@ -3596,12 +3631,22 @@ $formwidth:65em;
 
     &.editing {
       a.form-edit-link { display:none; }
-      a.form-save-button { 
-        display:block; 
+      a.form-cancel-button { 
+        display:inline-block;
         padding:1em 3em;
-        background: $green;
-        color: white;
+        background:$white;
+        color:$blue;
         text-align:center;
+        float:right;
+        clear:none;
+      }
+      a.form-save-button { 
+        display:inline-block; 
+        padding:1em 0;
+        background: $green;
+        color: $white;
+        text-align:center;
+        float:left;
         &.processing {
           color: $gray;
           background: transparent 50% 50% no-repeat url('images/preloader.gif');
@@ -3623,6 +3668,7 @@ $formwidth:65em;
         border: 1px solid $gray;
         padding: 1.5em 1em 0.5em;
         color: $black;
+        min-height: 3.75em;
       }
       
   select+label:after {
@@ -3640,6 +3686,213 @@ $formwidth:65em;
     }
   }
 
+
+.card-list {
+    text-align: left;
+    position: relative;
+    
+  .card-item {
+      max-width: 17em;
+      display: inline-block;
+      margin: 0.5em;
+      position: relative;
+      
+      
+      form {
+        padding: 0 1em 1em 0;
+        position: relative;
+        
+        label {
+          text-align:left;
+        }
+        
+        a.form-edit-link {
+            text-align: left;
+        }
+                
+        a.card-save-button {
+          margin: 0.5em 0;
+          padding: 0.5em 0;
+          width: 100%;
+          display: none;
+          background: $green;
+          color:$white;
+          text-align: center;
+        }
+        
+        a.card-delete-button {
+          font-size: 0.875em;
+          margin: 0.5em 0 0;
+          padding: 0.5em 0;
+          width: 100%;
+          display: none;
+          background: $orange;
+          color:$white;
+          font-size: 0.875em;
+          text-align: center;
+        }
+        
+        a.card-close-button {
+          margin: 0;
+          padding: 0;
+          width: 0.625em;
+          height: 0.625em;
+          position: absolute;
+          top: 0;
+          right: 0;
+          display: none;
+          text-indent: -9999em;
+          line-height: 1em;
+          font-size: 2em;
+          background: transparent;
+          color: #da420b;
+          text-align: center;
+          z-index: 1;
+          overflow: hidden;
+          
+          &:after {
+            content: '\0D7';
+            text-indent: 0;
+            text-align: center;
+            font-size: 1em;
+            z-index: 100;
+            display: inline-block;
+            position: absolute;
+            top: -0.3125em;
+            right: -0.3125em;
+            height: 1.125em;
+            width: 1.125em;
+            font-weight: 800;
+            line-height: 1em;
+          }
+          
+        }
+        
+        
+        select, input {
+          padding:0;
+        }
+        
+        .field-carditem-Name,
+        .field-carditem-Frequent_Traveler_Program__c,
+        .field-carditem-Legal_Name__c,
+        .field-carditem-Number__c,
+        .field-carditem-Expiry_Date__c,
+        label {
+          display:none;
+        }
+  
+        .field-carditem-RecordTypeId,
+        .field-carditem-Carrier_Hotel_Operator__c {
+          input,select {
+            font-weight:600;
+          }
+        }
+        
+        &.editing {
+          border: 1px solid #808080;
+          padding: 1em;
+
+          a.card-close-button {
+            display: block;
+          }
+          
+          a.card-delete-button,
+          a.card-save-button {
+            display: inline-block;
+          }
+          
+          input,select{
+            padding:1.5em 1em 0.5em;
+          }
+          
+          .field-carditem-Name,
+          .field-carditem-Frequent_Traveler_Program__c,
+          .field-carditem-Legal_Name__c,
+          .field-carditem-Number__c,
+          .field-carditem-Expiry_Date__c,
+          label {
+            display:block;
+          }
+        .field-carditem-RecordTypeId,
+        .field-carditem-Carrier_Hotel_Operator__c {
+          input,select {
+            font-weight:400;
+          }
+        }
+        } // &.editing
+  
+
+      }  // form
+      .input-field {
+          float: none;
+      }
+    }
+  }
+
+  form.editing label:after {
+    content: '';
+  }
+}
+
+.input-field {
+  &.validated,
+  &.validating {
+    &:before {
+      position:absolute;
+      right: 1.5em;
+      top: 1.125em;
+      left: auto;
+    }
+    
+    &.validate-error span.errmsg {
+      position: absolute;
+      background: #fee;
+      padding: 0.5em 1em;
+      display: none;
+      z-index: 100;
+      left: 0;
+      top: 100%;
+      margin: 0;
+      font-size: 75%;
+      width: 100%;
+      border:4px solid #c00;
+      ul {
+        margin-bottom:0;
+      }
+    }
+    &.validate-error:hover span.errmsg {
+      display:block;
+    }
+  }
+}
+$formwidth:65em;
+$itempadding:0.25em;
+
+#signup-form-container form .input-field {
+  max-width: 100%;
+  margin-left: $itempadding;
+  margin-bottom: $itempadding;
+  
+  &.iform-row-clear { clear:both; }
+  &.iform-row-noclear { clear:none; }
+  &.iform-row-1col { width: $formwidth; }
+  &.iform-row-2col { width: floor( ( ( $formwidth - ( $itempadding * 1 ) ) / 2 ) * 100 ) / 100; }
+  &.iform-row-3col { width: floor( ( ( $formwidth - ( $itempadding * 2 ) ) / 3 ) * 100 ) / 100; }
+  &.iform-row-4col { width: floor( ( ( $formwidth - ( $itempadding * 3 ) ) / 4 ) * 100 ) / 100; }
+  &.iform-row-5col { width: floor( ( ( $formwidth - ( $itempadding * 4 ) ) / 5 ) * 100 ) / 100; }
+  &.iform-row-6col { width: floor( ( ( $formwidth - ( $itempadding * 5 ) ) / 6 ) * 100 ) / 100; }
+  &.iform-row-7col { width: floor( ( ( $formwidth - ( $itempadding * 6 ) ) / 7 ) * 100 ) / 100; }
+  &.iform-row-8col { width: floor( ( ( $formwidth - ( $itempadding * 7 ) ) / 8 ) * 100 ) / 100; }
+}
+
+#account-tab-container {
+  form .input-field, form .form-save-button {
+    max-width: 100%;
+    margin-left: $itempadding;
+    margin-bottom: $itempadding;
+  }
+  
   #field-contact-Birthdate,
   #field-contact-HomePhone,
   #field-contact-AssistantName,
@@ -3648,24 +3901,30 @@ $formwidth:65em;
     clear:both;
   }
   
+  #field-contact-HomePhone.signup-form {
+    clear:none;
+  }
+
   #field-contact-Salutation {
-      width: 7em;
+    width: floor( ( ( $formwidth - ( $itempadding * 7 ) ) / 8 ) * 100 ) / 100;
   }
   
   #field-contact-Title {
-      width: 12em;
+    width: floor( ( ( $formwidth - ( $itempadding * 7 ) ) / 8 ) * 100 ) / 100;
   }
   
   #field-contact-FirstName,
   #field-contact-LastName {
-      width: floor( ( $formwidth - 7 - 12 ) / 2 * 100 ) / 100;
+    width: floor( ( ( $formwidth - ( $itempadding * 7 ) ) / 8 ) * 100 ) / 100 * 3 + ( $itempadding * 2 );
   }
   
+  #field-account-tgCode,
+  #field-account-Membership_Level__c,
   #field-contact-AssistantName,
   #field-contact-Birthdate,
   #field-contact-Anniversary_Date__c,
   #field-contact-Assistant_Email__c {
-      width: floor( $formwidth / 2 * 100 ) / 100;
+    width: floor( ( ( $formwidth - ( $itempadding * 1 ) ) / 2 ) * 100 ) / 100;
   }
   
   .form-save-button,
@@ -3673,21 +3932,26 @@ $formwidth:65em;
   #field-contact-MailingState,
   #field-contact-MailingPostalCode,
   #field-contact-MailingCountry,
+  #field-account-detail-form-BillingCity,
+  #field-account-detail-form-BillingState,
+  #field-account-detail-form-BillingPostalCode,
+  #field-account-detail-form-BillingCountry,
   #field-contact-OtherCity,
   #field-contact-OtherState,
   #field-contact-OtherPostalCode,
   #field-contact-OtherCountry {
-      width: floor( $formwidth / 4 * 100 ) / 100;
+      width: floor( ( ( $formwidth - ( $itempadding * 3 ) ) / 4 ) * 100 ) / 100;
   }
   
   #field-contact-MobilePhone,
   #field-contact-Phone,
   #field-contact-HomePhone {
-      width: floor( $formwidth / 3 * 100 ) / 100;
+      width: floor( ( ( $formwidth - ( $itempadding * 2 ) ) / 3 ) * 100 ) / 100;
   }
   
   #field-contact-Email,
   #field-contact-MailingStreet,
+  #field-account-detail-form-BillingStreet,
   #field-contact-OtherStreet {
       width:$formwidth;
   }
@@ -3721,3 +3985,68 @@ $formwidth:65em;
       }
 }
 
+.card-button-list {
+  .card-item-button {
+    display: inline-block;
+    padding: 0;
+    width: 100%;
+    border: 1px solid $gray;
+    position: relative;
+    
+    a {
+      padding: 1em 1em 1em 4em;
+      width: 100%;
+      display: inline-block;
+      text-align: center;
+      z-index: 1;
+      background: transparent;
+      color: $blue;
+    }
+    
+    &:before {
+      content: '+';display: block;position: absolute;top: 50%;margin-top: -0.875em;font-size: 2em;color: $blue;left: 1em;z-index: 0;
+    }
+  }
+}
+
+#signup-form-container {
+  #field-s_state,
+  #field-s_country,
+  #field-account-Membership_Level__c,
+  #field-cc_month {
+    &:before {
+      display: none;
+    }
+  }
+}
+
+.help-box-wrapper {
+    background: $cyan;
+    width: 100%;
+    margin: 3em 0 0;
+    color: $black;
+}
+
+.help-box {
+    padding: 2em;
+    a, a:link, a:visited {
+        color: $black;
+        text-decoration: none;
+        font-weight: 800;
+    }
+}
+
+h2.help-box-title {
+    font-size: 2.5em;
+    font-weight: 200;
+}
+
+.help-box-content {
+    font-size: 1.5em;
+    font-weight: 200;
+}
+
+
+span.keep-together {
+    display: inline-block;
+}

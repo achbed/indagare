@@ -7275,18 +7275,6 @@ jQuery(document).ready(function($) {
 				}
 				echo '</div>'."\n";
 			}
-?>
-<script>
-jQuery().ready(function($) {
-
-	$('#benefits').appendTo('#tab3');
-	$('#benefits').addClass('show-this');
-
-//	$('.customselect').customSelect();
-
-})
-</script>
-<?php
 		}
 
 

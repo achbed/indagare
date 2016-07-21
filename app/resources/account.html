@@ -3,22 +3,21 @@
     <ul id="account-tab-container-nav" class="clearfix">
 	    <li><a href="#dashboard">Dashboard</a></li>
 	    <li><a href="#billing">Billing</a></li>
-	    <li><a href="#contact">Contact Details</a></li>
+	    <li><a href="#contactdetails">Contact Details</a></li>
 	    <li><a href="#prefs">Travel Preferences</a></li>
 	    <li><a href="#accounts">Travel Accounts</a></li>
     </ul>
-
-	<div class="loading">Loading...</div>
-	
+    	
     <div id="account-header-display">
 	    <div id="account-isprimary-display" data-source-object="Account" data-display-if="IsPrimaryContact__x=true" style="display:none;">Primary Account</div>
 	    <div id="account-display-contact-wrapper"><select name="contactselect" id="contactselect"></select></div>
+		<div class="new-contact-wrapper" data-source-object="Account" data-display-if="IsPrimaryContact__x=true" style="display:none;"><a id="new-contact-link" href="#">Add Travel Companion</a></div>
 		<div id="account-display-membership-level">
-			<label class="hidden" for="account-bar-status">Membership
-				Level:</label><span id="account-bar-status" data-source-object="Membership"
-				data-display-field="Name"></span>
+			<label for="account-bar-status">Membership
+				Level:</label><div id="account-bar-status" data-source-object="Membership"
+				data-display-field="Name"></div>
 		</div>
-		<div class="renew-wrapper" data-source-object="Account" data-display-if="IsPrimaryContact__x=true" style="display:none;"><a href="#billing">Upgrade/Renew Membership</a></div>
+		<div class="renew-wrapper" data-source-object="Account" data-display-if="IsPrimaryContact__x=true" style="display:none;"><a id="renew-link" href="#billing">Upgrade/Renew Membership</a></div>
    		<div class="valid-through">
    			<label for="account-bar-end">Valid Through</label>
    			<span id="account-bar-end" data-source-object="Account"
@@ -32,219 +31,182 @@
     </div>
     
     <div class="tab" id="dashboard">
-	    <h2>Get Inspired</h2>
-	    <p>A list of recent articles goes here</p>
+	    <div class="tab-content">
+		    <h2>Get Inspired</h2>
+	    </div>
     </div>
 	
     <div class="tab" id="billing">
-	    <h2>Membership Information</h2>
-	    <div>
-			<form id="account-membership-detail-form" data-source-object="Membership" data-edit-field="Id,Name"></form>
-			<P>@TODO: membership pulldown</P>
-	    </div>
-	    
-	    <h2>Billing Address</h2>
-	    <div>
-			<form id="account-detail-form" data-source-object="Account"
-				data-edit-field="Id,Name,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry">
-				<a class="form-save-button" href="#">Save</a>
-				<a class="form-edit-link" href="#">Edit Billing Address</a>
-			</form>
-	    </div>
-	    
-	    <h2>Payment Type</h2>
-	    <div>
-			<form id="account-detail-form" data-source-object="Account"
-				data-edit-field="Id,Name,Credit_Card_Type__c,Credit_Card_Number__c,Credit_Card_Month__c,Credit_Card_Year__c">
-				<a class="form-save-button" href="#">Save</a>
-				<a class="form-edit-link" href="#">Edit Card Information</a>
-			</form>
+	    <div class="tab-content">
+		    <h2>Membership Information</h2>
+		    <div>
+				<form class="clearfix" id="account-membership-upgrade-form">
+					<div id="field-account-membership-upgrade-select" class="input-field field clearfix">
+						<select id="account-membership-upgrade-select"></select>
+						<label for="account-membership-upgrade-select">Membership Type</label>
+					</div>
+					<a class="form-cancel-button" href="#">Close</a>
+					<a class="form-edit-link" href="#">Edit Membership Type</a>
+				</form>
+		    </div>
+		    
+		    <h2>Billing Address</h2>
+		    <div>
+				<form class="clearfix" id="account-detail-form" data-source-object="Account"
+					data-edit-field="Id,Name,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry">
+					<a class="form-save-button" href="#">Save</a>
+					<a class="form-cancel-button" href="#">Close</a>
+					<a class="form-edit-link" href="#">Edit Billing Address</a>
+				</form>
+		    </div>
+		    
+		    <h2>Payment Type</h2>
+		    <div>
+				<form class="clearfix" id="account-detail-form" data-source-object="Account"
+					data-edit-field="Id,Name,Credit_Card_Type__c,Credit_Card_Number__c,Credit_Card_Month__c,Credit_Card_Year__c">
+					<a class="form-save-button" href="#">Save</a>
+					<a class="form-cancel-button" href="#">Close</a>
+					<a class="form-edit-link" href="#">Edit Card Information</a>
+				</form>
+		    </div>
 	    </div>
     </div>
 	
-    <div class="tab" id="contact">
-	    <h2>Contact Details</h2>
-    	<form id="contact" data-source-object="Contact"
-			data-edit-field="Id,Salutation,FirstName,LastName,Title,Birthdate,Anniversary_Date__c">
-			<a class="form-save-button" href="#">Save</a>
-			<a class="form-edit-link" href="#">Edit Contact Details</a>
-	    </form>
-	    
-	    <h2>Address</h2>
-    	<form id="contact" data-source-object="Contact"
-			data-edit-field="Id,
-		        MailingStreet,MailingCity,MailingState,MailingPostalCode,MailingCountry,
-		        OtherStreet,OtherCity,OtherState,OtherPostalCode,OtherCountry">
-			<a class="form-save-button" href="#">Save</a>
-			<a class="form-edit-link" href="#">Edit Address</a>
-	    </form>
-	    
-	    <h2>Email</h2>
-    	<form id="contact" data-source-object="Contact"
-			data-edit-field="Id,Email,AssistantName,Assistant_Email__c">
-			<a class="form-save-button" href="#">Save</a>
-			<a class="form-edit-link" href="#">Edit Email</a>
-	    </form>
-	    
-	    <h2>Telephone</h2>
-    	<form id="contact" data-source-object="Contact"
-			data-edit-field="Id,
-		        HomePhone,Phone,MobilePhone">
-			<a class="form-save-button" href="#">Save</a>
-			<a class="form-edit-link" href="#">Edit Telephone</a>
-	    </form>
-	    
-	    
+    <div class="tab" id="contactdetails">
+	    <div class="tab-content">
+		    <h2>Contact Details</h2>
+	    	<form class="clearfix" id="contact" data-source-object="Contact"
+				data-edit-field="Id,Salutation,FirstName,LastName,Title,Birthdate,Anniversary_Date__c">
+				<a class="form-save-button" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Contact Details</a>
+		    </form>
+		    
+		    <h2>Address</h2>
+	    	<form class="clearfix" id="contact" data-source-object="Contact"
+				data-edit-field="Id,
+			        MailingStreet,MailingCity,MailingState,MailingPostalCode,MailingCountry,
+			        OtherStreet,OtherCity,OtherState,OtherPostalCode,OtherCountry">
+				<a class="form-save-button" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Address</a>
+		    </form>
+		    
+		    <h2>Email</h2>
+	    	<form class="clearfix" id="contact" data-source-object="Contact"
+				data-edit-field="Id,Email,AssistantName,Assistant_Email__c">
+				<a class="form-save-button" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Email</a>
+		    </form>
+		    
+		    <h2>Telephone</h2>
+	    	<form class="clearfix" id="contact" data-source-object="Contact"
+				data-edit-field="Id,
+			        HomePhone,Phone,MobilePhone">
+				<a class="form-save-button" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Telephone</a>
+		    </form>
+		    
+		</div>
     </div>
 	
     <div class="tab" id="prefs">
-	    <h2>Preferences Tab</h2>
-	    <p>A list of recent articles goes here</p>
+	    <div class="tab-content">
+		    <h2>Communication</h2>
+			<form class="clearfix" id="travel-preferences" data-source-object="Contact"
+				data-edit-field="Id,Preferred_Method_of_Contact__c,Phone_Communication_Preferences__c,
+	        		Preferred_Format_to_Receive_Itineraries__c">
+				<a class="form-save-button" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Communication Preferences</a>
+			</form>
+			
+		    <h2>Itinerary</h2>
+			<form class="clearfix" id="travel-preferences" data-source-object="Contact"
+				data-edit-field="Id,How_Often_Do_You_Travel__c,How_Do_You_Like_to_Travel__c,Travel_Planning_Style__c,Who_Do_You_Travel_With__c,Prefer_a_Planned_Out_Schedule__c,
+	        		Prefer_Doing_Things_on_Own__c">
+				<a class="form-save-button" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Itinerary Preferences</a>
+			</form>
+			
+		    <h2>Flights</h2>
+			<form class="clearfix" id="travel-preferences" data-source-object="Contact"
+				data-edit-field="Id,Short_Haul_Class_of_Service__c,Long_Haul_Class_of_Service__c">
+				<a class="form-save-button" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Flight Preferences</a>
+			</form>
+			
+		    <h2>Hotels</h2>
+			<form class="clearfix" id="travel-preferences" data-source-object="Contact"
+				data-edit-field="Id,Hotel_Style__c,Hotel_Amenities__c">
+				<a class="form-save-button" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Hotel Preferences</a>
+			</form>
+			
+		    <h2>Food</h2>
+			<form class="clearfix" id="travel-preferences" data-source-object="Contact"
+				data-edit-field="Id,Meal_Choice__c,Allergies_Food_Restrictions__c,Type_of_Restaurants_Preferred__c,
+	        		Beverage_of_Choice__c">
+				<a class="form-save-button" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Food Preferences</a>
+			</form>
+			
+		    <h2>Other Travel Preferences</h2>
+			<form class="clearfix" id="questionnaire" data-source-object="Contact"
+				data-edit-field="Id,
+	        		Travel_Memories__c,Pet_Peeves__c,Influences__c,Interests__c,
+	        		Other_Travel_Preferences__c">
+				<a class="form-save-button" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Other Preferences</a>
+			</form>
+			
+	    </div>
     </div>
 	
     <div class="tab" id="accounts">
-	    <h2>Travel Accounts Tab</h2>
-	    <p>A list of recent articles goes here</p>
+	    <div class="tab-content">
+		    <h2>Travel Accounts</h2>
+			<div id="profile-freq" class="card-list clearfix"></div>
+			<div id="profile-freq-buttons" class="card-button-list card-list clearfix">
+				<div class="card-item card-item-button">
+					<a id="profile-freq-new" href="#" class="card-button-large">
+						Add New Frequent Traveller Account
+					</a>
+				</div>
+			</div>
+		    
+		    <h2>Travel Documents</h2>
+			<div id="profile-passports" class="card-list clearfix"></div>
+			<div id="profile-passports-buttons" class="card-button-list card-list clearfix">
+				<div class="card-item card-item-button">
+					<a id="profile-passport-new" href="#" class="card-button-large">
+						Add New Travel Document
+					</a>
+				</div>
+			</div>
+	    </div>
     </div>
 	
 </div>
 
-<!-- 
-<div id="status-bar" class="bar-element clearfix">
-	<div class="bar-item-right bar-item" id="contact-select-bar-item"
-		style="display: none;">
-		<label for="contactpulldown">Contact:</label>
-	</div>
-	<div class="bar-item">
-		<label class="hidden" for="account-bar-name">Account:</label><span
-			id="account-bar-name" data-source-object="Account"
-			form-data-field="Name"></span>
-	</div>
-	<div class="bar-item">
-		<label class="hidden" for="account-bar-status">Membership
-			Level:</label><span id="account-bar-status" data-source-object="Membership"
-			form-data-field="Name"></span>
-	</div>
-	<div class="bar-item">
-		<label for="account-bar-end">Valid Through</label><span
-			id="account-bar-end" data-source-object="Account"
-			form-data-field="Membership_End_Date__c"></span>
-	</div>
-</div>
-<div id="account-bar" class="collapsed bar-element clearfix"
-	collapse-match="#account-detail"
-	collapse-close="#contact-bar,#contact-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
-	<div class="expand-button">
-		<a class="button-item" href="#"><span class="button-icon"></span></a>
-	</div>
-	<div class="bar-item">Membership Details</div>
-</div>
-<div id="account-detail" class="collapsed detail-element clearfix"
-	collapse-match="#account-bar"
-	collapse-close="#contact-bar,#contact-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
-	<form id="account-detail-form" data-source-object="Account"
-		data-edit-field="Id,Name,
-   		BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry,
-   		Phone,Email__c,Membership_Status__c,Membership_Start_Date__c,
-   		Credit_Card_Number__c,Credit_Card_Month__c,Credit_Card_Year__c
-   		">
-		<div class="loading">Loading...</div>
-	</form>
-	<form id="account-membership-detail-form" data-source-object="Membership"
-		data-edit-field="Id,Name"></form>
-</div>
-
-<div id="contact-bar" class="bar-element clearfix"
-	collapse-match="#contact-detail"
-	collapse-close="#account-bar,#account-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
-	<div class="expand-button">
-		<a class="button-item" href="#"><span class="button-icon"></span></a>
-	</div>
-	<div class="bar-item">Contact Details</div>
-</div>
-<div id="contact-detail" class="collapsed detail-element clearfix"
-	collapse-match="#contact-bar"
-	collapse-close="#account-bar,#account-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
-	<form id="contact" data-source-object="Contact"
-		data-edit-field="Id,Salutation,FirstName,Middle_Name__c,LastName,Title,Birthdate,Anniversary_Date__c,Referred_by__c,
-		        HomePhone,Phone,MobilePhone,Email,AssistantName,Assistant_Email__c,
-		        MailingStreet,MailingCity,MailingState,MailingPostalCode,MailingCountry,
-		        OtherStreet,OtherCity,OtherState,OtherPostalCode,OtherCountry">
-		<div class="loading">Loading...</div>
-		<a class="card-save-button card-button-large" href="#">Save</a>
-	</form>
-</div>
-
-<div id="pref-bar" class="collapsed bar-element clearfix"
-	collapse-match="#pref-detail"
-	collapse-close="#account-bar,#account-detail,#contact-bar,#contact-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
-	<div class="expand-button">
-		<a class="button-item" href="#"><span class="button-icon"></span></a>
-	</div>
-	<div class="bar-item">Preferences</div>
-</div>
-<div id="pref-detail" class="collapsed detail-element clearfix"
-	collapse-match="#pref-bar"
-	collapse-close="#account-bar,#account-detail,#contact-bar,#contact-detail,#profile-bar,#profile-detail,#quest-bar,#quest-detail">
-	<form id="travel-preferences" data-source-object="Contact"
-		data-edit-field="Id,Preferred_Method_of_Contact__c,Phone_Communication_Preferences__c,
-        		Preferred_Format_to_Receive_Itineraries__c,Hotel_Style__c,Hotel_Amenities__c,
-        		Short_Haul_Class_of_Service__c,Long_Haul_Class_of_Service__c,
-        		Meal_Choice__c">
-		<div class="loading">Loading...</div>
-		<a class="card-save-button card-button-large" href="#">Save</a>
-	</form>
-</div>
-
-<div id="profile-bar" class="collapsed bar-element clearfix"
-	collapse-match="#profile-detail"
-	collapse-close="#account-bar,#account-detail,#contact-bar,#contact-detail,#pref-bar,#pref-detail,#quest-bar,#quest-detail">
-	<div class="expand-button">
-		<a class="button-item" href="#"><span class="button-icon"></span></a>
-	</div>
-	<div class="bar-item">Travel Documents and Accounts</div>
-</div>
-<div id="profile-detail" class="collapsed detail-element clearfix"
-	collapse-match="#profile-bar"
-	collapse-close="#account-bar,#account-detail,#contact-bar,#contact-detail,#pref-bar,#pref-detail,#quest-bar,#quest-detail">
-	<div id="profile-passports-buttons" class="card-list clearfix">
-		<div class="card-item card-item-button">
-			<a id="profile-passport-new" href="#" class="card-button-large">Add
-				New<br /> Travel Document
-			</a>
-		</div>
-		<div class="card-item card-item-button">
-			<a id="profile-freq-new" href="#" class="card-button-large">Add
-				New<br /> Frequent Traveller Account
-			</a>
+<div class="help-box-wrapper">
+	<div class="help-box">
+		<h2 class="help-box-title">Questions about your account?</h2>
+		<div class="help-box-content">
+			<span class="keep-together">Contact our membership team</span>
+			<span class="keep-together">at <a href="tel:+12129882611">212-988-2611</a></span>
+			<span class="keep-together">or email <a href="mailto:membership@indagare.com">membership@indagare.com</a>.</span>
 		</div>
 	</div>
-	<div id="profile-passports" class="card-list clearfix"></div>
 </div>
 
-<div id="quest-bar" class="collapsed bar-element clearfix"
-	collapse-match="#quest-detail"
-	collapse-close="#account-bar,#account-detail,#contact-bar,#contact-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail">
-	<div class="expand-button">
-		<a class="button-item" href="#"><span class="button-icon"></span></a>
-	</div>
-	<div class="bar-item">Questionnaire</div>
-</div>
-<div id="quest-detail" class="collapsed detail-element clearfix"
-	collapse-match="#quest-bar"
-	collapse-close="#account-bar,#account-detail,#contact-bar,#contact-detail,#pref-bar,#pref-detail,#profile-bar,#profile-detail">
-	<form id="questionnaire" data-source-object="Contact"
-		data-edit-field="Id,How_Often_Do_You_Travel__c,How_Do_You_Like_to_Travel__c,
-        		Travel_Planning_Style__c,Who_Do_You_Travel_With__c,Prefer_a_Planned_Out_Schedule__c,
-        		Prefer_Doing_Things_on_Own__c,Allergies_Food_Restrictions__c,Type_of_Restaurants_Preferred__c,
-        		Beverage_of_Choice__c,Travel_Memories__c,Pet_Peeves__c,Influences__c,Interests__c,
-        		Other_Travel_Preferences__c">
-		<div class="loading">Loading...</div>
-		<a class="card-save-button card-button-large" href="#">Save</a>
-	</form>
-</div>
-
- -->
 
 <script type="text/javascript"
 	src="/wp-content/themes/indagare/app/js/jquery.scrollTo.js"></script>
@@ -260,7 +222,7 @@ var tabber1 = new Yetii({
 
 <div id="new-contact-form" style="display: none !important;">
 	<div class="detail-element clearfix">
-		<form>
+		<form class="editing clearfix">
 			<div id="field-FirstName" class="input-field field clearfix">
 				<input maxlength="40" name="FirstName" id="newcontact-FirstName"
 					type="text"><label for="contactFirstName">First

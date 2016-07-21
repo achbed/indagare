@@ -4,19 +4,25 @@ if (!Array.isArray) {
     return Object.prototype.toString.call(arg) === '[object Array]';
   };
 }
+jQuery.fn.isBlank = function() {
+    var fields = jQuery(this).serializeArray();
 
-var SFData;
-if(!SFData) {
-	SFData = {};
-	SFData.Account = null;
-	SFData.Contacts = [];
-	SFData.def = {};
-}
+    for (var i = 0; i < fields.length; i++) {
+        if (fields[i].value && jQuery.trim(fields[i].value) != '') {
+            return false;
+        }
+    }
+
+    return true;
+};
+
+
 var getting = {};
 
 jQuery(document).on('click','#profile-passport-new',function(e) {
 	e.preventDefault();
 	var i = newCardItem('passport',getBlank('PassportVisa'));
+	i.find('form').addClass('editing');
 	var t = jQuery('#profile-passports');
 	var y = t.find('.card-item-passport').last();
 	if( !y.length ) {
@@ -30,7 +36,8 @@ jQuery(document).on('click','#profile-passport-new',function(e) {
 jQuery(document).on('click','#profile-freq-new',function(e) {
 	e.preventDefault();
 	var i = newCardItem('freq',getBlank('FrequentTravel'));
-	var t = jQuery('#profile-passports');
+	i.find('form').addClass('editing');
+	var t = jQuery('#profile-freq');
 	var y = t.find('.card-item-freq').last();
 	if( !y.length ) {
 		t.append(i);
@@ -139,9 +146,24 @@ jQuery(document).on('click','.form-save-button',function(e) {
 	});
 });
 
+jQuery(document).on('click','.form-cancel-button',function(e) {
+	e.preventDefault();
+	jQuery(e.target).closest('form').removeClass('editing');
+});
+
+jQuery(document).on('click','.card-close-button',function(e) {
+	e.preventDefault();
+	var f = jQuery(e.target).closest('form');
+	if(f.isBlank()) {
+		f.parent().remove();
+		return;
+	}
+	f.removeClass('editing');
+});
+
 jQuery(document).on('click','.card-delete-button',function(e) {
 	e.preventDefault();
-	var f = jQuery(e.target).parents('form'),
+	var f = jQuery(e.target).closest('form'),
 		type = f.attr('data-source-object'),
 		id = f.find('input[name=Id]').first().val(),
 		postdata = {action:"wpsf-delobject",Id:id,objectType:type};
@@ -186,31 +208,38 @@ jQuery(document).on('click','.card-delete-button',function(e) {
 
 var progressDialog = null;
 
+jQuery(document).on('click','#new-contact-link',function(e){
+	e.preventDefault();
+    jQuery.confirm({
+        title: 'Create New Contact',
+        content: jQuery('#new-contact-form').html(),
+        keyboardEnabled: false,
+        confirmButton: 'Create',
+        confirmButtonClass: 'btn-info',
+        cancelButton: 'Cancel',
+    	confirm: function () {
+    		createNewContact(this.$content);
+    		progressDialog = jQuery.alert({
+    			title:'Creating contact',
+    			content:'Please wait...',
+    			closeIcon: false,
+    			confirmButton:'',
+    			cancelButton:'',
+    			confirmButtonClass:'hidden',
+    			cancelButtonClass:'hidden',
+    		});
+        }
+    });
+});
+
+jQuery(document).on('click','#renew-link',function(e){
+	e.preventDefault();
+	//stupid yetii hack
+	tabber1.show(2); 
+	return false;
+});
+
 jQuery(document).on('change','#contactselect',function(){
-	if ( jQuery('#contactselect').val() == '' ) {
-		// New account creation selected.  Pop up the dialog!
-	    jQuery.confirm({
-	        title: 'Create New Contact',
-	        content: jQuery('#new-contact-form').html(),
-	        keyboardEnabled: false,
-	        confirmButton: 'Create',
-	        confirmButtonClass: 'btn-info',
-	        cancelButton: 'Cancel',
-        	confirm: function () {
-        		createNewContact(this.$content);
-        		progressDialog = jQuery.alert({
-        			title:'Creating contact',
-        			content:'Please wait...',
-        			closeIcon: false,
-        			confirmButton:'',
-        			cancelButton:'',
-        			confirmButtonClass:'hidden',
-        			cancelButtonClass:'hidden',
-        		});
-	        }
-	    });
-	}
-	
 	contactSelectionChange();
 });
 
@@ -312,14 +341,14 @@ jQuery(document).on('click','.bar-element',function(e){
 jQuery(document).ready(function(){
 	getAccount();
 });
-
+/*
 jQuery.ajax("/wp-admin/admin-ajax.php",{ data:{ action:'wpsf-getdef' } })
 	.done(function(result) {
 		if(result.success) {
 			SFData.def = result.data;
 		}
 	});
-
+*/
 function getFormData(f) {
 	var r = [];
 	jQuery(f).find('select,input,textarea').each(function(x,i){
@@ -351,6 +380,12 @@ function getFormData(f) {
 }
 
 function getAccount() {
+	if(SFData.initLoad) {
+		updateContacts();
+		applyMembershipUpgradeOptions();
+		SFData.initLoad = false;
+		return;
+	}
 	if(getting.account) return;
 	getting.account = true;
 	jQuery.ajax("/wp-admin/admin-ajax.php", {
@@ -367,6 +402,7 @@ function getAccount() {
 		SFData.Contacts = SFData.Account.Contacts__x;
 		getting.account = false;
 		updateContacts();
+		applyMembershipUpgradeOptions();
 	});
 }
 
@@ -395,13 +431,6 @@ function updateContacts() {
 			.html(i.Name)
 			.appendTo('#contactselect');
 	}
-	if ( SFData.Account.IsPrimaryContact__x ) {
-		jQuery('<option></option>')
-			.attr({value:''})
-			.html('Add new contact...')
-			.appendTo('#contactselect');
-		jQuery('#contact-select-bar-item').show();
-	}
 	jQuery('#contactselect').val( SFData.Contacts[first].Id ).trigger('change');
 }
 
@@ -425,9 +454,9 @@ function contactData(id) {
 
 function newCardItem(y,i) {
 	var c=jQuery('<div></div>').addClass('card-item card-item-'+y),
-		f=jQuery('<form></form>'),
+		f=jQuery('<form></form>').addClass('clearfix'),
 		p='carditem-'+getIdFromObject(i),
-		z=[],x,o;
+		z=[],x,o,l;
 	switch(y) {
 		case 'passport':
 			o = "PassportVisa";
@@ -447,25 +476,27 @@ function newCardItem(y,i) {
 			z = [
 			     'Id',
 			     'Contact__c',
-			     'Name',
 			     'Carrier_Hotel_Operator__c',
 			     'Frequent_Traveler_Program__c',
-			     'Frequent_Flyer_Number__c',
-			     'Assistant_Email__c',
-			     'Assistant_Name__c',
-			     'Assistant_Phone__c'
+			     'Name',
+			     'Frequent_Flyer_Number__c'
 		    ];
 			break;
 	}
 	f.attr('data-source-object',o);
-	for(x in i) {
-		if(jQuery.inArray(x,z) >= 0)
-			f.append(makeInput(SFData.def[o][x],p,i[x],false));
+	for(x in z) {
+		if(i.hasOwnProperty(z[x])) {
+			l = makeInput(SFData.def[o][z[x]],p,i[z[x]],false);
+			l.addClass('field-carditem-'+z[x]);
+			f.append(l);
+		}
 	}
 	f.find('input[name="Contact__c"]').val( jQuery('#contactselect').val() );
 	
-	jQuery('<a></a>').attr('href','#').html('Delete Item').addClass('card-delete-button card-button-large').appendTo(f);
-	jQuery('<a></a>').attr('href','#').html('Save Item').addClass('card-save-button card-button-large').appendTo(f);
+	jQuery('<a></a>').attr('href','#').html('Delete').addClass('card-delete-button card-button-large').appendTo(f);
+	jQuery('<a></a>').attr('href','#').html('Save').addClass('form-save-button card-save-button card-button-large').appendTo(f);
+	jQuery('<a></a>').attr('href','#').html('Close').addClass('card-close-button').appendTo(f);
+	jQuery('<a></a>').attr('href','#').html('Edit').addClass('form-edit-link').appendTo(f);
 	f.appendTo(c);
 	
 	return c;
@@ -478,6 +509,22 @@ function getIdFromObject(i){
 			return (i[x]?i[x]:'noid');
 		}
 	}
+}
+
+function applyMembershipUpgradeOptions() {
+	var c=SFData.Membership.Amount__c,i,r=[];
+	for(i in SFData.MembershipList) {
+		if( (SFData.MembershipList[i].Amount > SFData.Membership.Amount__c) || (SFData.MembershipList[i].Id == SFData.Membership.Id) ) {
+			r.push(SFData.MembershipList[i]);
+		}
+	}
+	
+	var t = jQuery('#account-membership-upgrade-select');
+	t.html('');
+	for(i in r) {
+		var o = jQuery('<option></option>').val(r[i].Id).html(r[i].Name + ' - $' + r[i].Amount).appendTo(t);
+	}
+	t.val(SFData.Membership.Id);
 }
 
 function createNewContact(f) {
@@ -601,6 +648,7 @@ function updateForms() {
 				p = !p;
 				
 				jQuery('#profile-passports').empty();
+				jQuery('#profile-freq').empty();
 				
 				if(!!d && d['Passport_Visa__x']) {
 					for ( i in d['Passport_Visa__x'] ) {
@@ -610,7 +658,7 @@ function updateForms() {
 				
 				if(!!d && d['Frequent_Travel__x']) {
 					for ( i in d['Frequent_Travel__x'] ) {
-						jQuery('#profile-passports').append(newCardItem('freq',d['Frequent_Travel__x'][i]));
+						jQuery('#profile-freq').append(newCardItem('freq',d['Frequent_Travel__x'][i]));
 					}
 				}
 				
@@ -726,7 +774,8 @@ function makeInput(a,p,l,t) {
 				'maxlength':a['length']
 			});
 			
-			jQuery(s).val(v);
+			if(v && v !='null')
+				jQuery(s).val(v);
 			
 			if(t) {
 				s.prop({'disabled':true,'readonly':true});
@@ -743,8 +792,6 @@ function makeInput(a,p,l,t) {
 			for ( i in a['picklistValues'] ) {
 				var w = jQuery('<div></div>').addClass('checkbox-item');
 				y = a['picklistValues'][i];
-				if ( ! y['active'] ) 
-					continue;
 				
 				var chkbox = jQuery('<input></input>').attr({
 					'name':a['name'],
@@ -766,7 +813,7 @@ function makeInput(a,p,l,t) {
 					.addClass('checkbox')
 					.attr({
 						'value':y['value'],
-						'validfor':y['validFor']
+						'validfor':(y.hasOwnProperty('validFor')?y['validFor']:'')
 					})
 					.appendTo(w);
 				w.appendTo(s);
@@ -788,24 +835,24 @@ function makeInput(a,p,l,t) {
 			}
 			
 			if ( a['nillable'] ) {
-				jQuery('<option></option>').html('Choose an option...').attr('value','').appendTo(s);
+				jQuery('<option></option>').html('Choose an option...').attr('value',' ').appendTo(s);
+				if(!v || v == 'null' || v == '') v = ' ';
 			}
 			
 			for ( i in a['picklistValues'] ) {
 				y = a['picklistValues'][i];
-				if ( ! y['active'] ) 
-					continue;
 				
 				jQuery('<option></option>')
 					.html(y['label'])
 					.attr({
 						'value':y['value'],
-						'validfor':y['validFor']
+						'validfor':(y.hasOwnProperty('validFor')?y['validFor']:'')
 					})
 					.appendTo(s);
 			}
 			
-			jQuery(s).val(v);
+			if(v && v !='null')
+				jQuery(s).val(v);
 
 			break;
 
@@ -819,24 +866,24 @@ function makeInput(a,p,l,t) {
 				.prop('disabled',( ! a['updateable'] ) );
 			
 			if ( a['nillable'] ) {
-				jQuery('<option></option>').html('Choose an option...').attr('value','').appendTo(s);
+				jQuery('<option></option>').html('Choose an option...').attr('value',' ').appendTo(s);
+				if(!v || v == 'null' || v == '') v = ' ';
 			}
 			
 			for ( i in SFData.def.Countries ) {
 				y = SFData.def.Countries[i];
-				if ( ! y['active'] ) 
-					continue;
 				
 				jQuery('<option></option>')
 					.html(y['label'])
 					.attr({
 						'value':y['value'],
-						'validfor':y['validFor']
+						'validfor':(y.hasOwnProperty('validFor')?y['validFor']:'')
 					})
 					.appendTo(s);
 			}
 			
-			jQuery(s).val(v);
+			if(v && v !='null')
+				jQuery(s).val(v);
 	
 			break;
 
@@ -852,24 +899,24 @@ function makeInput(a,p,l,t) {
 				.prop('disabled',( ! a['updateable'] ) );
 			
 			if ( a['nillable'] ) {
-				jQuery('<option></option>').html('Choose an option...').attr('value','').appendTo(s);
+				jQuery('<option></option>').html('Choose an option...').attr('value',' ').appendTo(s);
+				if(!v || v == 'null' || v == '') v = ' ';
 			}
 			
 			for ( i in SFData.def.States ) {
 				y = SFData.def.States[i];
-				if ( ! y['active'] ) 
-					continue;
 				
 				jQuery('<option></option>')
 					.html(y['label'])
 					.attr({
 						'value':y['value'],
-						'validfor':y['validFor']
+						'validfor':(y.hasOwnProperty('validFor')?y['validFor']:'')
 					})
 					.appendTo(s);
 			}
 			
-			jQuery(s).val(v);
+			if(v && v !='null')
+				jQuery(s).val(v);
 	
 			break;
 
@@ -884,7 +931,8 @@ function makeInput(a,p,l,t) {
 			});
 			
 			v = new String(v).split('T')[0];
-			jQuery(s).val(v);
+			if(v && v !='null')
+				jQuery(s).val(v);
 
 			if(t) {
 				s.prop({'disabled':true,'readonly':true});
@@ -917,7 +965,8 @@ function makeInput(a,p,l,t) {
 					'type':(a['type']=='hidden'?'hidden':'text')
 			});
 		
-			jQuery(s).val(v);
+			if(v && v !='null')
+				jQuery(s).val(v);
 
 			if(t) {
 				s.prop({'disabled':true,'readonly':true});
