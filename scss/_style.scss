@@ -3526,6 +3526,7 @@ $columnwidth:5em;
       padding-left:0em;
       color: $black;
       font-weight:bold;
+      font-size:0.875em;
       z-index:1;
       width:100%;
       &:after {
@@ -3575,6 +3576,7 @@ $columnwidth:5em;
       label {
         position: relative;
         font-weight: 400;
+		font-size: 1em;
         &:after {
           content:'';
         }
@@ -3623,9 +3625,9 @@ $columnwidth:5em;
       }
       
       label {
-        font-size: 75%;
+/*        font-size: 100%;*/
         padding-top: 0.625em;
-        padding-left:1.5em;
+        padding-left:1.125em;
         color: $gray;
       }
         
