@@ -520,7 +520,7 @@ class AjaxHandler {
 		global $acc;
 
 		$response = array(
-			'success' => true,
+			'success' => false,
 			'r_approved' => '',
 			'id' => '',
 			'r_ref' => '',
@@ -535,6 +535,7 @@ class AjaxHandler {
 
 		// We are updating an existing account.
 		$account = \WPSF\Contact::get_account_wp();
+		$aid = $account['Id'];
 		$acct_type = 'Renewal';
 		if ( ! empty( $_POST['l'] ) ) {
 			if ( $account['Membership__c'] != $_POST['l'] ) {
@@ -572,7 +573,7 @@ class AjaxHandler {
 		}
 
 		if ( ! $response['success'] ) {
-			if ( $_POST['mode'] == 'update' ) {
+			if ( $acct_type == 'Upgrade' ) {
 				// We are in update mode, and we have a failure.  Put the old membership data back.
 				$account = \WPSF\Contact::get_account_wp();
 				$account['Membership__c'] = $account['Membership_old__c'];

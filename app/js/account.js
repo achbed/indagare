@@ -55,6 +55,7 @@ jQuery(document).on('click','.form-edit-link',function(e){
 });
 
 jQuery(document).on('click','.form-save-button',function(e) {
+	if(jQuery(e.target).attr('id') == 'upgrade-button') return;
 	e.preventDefault();
 	jQuery(e.target).addClass('processing').prop({disabled:true});
 	var f = jQuery(e.target).closest('form'),
@@ -241,11 +242,11 @@ jQuery(document).on('click','#renew-link',function(e){
 
 jQuery(document).on('click','#upgrade-button',function(e){
 	e.preventDefault();
-	var p=jQuery('#account-membership-upgrade-select');
+	var p=jQuery('#account-membership-upgrade-select').find(':selected'),a=p.attr('amount'),n=numeral(p.attr('amount')).format('$0,000.00');
 
     jQuery.confirm({
         title: 'Are you sure?',
-        content: 'We will now charge your credit card on file for '+numeral(p.attr('amount')).format('$0,000.00'),
+        content: 'We will now charge your credit card on file for '+n,
         keyboardEnabled: true,
         confirmKeys:[],
         confirmButton: jQuery('#upgrade-button').html(),
@@ -263,7 +264,6 @@ jQuery(document).on('click','#upgrade-button',function(e){
     			confirmButtonClass:'hidden',
     			cancelButtonClass:'hidden',
     		});
-
     	}
 	});
 	return false;
@@ -271,7 +271,7 @@ jQuery(document).on('click','#upgrade-button',function(e){
 
 function upgradeAccount(e){
 	var p=jQuery('#account-membership-upgrade-select'),t=p.val(),postdata = [];
-	postdata.push({name:'action',value:'wpsf-renew'});
+	postdata.push({name:'action',value:'idj-renew'});
 	postdata.push({name:'l',value:t});
 	
 	jQuery(e.target).addClass('processing').prop({disabled:true});
@@ -279,6 +279,7 @@ function upgradeAccount(e){
 		method: "POST",
 		data : postdata 
 	}).done(function(result) {
+		jQuery(e.target).removeClass('processing').prop({disabled:false});
 		if(progressDialog) {
 			progressDialog.close();
 		}
@@ -290,11 +291,15 @@ function upgradeAccount(e){
 		} else {
 			location.reload(true);
 		}
-	}).always(function(){
+	}).fail(function(){
 		jQuery(e.target).removeClass('processing').prop({disabled:false});
 		if(progressDialog) {
 			progressDialog.close();
 		}
+		jQuery.alert({
+			title:'Account Update Failed',
+			content:'Failed to update the account.'
+		});
 	});
 }
 
