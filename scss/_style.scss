@@ -3930,8 +3930,9 @@ $columnwidth: ( $formwidth - $itempadding * ( $numcols - 1 ) ) / $numcols;
   a.card-save-button {
     clear:none;
     width:auto;
-    padding:1.375em 1%;
-    margin:0 0 0 1%;
+    padding:1.375em .5em;
+    margin:0;
+    margin-right: .25em;
   }
   a.card-save-button {
     float:left;
@@ -3958,6 +3959,12 @@ $columnwidth: ( $formwidth - $itempadding * ( $numcols - 1 ) ) / $numcols;
   }
   &.editing a.card-delete-button {
     display: inline-block;
+  }
+}
+
+#account-tab-container .card-list .card-item-passport form {
+  .input-field {
+	width: 16.7%;
   }
 }
 

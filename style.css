@@ -2477,13 +2477,15 @@ $formwidth:65em;
 #account-tab-container .card-list .card-item form { width: 100%; }
 #account-tab-container .card-list .card-item form.editing { padding: 0; border: none; }
 #account-tab-container .card-list .card-item form .input-field { width: 20.4%; }
-#account-tab-container .card-list .card-item form a.card-edit-link, #account-tab-container .card-list .card-item form a.card-delete-button, #account-tab-container .card-list .card-item form a.card-save-button { clear: none; width: auto; padding: 1.375em 1%; margin: 0 0 0 1%; }
+#account-tab-container .card-list .card-item form a.card-edit-link, #account-tab-container .card-list .card-item form a.card-delete-button, #account-tab-container .card-list .card-item form a.card-save-button { clear: none; width: auto; padding: 1.375em .5em; margin: 0; margin-right: .25em; }
 #account-tab-container .card-list .card-item form a.card-save-button { float: left; display: none; min-width: 8%; }
 #account-tab-container .card-list .card-item form.editing a.card-save-button { display: inline-block; }
 #account-tab-container .card-list .card-item form a.card-edit-link { float: left; display: inline-block; padding: 0em 1%; }
 #account-tab-container .card-list .card-item form.editing a.card-edit-link { display: none; }
 #account-tab-container .card-list .card-item form a.card-delete-button { float: left; display: none; background: #ffffff; color: #da420b; }
 #account-tab-container .card-list .card-item form.editing a.card-delete-button { display: inline-block; }
+
+#account-tab-container .card-list .card-item-passport form .input-field { width: 16.7%; }
 
 #account-display-contact-wrapper { position: relative; }
 #account-display-contact-wrapper select { font-size: 2em; font-weight: 200; font-family: 'Helvetica Neue',Arial,sans-serif; padding: 0 1em 0 0; margin: 0; display: inline-block; z-index: 2; position: relative; background: transparent; }
