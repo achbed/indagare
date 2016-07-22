@@ -3663,7 +3663,8 @@ $columnwidth:5em;
   .card-item {
       width: 100%;
       display: inline-block;
-      margin: 0.5em;
+//      margin: 0.5em;
+	  margin: .25em 0;
       position: relative;
       
       
@@ -3803,7 +3804,8 @@ $columnwidth: ( $formwidth - $itempadding * 7 ) / 8;
 
 #signup-form-container form .input-field {
   max-width: 100%;
-  margin-left: $itempadding;
+//  margin-left: $itempadding;
+  margin-right: $itempadding;
   margin-bottom: $itempadding;
   
   &.iform-row-clear { clear:both; }
@@ -3821,7 +3823,8 @@ $columnwidth: ( $formwidth - $itempadding * 7 ) / 8;
 #account-tab-container {
   form .input-field, form .form-save-button {
     max-width: 100%;
-    margin-left: $itempadding;
+//    margin-left: $itempadding;
+    margin-right: $itempadding;
     margin-bottom: $itempadding;
   }
   
@@ -3838,16 +3841,19 @@ $columnwidth: ( $formwidth - $itempadding * 7 ) / 8;
   }
 
   #field-contact-Salutation {
-    width: floor( ( ( $formwidth - ( $itempadding * 7 ) ) / 8 ) * 100 ) / 100;
+//    width: floor( ( ( $formwidth - ( $itempadding * 7 ) ) / 8 ) * 100 ) / 100;
+	width: 16%;
   }
   
   #field-contact-Title {
-    width: floor( ( ( $formwidth - ( $itempadding * 7 ) ) / 8 ) * 100 ) / 100;
+//    width: floor( ( ( $formwidth - ( $itempadding * 7 ) ) / 8 ) * 100 ) / 100;
+	width: 16%;
   }
   
   #field-contact-FirstName,
   #field-contact-LastName {
-    width: floor( ( ( $formwidth - ( $itempadding * 7 ) ) / 8 ) * 100 ) / 100 * 3 + ( $itempadding * 2 );
+//    width: floor( ( ( $formwidth - ( $itempadding * 7 ) ) / 8 ) * 100 ) / 100 * 3 + ( $itempadding * 2 );
+	width: 33%;
   }
   
   #field-account-tgCode,
@@ -3856,7 +3862,8 @@ $columnwidth: ( $formwidth - $itempadding * 7 ) / 8;
   #field-contact-Birthdate,
   #field-contact-Anniversary_Date__c,
   #field-contact-Assistant_Email__c {
-    width: floor( ( ( $formwidth - ( $itempadding * 1 ) ) / 2 ) * 100 ) / 100;
+//    width: floor( ( ( $formwidth - ( $itempadding * 1 ) ) / 2 ) * 100 ) / 100;
+	width: 49.5%;
   }
   
   .form-save-button,
@@ -3876,13 +3883,15 @@ $columnwidth: ( $formwidth - $itempadding * 7 ) / 8;
   #field-contact-OtherState,
   #field-contact-OtherPostalCode,
   #field-contact-OtherCountry {
-      width: floor( ( ( $formwidth - ( $itempadding * 3 ) ) / 4 ) * 100 ) / 100;
+//      width: floor( ( ( $formwidth - ( $itempadding * 3 ) ) / 4 ) * 100 ) / 100;
+	width: 24.4%;
   }
   
   #field-contact-MobilePhone,
   #field-contact-Phone,
   #field-contact-HomePhone {
-      width: floor( ( ( $formwidth - ( $itempadding * 2 ) ) / 3 ) * 100 ) / 100;
+//      width: floor( ( ( $formwidth - ( $itempadding * 2 ) ) / 3 ) * 100 ) / 100;
+	width: 32.7%;
   }
   
   #field-account-membership-upgrade-select,
@@ -3891,7 +3900,8 @@ $columnwidth: ( $formwidth - $itempadding * 7 ) / 8;
   #field-contact-MailingStreet,
   #field-account-detail-form-BillingStreet,
   #field-contact-OtherStreet {
-      width:$formwidth;
+//      width:$formwidth;
+	width: 100%;
   }
 
 }
@@ -3901,7 +3911,8 @@ $numcols: 12;
 $columnwidth: ( $formwidth - $itempadding * ( $numcols - 1 ) ) / $numcols;
 
 #account-tab-container .card-list .card-item form {
-  width:$formwidth;
+//  width:$formwidth;
+	width: 100%;
   &.editing {
     padding:0;
     border:none;
@@ -3909,7 +3920,8 @@ $columnwidth: ( $formwidth - $itempadding * ( $numcols - 1 ) ) / $numcols;
   
   
   .input-field {
-      width: floor( $columnwidth * 8 * 100 ) / 100;
+//      width: floor( $columnwidth * 8 * 100 ) / 100;
+	width: 20.4%;
   }
   a.card-edit-link,
   a.card-delete-button,

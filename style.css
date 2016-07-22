@@ -2429,7 +2429,7 @@ $formwidth:65em;
 .jconfirm-box form.editing div.checkboxes, .jconfirm-box form.editing select, .jconfirm-box form.editing textarea, .jconfirm-box form.editing input, #account-tab-container form.editing div.checkboxes, #account-tab-container form.editing select, #account-tab-container form.editing textarea, #account-tab-container form.editing input, #signup-form-container form.editing div.checkboxes, #signup-form-container form.editing select, #signup-form-container form.editing textarea, #signup-form-container form.editing input { border: 1px solid #808080; padding: 1.5em 1em 0.5em; color: #000000; min-height: 3.75em; }
 .jconfirm-box form.editing select + label:after, #account-tab-container form.editing select + label:after, #signup-form-container form.editing select + label:after { content: '\f0d7'; display: block; position: absolute; font-size: 1.5em; font-family: icomoon; top: 0; right: 0; padding-top: 1em; padding-right: 0.5em; }
 .jconfirm-box .card-list, #account-tab-container .card-list, #signup-form-container .card-list { text-align: left; position: relative; width: 100%; }
-.jconfirm-box .card-list .card-item, #account-tab-container .card-list .card-item, #signup-form-container .card-list .card-item { width: 100%; display: inline-block; margin: 0.5em; position: relative; }
+.jconfirm-box .card-list .card-item, #account-tab-container .card-list .card-item, #signup-form-container .card-list .card-item { width: 100%; display: inline-block; margin: .25em 0; position: relative; }
 .jconfirm-box .card-list .card-item form, #account-tab-container .card-list .card-item form, #signup-form-container .card-list .card-item form { padding: 0; position: relative; }
 .jconfirm-box .card-list .card-item form label, #account-tab-container .card-list .card-item form label, #signup-form-container .card-list .card-item form label { text-align: left; }
 .jconfirm-box .card-list .card-item form a.form-edit-link, #account-tab-container .card-list .card-item form a.form-edit-link, #signup-form-container .card-list .card-item form a.form-edit-link { text-align: left; }
@@ -2451,7 +2451,7 @@ $formwidth:65em;
 .input-field.validated.validate-error span.errmsg ul, .input-field.validating.validate-error span.errmsg ul { margin-bottom: 0; }
 .input-field.validated.validate-error:hover span.errmsg, .input-field.validating.validate-error:hover span.errmsg { display: block; }
 
-#signup-form-container form .input-field { max-width: 100%; margin-left: 0.25em; margin-bottom: 0.25em; }
+#signup-form-container form .input-field { max-width: 100%; margin-right: 0.25em; margin-bottom: 0.25em; }
 #signup-form-container form .input-field.iform-row-clear { clear: both; }
 #signup-form-container form .input-field.iform-row-noclear { clear: none; }
 #signup-form-container form .input-field.iform-row-1col { width: 65em; }
@@ -2463,20 +2463,20 @@ $formwidth:65em;
 #signup-form-container form .input-field.iform-row-7col { width: 9.07em; }
 #signup-form-container form .input-field.iform-row-8col { width: 7.9em; }
 
-#account-tab-container form .input-field, #account-tab-container form .form-save-button { max-width: 100%; margin-left: 0.25em; margin-bottom: 0.25em; }
+#account-tab-container form .input-field, #account-tab-container form .form-save-button { max-width: 100%; margin-right: 0.25em; margin-bottom: 0.25em; }
 #account-tab-container #field-contact-Birthdate, #account-tab-container #field-contact-HomePhone, #account-tab-container #field-contact-AssistantName, #account-tab-container #field-contact-MailingStreet, #account-tab-container #field-contact-OtherStreet { clear: both; }
 #account-tab-container #field-contact-HomePhone.signup-form { clear: none; }
-#account-tab-container #field-contact-Salutation { width: 7.9em; }
-#account-tab-container #field-contact-Title { width: 7.9em; }
-#account-tab-container #field-contact-FirstName, #account-tab-container #field-contact-LastName { width: 24.2em; }
-#account-tab-container #field-account-tgCode, #account-tab-container #field-account-Membership_Level__c, #account-tab-container #field-contact-AssistantName, #account-tab-container #field-contact-Birthdate, #account-tab-container #field-contact-Anniversary_Date__c, #account-tab-container #field-contact-Assistant_Email__c { width: 32.37em; }
-#account-tab-container .form-save-button, #account-tab-container #field-account-detail-form-Credit_Card_Type__c, #account-tab-container #field-account-detail-form-Credit_Card_Number__c, #account-tab-container #field-account-detail-form-Credit_Card_Year__c, #account-tab-container #field-account-detail-form-Credit_Card_Month__c, #account-tab-container #field-contact-MailingCity, #account-tab-container #field-contact-MailingState, #account-tab-container #field-contact-MailingPostalCode, #account-tab-container #field-contact-MailingCountry, #account-tab-container #field-account-detail-form-BillingCity, #account-tab-container #field-account-detail-form-BillingState, #account-tab-container #field-account-detail-form-BillingPostalCode, #account-tab-container #field-account-detail-form-BillingCountry, #account-tab-container #field-contact-OtherCity, #account-tab-container #field-contact-OtherState, #account-tab-container #field-contact-OtherPostalCode, #account-tab-container #field-contact-OtherCountry { width: 16.06em; }
-#account-tab-container #field-contact-MobilePhone, #account-tab-container #field-contact-Phone, #account-tab-container #field-contact-HomePhone { width: 21.5em; }
-#account-tab-container #field-account-membership-upgrade-select, #account-tab-container #field-account-detail-form-Name, #account-tab-container #field-contact-Email, #account-tab-container #field-contact-MailingStreet, #account-tab-container #field-account-detail-form-BillingStreet, #account-tab-container #field-contact-OtherStreet { width: 65em; }
+#account-tab-container #field-contact-Salutation { width: 16%; }
+#account-tab-container #field-contact-Title { width: 16%; }
+#account-tab-container #field-contact-FirstName, #account-tab-container #field-contact-LastName { width: 33%; }
+#account-tab-container #field-account-tgCode, #account-tab-container #field-account-Membership_Level__c, #account-tab-container #field-contact-AssistantName, #account-tab-container #field-contact-Birthdate, #account-tab-container #field-contact-Anniversary_Date__c, #account-tab-container #field-contact-Assistant_Email__c { width: 49.5%; }
+#account-tab-container .form-save-button, #account-tab-container #field-account-detail-form-Credit_Card_Type__c, #account-tab-container #field-account-detail-form-Credit_Card_Number__c, #account-tab-container #field-account-detail-form-Credit_Card_Year__c, #account-tab-container #field-account-detail-form-Credit_Card_Month__c, #account-tab-container #field-contact-MailingCity, #account-tab-container #field-contact-MailingState, #account-tab-container #field-contact-MailingPostalCode, #account-tab-container #field-contact-MailingCountry, #account-tab-container #field-account-detail-form-BillingCity, #account-tab-container #field-account-detail-form-BillingState, #account-tab-container #field-account-detail-form-BillingPostalCode, #account-tab-container #field-account-detail-form-BillingCountry, #account-tab-container #field-contact-OtherCity, #account-tab-container #field-contact-OtherState, #account-tab-container #field-contact-OtherPostalCode, #account-tab-container #field-contact-OtherCountry { width: 24.4%; }
+#account-tab-container #field-contact-MobilePhone, #account-tab-container #field-contact-Phone, #account-tab-container #field-contact-HomePhone { width: 32.7%; }
+#account-tab-container #field-account-membership-upgrade-select, #account-tab-container #field-account-detail-form-Name, #account-tab-container #field-contact-Email, #account-tab-container #field-contact-MailingStreet, #account-tab-container #field-account-detail-form-BillingStreet, #account-tab-container #field-contact-OtherStreet { width: 100%; }
 
-#account-tab-container .card-list .card-item form { width: 63em; }
+#account-tab-container .card-list .card-item form { width: 100%; }
 #account-tab-container .card-list .card-item form.editing { padding: 0; border: none; }
-#account-tab-container .card-list .card-item form .input-field { width: 40.16em; }
+#account-tab-container .card-list .card-item form .input-field { width: 20.4%; }
 #account-tab-container .card-list .card-item form a.card-edit-link, #account-tab-container .card-list .card-item form a.card-delete-button, #account-tab-container .card-list .card-item form a.card-save-button { clear: none; width: auto; padding: 1.375em 1%; margin: 0 0 0 1%; }
 #account-tab-container .card-list .card-item form a.card-save-button { float: left; display: none; min-width: 8%; }
 #account-tab-container .card-list .card-item form.editing a.card-save-button { display: inline-block; }
