@@ -239,6 +239,69 @@ jQuery(document).on('click','#renew-link',function(e){
 	return false;
 });
 
+jQuery(document).on('click','#upgrade-button',function(e){
+	e.preventDefault();
+	var p=jQuery('#account-membership-upgrade-select');
+
+    jQuery.confirm({
+        title: 'Are you sure?',
+        content: 'We will now charge your credit card on file for '+numeral(p.attr('amount')).format('$0,000.00'),
+        keyboardEnabled: true,
+        confirmKeys:[],
+        confirmButton: jQuery('#upgrade-button').html(),
+        confirmButtonClass: 'btn-danger',
+        cancelButton: 'Cancel',
+
+    	confirm: function () {
+    		upgradeAccount(e);
+    		progressDialog = jQuery.alert({
+    			title:'Updating account',
+    			content:'Please wait...',
+    			closeIcon: false,
+    			confirmButton:'',
+    			cancelButton:'',
+    			confirmButtonClass:'hidden',
+    			cancelButtonClass:'hidden',
+    		});
+
+    	}
+	});
+	return false;
+});
+
+function upgradeAccount(e){
+	var p=jQuery('#account-membership-upgrade-select'),t=p.val(),postdata = [];
+	postdata.push({name:'action',value:'wpsf-renew'});
+	postdata.push({name:'l',value:t});
+	
+	jQuery(e.target).addClass('processing').prop({disabled:true});
+	jQuery.ajax("/wp-admin/admin-ajax.php", {
+		method: "POST",
+		data : postdata 
+	}).done(function(result) {
+		if(progressDialog) {
+			progressDialog.close();
+		}
+		if(!result.success) {
+			jQuery.alert({
+				title:'Account Update Failed',
+				content:'Failed to update the account.  '+result.data.message
+			});
+		} else {
+			location.reload(true);
+		}
+	}).always(function(){
+		jQuery(e.target).removeClass('processing').prop({disabled:false});
+		if(progressDialog) {
+			progressDialog.close();
+		}
+	});
+}
+
+jQuery(document).on('change','#account-membership-upgrade-select',function(){
+	fixUpgradeButtonText();
+}); 
+
 jQuery(document).on('change','#contactselect',function(){
 	contactSelectionChange();
 });
@@ -304,51 +367,10 @@ function hexMapMatch(a,b) {
 	return d&e;
 }
 
-jQuery(document).on('click','#contact-select-bar-item',function(e){
-	e.preventDefault();
-	e.stopPropagation();
-});
-
-jQuery(document).on('click','.bar-element',function(e){
-	var p = jQuery(e.currentTarget),
-		a = p.attr('collapse-match'),
-		b = p.attr('collapse-open'),
-		c = p.attr('collapse-close');
-	if(p.attr('id') == 'status-bar') {
-		return;
-	}
-	e.preventDefault();
-	if(b) {
-		jQuery(b).removeClass('collapsed');
-	}
-	if(c) {
-		jQuery(c).addClass('collapsed');
-	}
-	if(p.hasClass('collapsed')){
-		p.removeClass('collapsed');
-		if(a) {
-			jQuery(a).removeClass('collapsed');
-		}
-		jQuery.scrollTo('#account-bar',300,{offset:-25});
-	} else {
-		p.addClass('collapsed');
-		if(a) {
-			jQuery(a).addClass('collapsed');
-		}
-	}
-});
-	
 jQuery(document).ready(function(){
 	getAccount();
 });
-/*
-jQuery.ajax("/wp-admin/admin-ajax.php",{ data:{ action:'wpsf-getdef' } })
-	.done(function(result) {
-		if(result.success) {
-			SFData.def = result.data;
-		}
-	});
-*/
+
 function getFormData(f) {
 	var r = [];
 	jQuery(f).find('select,input,textarea').each(function(x,i){
@@ -521,9 +543,24 @@ function applyMembershipUpgradeOptions() {
 	var t = jQuery('#account-membership-upgrade-select');
 	t.html('');
 	for(i in r) {
-		var o = jQuery('<option></option>').val(r[i].Id).html(r[i].Name + ' - $' + r[i].Amount).appendTo(t);
+		var o = jQuery('<option></option>')
+		.val(r[i].Id)
+		.attr({
+			amount:r[i].Amount
+		})
+		.html(r[i].Name + ' - ' + numeral(r[i].Amount).format('$0,000.00'))
+		.appendTo(t);
 	}
 	t.val(SFData.Membership.Id);
+	fixUpgradeButtonText();
+}
+
+function fixUpgradeButtonText() {
+	var t = jQuery('#account-membership-upgrade-select').val(),x="Upgrade Now";
+	if(t == SFData.Membership.Id) {
+		x = "Renew Now";
+	}
+	jQuery('#upgrade-button').html(x);
 }
 
 function createNewContact(f) {
@@ -555,6 +592,10 @@ function createNewContact(f) {
 		SFData.Contacts.push(result.data);
 		updateContacts();
 		jQuery('#contactselect').val( result.data.Id ).trigger('change');
+	}).always(function(){
+		if(progressDialog) {
+			progressDialog.close();
+		}
 	});
 }
 

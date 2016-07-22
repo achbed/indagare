@@ -7191,11 +7191,12 @@ jQuery(document).ready(function($) {
 
 	<p>Here's your new membership information for your records. A confirmation message has been sent to the email in your account.</p>
 
-	<p id="memberdate"><strong>Signup Date:</strong> <span></span></p>
+	<p id="membercardholder"><strong>Member Name:</strong> <span></span></p>
 	<p id="memberlevel"><strong>Membership Level:</strong> <span></span></p>
-	<p id="membercost"><strong>Price:</strong> <span></span></p>
 	<p id="memberlength"><strong>Duration:</strong> <span></span></p>
-	<p id="membercardholder"><strong>Cardholder Name:</strong> <span></span></p>
+	<p id="membercost"><strong>Price:</strong> <span></span></p>
+	<p id="memberdate"><strong>Signup Date:</strong> <span></span></p>
+	<p id="memberenddate"><strong>Valid Through:</strong> <span></span></p>
 	<p id="membercard"><strong>Payment Using Credit Card Ending In:</strong> <span></span></p>
 	<p id="membertransaction"><strong>Transaction Code:</strong> <span></span></p>
 

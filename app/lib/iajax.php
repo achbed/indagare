@@ -131,34 +131,12 @@ class AjaxHandler {
 			add_action( 'wp_ajax_idj-signup', array( $this, 'payment_wp' ) );
 			add_action( 'wp_ajax_nopriv_idj-signup', array( $this, 'payment_wp' ) );
 
+			add_action( 'wp_ajax_idj-renew', array( $this, 'renew_wp' ) );
+			add_action( 'wp_ajax_nopriv_idj-renew', array( $this, 'renew_wp' ) );
+
 			add_action( 'wp_ajax_idj-newcontact', array( $this, 'newcontact_wp' ) );
 			add_action( 'wp_ajax_nopriv_idj-newcontact', array( $this, 'newcontact_wp' ) );
-
-			return;
 		}
-
-		if ( empty( $_REQUEST["task"] ) ) {
-			// The request doesnt contain a task.  Die and ignore any other
-			// handlers.
-			die( "" );
-		}
-
-		$task = htmlspecialchars( $_REQUEST["task"], ENT_QUOTES, 'UTF-8' );
-
-		if ( strpos( $task, '_' ) === 0 ) {
-			// Don't even try to call functions starting with '_'.
-			return;
-		}
-
-		if ( ! method_exists( __CLASS__, $task ) ) {
-			return;
-		}
-
-		if ( in_array( substr( $task, -2 ), array( 'wp', '_j' ) ) ) {
-			header('Content-Type: application/json');
-		}
-
-		return $this->{$task}();
 	}
 
 	private static $cc_types = array(
@@ -493,15 +471,15 @@ class AjaxHandler {
 			$account->update();
 		}
 
-		$charge = \WPSF\Payment::charge_account( $account, $acct_type );
+		$charge = \WPSF\Payment::charge_account( $aid, $acct_type );
 
-		if ( empty( $charge ) ) {
-			$response['success'] = false;
-		} else if ( $charge instanceof \WPSF\Payment ) {
+		if ( $charge instanceof \WPSF\Payment ) {
 			// Well, the charge made it through the system.  Time to see what's in it.
-			$response = array_merge( $response, $charge->toResult() );
-		} else if ( $charge instanceof \WPSF\Account ) {
+			$new_response = $charge->toResult();
+			$response = array_merge( $response, $new_response );
+		} else if ( $charge === true ) {
 			// Well, the charge made it through the system but returned an account.
+			$charge = new \WPSF\Account( $aid );
 
 			if ( ! empty( $charge['Membership__x']['Period__c'] ) ) {
 				$response['length'] = $charge['Membership__x']['Period__c'];
@@ -515,10 +493,85 @@ class AjaxHandler {
 				$response['name'] = $charge['Membership__x']['Name'];
 			}
 		} else {
+			$repsonse['success'] = false;
 			$response['message'] = $charge;
 		}
 
-		if ( ! $response['status'] ) {
+		if ( ! $response['success'] ) {
+			if ( $_POST['mode'] == 'update' ) {
+				// We are in update mode, and we have a failure.  Put the old membership data back.
+				$account = \WPSF\Contact::get_account_wp();
+				$account['Membership__c'] = $account['Membership_old__c'];
+				$account['Membership_old__c'] = null;
+				$account->update();
+			}
+			return wp_send_json_error( $response );
+		}
+
+		return wp_send_json_success( $response );
+	}
+
+	/**
+	 * Handles payment processing and account setup for a paid membership.
+	 * Returns status as a JSON object.
+	 */
+	public static function renew_wp() {
+		header('Content-Type: application/json');
+		global $acc;
+
+		$response = array(
+			'success' => true,
+			'r_approved' => '',
+			'id' => '',
+			'r_ref' => '',
+			'length' => '',
+			'membertype' => '',
+			'name' => '',
+			'price' => '',
+			'cardnum' => '',
+			'cardtype' => '',
+			'message' => '',
+		);
+
+		// We are updating an existing account.
+		$account = \WPSF\Contact::get_account_wp();
+		$acct_type = 'Renewal';
+		if ( ! empty( $_POST['l'] ) ) {
+			if ( $account['Membership__c'] != $_POST['l'] ) {
+				$acct_type = 'Upgrade';
+				$account['Membership_old__c'] = $account['Membership__c'];
+				$account['Membership__c'] = $_POST['l'];
+				$account->update();
+			}
+		}
+
+		$charge = \WPSF\Payment::charge_account( $aid, $acct_type );
+
+		if ( $charge instanceof \WPSF\Payment ) {
+			// Well, the charge made it through the system.  Time to see what's in it.
+			$new_response = $charge->toResult();
+			$response = array_merge( $response, $new_response );
+		} else if ( $charge === true ) {
+			// Well, the charge made it through the system but returned an account.
+			$charge = new \WPSF\Account( $aid );
+
+			if ( ! empty( $charge['Membership__x']['Period__c'] ) ) {
+				$response['length'] = $charge['Membership__x']['Period__c'];
+			}
+
+			if ( ! empty( $charge['Membership__x']['Membership_Type__c'] ) ) {
+				$response['membertype'] = $charge['Membership__x']['Membership_Type__c'];
+			}
+
+			if ( ! empty( $charge['Membership__x']['Name'] ) ) {
+				$response['name'] = $charge['Membership__x']['Name'];
+			}
+		} else {
+			$repsonse['success'] = false;
+			$response['message'] = $charge;
+		}
+
+		if ( ! $response['success'] ) {
 			if ( $_POST['mode'] == 'update' ) {
 				// We are in update mode, and we have a failure.  Put the old membership data back.
 				$account = \WPSF\Contact::get_account_wp();
@@ -545,10 +598,7 @@ class AjaxHandler {
 			return wp_send_json_error( $account );
 		}
 
-		if ( empty( $account['Contacts__x'][$aid] ) ) {
-			return wp_send_json_error( new \WP_Error('Malformed account data') );
-		}
-		if ( empty( $account['Contacts__x'][$aid]['Primary_Contact__c'] ) ) {
+		if ( ! $account->is_wp_primary() ) {
 			// Not the primary contact.  Disallow.
 			return wp_send_json_error( new \WP_Error('Permission denied') );
 		}
@@ -575,7 +625,7 @@ class AjaxHandler {
 		update_field( $wpsf_acf_fields['wpsf_contactid'], $cid, 'user_'.$id );
 
 		$contact = new \WPSF\Contact( $cid );
-		return wp_send_json_success( $contact->toArray() );
+		return wp_send_json_success( $contact->toArray(false) );
 	}
 }
 

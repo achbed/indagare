@@ -27,7 +27,7 @@ function ind_olduser_cap_filter( $allcaps, $cap, $args ) {
 		return $allcaps;
 
 	// Get the Member role.
-	$role = get_role( 'member' );
+	$role = get_role( 'basic' );
 
 	// Fail back to subscriber if the Member role is not defined
 	if ( is_null( $role ) )

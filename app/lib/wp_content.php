@@ -16,6 +16,7 @@ class WPContent {
 	}
 
 	private static function getAccount() {
+		wpsf_wp_login();
 		$json_mode = 0;//JSON_PRETTY_PRINT;
 
 		$content = "<script>\n";
@@ -31,6 +32,8 @@ class WPContent {
 		$content .= "SFData.initLoad = true;\n";
 
 		$a = \WPSF\Membership::get_all();
+		usort( $a, function($a,$b) { return \WPSF\Membership::cmp_list($a,$b); } );
+
 		$content .= "SFData.MembershipList = " . json_encode( $a, $json_mode ) . ";\n";
 
 		$content .= "SFData.def={\n";

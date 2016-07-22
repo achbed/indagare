@@ -3350,43 +3350,6 @@ a.card-button-large {
   margin-top:0;
 }
 
-.jconfirm .jconfirm-box {
-    max-width: 90%;
-    width: 25em;
-    margin: 0 auto;
-}
-
-button.btn {
-    padding: 1em;
-    margin: 0 1em;
-    cursor: pointer;
-    border-radius: 0.25em;
-    text-transform: none !important;
-
-  &.btn-info {
-    background:#00aa00;
-    color:white !important;
-    &:hover, &:active {
-      background:#009900;
-    }
-  }
-  
-  &.btn-warning {
-    background:#ffe500;
-    color:black !important;
-    &:hover, &:active {
-      background:#e5cf00;
-    }
-  }
-  
-  &.btn-danger {
-    background:#aa0000;
-    color:white !important;
-    &:hover, &:active {
-      background:#880000;
-    }
-  }
-}
 
 $formwidth:65em;
 // Account Field widths
@@ -3538,7 +3501,11 @@ $columnwidth:5em;
       font-size: 0.875em;
     }
   }
+}
   
+.jconfirm-box,
+#account-tab-container, 
+#signup-form-container {
   form {
     a.form-edit-link,
     a.form-save-button, 
@@ -3893,6 +3860,10 @@ $columnwidth: ( $formwidth - $itempadding * 7 ) / 8;
   }
   
   .form-save-button,
+  #field-account-detail-form-Credit_Card_Type__c,
+  #field-account-detail-form-Credit_Card_Number__c,
+  #field-account-detail-form-Credit_Card_Year__c,
+  #field-account-detail-form-Credit_Card_Month__c,
   #field-contact-MailingCity,
   #field-contact-MailingState,
   #field-contact-MailingPostalCode,
@@ -3914,6 +3885,8 @@ $columnwidth: ( $formwidth - $itempadding * 7 ) / 8;
       width: floor( ( ( $formwidth - ( $itempadding * 2 ) ) / 3 ) * 100 ) / 100;
   }
   
+  #field-account-membership-upgrade-select,
+  #field-account-detail-form-Name,
   #field-contact-Email,
   #field-contact-MailingStreet,
   #field-account-detail-form-BillingStreet,
@@ -4065,4 +4038,44 @@ h2.help-box-title {
 
 span.keep-together {
     display: inline-block;
+}
+
+/* Account page dialogs */
+
+.jconfirm .jconfirm-box {
+    max-width: 90%;
+    width: 25em;
+    margin: 0 auto;
+}
+
+button.btn {
+    padding: 1em;
+    margin: 0 1em;
+    cursor: pointer;
+    border-radius: 0em;
+    text-transform: none !important;
+
+  &.btn-info {
+    background:$green;
+    color:$white !important;
+    &:hover, &:active {
+      background:$green;
+    }
+  }
+  
+  &.btn-warning {
+    background:$cyan;
+    color:$black !important;
+    &:hover, &:active {
+      background:$cyan;
+    }
+  }
+  
+  &.btn-danger {
+    background:$red;
+    color:$white !important;
+    &:hover, &:active {
+      background:$red;
+    }
+  }
 }

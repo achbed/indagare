@@ -392,105 +392,7 @@ if (!signup) {
 				return;
 			}
 
-			if (showTrial) {
-				self.processTrialJq();
-			} else {
-				self.processPayJq();
-			}
-		};
-
-		this.processTrialJq = function() {
-			if (self.processing) {
-				return;
-			}
-
-			self.processing = true;
-
-			jQuery('#subTab3').addClass('disabled');
-
-			jQuery.ajax('/wp-content/themes/indagare/app/lib/iajax.php', {
-				method : "POST",
-				data : {
-					task : "payment_wp",
-					fn : jQuery('#contact-FirstName').val(),
-					ln : jQuery('#contact-LastName').val(),
-					email : jQuery('#contact-Email').val(),
-					phone : jQuery('#contact-HomePhone').val(),
-					username : jQuery('#wp-username').val(),
-					password : jQuery('#wp-password1').val(),
-					address1 : jQuery('#s_address1').val(),
-					city : jQuery('#s_city').val(),
-					state : jQuery('#s_state').val(),
-					zip : jQuery('#s_zip').val(),
-					country : jQuery('#s_country').val(),
-					trialcode : jQuery('#refCode').val(),
-				}
-			}).done(
-					function(d, s, x) {
-						if (d.success) {
-							jQuery('#memberdate>span').html(d.startdate);
-							jQuery('#membercost').html('');
-							jQuery('#memberlength>span').html(d.length);
-							jQuery('#membercardholder').html('');
-							jQuery('#membercard').html('');
-							jQuery('#membertransaction').html('');
-							jQuery('#memberlevel>span').html(d.name);
-							jQuery('#membercomplete').on('click', function(e) {
-								e.preventDefault();
-								window.location = '/welcome/';
-							});
-							jQuery.magnificPopup.open({
-								items : {
-									type : 'inline',
-									src : '#lightbox-signup-complete', // can
-																		// be a
-																		// HTML
-									// string,
-									// jQuery
-									// object, or
-									// CSS selector
-									midClick : true
-								},
-								closeOnBgClick : false,
-								enableEscapeKey : false,
-								showCloseBtn : false
-							});
-						} else {
-							jQuery('#errordetail').html(
-									jQuery('<span class="errormsg"></span>')
-											.text(result.err));
-							jQuery.magnificPopup.open({
-								items : {
-									type : 'inline',
-									src : '#lightbox-signup-error', // can be a
-																	// HTML
-									// string, jQuery
-									// object, or CSS
-									// selector
-									midClick : true
-								}
-							});
-							jQuery('#subTab3').removeClass('disabled');
-						}
-					}).fail(
-					function(x, s, e) {
-						jQuery('#errordetail').html(
-								jQuery('<span class="errormsg"></span>').text(
-										result.err));
-						jQuery.magnificPopup.open({
-							items : {
-								type : 'inline',
-								src : '#lightbox-signup-error', // can be a HTML
-																// string,
-								// jQuery object, or CSS
-								// selector
-								midClick : true
-							}
-						});
-						jQuery('#subTab3').removeClass('disabled');
-					}).always(function() {
-				self.processing = false;
-			});
+			self.processPayJq();
 		};
 
 		this.processPayJq = function() {
@@ -511,17 +413,11 @@ if (!signup) {
 				phone : jQuery('#contact-HomePhone').val(),
 				username : jQuery("#wp-username").val(),
 				password : jQuery("#wp-password1").val(),
-				address1 : jQuery('#address1').val(),
-				city : jQuery('#city').val(),
-				state : jQuery('#state').val(),
-				zip : jQuery('#zip').val(),
-				country : jQuery('#country').val(),
 				s_address1 : jQuery("#s_address1").val(),
 				s_city : jQuery("#s_city").val(),
 				s_state : jQuery("#s_state").val(),
 				s_zip : jQuery("#s_zip").val(),
 				s_country : jQuery("#s_country").val(),
-				//cc_name : jQuery('#cc_holder').val(),
 				cc_num : jQuery('#cc_num').val(),
 				cc_mon : jQuery('#cc_month').val(),
 				cc_yr : jQuery('#cc_year').val(),
@@ -529,15 +425,6 @@ if (!signup) {
 				cc_type : jQuery('#cc_type').val(),
 				trialid : jQuery("#tgCode").val()
 			};
-			if(jQuery('#chkShip').prop('checked')) {
-				args.address1 = args.s_address1;
-				args.city = args.s_city;
-				args.state = args.s_state;
-				args.zip = args.s_zip;
-				args.country = args.s_country;
-			}
-			var cc_month = jQuery("#cc_month");
-			var cc_year = jQuery("#cc_year");
 			var otherparam = [ "pc", "gdsType", "cin", "cout" ];
 			var addparam = "";
 			var otherempty = false;
@@ -573,24 +460,22 @@ if (!signup) {
 							function() {
 								var s = false, b = '#lightbox-signup-complete';
 
-								if (result.r_approved == 'APPROVED') {
-									jQuery('#memberdate>span').html(
-											result.startdate);
+								if ( result.success ) {
+									jQuery('#memberdate>span').html(result.data.startdate);
+									jQuery('#memberenddate>span').html(result.data.enddate);
 									jQuery('#membercardholder>span').html(
-											args.cc_holder);
+											jQuery('#contact-FirstName').val() + ' ' + jQuery('#contact-LastName').val()
+											);
 									jQuery('#membercard>span')
-											.html(
-													args.cc_num
-															.substr(args.cc_num.length - 4));
+											.html(result.data.cardnum.substr(result.data.cardnum.length - 4));
 									jQuery('#membertransaction>span').html(
-											result.r_ref);
+											result.data.r_ref);
 									jQuery('#memberlength>span').html(
-											result.length);
+											result.data.length);
 									jQuery('#memberlevel>span').html(
-											result.name);
+											result.data.membertype);
 									jQuery('#membercost>span').html(
-											numeral(result.price).format(
-													'$0,000.00'));
+											numeral(result.data.price).format('$0,000.00'));
 
 									jQuery('#membercomplete').on('click',
 											function() {
@@ -604,7 +489,7 @@ if (!signup) {
 													jQuery(
 															'<span class="errormsg"></span>')
 															.text(
-																	result.r_error));
+																	result.data.message));
 									b = '#lightbox-signup-error';
 									s = true;
 									jQuery('#subTab3').removeClass('disabled');

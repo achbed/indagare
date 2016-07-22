@@ -38,22 +38,10 @@
 	
     <div class="tab" id="billing">
 	    <div class="tab-content">
-		    <h2>Membership Information</h2>
-		    <div>
-				<form class="clearfix" id="account-membership-upgrade-form">
-					<div id="field-account-membership-upgrade-select" class="input-field field clearfix">
-						<select id="account-membership-upgrade-select"></select>
-						<label for="account-membership-upgrade-select">Membership Type</label>
-					</div>
-					<a class="form-cancel-button" href="#">Close</a>
-					<a class="form-edit-link" href="#">Edit Membership Type</a>
-				</form>
-		    </div>
-		    
 		    <h2>Billing Address</h2>
 		    <div>
 				<form class="clearfix" id="account-detail-form" data-source-object="Account"
-					data-edit-field="Id,Name,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry">
+					data-edit-field="Id,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry">
 					<a class="form-save-button" href="#">Save</a>
 					<a class="form-cancel-button" href="#">Close</a>
 					<a class="form-edit-link" href="#">Edit Billing Address</a>
@@ -67,6 +55,17 @@
 					<a class="form-save-button" href="#">Save</a>
 					<a class="form-cancel-button" href="#">Close</a>
 					<a class="form-edit-link" href="#">Edit Card Information</a>
+				</form>
+		    </div>
+		    
+		    <h2>Renew or Upgrade Membership</h2>
+		    <div>
+				<form class="clearfix editing" id="account-membership-upgrade-form">
+					<div id="field-account-membership-upgrade-select" class="input-field field clearfix">
+						<select id="account-membership-upgrade-select"></select>
+						<label for="account-membership-upgrade-select">Membership Level</label>
+					</div>
+					<a id="upgrade-button" class="form-save-button" href="#">Upgrade Now</a>
 				</form>
 		    </div>
 	    </div>
@@ -223,36 +222,51 @@ var tabber1 = new Yetii({
 <div id="new-contact-form" style="display: none !important;">
 	<div class="detail-element clearfix">
 		<form class="editing clearfix">
-			<div id="field-FirstName" class="input-field field clearfix">
-				<input maxlength="40" name="FirstName" id="newcontact-FirstName"
-					type="text"><label for="contactFirstName">First
-					Name</label>
-			</div>
-			<div id="field-LastName" class="input-field field clearfix">
-				<input maxlength="80" name="LastName" id="newcontact-LastName"
-					type="text"><label for="contactLastName">Last Name</label>
-			</div>
-			<div id="field-Phone" class="input-field field clearfix">
-				<input maxlength="40" name="Phone" id="newcontact-Phone" type="text"><label
-					for="contactPhone">Business Phone</label>
-			</div>
-			<div id="field-Email" class="input-field field clearfix">
-				<input maxlength="80" name="Email" id="newcontact-Email" type="text"><label
-					for="contactEmail">Email</label>
-			</div>
 			<div id="field-Username" class="input-field field clearfix">
 				<input maxlength="80" name="Username" id="newcontact-Username"
 					type="text"><label for="contactUsername">Username</label>
+				    <span class="errmsg">Username is not available.  Please try another one.</span>
 			</div>
 			<div id="field-Password" class="input-field field clearfix">
 				<input maxlength="80" name="Password" id="newcontact-Password"
 					type="password"><label for="contactPassword">Password</label>
+				    <span class="errmsg">Passwords must:<br/>
+				    	<ul>
+						 	<li id="passlen">Be at least <span id="passlen_num">6</span> characters long</li>
+						 	<li id="passcase">Contain a mix of uppercase and lowercase letters</li>
+						 	<li id="passnum">Contain at least one number</li>
+						 	<li id="passchar">Contain at least one special character (non-letter or number)</li>
+					 	</ul>
+				 	</span>
 			</div>
 			<div id="field-PasswordVerify" class="input-field field clearfix">
 				<input maxlength="80" name="PasswordVerify"
 					id="newcontact-PasswordVerify" type="password"><label
 					for="contactPasswordVerify">Verify Password</label>
+				    <span class="errmsg">Passwords must match.</span>
+			</div>
+			<div id="field-FirstName" class="input-field field clearfix">
+				<input maxlength="40" name="FirstName" id="newcontact-FirstName"
+					type="text"><label for="contactFirstName">First
+					Name</label>
+				    <span class="errmsg">You must enter a First Name</span>
+			</div>
+			<div id="field-LastName" class="input-field field clearfix">
+				<input maxlength="80" name="LastName" id="newcontact-LastName"
+					type="text"><label for="contactLastName">Last Name</label>
+				    <span class="errmsg">You must enter a Last Name.</span>
+			</div>
+			<div id="field-Email" class="input-field field clearfix">
+				<input maxlength="80" name="Email" id="newcontact-Email" type="text"><label
+					for="contactEmail">Email</label>
+				    <span class="errmsg"></span>
+			</div>
+			<div id="field-Phone" class="input-field field clearfix">
+				<input maxlength="40" name="Phone" id="newcontact-Phone" type="tel"><label
+					for="contactPhone">Phone</label>
+				    <span class="errmsg">You must enter a phone number.</span>
 			</div>
 		</form>
 	</div>
 </div>
+<script type="text/javascript" src="/wp-content/themes/indagare/app/js/numeral.min.js"></script>
