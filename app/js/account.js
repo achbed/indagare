@@ -15,6 +15,7 @@ jQuery.fn.isBlank = function() {
 
     return true;
 };
+var tabber1;
 
 
 var getting = {};
@@ -408,6 +409,11 @@ function getFormData(f) {
 
 function getAccount() {
 	if(SFData.initLoad) {
+		if(!SFData.Account.IsPrimaryContact__x) {
+			jQuery('.billingtab').remove();
+		} else {
+			jQuery('.billingtab').removeClass('hidden');
+		}
 		updateContacts();
 		applyMembershipUpgradeOptions();
 		SFData.initLoad = false;

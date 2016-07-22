@@ -2,7 +2,7 @@
 <div id="account-tab-container">
     <ul id="account-tab-container-nav" class="clearfix">
 	    <li><a href="#dashboard">Dashboard</a></li>
-	    <li><a href="#billing">Billing</a></li>
+	    <li class="billingtab hidden"><a href="#billing">Billing</a></li>
 	    <li><a href="#contactdetails">Contact Details</a></li>
 	    <li><a href="#prefs">Travel Preferences</a></li>
 	    <li><a href="#accounts">Travel Accounts</a></li>
@@ -36,7 +36,7 @@
 	    </div>
     </div>
 	
-    <div class="tab" id="billing">
+    <div class="tab billingtab hidden" id="billing">
 	    <div class="tab-content">
 		    <h2>Billing Address</h2>
 		    <div>
@@ -214,8 +214,11 @@
 <script type="text/javascript"
 	src="/wp-content/themes/indagare/app/js/account.js"></script>
 <script>
-var tabber1 = new Yetii({
-	id: 'account-tab-container'
+var tabber1;
+jQuery(document).ready(function(){
+	tabber1 = new Yetii({
+		id: 'account-tab-container'
+	});
 });
 </script>
 
