@@ -191,7 +191,7 @@ function Yetii() {
     	}
     	for(var i=0;i<self.listitems.length;i++) {
     		var y = self.listitems[i].getElementsByTagName('a')[0];
-			self.listitems.push( y );
+			self.links.push( y );
     	}
     }
     
