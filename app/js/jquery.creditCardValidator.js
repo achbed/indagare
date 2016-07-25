@@ -35,51 +35,61 @@ IN THE SOFTWARE.
     card_types = [
       {
         name: 'amex',
+        type: 'American Express',
         pattern: /^3[47]/,
         valid_length: [15],
         cvv_length: 4
       }, {
         name: 'diners_club_carte_blanche',
+        type: 'Diners Club',
         pattern: /^30[0-5]/,
         valid_length: [14],
         cvv_length: 3
       }, {
         name: 'diners_club_international',
+        type: 'Diners Club',
         pattern: /^36/,
         valid_length: [14],
         cvv_length: 3
       }, {
         name: 'jcb',
+        type: 'Discover',
         pattern: /^35(2[89]|[3-8][0-9])/,
         valid_length: [16],
         cvv_length: 3
       }, {
         name: 'laser',
+        type: 'Laser',
         pattern: /^(6304|670[69]|6771)/,
         valid_length: [16, 17, 18, 19],
         cvv_length: 3
       }, {
         name: 'visa_electron',
+        type: 'Visa',
         pattern: /^(4026|417500|4508|4844|491(3|7))/,
         valid_length: [16],
         cvv_length: 3
       }, {
         name: 'visa',
+        type: 'Visa',
         pattern: /^4/,
         valid_length: [16],
         cvv_length: 3
       }, {
         name: 'mastercard',
+        type: 'Mastercard',
         pattern: /^5[1-5]/,
         valid_length: [16],
         cvv_length: 3
       }, {
         name: 'maestro',
+        type: 'Mastercard',
         pattern: /^(5018|5020|5038|6304|6759|676[1-3])/,
         valid_length: [12, 13, 14, 15, 16, 17, 18, 19],
         cvv_length: 3
       }, {
         name: 'discover',
+        type: 'Discover',
         pattern: /^(6011|622(12[6-9]|1[3-9][0-9]|[2-8][0-9]{2}|9[0-1][0-9]|92[0-5]|64[4-9])|65)/,
         valid_length: [16],
         cvv_length: 3

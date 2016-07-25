@@ -12,7 +12,7 @@
 				</div>
 		
 				<div field-instance="password1" id="field-wp-password1" class="input-field field clearfix iform-row-3col">
-					<input name="pwd1" id="wp-password1" type="password">
+					<input name="pwd1" id="wp-password1" type="password" validate-group="pw" validate-type="password">	
 					<label for="wp-password1">Password</label>
 				    <span class="errmsg">Passwords must:<br/>
 				    	<ul>
@@ -25,7 +25,7 @@
 				</div>
 		
 				<div field-instance="password2" id="field-wp-password2" class="input-field field clearfix iform-row-3col">
-					<input name="pwd2" id="wp-password2" type="password">
+					<input name="pwd2" id="wp-password2" type="password" validate-group="pw" validate-type="password-verify">
 					<label for="wp-password2">Verify Password</label>
 				    <span class="errmsg">Passwords must match.</span>
 				</div>
@@ -155,4 +155,5 @@
 <script type="text/javascript" src="/wp-content/themes/indagare/app/js/numeral.min.js"></script>
 <script type="text/javascript" src="/wp-content/themes/indagare/app/js/jquery.scrollTo.js"></script>
 <script type="text/javascript" src="/wp-content/themes/indagare/app/js/jquery.creditCardValidator.js"></script>
+<script type="text/javascript" src="/wp-content/themes/indagare/app/js/shr.validate.js"></script>
 <script type="text/javascript" src="/wp-content/themes/indagare/app/js/signup.js"></script>

@@ -659,9 +659,11 @@ function admin_styles() {
     wp_register_script('admin-js', get_bloginfo('stylesheet_directory').'/js/admin.js', array('jquery'), '', true);
     wp_register_script('tinysort', get_bloginfo('stylesheet_directory').'/js/jquery.tinysort.min.js', array('jquery'), '', true);
     wp_register_script('qtip', get_bloginfo('stylesheet_directory').'/js/jquery.qtip.min.js', array('jquery'), '', true);
+    wp_register_script('hammer', get_bloginfo('stylesheet_directory').'/js/hammer.min.js', array(), '', false);
 
     wp_enqueue_script('tinysort');
     wp_enqueue_script('qtip');
+    wp_enqueue_script('hammer');
     wp_enqueue_script('admin-js');
 
     wp_register_script('velocity', get_bloginfo('stylesheet_directory').'/js/velocity.min.js', array(), '', false);
@@ -760,7 +762,8 @@ add_action('thematic_child_init','childtheme_no_superfish');
 function register_scripts() {
 	$f = get_bloginfo('stylesheet_directory');
 
-    wp_register_script('tabs', $f.'/js/yetii-min.js', array('jquery'), '', false);
+    wp_register_script('hammer', $f.'/js/hammer.min.js', array(), '', false);
+	wp_register_script('tabs', $f.'/js/yetii-min.js', array('jquery','hammer'), '', false);
     wp_register_script('autocomplete', $f.'/js/jquery.autocomplete.mod.js', array('jquery'), '', true);
     wp_register_script('magnificpopup', $f.'/js/jquery.magnific-popup.min.js', array('jquery'), '', true);
     wp_register_script('rslidesalt', $f.'/js/responsiveslides.min.js', array('jquery'), '', true);
@@ -842,7 +845,8 @@ function enqueue_scripts() {
 
     wp_enqueue_style('fontawesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', array(), null);
 
-	wp_enqueue_script('velocity');
+    wp_enqueue_script('hammer');
+    wp_enqueue_script('velocity');
 	wp_enqueue_script('template-page_footer');
 	wp_enqueue_style('datepicker-css', get_bloginfo('stylesheet_directory') . '/css/jquery-ui-1.10.3.custom.css');
 	wp_enqueue_script('datepicker');

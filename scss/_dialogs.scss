@@ -1,0 +1,39 @@
+// Style jconfirm dialogs
+
+.jconfirm .jconfirm-box {
+    max-width: 90%;
+    width: 25em;
+    margin: 0 auto;
+}
+
+button.btn {
+    padding: 1em;
+    margin: 0 1em;
+    cursor: pointer;
+    border-radius: 0em;
+    text-transform: none !important;
+
+  &.btn-info {
+    background:$green;
+    color:$white !important;
+    &:hover, &:active {
+      background:$green;
+    }
+  }
+  
+  &.btn-warning {
+    background:$cyan;
+    color:$black !important;
+    &:hover, &:active {
+      background:$cyan;
+    }
+  }
+  
+  &.btn-danger {
+    background:$red;
+    color:$white !important;
+    &:hover, &:active {
+      background:$red;
+    }
+  }
+}

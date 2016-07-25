@@ -21,10 +21,12 @@ class WPContent {
 
 		$content = "<script>\n";
 
-		$a = \WPSF\Contact::get_account_wp( $wpid );
+		$a = \WPSF\Contact::get_account_wp();
 		if(empty($a)) {
 			$a = new \WPSF\Contact();
 		}
+		$a->filter_contacts();
+
 		$content .= "var SFData = {};\n";
 		$content .= "SFData.Account = " . json_encode( $a->toArray(false), $json_mode ) . ";\n";
 		$content .= "SFData.Membership = SFData.Account.Membership__x;\n";

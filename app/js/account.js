@@ -15,138 +15,184 @@ jQuery.fn.isBlank = function() {
 
     return true;
 };
-var tabber1;
 
+var tabber1,
+	getting = {},
+	progressDialog = null,
+	dialog_instance = 0;
 
-var getting = {};
+/* Event connections */
 
-jQuery(document).on('click','#profile-passport-new',function(e) {
-	e.preventDefault();
-	var i = newCardItem('passport',getBlank('PassportVisa'));
-	i.find('form').addClass('editing');
-	var t = jQuery('#profile-passports');
-	var y = t.find('.card-item-passport').last();
-	if( !y.length ) {
-		t.append(i);
-	} else {
-		y.after(i);
-	}
-	jQuery.scrollTo(i,300,{offset:-25});
-});
-
-jQuery(document).on('click','#profile-freq-new',function(e) {
-	e.preventDefault();
-	var i = newCardItem('freq',getBlank('FrequentTravel'));
-	i.find('form').addClass('editing');
-	var t = jQuery('#profile-freq');
-	var y = t.find('.card-item-freq').last();
-	if( !y.length ) {
-		t.append(i);
-	} else {
-		y.after(i);
-	}
-	jQuery.scrollTo(i,300,{offset:-25});
-});
-
-jQuery(document).on('click','.form-edit-link',function(e){
-	e.preventDefault();
-	var y=jQuery(e.target).closest('form');
-	y.addClass('editing');
-	updateDisabledState(y);
-});
-
-jQuery(document).on('click','.form-save-button',function(e) {
-	if(jQuery(e.target).attr('id') == 'upgrade-button') return;
-	e.preventDefault();
-	jQuery(e.target).addClass('processing').prop({disabled:true});
-	var f = jQuery(e.target).closest('form'),
-		type = f.attr('data-source-object'),
-		postdata = getFormData(f),
-		i,id_set=false,tr_set=(type!='PassportVisa');
-	
-	for(i in postdata) {
-		if(i == 'Id') {
-			id_set = !!(postdata[i]);
-		}
-	}
-	
-	postdata.push({name:'action',value:'wpsf-putobject'});
-	postdata.push({name:'objectType',value:type});
-	
-	jQuery.ajax("/wp-admin/admin-ajax.php", {
-		method: "POST",
-		data : postdata 
-	}).done(function(result) {
-		if(!result.success) {
+jQuery(document)
+	.ready(function(){
+		getAccount();
+		tabber1 = new Yetii({
+			id: 'account-tab-container',
+			callback: function() {
+				//jQuery.scrollTo(jQuery('body'),0);
+			}
+		});
+	})
+	.on('click','#profile-passport-new',function(e) {
+		e.preventDefault();
+		appendCardItem(newCardItem('passport',getBlank('PassportVisa')), '#profile-passports');
+	})
+	.on('click','#profile-freq-new',function(e) {
+		e.preventDefault();
+		appendCardItem(newCardItem('freq',getBlank('FrequentTravel')), '#profile-freq');
+	})
+	.on('click','.form-edit-link',function(e){
+		e.preventDefault();
+		var y=jQuery(e.target).closest('form').addClass('editing');
+		updateDisabledState(y);
+	})
+	.on('click','[action="autorenew"]',function(e){
+		e.preventDefault();
+		postdata = [
+            {name:'action',value:"wpsf-putobject"},
+            {name:'objectType',value:"Account"},
+            {name:'Id',value:SFData.Account.Id},
+            {name:'Is_Renewal__c',value:true}
+        ];
+		jQuery.ajax("/wp-admin/admin-ajax.php", {
+			method: "POST",
+			data : postdata 
+		}).done(function(result) {
+			if(!result.success) {
+				jQuery.alert({
+					title:'Save failed',
+					content:result.data[0]
+				});
+			} else {
+				window.location.reload(true);
+			}
+		}).fail(function(){
 			jQuery.alert({
 				title:'Save failed',
-				content:result.data[0]
+				content:'Communications error.  Please try again in a moment.'
 			});
-		} else {
-			var newId = result.data.Id;
-			f.find('[name=Id]').val(newId);
-			switch(type) {
-				case 'Contact':
-					if(!id_set) {
-						SFData.Contacts.push(result.data);
-						return;
-					}
-					
-					for ( i in SFData.Contacts ) {
-						if ( SFData.Contacts[i].Id == newId ) {
-							SFData.Contacts[i] = result.data;
-							return;
-						}
-					}
-					break;
-					
-				case 'PassportVisa':
-					for ( i in SFData.Contacts ) {
-						if ( SFData.Contacts[i].Id != result.data.Contact__c )
-							continue;
-						
+		});
+	})
+	.on('click','[action="upgrade"]',function(e){
+		e.preventDefault();
+		var p=jQuery('#account-membership-upgrade-select').find(':selected'),a=p.attr('amount'),n=numeral(p.attr('amount')).format('$0,000.00');
+	
+	    jQuery.confirm({
+	        title: 'Are you sure?',
+	        content: 'We will now charge your credit card on file for '+n,
+	        keyboardEnabled: true,
+	        confirmKeys:[],
+	        confirmButton: jQuery('#upgrade-button').html(),
+	        confirmButtonClass: 'btn-danger',
+	        cancelButton: 'Cancel',
+	
+	    	confirm: function () {
+	    		upgradeAccount(e);
+	    		progressDialog = jQuery.alert({
+	    			title:'Updating account',
+	    			content:'Please wait...',
+	    			closeIcon: false,
+	    			confirmButton:'',
+	    			cancelButton:'',
+	    			confirmButtonClass:'hidden',
+	    			cancelButtonClass:'hidden',
+	    		});
+	    	}
+		});
+		return false;
+	})
+	.on('click','[action="save"]',function(e) {
+		if(jQuery(e.target).attr('id') == 'upgrade-button') return;
+		e.preventDefault();
+		jQuery(e.target).prop({disabled:true}).closest('form').addClass('processing');
+		var f = jQuery(e.target).closest('form'),
+			type = f.attr('data-source-object'),
+			postdata = getFormData(f),
+			i,id_set=false,tr_set=(type!='PassportVisa');
+		
+		for(i in postdata) {
+			if(i == 'Id') {
+				id_set = !!(postdata[i]);
+			}
+		}
+		
+		postdata.push({name:'action',value:'wpsf-putobject'});
+		postdata.push({name:'objectType',value:type});
+		
+		jQuery.ajax("/wp-admin/admin-ajax.php", {
+			method: "POST",
+			data : postdata 
+		}).done(function(result) {
+			if(!result.success) {
+				jQuery.alert({
+					title:'Save failed',
+					content:result.data[0]
+				});
+			} else {
+				var newId = result.data.Id;
+				f.find('[name=Id]').val(newId);
+				switch(type) {
+					case 'Contact':
 						if(!id_set) {
-							SFData.Contacts[i].Passport_Visa__x.push(result.data);
+							SFData.Contacts.push(result.data);
 							return;
 						}
 						
-						for ( j in SFData.Contacts[i].Passport_Visa__x ) {
-							if ( SFData.Contacts[i].Passport_Visa__x[j].Id == newId ) {
-								SFData.Contacts[i].Passport_Visa__x[j] = result.data;
+						for ( i in SFData.Contacts ) {
+							if ( SFData.Contacts[i].Id == newId ) {
+								SFData.Contacts[i] = result.data;
 								return;
 							}
 						}
-					}
-					break;
-					
-				case 'FrequentTravel':
-					for ( i in SFData.Contacts ) {
-						if ( SFData.Contacts[i].Id != result.data.Contact__c )
-							continue;
+						break;
 						
-						if(!id_set) {
-							SFData.Contacts[i].Frequent_Travel__x.push(result.data);
-							return;
-						}
-						
-						for ( j in SFData.Contacts[i].Frequent_Travel__x ) {
-							if ( SFData.Contacts[i].Frequent_Travel__x[j].Id != newId )
+					case 'PassportVisa':
+						for ( i in SFData.Contacts ) {
+							if ( SFData.Contacts[i].Id != result.data.Contact__c )
 								continue;
 							
-							SFData.Contacts[i].Frequent_Travel__x[j] = result.data;
-							return;
+							if(!id_set) {
+								SFData.Contacts[i].Passport_Visa__x.push(result.data);
+								return;
+							}
+							
+							for ( j in SFData.Contacts[i].Passport_Visa__x ) {
+								if ( SFData.Contacts[i].Passport_Visa__x[j].Id == newId ) {
+									SFData.Contacts[i].Passport_Visa__x[j] = result.data;
+									return;
+								}
+							}
 						}
-					}
-					break;
+						break;
+						
+					case 'FrequentTravel':
+						for ( i in SFData.Contacts ) {
+							if ( SFData.Contacts[i].Id != result.data.Contact__c )
+								continue;
+							
+							if(!id_set) {
+								SFData.Contacts[i].Frequent_Travel__x.push(result.data);
+								return;
+							}
+							
+							for ( j in SFData.Contacts[i].Frequent_Travel__x ) {
+								if ( SFData.Contacts[i].Frequent_Travel__x[j].Id != newId )
+									continue;
+								
+								SFData.Contacts[i].Frequent_Travel__x[j] = result.data;
+								return;
+							}
+						}
+						break;
+				}
 			}
-		}
-	}).always(function(){
-		var t=jQuery(e.target),y=t.closest('form');
-		t.removeClass('processing').prop({disabled:false});
-		y.removeClass('editing');
-		updateDisabledState(y);
+		}).always(function(){
+			var t=jQuery(e.target),y=t.closest('form');
+			t.removeClass('processing').prop({disabled:false});
+			y.removeClass('editing');
+			updateDisabledState(y);
+		});
 	});
-});
 
 jQuery(document).on('click','.form-cancel-button',function(e) {
 	e.preventDefault();
@@ -208,18 +254,23 @@ jQuery(document).on('click','.card-delete-button',function(e) {
 	});
 });
 
-var progressDialog = null;
 
 jQuery(document).on('click','#new-contact-link',function(e){
 	e.preventDefault();
+	dialog_instance++;
+	var diagid = 'new-contact-form-'+dialog_instance,
+	 	c = jQuery('<div></div>').attr('id',diagid).html( jQuery('#new-contact-form').html() ).prop('outerHTML'),
+	 	e = c.replace(/(validate-group=)"([^"]*)"/g,'$1"$2-'+dialog_instance+'"');
+	
     jQuery.confirm({
-        title: 'Create New Contact',
-        content: jQuery('#new-contact-form').html(),
+        title: 'Add Travel Companion',
+        content: e,
         keyboardEnabled: false,
         confirmButton: 'Create',
         confirmButtonClass: 'btn-info',
         cancelButton: 'Cancel',
     	confirm: function () {
+    		if(shrValidate.validateForm('#'+diagid) !== true) return false;
     		createNewContact(this.$content);
     		progressDialog = jQuery.alert({
     			title:'Creating contact',
@@ -241,34 +292,31 @@ jQuery(document).on('click','#renew-link',function(e){
 	return false;
 });
 
-jQuery(document).on('click','#upgrade-button',function(e){
-	e.preventDefault();
-	var p=jQuery('#account-membership-upgrade-select').find(':selected'),a=p.attr('amount'),n=numeral(p.attr('amount')).format('$0,000.00');
 
-    jQuery.confirm({
-        title: 'Are you sure?',
-        content: 'We will now charge your credit card on file for '+n,
-        keyboardEnabled: true,
-        confirmKeys:[],
-        confirmButton: jQuery('#upgrade-button').html(),
-        confirmButtonClass: 'btn-danger',
-        cancelButton: 'Cancel',
+jQuery(document).on('change','#account-membership-upgrade-select',function(){
+	fixUpgradeButtonText();
+}); 
 
-    	confirm: function () {
-    		upgradeAccount(e);
-    		progressDialog = jQuery.alert({
-    			title:'Updating account',
-    			content:'Please wait...',
-    			closeIcon: false,
-    			confirmButton:'',
-    			cancelButton:'',
-    			confirmButtonClass:'hidden',
-    			cancelButtonClass:'hidden',
-    		});
-    	}
-	});
-	return false;
+jQuery(document).on('change','#contactselect',function(){
+	contactSelectionChange();
 });
+
+jQuery(document).on('change','select[controlfield]',function(e){
+	var n=jQuery(e.target).attr('name');
+	updateControlledSelect(n);
+});
+
+function appendCardItem(i,t) {
+	var p = jQuery(t),
+		y = p.find('.card-item').last();
+	i.find('form').addClass('editing');
+	if( !y.length ) {
+		p.append(i);
+	} else {
+		y.after(i);
+	}
+	jQuery.scrollTo(i,300,{offset:-25});
+}
 
 function upgradeAccount(e){
 	var p=jQuery('#account-membership-upgrade-select'),t=p.val(),postdata = [];
@@ -303,19 +351,6 @@ function upgradeAccount(e){
 		});
 	});
 }
-
-jQuery(document).on('change','#account-membership-upgrade-select',function(){
-	fixUpgradeButtonText();
-}); 
-
-jQuery(document).on('change','#contactselect',function(){
-	contactSelectionChange();
-});
-
-jQuery(document).on('change','select',function(e){
-	var n=jQuery(e.target).attr('name');
-	updateControlledSelect(n);
-});
 
 function updateControlledSelect(n) {
 	if(!n) {
@@ -373,15 +408,15 @@ function hexMapMatch(a,b) {
 	return d&e;
 }
 
-jQuery(document).ready(function(){
-	getAccount();
-});
-
 function getFormData(f) {
 	var r = [];
 	jQuery(f).find('select,input,textarea').each(function(x,i){
 		var j = jQuery(i), n = j.attr('name'), v = j.val(), t;
 		if(n) {
+			if(v.substring(0,1)=='*') {
+				// Anything starting with * is ignored.
+				return;
+			}
 			if ( j.attr('picker') == 'date' ) {
 				v = j.datepicker('getDate');
 				if(v)
@@ -406,6 +441,25 @@ function getFormData(f) {
 	});
 	return r;
 }
+
+function setProcessing(b) {
+	var a = jQuery(b);
+	if(!jQuery(b).is('form')) {
+		a = a.closest('form');
+	}
+	if(!a.length) return;
+	a.addClass('processing').find('[action]').prop({disabled:true});
+}
+
+function unsetProcessing(b) {
+	var a = jQuery(b);
+	if(!jQuery(b).is('form')) {
+		a = a.closest('form');
+	}
+	if(!a.length) return;
+	a.removeClass('processing').find('[action]').prop({disabled:false});
+}
+
 
 function getAccount() {
 	if(SFData.initLoad) {
@@ -527,7 +581,7 @@ function newCardItem(y,i) {
 	f.find('input[name="Contact__c"]').val( jQuery('#contactselect').val() );
 	
 	jQuery('<a></a>').attr('href','#').html('Delete').addClass('card-delete-button card-button-large').prependTo(f);
-	jQuery('<a></a>').attr('href','#').html('Save').addClass('form-save-button card-save-button card-button-large').appendTo(f);
+	jQuery('<a></a>').attr('href','#').html('Save').addClass('form-save-button action-save card-save-button card-button-large').appendTo(f);
 	jQuery('<a></a>').attr('href','#').html('Edit').addClass('form-edit-link card-edit-link').appendTo(f);
 	f.appendTo(c);
 	
@@ -544,10 +598,16 @@ function getIdFromObject(i){
 }
 
 function applyMembershipUpgradeOptions() {
-	var c=SFData.Membership.Amount__c,i,r=[];
+	var c=SFData.Membership.Amount__c,i,r=[],n=false;
 	for(i in SFData.MembershipList) {
-		if( (SFData.MembershipList[i].Amount > SFData.Membership.Amount__c) || (SFData.MembershipList[i].Id == SFData.Membership.Id) ) {
+		if( (SFData.MembershipList[i].Amount > SFData.Membership.Amount__c) || ( ( renewMode() == 0 ) && ( SFData.MembershipList[i].Id == SFData.Membership.Id ) ) ) {
 			r.push(SFData.MembershipList[i]);
+			if ( !n ) {
+				n = SFData.MembershipList[i].Id;
+			}
+			if( SFData.MembershipList[i].Id == SFData.Membership.Id ) {
+				n = SFData.Membership.Id;
+			}
 		}
 	}
 	
@@ -562,7 +622,9 @@ function applyMembershipUpgradeOptions() {
 		.html(r[i].Name + ' - ' + numeral(r[i].Amount).format('$0,000.00'))
 		.appendTo(t);
 	}
-	t.val(SFData.Membership.Id);
+	if(n) {
+		t.val(n);
+	}
 	fixUpgradeButtonText();
 }
 
@@ -572,6 +634,13 @@ function fixUpgradeButtonText() {
 		x = "Renew Now";
 	}
 	jQuery('#upgrade-button').html(x);
+	
+	var end = new Date(SFData.Account.Membership_End_Date__c);
+	end.setTime( end.getTime() - 7 * 86400000 );
+	// Adjust math for Daylight Savings
+	end.setTime(end.getTime() + 12 * 1000 * 60 * 60); 
+	end.setHours(0);
+	jQuery('#account-bar-autorenew').html(end.toLocaleDateString());
 }
 
 function createNewContact(f) {
@@ -656,6 +725,12 @@ function handleDisplayField() {
 		var i = jQuery(f).attr('data-display-field'), h='';
 		if(d.hasOwnProperty(i)) {
 			h = d[i];
+			switch(i) {
+				case 'Membership_End_Date__c':
+				case 'Member_Since__c':
+				var t = new Date(h);
+				h = t.toLocaleDateString();
+			}
 		}
 		jQuery(f).html(h);
 	});
@@ -685,7 +760,7 @@ function updateForms() {
 	
 	jQuery('[data-edit-field] .auto-created-field').remove();
 	jQuery('[data-edit-field]').each(function(x,f){
-		var i, 
+		var i, r,
 			p = SFData.Account.IsPrimaryContact__x,
 			d = null,
 			y = jQuery(f).attr('id'),
@@ -733,9 +808,16 @@ function updateForms() {
 		if(!tgt.length) p = true;
 		for(i in z) {
 			var k = jQuery.trim(z[i]);
+			if(k.indexOf('|')!== false) {
+				r = k.split('|');
+				k = r.shift();
+				r = arrayToProps(r);
+			} else {
+				r = false;
+			}
 			if(d.hasOwnProperty(k) && SFData.def[a].hasOwnProperty(k)) {
 				jQuery(f).find('[field-instance="'+SFData.def[a][k].name+'"]').remove();
-				var element = makeInput(SFData.def[a][k],y,d[k],p);
+				var element = makeInput(SFData.def[a][k],y,d[k],p,r);
 				if(tgt.length) {
 					tgt.before(element);
 				} else {
@@ -751,15 +833,55 @@ function updateForms() {
 	updateDisabledState();
 }
 
+function arrayToProps(a) {
+	var i,r={},v,k;
+	for(i in a) {
+		v=a[i].split('=',2);
+		k=v.shift();
+		r[k]=v[0];
+	}
+	return r;
+}
+
+/**
+ * Determines what mode the various form buttons should be in based on the autorenew and pulldown selections.
+ * 
+ *  0 means Autorenew is disabled, and we should show the "Renew" option
+ *  1 means Autorenew is disabled, and we should show the "Enable Autorenew" button
+ *  2 means Autorenew is enabled, and we should not show either "Renew" or "Enable Autorenew"
+ */
+function renewMode() {
+	if ( SFData.Account.Is_Renewal__c ) {
+		// Autorenew is enabled.
+		return 2;
+	}
+	
+	var end = new Date(SFData.Account.Membership_End_Date__c);
+	var threshold = end.setTime( end.getTime() - 8 * 86400000 );
+	// Adjust math for Daylight Savings
+	threshold = threshold.setTime(threshold.getTime() + 12 * 1000 * 60 * 60); 
+	threshold.setHours(0);
+	
+	if(threshold > new Date() ) {
+		// The threshold is in the future.  Allow Autorenew Enable.
+		return 1;
+	}
+	
+	return 0;
+}
+
 /**
  * Returns a rendered form element for a given field object and prefix
+ * 
  * @param a object. The definition object for the field to render
  * @param p string. ID prefix for the rendered field input box
  * @param l mixed. The value for the field
  * @param t boolean.  Whether or not the field should be text only and not changable.
+ * @param r object.  An attribute set to pass to the wrapper object.
+ * 
  * @returns string. The form element.
  */
-function makeInput(a,p,l,t) {
+function makeInput(a,p,l,t,r) {
 	var i=1,y,s,o,e,d=p+'-'+a['name'],f;
 
 	while(jQuery('#'+d).length>0) {
@@ -781,7 +903,13 @@ function makeInput(a,p,l,t) {
 	}
 	
 	o = jQuery('<div></div>').addClass('input-field field clearfix auto-created-field').attr({'id':f,'field-instance':a['name']});
-
+	if(!!r) {
+		if(r.hasOwnProperty('type')) {
+			a['type'] = r['type'];
+			delete r['type'];
+		}
+	}
+	
 	e = a['type'];
 	if(t) {
 		switch(e) {
@@ -861,7 +989,7 @@ function makeInput(a,p,l,t) {
 				jQuery('<label></label>')
 					.append(chkbox)
 					.append(label)
-					.addClass('checkbox')
+					.addClass('checkbox clearfix')
 					.attr({
 						'value':y['value'],
 						'validfor':(y.hasOwnProperty('validFor')?y['validFor']:'')
@@ -971,6 +1099,71 @@ function makeInput(a,p,l,t) {
 	
 			break;
 
+		case 'month':
+			s = jQuery('<select></select>')
+				.attr({
+					'id':d,
+					'name':a['name'],
+					'startvalue':v
+				})
+				.prop('disabled',( ! a['updateable'] ) );
+			
+			if(!v || v == 'null' || v == '' ) {
+				jQuery('<option></option>').html('Month...').attr('value',' ').appendTo(s);
+				v = ' ';
+			}
+			if(v.substring(0,1) == '*' ) { 
+				jQuery('<option></option>').html('On File').attr('value','**').appendTo(s);
+				v = '**';
+			}
+			
+			var options = {'January':1,'February':2,'March':3,'April':4,'May':5,'June':6,
+					'July':'07','August':'08','September':'09','October':'10','November':'11','December':'12'};
+			for ( i in options ) {
+				jQuery('<option></option>')
+					.html(i)
+					.attr({'value':options[i]})
+					.appendTo(s);
+			}
+			
+			if(v && v !='null')
+				jQuery(s).val(v);
+	
+			break;
+
+		case 'cc_year':
+			s = jQuery('<select></select>')
+				.attr({
+					'id':d,
+					'name':a['name'],
+					'startvalue':v
+				})
+				.prop('disabled',( ! a['updateable'] ) );
+			
+			if(!v || v == 'null' || v == '' ) {
+				jQuery('<option></option>').html('Year...').attr('value',' ').appendTo(s);
+				v = ' ';
+			}
+			if(v.substring(0,1) == '*' ) { 
+				jQuery('<option></option>').html('On File').attr('value','**').appendTo(s);
+				v = '**';
+			}
+			
+			var dte = new Date();
+			y = dte.getFullYear();
+			maxy = y + 10;
+			for (;y<maxy;y++) {
+				jQuery('<option></option>')
+					.html(y.toString())
+					.attr({'value':y})
+					.appendTo(s);
+			}
+			
+			if(v && v !='null')
+				jQuery(s).val(v);
+	
+			break;
+
 		case 'date':
 			s = jQuery('<input></input>')
 				.prop('disabled',( ! a['updateable'] ) )
@@ -1005,7 +1198,27 @@ function makeInput(a,p,l,t) {
 			}
 
 			break;
-			
+
+		case 'tel':
+			s = jQuery('<input></input>')
+				.prop('disabled',( ! a['updateable'] ) )
+				.attr({
+					'id':d,
+					'name':a['name'],
+					'maxlength':a['length'],
+					'type':'tel',
+					'validate-type':'phone'
+			});
+		
+			if(v && v !='null')
+				jQuery(s).val(v);
+
+			if(t) {
+				s.prop({'disabled':true,'readonly':true});
+			}
+
+			break;
+
 		default:
 			s = jQuery('<input></input>')
 				.prop('disabled',( ! a['updateable'] ) )
@@ -1026,6 +1239,17 @@ function makeInput(a,p,l,t) {
 			break;
 	}
 	
+	if ( a['nillable'] ) {
+		jQuery(s).attr('validate-empty',1);
+	} else {
+		jQuery(s).attr('validate-empty',0);
+	}
+	if(!!r) {
+		jQuery(s).attr(r);
+	}
+	if( jQuery(s).attr('validate-type') !== undefined ) {
+		jQuery('<span class="errmsg"></span>').appendTo(s);
+	}
 	jQuery(s).appendTo(o);
 	if( a['type'] != 'hidden' ) {
 		jQuery('<label></label>').html(a['label']).attr({

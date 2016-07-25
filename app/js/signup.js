@@ -177,7 +177,7 @@ if (!signup) {
 					return true;
 				case 'wp-password1':
 				case 'wp-password2':
-					return self.validatePassword();
+					return jQuery(f).closest('.field').hasClass('validated-ok');
 				case 'cc_num':
 					return self.validateCC();
 				case 'ccv':

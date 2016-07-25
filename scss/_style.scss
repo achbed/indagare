@@ -1,6 +1,8 @@
-/* ========================================================================= */
-/* general styles */
-/* ------------------------------------------------------------------------- */
+@import 'settings.scss';
+
+// ========================================================================= */
+// general styles */
+// ------------------------------------------------------------------------- */
 html{font-size:87.5%;min-height:100%;}
 body{font-size:1em;font-family:'Helvetica Neue',Arial,sans-serif;line-height:1.4286;color:#333;min-height:100%;position:relative;}
 h1{font-size:2em;font-weight:300;line-height:1;}
@@ -18,14 +20,14 @@ b {font-weight:normal;}
 blockquote {font-size:1.715em;font-family:Georgia, Times, sans-serif;line-height:1.33;margin-bottom:.29167em;}
 cite {font-size:1.14em;font-family:Georgia, Times, sans-serif;line-height:1.25;font-style:normal;}
 
-/* general styles - links */
-/* ------------------------------------------------------------------------- */
+// general styles - links */
+// ------------------------------------------------------------------------- */
 a:link, a:visited{color:#336699;text-decoration:none;}
 a:hover, a:active{color:#fd252a;}
 h2 a, h3 a, h4 a, h5 a, a h1, a h2, a p {text-decoration:none;}
 
-/* general styles - form elements */
-/* ------------------------------------------------------------------------- */
+// general styles - form elements */
+// ------------------------------------------------------------------------- */
 label, .label {display:inline-block;}
 input, select, textarea, .button {font-size:1em;display:inline-block;border:0 none;padding-left:.715em;padding-right:.715em;position:relative;}
 input, select, textarea, button, .button {font-family:Arial,sans-serif;border:0 none;}
@@ -39,11 +41,12 @@ select {-webkit-appearance: none;-moz-appearance: none; &::-ms-expand{display:no
 .secondary, a.secondary {color:#336699;background-color:rgba(0,0,0,.1)}
 .secondary:hover, a.secondary:hover {background-color:rgba(0,0,0,.5);color:#fff;}
 .floatright { float: right; margin: 0 0 .719em .719em; }
-/* focus */
+
+// focus */
 input.element:focus {outline: none;}
 
-/* general styles - icons */
-/* ------------------------------------------------------------------------- */
+// general styles - icons */
+// ------------------------------------------------------------------------- */
 .loading {text-indent:-9999em;min-height:32px; min-width:32px; background: transparent 50% 50% no-repeat url('images/preloader.gif');}
 b.icon {font-size:1.429em;height:1em;display:inline-block;}
 .form-item b.icon {font-size:1.072em;}
@@ -83,9 +86,9 @@ b.box {display:inline-block;height:1.5em;width:1.5em;line-height:1.5em;backgroun
 .active-box b {color:#fff;background-color:#ff9200;border-color:#ff9200;}
 
 
-/* ========================================================================= */
-/* layout */
-/* ------------------------------------------------------------------------- */
+// ========================================================================= */
+// layout */
+// ------------------------------------------------------------------------- */
 .candy-wrapper {max-width:960px;margin:0 auto;position: relative;}
 #main {min-height:40em;padding:2.858em 10px 1.429em;}
 #container.standard {float:left;width:66.66%;padding:0 10px 1.429em;}
@@ -94,9 +97,11 @@ b.box {display:inline-block;height:1.5em;width:1.5em;line-height:1.5em;backgroun
 #primary, #secondary {float:right;width:33.33%;padding:0 10px;}
 #secondary {margin-bottom:1.429em;clear:right;}
 
-/* ========================================================================= */
-/* header */
-/* ------------------------------------------------------------------------- */
+@import 'dialogs.scss';
+
+// ========================================================================= */
+// header */
+// ------------------------------------------------------------------------- */
 header {background-color:#000;color:#fff;padding-left:10px;padding-right:10px;}
 header a:link, header a:visited {color:#fff;}
 header a:hover, header a:active {color:#fff;text-decoration: underline;}
@@ -230,13 +235,6 @@ p.view-more a.map { margin-right: 2em; } /* AKB */
 .hero .hero { border-bottom: none; } /* AKB */
 .map .hero { border-bottom: none; } /* AKB */
 .new .hero { margin-bottom: 2.714em; border-bottom: none; }
-/*	DA .widget-wrapper.home {
-		float: left;  AKB 
- AKB
-		width: 32%;
-		padding: 0px;
-		
-	}*/
 .widget-wrapper.book { /* AKB */
 	float: none;
 	width: 100%;
@@ -3045,11 +3043,29 @@ body.modalmap #map-buttons-container {
     list-style-type: none;
 }
 
+.passmatch-hide li#passmatch,
+.passlen-hide li#passlen,
+.passcase-hide li#passcase,
+.passnum-hide li#passnum,
+.passchar-hide li#passchar,
+.passmatch-hide .passmatch-msg,
+.passlen-hide .passlen-msg,
+.passcase-hide .passcase-msg,
+.passnum-hide .passnum-msg,
+.passchar-hide .passchar-msg {
+  display:none;
+}
+
 .faildetail.passmatch-fail li#passmatch,
 .faildetail.passlen-fail li#passlen,
 .faildetail.passcase-fail li#passcase,
 .faildetail.passnum-fail li#passnum,
-.faildetail.passchar-fail li#passchar {
+.faildetail.passchar-fail li#passchar,
+.faildetail.passmatch-fail .passmatch-msg,
+.faildetail.passlen-fail .passlen-msg,
+.faildetail.passcase-fail .passcase-msg,
+.faildetail.passnum-fail .passnum-msg,
+.faildetail.passchar-fail .passchar-msg {
     color: #c00;
 }
 
@@ -3057,7 +3073,12 @@ body.modalmap #map-buttons-container {
 .faildetail.passlen-fail li#passlen:before,
 .faildetail.passcase-fail li#passcase:before,
 .faildetail.passnum-fail li#passnum:before,
-.faildetail.passchar-fail li#passchar:before {
+.faildetail.passchar-fail li#passchar:before,
+.faildetail.passmatch-fail .passmatch-msg:before,
+.faildetail.passlen-fail .passlen-msg:before,
+.faildetail.passcase-fail .passcase-msg:before,
+.faildetail.passnum-fail .passnum-msg:before,
+.faildetail.passchar-fail .passchar-msg:before {
     content:"\f057";
 }
 
@@ -3406,14 +3427,6 @@ $formwidth:65em;
   }
 }
 */
-$green: #55ab3f;
-$gray: #808080;
-$black: #000000;
-$blue: #00aeef;
-$orange: #da420b;
-$red: $orange;
-$cyan: #abe1fa;
-$white: #ffffff;
 $formwidth:65em;
 $columnwidth:5em;
 
@@ -3657,6 +3670,7 @@ $columnwidth:5em;
   }
 
 
+
 .card-list {
     text-align: left;
     position: relative;
@@ -3769,6 +3783,26 @@ $columnwidth:5em;
   }
 }
 
+#account-tab-container,
+#signup-form-container,
+.jconfirm-box {
+  form.editing div.checkboxes {
+    .checkbox-label {
+      margin:0;
+      padding:1em 0.5em;
+      line-height:1em;
+      float:left;
+    }
+    input {
+      float:left;
+      margin: 1em 0;
+      padding: 0;
+      min-height: 0;
+      top: auto;
+    }
+  }
+}
+
 .input-field {
   &.validated,
   &.validating {
@@ -3865,23 +3899,26 @@ $columnwidth: ( $formwidth - $itempadding * 7 ) / 8;
   #field-contact-Anniversary_Date__c,
   #field-contact-Assistant_Email__c {
 //    width: floor( ( ( $formwidth - ( $itempadding * 1 ) ) / 2 ) * 100 ) / 100;
-	width: 49.5%;
+	 width: 49.5%;
   }
   
+  #field-payment-detail-form-Credit_Card_Type__c{
+    display:none;
+  }
+
   .form-save-button,
-  #field-account-detail-form-Credit_Card_Type__c,
-  #field-account-detail-form-Credit_Card_Number__c,
-  #field-account-detail-form-Credit_Card_Year__c,
-  #field-account-detail-form-Credit_Card_Month__c,
-  #field-account-detail-form-Card_CVV_Number__c,
+  #field-payment-detail-form-Credit_Card_Number__c,
+  #field-payment-detail-form-Credit_Card_Year__c,
+  #field-payment-detail-form-Credit_Card_Month__c,
+  #field-payment-detail-form-Card_CVV_Number__c,
+  #field-billing-detail-form-BillingCity,
+  #field-billing-detail-form-BillingState,
+  #field-billing-detail-form-BillingPostalCode,
+  #field-billing-detail-form-BillingCountry,
   #field-contact-MailingCity,
   #field-contact-MailingState,
   #field-contact-MailingPostalCode,
   #field-contact-MailingCountry,
-  #field-account-detail-form-BillingCity,
-  #field-account-detail-form-BillingState,
-  #field-account-detail-form-BillingPostalCode,
-  #field-account-detail-form-BillingCountry,
   #field-contact-OtherCity,
   #field-contact-OtherState,
   #field-contact-OtherPostalCode,
@@ -3898,20 +3935,16 @@ $columnwidth: ( $formwidth - $itempadding * 7 ) / 8;
   }
   
   #field-account-membership-upgrade-select,
-  #field-account-detail-form-Name,
+  #field-payment-detail-form-Name,
   #field-contact-Email,
   #field-contact-MailingStreet,
-  #field-account-detail-form-BillingStreet,
+  #field-billing-detail-form-BillingStreet,
   #field-contact-OtherStreet {
 //      width:$formwidth;
 	width: 100%;
   }
 
 }
-
-$formwidth:63em;
-$numcols: 12;
-$columnwidth: ( $formwidth - $itempadding * ( $numcols - 1 ) ) / $numcols;
 
 #account-tab-container .card-list .card-item form {
 //  width:$formwidth;
@@ -3976,12 +4009,13 @@ $columnwidth: ( $formwidth - $itempadding * ( $numcols - 1 ) ) / $numcols;
     font-size: 2em;
     font-weight: 200;
     font-family: 'Helvetica Neue',Arial,sans-serif;
-    padding: 0 1em 0 0;
+    padding: 0 1.375em 0 0;
     margin: 0;
     display: inline-block;
     z-index: 2;
     position: relative;
-    background: transparent;  }
+    background: transparent;  
+  }
 
   &:after {
     content: '\f0d7';
@@ -3993,7 +4027,7 @@ $columnwidth: ( $formwidth - $itempadding * ( $numcols - 1 ) ) / $numcols;
     margin: 0 0 0 -1em;
     line-height: 1em;
     position: relative;
-      }
+  }
 }
 
 .card-button-list {
@@ -4062,42 +4096,3 @@ span.keep-together {
     display: inline-block;
 }
 
-/* Account page dialogs */
-
-.jconfirm .jconfirm-box {
-    max-width: 90%;
-    width: 25em;
-    margin: 0 auto;
-}
-
-button.btn {
-    padding: 1em;
-    margin: 0 1em;
-    cursor: pointer;
-    border-radius: 0em;
-    text-transform: none !important;
-
-  &.btn-info {
-    background:$green;
-    color:$white !important;
-    &:hover, &:active {
-      background:$green;
-    }
-  }
-  
-  &.btn-warning {
-    background:$cyan;
-    color:$black !important;
-    &:hover, &:active {
-      background:$cyan;
-    }
-  }
-  
-  &.btn-danger {
-    background:$red;
-    color:$white !important;
-    &:hover, &:active {
-      background:$red;
-    }
-  }
-}

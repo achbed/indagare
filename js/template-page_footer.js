@@ -1,5 +1,5 @@
 // clear booking widgets on page unload
-window.onunload = function() { document.getElementById("book-hotels").reset(); };
+window.onunload = function() { var e=document.getElementById("book-hotels"); if(e) e.reset(); };
 
 jQuery().ready(function($) {
 	// Menu behavior
