@@ -131,6 +131,8 @@ jQuery().ready(function($) {
 	
 
 	$('.newsletter-signup-form').submit(function(event) {
+
+		event.preventDefault();
 	
 		var wrapper = $(this).closest(".newsletter-signup-wrapper");
 		var wrapperID = wrapper.attr('id');
@@ -142,6 +144,7 @@ jQuery().ready(function($) {
 			return false;
 		}
 	
+/*
 		var xmlhttp = new XMLHttpRequest();
 		
 		xmlhttp.onreadystatechange=function(){
@@ -167,7 +170,50 @@ jQuery().ready(function($) {
 		var posts = "email=" + encodeURI(wrapper.find('.newsletter-signup-input').val());
 		xmlhttp.send(posts);
 
-		event.preventDefault();
+*/
+
+            $.ajax({
+//                type: "GET",
+//                url: "//indagare.us1.list-manage.com/subscribe/post-json?u=2af8f3ad067b68a1d10009a2f&amp;id=4962a21673",
+                type: "POST",
+                url: "https://us1.api.mailchimp.com/3.0/lists/4962a21673/members/",
+                data: $('form.newsletter-signup-form').serialize(),
+                cache: false,
+                dataType: "jsonp",
+                jsonp: "c", // trigger MailChimp to return a JSONP response
+                contentType: "application/json; charset=utf-8",
+                error: function(error){
+                    // According to jquery docs, this is never called for cross-domain JSONP requests
+                },
+                success: function(data){
+                    if (data.result != "success") {
+                        var message = data.msg || "Sorry. Unable to subscribe. Please try again later.";
+//                        $resultElement.css("color", "red");
+                        if (data.msg && data.msg.indexOf("already subscribed") >= 0) {
+                            message = "You're already subscribed. Thank you.";
+//                            $resultElement.css("color", "black");
+                        }
+//                        $resultElement.html(message);
+						wrapper.find('p').fadeOut().fadeIn().text(message);
+                    } else {
+//                        $resultElement.css("color", "black");
+//                        $resultElement.html("Thank you!<br>You must confirm the subscription in your inbox.");
+						wrapper.find('h2').fadeOut().fadeIn().text('Thank you');
+						if ( wrapperID == 'first' || wrapperID == 'emailsignup' ) {
+							wrapper.find('p').fadeOut().fadeIn().text('Thank you for signing up.');
+							setTimeout(function() {
+								$.magnificPopup.close();
+							}, 3500);
+						} else if ( wrapperID == 'form-buzz' ) {
+							wrapper.find('p').fadeOut().fadeIn().text('Indagare\'s e-Newsletter, full of travel buzz, is sent out every other week.');
+							$('#'+wrapperID).delay(1500).slideUp();
+						}
+                    }
+                }
+            });
+
+
+//		event.preventDefault();
 		
 	});
 	
