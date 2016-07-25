@@ -6184,12 +6184,16 @@ jQuery().ready(function($) {
 				echo '<h2>The Buzz</h2>'."\n";
 				echo '<p>Subscribe to our free e-Newsletter for current travel news and tips.</p>'."\n";
 				echo '<form class="newsletter-signup-form">'."\n";
-				  echo '<div class="form-combo">'."\n";
-					echo '<span class="form-item"><input type="text" name="email" id="newsletter-signup-buzz" class="element newsletter-signup-input" placeholder="Your email address" /></span>'."\n";
-				  echo '</div>'."\n";
-				  echo '<div class="buttons">'."\n";
-					echo '<button type="submit" class="primary button">Submit</button>'."\n";
-				  echo '</div>'."\n";
+
+//				  echo '<div class="form-combo">'."\n";
+//					echo '<span class="form-item"><input type="text" name="email" id="newsletter-signup-buzz" class="element newsletter-signup-input" placeholder="Your email address" /></span>'."\n";
+//				  echo '</div>'."\n";
+//				  echo '<div class="buttons">'."\n";
+//					echo '<button type="submit" class="primary button">Submit</button>'."\n";
+//				  echo '</div>'."\n";
+
+					echo do_shortcode('['.get_field('newsletter-signup', 'option').']');
+
 				echo '</form>'."\n";
 			echo '</div>'."\n";
 
@@ -6831,12 +6835,17 @@ function childtheme_override_siteinfo() {
         <h4><?php print __('Newsletter','indagare'); ?></h4>
         <p><?php print __('Receive our free email newsletter full of travel news, tips and advice.','indagare'); ?></p>
         <form class="newsletter-signup-form">
+<?php
+/*
           <div class="form-combo">
           	<span class="form-item"><input type="text" name="email" id="newsletter-signup" class="element newsletter-signup-input" placeholder="<?php print __('Your email address','indagare'); ?>" /></span>
           </div>
           <div class="buttons">
           	<button type="submit" class="primary button"><?php print __('Submit','indagare'); ?></button>
           </div>
+*/
+?>
+			<?php echo do_shortcode('['.get_field('newsletter-signup', 'option').']'); ?>
         </form>
       </div>
       <div id="fourth">
@@ -6926,6 +6935,8 @@ global $count;
 
 	<footer>
 		<div id="emailsignup" class="newsletter-signup-wrapper">
+<?php
+/*
 		<form class="login newsletter-signup-form" method="post" novalidate>
 			<div id="field1-container" class="field">
 			   <input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address">
@@ -6934,6 +6945,11 @@ global $count;
 			<div id="form-submit" class="field clearfix submit">
 			   <input type="submit" value="Submit" class="button">
 			</div>
+*/
+?>
+<?php
+		echo do_shortcode('['.get_field('newsletter-signup', 'option').']');
+?>
 		</form>
 		<p>You will receive our free e-Newsletter full of travel news and insider recommendations.</p>
 		</div>
@@ -7067,14 +7083,18 @@ jQuery(document).ready(function($) {
 		<h4>Sign Up: Travel Newsletter</h4>
 		<p>Receive our free, bimonthly e-Newsletter full of travel stories, reviews and insider recommendations.</p>
 		<form class="login newsletter-signup-form" method="post" novalidate>
-			<div id="field1-container" class="field">
-			   <input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address">
-			</div>
+<?php
+//			<div id="field1-container" class="field">
+//			   <input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address">
+//			</div>
 
-			<div id="form-submit" class="field clearfix submit">
-			   <input type="submit" value="Submit" class="button">
-			</div>
-
+//			<div id="form-submit" class="field clearfix submit">
+//			   <input type="submit" value="Submit" class="button">
+//			</div>
+?>
+<?php
+			echo do_shortcode('['.get_field('newsletter-signup', 'option').']');
+?>
 		</form>
 
 	</footer>

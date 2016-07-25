@@ -1566,9 +1566,32 @@ article.magazine .photo-gallery {
 		.lightbox footer form {
 			display: inline;
 		}
-		.lightbox footer .field {
+		.lightbox footer form .mc4wp-form-fields {
+			display: inline-block;
+		}
+		.lightbox footer .field, .lightbox footer .form-item {
 			display: inline;
 		}
+		.lightbox footer .form-combo {
+			display: inline-block;
+			margin-bottom: 0;
+			-webkit-border-radius: 0;
+			border-radius: 0;
+			-webkit-box-shadow:none;
+			-moz-box-shadow:none;
+			-ms-box-shadow:none;
+			box-shadow:none;
+		}
+		.lightbox footer .form-combo .element {
+			width: auto;
+			border: 2px solid #E7E7E7;
+			padding: 3px 10px;
+			-webkit-border-radius: 5px;
+			border-radius: 5px;
+		}
+		.lightbox footer .buttons {
+			float: right;
+		}		
 		.lightbox footer input[type="text"] {
 		
 		}
