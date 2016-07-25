@@ -8,6 +8,7 @@ if (!signup) {
 		this.mbSelect = false;
 		this.processing = false;
 		this.validatingForm = false;
+		self.progressDialog = null;
 
 		this.selfInit = function() {
 			if (!self.mbSelect || !self.mbSelect.length) {
@@ -449,6 +450,9 @@ if (!signup) {
 					})
 					.fail(
 							function(x, s, e) {
+								if(progressDialog) {
+									progressDialog.close();
+								}
 								result = {
 									r_approved : 'ERROR',
 									r_code : 0,
@@ -458,6 +462,9 @@ if (!signup) {
 							})
 					.always(
 							function() {
+								if(progressDialog) {
+									progressDialog.close();
+								}
 								var s = false, b = '#lightbox-signup-complete';
 
 								if ( result.success ) {
@@ -508,6 +515,16 @@ if (!signup) {
 
 								self.processing = false;
 							});
+    		progressDialog = jQuery.alert({
+    			title:'Creating account',
+    			content:'Please wait...',
+    			closeIcon: false,
+    			confirmButton:'',
+    			cancelButton:'',
+    			confirmButtonClass:'hidden',
+    			cancelButtonClass:'hidden',
+    		});
+
 		};
 
 		this.tgCodeLookup = function() {

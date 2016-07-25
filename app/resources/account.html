@@ -1,12 +1,16 @@
 <h1 class="hidden">Account Details</h1>
 <div id="account-tab-container">
-    <ul id="account-tab-container-nav" class="clearfix">
-	    <li><a href="#dashboard">Dashboard</a></li>
-	    <li class="billingtab hidden"><a href="#billing">Billing</a></li>
-	    <li><a href="#contactdetails">Contact Details</a></li>
-	    <li><a href="#prefs">Travel Preferences</a></li>
-	    <li><a href="#accounts">Travel Accounts</a></li>
-    </ul>
+	<div id="account-tab-container-nav">
+	    <ul id="account-tab-nav-list" class="clearfix">
+	    	<li class="mobile"><div class="prevbutton" onclick="tabber1.previous();"></div></li>
+		    <li class="tab-nav-item"><a href="#dashboard">Dashboard</a></li>
+		    <li class="tab-nav-item billingtab hidden"><a href="#billing">Billing</a></li>
+		    <li class="tab-nav-item"><a href="#contactdetails">Contact Details</a></li>
+		    <li class="tab-nav-item"><a href="#prefs">Travel Preferences</a></li>
+		    <li class="tab-nav-item"><a href="#accounts">Travel Accounts</a></li>
+	    	<li class="mobile"><div class="nextbutton" onclick="tabber1.next();"></div></li>
+	    </ul>
+    </div>
     	
     <div id="account-header-display">
 	    <div id="account-isprimary-display" data-source-object="Account" data-display-if="IsPrimaryContact__x=true" style="display:none;">Primary Account</div>
@@ -28,9 +32,8 @@
    			<span id="account-bar-end" data-source-object="Account"
 			data-display-field="Member_Since__c"></span>
 	    </div>
-   		<div class="valid-through" data-source-object="Account" data-display-if="Is_Renewal__c=true" style="display:none;">
-   			<label for="account-bar-autorenew">Account will autorenew on or around</label>
-   			<span id="account-bar-autorenew"></span>
+   		<div class="renewal-text" data-source-object="Account" data-display-if="Is_Renewal__c=true" style="display:none;">
+   			(Your Indagare account will renew 7 days prior to your membership lapsing.)
 	    </div>
     </div>
     
@@ -78,7 +81,7 @@
 						<label for="account-membership-upgrade-select">Membership Level</label>
 					</div>
 					<a id="upgrade-button" class="form-save-button" action="upgrade" href="#">Upgrade Now</a>
-					<a id="autorenew-button" class="form-save-button" action="autorenew" href="#" data-source-object="Account" data-display-if="Is_Renewal__c=false" style="display:none;">Enable Autorenew</a>
+					<a id="autorenew-button" class="form-save-button" action="autorenew" href="#" style="display:none;">Enable Autorenew</a>
 				</form>
 		    </div>
 	    </div>
@@ -110,15 +113,15 @@
 
 				<a class="form-save-button" action="save" href="#">Save</a>
 				<a class="form-cancel-button" href="#">Close</a>
-				<a class="form-edit-link" href="#">Edit Email</a>
+				<a class="form-edit-link" href="#">Edit Login Information</a>
 	    	</form>
 	    	
-		    <h2>Name</h2>
+		    <h2>Personal Details</h2>
 	    	<form class="clearfix" id="contact" data-source-object="Contact"
 				data-edit-field="Id,Salutation,FirstName,LastName,Title,Birthdate,Anniversary_Date__c">
 				<a class="form-save-button" action="save" href="#">Save</a>
 				<a class="form-cancel-button" href="#">Close</a>
-				<a class="form-edit-link" href="#">Edit Contact Details</a>
+				<a class="form-edit-link" href="#">Edit Personal Details</a>
 		    </form>
 		    
 		    <h2>Address</h2>
@@ -145,7 +148,7 @@
 				data-edit-field="Id,AssistantName,Assistant_Email__c|validate-type=email">
 				<a class="form-save-button" action="save" href="#">Save</a>
 				<a class="form-cancel-button" href="#">Close</a>
-				<a class="form-edit-link" href="#">Edit Email</a>
+				<a class="form-edit-link" href="#">Edit Assistant Information</a>
 		    </form>
 		    
 		</div>

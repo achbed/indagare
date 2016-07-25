@@ -3483,7 +3483,7 @@ $columnwidth:5em;
     clear:both;
   }
 
-  ul#account-tab-container-nav {
+  #account-tab-container-nav ul {
     font-size:0.875em;
     display: block;
     width: 100%;
@@ -4060,6 +4060,7 @@ $columnwidth: ( $formwidth - $itempadding * 7 ) / 8;
     width: 100%;
     border: 1px solid $gray;
     position: relative;
+    z-index:0;
     
     a {
       padding: 1em 1em 1em 4em;
@@ -4072,7 +4073,7 @@ $columnwidth: ( $formwidth - $itempadding * 7 ) / 8;
     }
     
     &:before {
-      content: '+';display: block;position: absolute;top: 50%;margin-top: -0.875em;font-size: 2em;color: $blue;left: 1em;z-index: 0;
+      content: '+';display: block;position: absolute;top: 50%;margin-top: -0.875em;font-size: 2em;color: $blue;left: 1em;z-index: -1;
     }
   }
 }
@@ -4119,3 +4120,58 @@ span.keep-together {
     display: inline-block;
 }
 
+#account-tab-container>div.tab {
+  display:none;
+}
+
+#account-header-display .renewal-text {
+      font-size: 0.875em;
+      color:$black;
+      font-style:italic;
+}
+
+// Tabbed nav bar mobile implementation
+#account-tab-nav-menu, .mobile {
+    display:none;
+}
+@media(max-width:767px) {
+  #account-tab-nav-menu {
+    display: inline-block;
+    cursor: pointer;
+    &:after {
+      content: "\f0c9";
+      font-size: 1.75em;
+      font-family: icomoon;
+      padding: 0;
+    }
+  }
+  
+  #account-tab-container-nav ul {
+    li {
+      display:none;
+      &.mobile {
+        display:block;
+      }
+      .prevbutton,
+      .nextbutton {
+        font-family:icomoon;
+        font-size:2em;
+      }
+      .nextbutton {
+        &:after{
+        content:"\F0DA";
+        }
+        float:left;
+      }
+      .prevbutton {
+        &:after{
+        content:"\F0D9";
+        }
+        float:right;
+      }
+      &.activeli{
+        display:block;
+      }
+    }
+  }
+}
