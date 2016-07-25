@@ -2522,9 +2522,9 @@ span.keep-together { display: inline-block; }
   #account-tab-container-nav ul li.mobile { display: block; }
   #account-tab-container-nav ul li .prevbutton, #account-tab-container-nav ul li .nextbutton { font-family: icomoon; font-size: 2em; }
   #account-tab-container-nav ul li .nextbutton { float: right; }
-  #account-tab-container-nav ul li .nextbutton:after { content: "\F0DA"; }
+  #account-tab-container-nav ul li .nextbutton div:after { content: "\F0DA"; }
   #account-tab-container-nav ul li .prevbutton { float: left; }
-  #account-tab-container-nav ul li .prevbutton:after { content: "\F0D9"; }
+  #account-tab-container-nav ul li .prevbutton div:after { content: "\F0D9"; }
   #account-tab-container-nav ul li.activeli { display: block; } }
 .destinationlist-wrapper { display: block; min-height: 270px; }
 

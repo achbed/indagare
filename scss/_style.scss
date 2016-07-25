@@ -4158,13 +4158,13 @@ span.keep-together {
         font-size:2em;
       }
       .nextbutton {
-        &:after{
+        div:after{
         content:"\F0DA";
         }
         float:right;
       }
       .prevbutton {
-        &:after{
+        div:after{
         content:"\F0D9";
         }
         float:left;
