@@ -70,10 +70,12 @@ function Yetii() {
     };
     
     self.pushHistory = function(n){
-        var id = '#'+self.tabs[n-1].id;
+        var id = '#'+self.tabs[n-1].id+'-tab',
+        	l=window.location.toString();
         if(window.location.hash == id) return;
+        l = l.split('#')[0] + id
         if(history.pushState) {
-            history.pushState(null, null, id);
+            history.pushState(null, null, l);
         } else {
         	window.location.hash = id;
         }
@@ -129,6 +131,7 @@ function Yetii() {
     self.getTabNum = function(name) {
     	var i=0,l=self.tabs.length;
         if (parseInt(name)) return parseInt(name);
+        name=name.replace(/-tab$/,'');
         if (document.getElementById(name)) {
             for (;i<l;i++) {
                 if (self.tabs[i].id == name) { 
@@ -177,14 +180,33 @@ function Yetii() {
         el.className.replace(/\s{2,}/g, ' ').replace(/^\s+|\s+$/g, '');
     };
     
+    self.getListItems = function() {
+    	self.listitems = [];
+    	self.links = [];
+        var l = document.getElementById(self.defaults.id + '-nav').getElementsByTagName('li');
+    	for(var i=0;i<l.length;i++) {
+    		if(self.hasClass(l[i],'tab-nav-item')) {
+    			self.listitems.push(l[i]);
+    		}
+    	}
+    	for(var i=0;i<self.listitems.length;i++) {
+    		var y = self.listitems[i].getElementsByTagName('a')[0];
+			self.listitems.push( y );
+    	}
+    }
+    
 
     /* init */
     for (var n in arguments[0]) {
     	self.defaults[n]=arguments[0][n];
     };
 
+    self.getListItems();
+    /*
     self.links = document.getElementById(self.defaults.id + '-nav').getElementsByTagName('a');
     self.listitems = document.getElementById(self.defaults.id + '-nav').getElementsByTagName('li');
+    for(var i=0;i<self.listitems.)
+    */
     
     self.tabs = self.getTabs();
     
@@ -197,7 +219,7 @@ function Yetii() {
     // Set up the event handling
     jQuery(window).on('hashchange',function(e){
     	var h = window.location.hash;
-        var tab = h.replace(/.*#/,'');
+        var tab = h.replace(/.*#/,'').replace(/-tab$/,'');
     	self.show(tab);
     });
     

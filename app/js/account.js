@@ -600,7 +600,7 @@ function getIdFromObject(i){
 function applyMembershipUpgradeOptions() {
 	var c=SFData.Membership.Amount__c,i,r=[],n=false;
 	for(i in SFData.MembershipList) {
-		if( (SFData.MembershipList[i].Amount > SFData.Membership.Amount__c) || ( ( renewMode() == 0 ) && ( SFData.MembershipList[i].Id == SFData.Membership.Id ) ) ) {
+		if( (SFData.MembershipList[i].Amount > SFData.Membership.Amount__c) || ( ( renewMode() === false ) && ( SFData.MembershipList[i].Id == SFData.Membership.Id ) ) ) {
 			r.push(SFData.MembershipList[i]);
 			if ( !n ) {
 				n = SFData.MembershipList[i].Id;
@@ -635,12 +635,16 @@ function fixUpgradeButtonText() {
 	}
 	jQuery('#upgrade-button').html(x);
 	
-	var end = new Date(SFData.Account.Membership_End_Date__c);
-	end.setTime( end.getTime() - 7 * 86400000 );
-	// Adjust math for Daylight Savings
-	end.setTime(end.getTime() + 12 * 1000 * 60 * 60); 
-	end.setHours(0);
-	jQuery('#account-bar-autorenew').html(end.toLocaleDateString());
+	var end = renewMode();
+	if ( end === false ) {
+		// Show only the "Renew" option (taken care of in the previous function)
+	} else if ( end === true ) {
+		// Show the "Enable Autorenew" button
+		jQuery('#autorenew-button').show();
+	} else {
+		// We should have a date object instead of true/false.  Output it as the renewal date.
+		jQuery('#account-bar-autorenew').html(end.toLocaleDateString());
+	}
 }
 
 function createNewContact(f) {
@@ -726,10 +730,15 @@ function handleDisplayField() {
 		if(d.hasOwnProperty(i)) {
 			h = d[i];
 			switch(i) {
+				case 'Birthdate':
+				case 'Anniversary_Date__c':
+				case 'Membership_Start_Date__c':
 				case 'Membership_End_Date__c':
 				case 'Member_Since__c':
-				var t = new Date(h);
-				h = t.toLocaleDateString();
+					if(h && h != '') {
+						var t = new Date(h);
+						h = t.toLocaleDateString();
+					}
 			}
 		}
 		jQuery(f).html(h);
@@ -846,28 +855,36 @@ function arrayToProps(a) {
 /**
  * Determines what mode the various form buttons should be in based on the autorenew and pulldown selections.
  * 
- *  0 means Autorenew is disabled, and we should show the "Renew" option
- *  1 means Autorenew is disabled, and we should show the "Enable Autorenew" button
- *  2 means Autorenew is enabled, and we should not show either "Renew" or "Enable Autorenew"
+ *  False means Autorenew is disabled, and we should show the "Renew" option
+ *  True means Autorenew is disabled, and we should show the "Enable Autorenew" button
+ *  A date object means Autorenew is enabled, and we should not show either "Renew" or "Enable Autorenew"
  */
 function renewMode() {
+	var end = new Date(SFData.Account.Membership_End_Date__c);
+	end.setTime( end.getTime() - 8 * 86400000 );
+	// Adjust math for Daylight Savings
+	end.setTime( end.getTime() + 12 * 1000 * 60 * 60 ); 
+	end.setHours(0);
+	
 	if ( SFData.Account.Is_Renewal__c ) {
 		// Autorenew is enabled.
-		return 2;
+		return end;
 	}
 	
-	var end = new Date(SFData.Account.Membership_End_Date__c);
-	var threshold = end.setTime( end.getTime() - 8 * 86400000 );
-	// Adjust math for Daylight Savings
-	threshold = threshold.setTime(threshold.getTime() + 12 * 1000 * 60 * 60); 
-	threshold.setHours(0);
-	
-	if(threshold > new Date() ) {
+	if ( end > new Date() ) {
 		// The threshold is in the future.  Allow Autorenew Enable.
-		return 1;
+		return true;
 	}
 	
-	return 0;
+	return false;
+}
+
+/**
+ * Returns a jQuery.datepicker format string for the current browser locale
+ * @returns string The format string.
+ */
+function localeDateFormat() {
+	return (new Date(2003,0,2)).toLocaleDateString().replace('2003','yy').replace('03','y').replace('01','mm').replace('1','m').replace('02','dd').replace('2','d');
 }
 
 /**
@@ -1175,14 +1192,16 @@ function makeInput(a,p,l,t,r) {
 			});
 			
 			v = new String(v).split('T')[0];
-			if(v && v !='null')
-				jQuery(s).val(v);
+			if(v && v !='null' && v != '') {
+				v = new Date(v);
+				jQuery(s).val(v.toLocaleDateString());
+			}
 
 			if(t) {
 				s.prop({'disabled':true,'readonly':true});
 			} else {
 				var args = {
-						dateFormat:"yy-mm-dd",
+						dateFormat:localeDateFormat(),
 						changeYear:true,
 						changeMonth:true
 				};
@@ -1191,8 +1210,8 @@ function makeInput(a,p,l,t,r) {
 					var minyear = Math.max(1900,year - 125);
 					args.yearRange = ''+minyear+':'+year;
 				}
-				if(jQuery(s).val()) {
-					args.defaultDate = new Date(jQuery(s).val());
+				if( v instanceof Date ) {
+					args.defaultDate = v;
 				}
 				jQuery(s).datepicker(args);
 			}
