@@ -4135,42 +4135,62 @@ span.keep-together {
     display:none;
 }
 @media(max-width:767px) {
-  #account-tab-nav-menu {
-    display: inline-block;
-    cursor: pointer;
-    &:after {
-      content: "\f0c9";
-      font-size: 1.75em;
-      font-family: icomoon;
-      padding: 0;
+  #account-tab-container {
+    #account-tab-nav-menu {
+      display: inline-block;
+      cursor: pointer;
+      &:after {
+        content: "\f0c9";
+        font-size: 1.75em;
+        font-family: icomoon;
+        padding: 0;
+      }
     }
-  }
-  
-  #account-tab-container-nav ul {
-    li {
-      display:none;
-      &.mobile {
-        display:block;
-      }
-      .prevbutton,
-      .nextbutton {
-        font-family:icomoon;
-        font-size:2em;
-      }
-      .nextbutton {
-        div:after{
-        content:"\F0DA";
+    
+    #account-tab-container-nav ul {
+      position:relative;
+      li {
+        display:none;
+        float:none;
+        
+        &.mobile {
+          display: block;
         }
-        float:right;
-      }
-      .prevbutton {
-        div:after{
-        content:"\F0D9";
+        &.activeli {
+          display: block;
+          z-index: 0;
+          margin: 0 2em;
+          border-bottom: none;
+          font-size: 2em;
+          text-align: center;
         }
-        float:left;
-      }
-      &.activeli{
-        display:block;
+        &.prevbutton,
+        &.nextbutton {
+          font-family:icomoon;
+          font-size:2em;
+          top:0;
+          position:absolute;
+          margin:0;
+        }
+        &.nextbutton {
+          div:after{
+          content:"\F0DA"; 
+          padding:0 0.5em;
+          cursor:pointer;
+          }
+          right:0;
+        }
+        &.prevbutton {
+          div:after{
+          content:"\F0D9";
+          padding:0 0.5em;
+          cursor:pointer;
+          }
+          left:0;
+        }
+        &.activeli{
+          display:block;
+        }
       }
     }
   }
