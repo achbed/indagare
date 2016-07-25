@@ -4161,13 +4161,13 @@ span.keep-together {
         &:after{
         content:"\F0DA";
         }
-        float:left;
+        float:right;
       }
       .prevbutton {
         &:after{
         content:"\F0D9";
         }
-        float:right;
+        float:left;
       }
       &.activeli{
         display:block;
