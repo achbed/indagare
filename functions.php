@@ -6183,8 +6183,7 @@ jQuery().ready(function($) {
 			echo '<div id="form-buzz" class="newsletter-signup-wrapper">'."\n";
 				echo '<h2>The Buzz</h2>'."\n";
 				echo '<p>Subscribe to our free e-Newsletter for current travel news and tips.</p>'."\n";
-				echo '<form class="newsletter-signup-form">'."\n";
-
+				echo '<form class="newsletter-signup-form" method="POST" action="'.get_bloginfo('stylesheet_directory').'/includes/email-signup.php">'."\n";
 				  echo '<div class="form-combo">'."\n";
 					echo '<span class="form-item"><input type="text" name="email" id="newsletter-signup-buzz" class="element newsletter-signup-input" placeholder="Your email address" /></span>'."\n";
 				  echo '</div>'."\n";
@@ -6831,10 +6830,9 @@ function childtheme_override_siteinfo() {
       <div id="first" class="newsletter-signup-wrapper">
         <h4><?php print __('Newsletter','indagare'); ?></h4>
         <p><?php print __('Receive our free email newsletter full of travel news, tips and advice.','indagare'); ?></p>
-        <form class="newsletter-signup-form">
-
+        <form class="newsletter-signup-form" method="POST" action="<?php echo get_bloginfo('stylesheet_directory'); ?>/includes/email-signup.php">
           <div class="form-combo">
-          	<span class="form-item"><input type="text" name="EMAIL" id="newsletter-signup" class="element newsletter-signup-input" placeholder="<?php print __('Your email address','indagare'); ?>" /></span>
+          	<span class="form-item"><input type="text" name="email" id="newsletter-signup" class="element newsletter-signup-input" placeholder="<?php print __('Your email address','indagare'); ?>" /></span>
           </div>
           <div class="buttons">
           	<button type="submit" class="primary button"><?php print __('Submit','indagare'); ?></button>
@@ -6928,7 +6926,7 @@ global $count;
 
 	<footer>
 		<div id="emailsignup" class="newsletter-signup-wrapper">
-		<form class="login newsletter-signup-form" method="post" novalidate>
+		<form class="login newsletter-signup-form" method="POST" action="<?php echo get_bloginfo('stylesheet_directory'); ?>/includes/email-signup.php" novalidate>
 			<div id="field1-container" class="field">
 			   <input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address">
 			</div>
@@ -7065,10 +7063,10 @@ jQuery(document).ready(function($) {
         	<?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
    		</form>
 	</div><!-- .column -->
-	<footer class="newsletter-signup-wrapper">
+	<footer id="emailsignup" class="newsletter-signup-wrapper">
 		<h4>Sign Up: Travel Newsletter</h4>
 		<p>Receive our free, bimonthly e-Newsletter full of travel stories, reviews and insider recommendations.</p>
-		<form class="login newsletter-signup-form" method="post" novalidate>
+		<form class="login newsletter-signup-form" method="POST" action="<?php echo get_bloginfo('stylesheet_directory'); ?>/includes/email-signup.php" novalidate>
 			<div id="field1-container" class="field">
 			   <input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address">
 			</div>
