@@ -795,7 +795,12 @@ function register_scripts() {
 }
 add_action('init', 'register_scripts');
 
+global $ajaxlogin_processing;
+$ajaxlogin_processing = false;
+
 function ajax_login(){
+	global $ajaxlogin_processing;
+	$ajaxlogin_processing = true;
 	header('Content-Type: application/json');
 
 	// First check the nonce, if it fails the function will break
@@ -809,30 +814,18 @@ function ajax_login(){
 
 	$user_signon = wp_signon( $info, false );
 	if ( ! is_wp_error($user_signon) ) {
+		$account = \WPSF\Contact::get_account_wp( $user );
+		$token = '';
+		if( method_exists( $account, 'get_ssotoken' ) ) {
+			$token = $account->get_ssotoken();
+		}
 		echo json_encode( array(
 			'login' => true,
-			'ssotoken' => '',
+			'ssotoken' => $token,
 			'message' => __( 'Login successful, redirecting...' )
 		) );
 		die();
 	}
-
-	/*
-	include_once 'app/lib/user.php';
-	include_once 'app/lib/db.php';
-
-	$u = indagare\db\CrmDB::getUser( $_POST["username"] );
-	if ( ( $u != false ) && $u->validatePwd( $_POST["password"] ) ) {
-		$u->startSession();
-
-		echo json_encode( array(
-			'login' => true,
-			'ssotoken' => $_SESSION["SSODATA"],
-			'message' => __( 'Login successful, redirecting...' )
-		) );
-		die();
-	}
-*/
 
 	echo json_encode( array(
 		'login' => false,
@@ -841,6 +834,7 @@ function ajax_login(){
 	) );
 	die();
 }
+add_action( 'wp_ajax_ajaxlogin', 'ajax_login' );
 add_action( 'wp_ajax_nopriv_ajaxlogin', 'ajax_login' );
 
 function enqueue_scripts() {
@@ -7213,6 +7207,7 @@ jQuery(document).ready(function($) {
 
 <?php
 
+/*
 		// is user logged in
 		if ( ind_logged_in() ) {
 
@@ -7250,7 +7245,7 @@ jQuery(document).ready(function($) {
 				echo '</div>'."\n";
 			}
 		}
-
+*/
 
 	} // end my account modals
 
@@ -7404,10 +7399,14 @@ echo do_shortcode('[contact-form-7 id="32337" title="Contact Insider Trips"]');
 
 		var ssotokenvalue_default = 'x4T306PLm1KWuXktHqtGzw%3D%3D';
 		var ssotokenvalue = ssotokenvalue_default;
-		<?php if ( ind_logged_in() ) : ?>
-			ssotokenvalue = '<?php echo $_SESSION["SSODATA"] ?>';
+		<?php if ( ind_logged_in() ) {
+			$account = \WPSF\Contact::get_account_wp();
+			if(!empty($account) && ! is_wp_error($account)) {
+				print 'ssotokenvalue = "' . $account->get_ssotoken() . '";';
+			}
+		}
+		?>
 		<?php endif; ?>
-	<?php endif; ?>
 
 ////////////////////////////////////////////////////////////////////////////
 jQuery().ready(function($) {

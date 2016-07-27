@@ -4130,10 +4130,17 @@ span.keep-together {
       font-style:italic;
 }
 
+form.processing .button {
+    background: gray;
+    color: #bbb;
+    cursor: progress;
+}
+
 // Tabbed nav bar mobile implementation
 #account-tab-nav-menu, .mobile {
     display:none;
 }
+
 @media(max-width:767px) {
   #account-tab-container {
     #account-tab-nav-menu {

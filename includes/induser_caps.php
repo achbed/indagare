@@ -46,8 +46,8 @@ function ind_logged_in() {
 	if ( is_user_logged_in() ) {
 		return true;
 	}
+
 	return false;
-	return \indagare\users\User::hasUserSession();
 }
 
 if( !current_user_can('edit_posts') ) {

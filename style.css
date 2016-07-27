@@ -2514,6 +2514,8 @@ span.keep-together { display: inline-block; }
 
 #account-header-display .renewal-text { font-size: 0.875em; color: #000000; font-style: italic; }
 
+form.processing .button { background: gray; color: #bbb; cursor: progress; }
+
 #account-tab-nav-menu, .mobile { display: none; }
 
 @media (max-width: 767px) { #account-tab-container #account-tab-nav-menu { display: inline-block; cursor: pointer; }

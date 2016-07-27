@@ -256,8 +256,18 @@ function fullscreen_map() {}
 
 function collapse_map() {}
 
+jQuery(document).on('click','form.processing .button',function(e){e.preventDefault;return false;});
+
 function process_login(e,t){
 	e.preventDefault();
+	var f = jQuery(t);
+	if(!f.is('form')) {
+		f = f.find('form');
+	}
+	if(f.hasClass('processing')) {
+		return;
+	}
+	f.addClass('processing');
 	var r = jQuery(t).attr('data-successurl');
 	if(!r || r == '') {
 		r = login_redirect;
@@ -295,7 +305,8 @@ function process_login(e,t){
 			if ( ! data ) { 
 				window.location.reload(); 
 			} else {
-				jQuery(t+' .message').html('<p>'+data.message+'</p>').fadeIn(1500).fadeOut(1500);
+				f.find('.message').html('<p>'+data.message+'</p>').fadeIn(1500).fadeOut(1500);
+				f.removeClass('processing');
 			}
 		}
 	});

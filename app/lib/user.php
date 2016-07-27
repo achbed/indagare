@@ -132,7 +132,7 @@ class User {
     }
 
     public static function hasUserSession(){
-        @session_start();
+        //@session_start();
         //print_r('User' . $_SESSION["userlogin"]);
         if (isset($_SESSION['userlogin'])) {
             return true;
@@ -143,7 +143,7 @@ class User {
     }
 
     public static function getSessionUserID() {
-        @session_start();
+        //@session_start();
         if (isset($_SESSION['userid'])) {
             return $_SESSION['userid'];
         }
@@ -160,7 +160,7 @@ class User {
      * @return \indagare\users\User|false
      */
     public static function getUserBySession(){
-        @session_start();
+        //@session_start();
         //print_r('User' . $_SESSION["userlogin"]);
         if (isset($_SESSION['userlogin'])) {
             return \indagare\db\CrmDB::getUser($_SESSION['userlogin']);
@@ -178,7 +178,7 @@ class User {
      * @return \indagare\users\User|false
      */
     public static function getExtendedUserBySession(){
-        @session_start();
+        //@session_start();
         //print_r('User' . $_SESSION["userlogin"]);
         if (isset($_SESSION['userlogin'])) {
             return \indagare\db\CrmDB::getExtendedUser($_SESSION['userlogin']);
@@ -238,7 +238,7 @@ class User {
     }
 
     public function startSession() {
-        @session_start();
+        //@session_start();
         $_SESSION['userlogin'] = $this->login;
         $_SESSION['userid'] = $this->id;
         $_SESSION['SSODATA'] = $this->encryptSSOData("firstName=" . $this->first_name .
@@ -312,7 +312,7 @@ class AccountCreator {
     public $user;
 
     public static function getAccountCreator() {
-        @session_start();
+        //@session_start();
         if (isset($_SESSION["accountCreator"])) {
             return $_SESSION["accountCreator"];
         }
