@@ -814,7 +814,8 @@ function ajax_login(){
 
 	$user_signon = wp_signon( $info, false );
 	if ( ! is_wp_error($user_signon) ) {
-		$account = \WPSF\Contact::get_account_wp( $user );
+		wp_set_current_user($user_signon->ID);
+		$account = \WPSF\Contact::get_account_wp();
 		$token = '';
 		if( method_exists( $account, 'get_ssotoken' ) ) {
 			$token = $account->get_ssotoken();
