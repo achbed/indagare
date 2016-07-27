@@ -785,7 +785,7 @@ function register_scripts() {
     wp_register_script('template-page-map_footer', $f.'/js/template-page-map_footer.js', array('jquery'), '', true);
 
     wp_register_script('velocity', $f.'/js/velocity.min.js', array('jquery'), '', false);
-    wp_register_script('show.join.popup', $f.'/js/joinpopup.js', array('jquery'), '', false);
+    wp_register_script('show.join.popup', $f.'/js/joinpopup.js', array('jquery'), '', true);
 
     wp_localize_script( 'template-page_footer', 'ajax_login_object', array(
     	'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -1253,45 +1253,13 @@ global $post;
 		}
 
 		if( ! ind_logged_in() && ! indagare\cookies\Counter::updateCounter() ) {
-//			wp_enqueue_script('show.join.popup');
-?>
-<script>
-jQuery(document).ready(function($) {
-
-	$.magnificPopup.open({
-	  items: {
-		type: 'inline',
-		src: '#lightbox-join', // can be a HTML string, jQuery object, or CSS selector
-		midClick: true
-	  },
-	  modal: true
-	});
-
-});
-</script>
-<?php
+			wp_enqueue_script('show.join.popup');
 	    }
 
 	// archive itinerary - lock out unless visitor is logged-in user
 	} else if ( is_posttype( 'itinerary', POSTTYPE_ARCHIVEONLY ) ) {
 		if( !current_user_can( 'ind_read_itinerary' ) ) {
-//			wp_enqueue_script('show.join.popup');
-?>
-<script>
-jQuery(document).ready(function($) {
-
-	$.magnificPopup.open({
-	  items: {
-		type: 'inline',
-		src: '#lightbox-join', // can be a HTML string, jQuery object, or CSS selector
-		midClick: true
-	  },
-	  modal: true
-	});
-
-});
-</script>
-<?php
+			wp_enqueue_script('show.join.popup');
 	    }
 	}
 
@@ -7442,6 +7410,7 @@ echo do_shortcode('[contact-form-7 id="32337" title="Contact Insider Trips"]');
 ////////////////////////////////////////////////////////////////////////////
 jQuery().ready(function($) {
 	<?php if (is_page_template ( 'template-page-password-reset.php' ) ) :  // password reset page ?>
+		/*
 		$("#form-reset").submit(function(event) {
 			var url = theme_path+'/process_password_reset.php';
 			emailvars = $('#form-reset #email').val();
@@ -7472,6 +7441,7 @@ jQuery().ready(function($) {
 			event.preventDefault();
 
 		});
+		*/
 <?php endif;  // end password reset page ?>
 
 <?php

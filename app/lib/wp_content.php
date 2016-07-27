@@ -16,24 +16,25 @@ class WPContent {
 	}
 
 	private static function getAccount() {
-		wpsf_wp_login();
 		$json_mode = 0;//JSON_PRETTY_PRINT;
-
 		$content = "<script>\n";
 
 		$a = \WPSF\Contact::get_account_wp();
 		if(empty($a)) {
-			$a = new \WPSF\Contact();
+			$a = array('Membership__x'=>array(),'Contacts__x'=>array());
+		} else {
+			$a->filter_contacts();
+			$a = $a->toArray(false);
+			wpsf_wp_login();
 		}
-		$a->filter_contacts();
 
 		$content .= "var SFData = {};\n";
-		$content .= "SFData.Account = " . json_encode( $a->toArray(false), $json_mode ) . ";\n";
+		$content .= "SFData.Account = " . json_encode( $a, $json_mode ) . ";\n";
 		$content .= "SFData.Membership = SFData.Account.Membership__x;\n";
 		$content .= "SFData.Contacts = SFData.Account.Contacts__x;\n";
 		$content .= "SFData.initLoad = true;\n";
 
-		$a = \WPSF\Membership::get_all();
+		$a = \WPSF\Membership::get_sellable();
 		usort( $a, function($a,$b) { return \WPSF\Membership::cmp_list($a,$b); } );
 
 		$content .= "SFData.MembershipList = " . json_encode( $a, $json_mode ) . ";\n";
@@ -120,7 +121,7 @@ class WPContent {
 			}
 			$mb_js_arr = \WPSF\TrialCode::get_all();
 		} else {
-			$mb_js_arr = \WPSF\Membership::get_all();
+			$mb_js_arr = \WPSF\Membership::get_sellable();
 		}
 		if ( is_wp_error( $mb_js_arr ) ) {
 			$mb_js_arr = array();

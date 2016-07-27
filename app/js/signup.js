@@ -78,7 +78,7 @@ if (!signup) {
 			mbs = mbs.sort(function(a,b){if(a.Amount != b.Amount) return a.Amount>b.Amount; return a.Type>b.Type;});
 			for ( var m in mbs ) {
 				jQuery("<option></option>")
-					.text(mbs[m]['Type']+' - '+mbs[m]['Period']+' - $'+mbs[m]['Amount'])
+					.text(mbs[m]['Name']+' - $'+mbs[m]['Amount'])
 					.val(mbs[m]['Id'])
 					.attr({
 						'data-type':mbs[m]['Type'],
