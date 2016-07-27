@@ -483,6 +483,7 @@ class AjaxHandler {
 		} else if ( $charge === true ) {
 			// Well, the charge made it through the system but returned an account.
 			$charge = new \WPSF\Account( $aid );
+			$response['success'] = true;
 
 			if ( ! empty( $charge['Membership__x']['Period__c'] ) ) {
 				$response['length'] = $charge['Membership__x']['Period__c'];
@@ -495,9 +496,8 @@ class AjaxHandler {
 			if ( ! empty( $charge['Membership__x']['Name'] ) ) {
 				$response['name'] = $charge['Membership__x']['Name'];
 			}
-			$repsonse['success'] = true;
 		} else {
-			$repsonse['success'] = false;
+			$response['success'] = false;
 			$response['message'] = $charge;
 		}
 
