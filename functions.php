@@ -7144,10 +7144,11 @@ jQuery(document).ready(function($) {
 
 <div id="lightbox-signup-error" class="lightbox white-popup login mfp-hide">
 	<header>
-		<h2>Credit Card Payment Error</h2>
+		<h2>Payment Error</h2>
 	</header>
 
-	<p>There was an error verifying your credit card information for payment. Please check the information that you entered and try again.</p>
+	<p>There was an error verifying your credit card information for payment. Please go to the <a href="/account#billing-tab">Billing section</a>
+	of your account, and try processing your payment again.</p>
 
 	<p class="tiny" id="errordetail"></p>
 </div><!-- #lightbox-signup-error -->

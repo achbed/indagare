@@ -868,7 +868,10 @@ function renewMode() {
 	
 	if ( SFData.Account.Is_Renewal__c ) {
 		// Autorenew is enabled.
-		return end;
+		if ( end > new Date() ) {
+			return end;
+		}
+		return false;
 	}
 	
 	if ( end > new Date() ) {

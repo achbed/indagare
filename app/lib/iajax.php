@@ -341,10 +341,10 @@ class AjaxHandler {
 		$account['Membership__c'] = $membership['Id'];
 		$account['Membership_Level__c'] = $account->picklistValue( 'Membership_Level__c', $membership['Membership_Level__c'] );
 		$account['Membership_Status__c'] = $account->picklistValue( 'Membership_Status__c', 'Unrenewed' );
-		$account['Membership_Start_Date__c'] = date( 'Y-m-d');
+		$account['Membership_Start_Date__c'] = date( 'Y-m-d' );
 		$account['Member_Since__c'] = date( 'Y-m-d' );
 		$account['Is_Renewal__c'] = true;
-		$account['Membership_End_Date__c'] = date( 'Y-m-d' );
+		$account['Membership_End_Date__c'] = date( 'Y-m-d', strtotime( 'yesterday' ) );
 
 		if(isset($_POST['address1'])) {
 			$account['BillingStreet'] = $_POST['address1'];
@@ -381,7 +381,7 @@ class AjaxHandler {
 		global $acc;
 
 		$response = array(
-			'success' => true,
+			'success' => false,
 			'r_approved' => '',
 			'id' => '',
 			'r_ref' => '',
@@ -473,7 +473,10 @@ class AjaxHandler {
 
 		$charge = \WPSF\Payment::charge_account( $aid, $acct_type );
 
-		if ( $charge instanceof \WPSF\Payment ) {
+		if ( is_wp_error( $charge ) ) {
+			$response['message'] = 'Error occurred during processing.  '.$charge->get_error_message();
+			$response['success'] = false;
+		} else if ( $charge instanceof \WPSF\Payment ) {
 			// Well, the charge made it through the system.  Time to see what's in it.
 			$new_response = $charge->toResult();
 			$response = array_merge( $response, $new_response );
@@ -492,6 +495,7 @@ class AjaxHandler {
 			if ( ! empty( $charge['Membership__x']['Name'] ) ) {
 				$response['name'] = $charge['Membership__x']['Name'];
 			}
+			$repsonse['success'] = true;
 		} else {
 			$repsonse['success'] = false;
 			$response['message'] = $charge;
@@ -548,7 +552,9 @@ class AjaxHandler {
 
 		$charge = \WPSF\Payment::charge_account( $aid, $acct_type );
 
-		if ( $charge instanceof \WPSF\Payment ) {
+		if ( is_wp_error( $charge ) ) {
+			$response['message'] = $charge->get_error_message();
+		} else if ( $charge instanceof \WPSF\Payment ) {
 			// Well, the charge made it through the system.  Time to see what's in it.
 			$new_response = $charge->toResult();
 			$response = array_merge( $response, $new_response );
