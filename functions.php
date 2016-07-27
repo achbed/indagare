@@ -7401,7 +7401,7 @@ echo do_shortcode('[contact-form-7 id="32337" title="Contact Insider Trips"]');
 		var ssotokenvalue = ssotokenvalue_default;
 		<?php if ( ind_logged_in() ) {
 			$account = \WPSF\Contact::get_account_wp();
-			if(!empty($account) && ! is_wp_error($account)) {
+			if ( method_exists( $account, 'get_ssotoken' ) ) {
 				print 'ssotokenvalue = "' . $account->get_ssotoken() . '";';
 			}
 		}
