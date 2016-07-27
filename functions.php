@@ -817,6 +817,7 @@ function ajax_login(){
 		die();
 	}
 
+	/*
 	include_once 'app/lib/user.php';
 	include_once 'app/lib/db.php';
 
@@ -831,6 +832,7 @@ function ajax_login(){
 		) );
 		die();
 	}
+*/
 
 	echo json_encode( array(
 		'login' => false,
