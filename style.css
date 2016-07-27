@@ -2455,12 +2455,12 @@ $formwidth:65em;
 #signup-form-container form .input-field { max-width: 100%; margin-right: 0.25em; margin-bottom: 0.25em; }
 #signup-form-container form .input-field.iform-row-clear { clear: both; }
 #signup-form-container form .input-field.iform-row-noclear { clear: none; }
-#signup-form-container form .input-field.iform-row-1col { width: 65em; }
-#signup-form-container form .input-field.iform-row-2col { width: 55.34em; }
-#signup-form-container form .input-field.iform-row-3col { width: 21.5em; }
-#signup-form-container form .input-field.iform-row-4col { width: 16.06em; }
+#signup-form-container form .input-field.iform-row-1col { width: 100%; }
+#signup-form-container form .input-field.iform-row-2col { width: 49.5%; }
+#signup-form-container form .input-field.iform-row-3col { width: 32.8%; }
+#signup-form-container form .input-field.iform-row-4col { width: 24.6%; }
 #signup-form-container form .input-field.iform-row-5col { width: 12.8em; }
-#signup-form-container form .input-field.iform-row-6col { width: 10.62em; }
+#signup-form-container form .input-field.iform-row-6col { width: 16.3%; }
 #signup-form-container form .input-field.iform-row-7col { width: 9.07em; }
 #signup-form-container form .input-field.iform-row-8col { width: 7.9em; }
 
