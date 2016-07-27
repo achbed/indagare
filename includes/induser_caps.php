@@ -46,6 +46,24 @@ function ind_logged_in() {
 	if ( is_user_logged_in() ) {
 		return true;
 	}
-
+	return false;
 	return \indagare\users\User::hasUserSession();
 }
+
+if( !current_user_can('edit_posts') ) {
+	function mytheme_admin_bar_render() {
+		global $wp_admin_bar;
+		$wp_admin_bar->remove_menu('edit-profile', 'user-actions');
+	}
+	add_action( 'wp_before_admin_bar_render', 'mytheme_admin_bar_render' );
+
+	function stop_access_profile() {
+		if(IS_PROFILE_PAGE === true) {
+			wp_redirect('/account/');
+		}
+		remove_menu_page( 'profile.php' );
+		remove_submenu_page( 'users.php', 'profile.php' );
+	}
+	add_action( 'admin_init', 'stop_access_profile' );
+}
+
