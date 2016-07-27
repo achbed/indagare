@@ -6955,7 +6955,7 @@ jQuery(document).ready(function($) {
 		<div id="form-submit" class="field clearfix submit">
 			<label for=""></label>
 		   <input type="submit" value="Submit" class="button primary">
-		   <a id="forgot" href="/forgot-password/" class="button secondary">Forgot Password</a>
+		   <a id="forgot" href="/wp-login.php?action=lostpassword" class="button secondary">Forgot Password</a>
 		</div>
 
 		<div class="field message">
@@ -7022,7 +7022,7 @@ jQuery(document).ready(function($) {
 
 			<div id="form-submit" class="field clearfix submit">
 			   <input type="submit" value="Login" class="button">
-			   <a id="forgot" href="/forgot-password/" class="button secondary">Forgot Password</a>
+			   <a id="forgot" href="/wp-login.php?action=lostpassword" class="button secondary">Forgot Password</a>
 			</div>
 
 			<div class="field message">
