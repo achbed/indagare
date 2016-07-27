@@ -568,14 +568,13 @@ class AjaxHandler {
 				$response['name'] = $charge['Membership__x']['Name'];
 			}
 		} else {
-			$repsonse['success'] = false;
+			$response['success'] = false;
 			$response['message'] = $charge;
 		}
 
-		if ( ! $response['success'] ) {
+		if ( empty( $response['success'] ) ) {
 			if ( $acct_type == 'Upgrade' ) {
 				// We are in update mode, and we have a failure.  Put the old membership data back.
-				$account = \WPSF\Contact::get_account_wp();
 				$account['Membership__c'] = $account['Membership_old__c'];
 				$account['Membership_old__c'] = null;
 				$account->update();

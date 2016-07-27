@@ -301,7 +301,7 @@ jQuery(document).on('change','#contactselect',function(){
 	contactSelectionChange();
 });
 
-jQuery(document).on('change','select[controlfield]',function(e){
+jQuery(document).on('change','select',function(e){
 	var n=jQuery(e.target).attr('name');
 	updateControlledSelect(n);
 });
@@ -581,7 +581,7 @@ function newCardItem(y,i) {
 	f.find('input[name="Contact__c"]').val( jQuery('#contactselect').val() );
 	
 	jQuery('<a></a>').attr('href','#').html('Delete').addClass('card-delete-button card-button-large').prependTo(f);
-	jQuery('<a></a>').attr('href','#').html('Save').addClass('form-save-button action-save card-save-button card-button-large').appendTo(f);
+	jQuery('<a></a>').attr('href','#').html('Save').attr('action','save').addClass('form-save-button card-save-button card-button-large').appendTo(f);
 	jQuery('<a></a>').attr('href','#').html('Edit').addClass('form-edit-link card-edit-link').appendTo(f);
 	f.appendTo(c);
 	
