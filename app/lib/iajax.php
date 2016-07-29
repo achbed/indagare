@@ -551,6 +551,8 @@ class AjaxHandler {
 		}
 
 		$charge = \WPSF\Payment::charge_account( $aid, $acct_type );
+		
+//		var_dump ( $charge );
 
 		if ( is_wp_error( $charge ) ) {
 			$response['message'] = $charge->get_error_message();
