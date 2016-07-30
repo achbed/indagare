@@ -478,8 +478,14 @@ class AjaxHandler {
 			$response['success'] = false;
 		} else if ( $charge instanceof \WPSF\Payment ) {
 			// Well, the charge made it through the system.  Time to see what's in it.
-			$new_response = $charge->toResult();
-			$response = array_merge( $response, $new_response );
+			if ( is_wp_error( $charge->last_error ) ) {
+				// If the last thing was an error, return that.
+				$reponse['message'] = 'Error occurred during processing.  '.$charge->get_error_message();
+				$response['success'] = false;
+			} else {
+				$new_response = $charge->toResult();
+				$response = array_merge( $response, $new_response );
+			}
 		} else if ( $charge === true ) {
 			// Well, the charge made it through the system but returned an account.
 			$charge = new \WPSF\Account( $aid );
@@ -498,7 +504,7 @@ class AjaxHandler {
 			}
 		} else {
 			$response['success'] = false;
-			$response['message'] = $charge;
+			$response['message'] = print_r( $charge, true );
 		}
 
 		if ( ! $response['success'] ) {
