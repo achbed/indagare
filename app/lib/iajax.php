@@ -595,6 +595,8 @@ class AjaxHandler {
 			}
 			return wp_send_json_error( $response );
 		}
+		
+//		var_dump ( $response );
 
 		return wp_send_json_success( $response );
 	}

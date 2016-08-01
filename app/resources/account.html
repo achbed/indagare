@@ -21,6 +21,7 @@
 				Level:</label><div id="account-bar-status" data-source-object="Membership"
 				data-display-field="Name"></div>
 		</div>
+		<div class="renew-wrapper" data-source-object="Account" data-display-if="IsPrimaryContact__x=true" style="display:none;"><a id="renew-link" href="#billing">Upgrade<span  data-source-object="Account" data-display-if="Is_Renewal__c=false" style="display:none;">/Renew</span> Membership</a></div>
    		<div class="valid-through">
    			<label for="account-bar-end">Valid Through</label>
    			<span id="account-bar-end" data-source-object="Account"
@@ -71,6 +72,19 @@
 				</form>
 		    </div>
 		    
+		    <h2>Membership Level</h2>
+		    <div>
+				<form class="clearfix editing" id="account-membership-upgrade-form">
+				
+					<div id="field-account-membership-upgrade-select" class="input-field field clearfix">
+						<select id="account-membership-upgrade-select"></select>
+						<label for="account-membership-upgrade-select">Membership Level</label>
+					</div>
+					<a id="upgrade-button" class="form-save-button" action="upgrade" href="#">Upgrade Now</a>
+					<a id="autorenew-button" class="form-save-button" action="autorenew" href="#" style="display:none;">Enable Autorenew</a>
+				</form>
+		    </div>
+	    </div>
     </div>
 	
     <div class="tab" id="contactdetails">
