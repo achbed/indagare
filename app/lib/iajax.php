@@ -367,7 +367,7 @@ class AjaxHandler {
 		$contact = self::generate_sf_contact( $wpid );
 
 		$contact['Primary_Contact__c'] = true;
-		
+
 		$account->add_contact( $contact );
 
 //		var_dump ( $account );
@@ -429,9 +429,9 @@ class AjaxHandler {
 			}
 
 			$aid = self::create_sf_account( $id, $trial );
-			
+
 //			var_dump ( $aid );
-			
+
 			if ( is_wp_error( $aid ) ) {
 				wp_delete_user( $id );
 				print json_encode(array(
@@ -444,11 +444,11 @@ class AjaxHandler {
 			$cid = $account['Contacts__x'][0]['Id'];
 
 /*
-			$account['recordTypeInfos'][0] = array( 
+			$account['recordTypeInfos'][0] = array(
 				'available' => true,
 				'defaultRecordTypeMapping' => true,
 				'name' => 'Member',
-				'recordTypeId' => '0121a0000001qM1AAI'			
+				'recordTypeId' => '0121a0000001qM1AAI'
 			);
 */
 
@@ -489,6 +489,8 @@ class AjaxHandler {
 			$account->update();
 		}
 
+		// Delay to allow SF to catch up.  Maybe.
+		sleep(2);
 		$charge = \WPSF\Payment::charge_account( $aid, $acct_type );
 
 //		var_dump ( $charge );
@@ -615,7 +617,7 @@ class AjaxHandler {
 			}
 			return wp_send_json_error( $response );
 		}
-		
+
 //		var_dump ( $response );
 
 		return wp_send_json_success( $response );
