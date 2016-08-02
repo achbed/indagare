@@ -335,6 +335,8 @@ class AjaxHandler {
 		$account['Name'] = $_POST['fn'].' '.$_POST['ln'];
 		$account['Type'] = $account->picklistValue( 'Type', 'Customer' );
 
+//		$account['RecordTypeId'] = '0121a0000001qM1AAI';
+
 		$account['Email__c'] = $_POST['email'];
 		$account['Phone'] = $_POST['phone'];
 
@@ -435,6 +437,17 @@ class AjaxHandler {
 			}
 			$account = new \WPSF\Account( $aid );
 			$cid = $account['Contacts__x'][0]['Id'];
+
+/*
+			$account['recordTypeInfos'][0] = array( 
+				'available' => true,
+				'defaultRecordTypeMapping' => true,
+				'name' => 'Member',
+				'recordTypeId' => '0121a0000001qM1AAI'			
+			);
+*/
+
+//			$account['recordTypeId'] = '0121a0000001qM1AAI';
 
 			/** I HATE WORKAROUNDS LIKE THIS. Just let me save via the name dammit. **/
 			global $wpsf_acf_fields;
