@@ -408,12 +408,12 @@ class AjaxHandler {
 			}
 		}
 
-		$acct_type = 'New Membership';
+		$acct_type = 'Membership';
 		if ( ! empty( $trial['Id'] ) ) {
 			if ( $trial['Type'] == 'Trial' ) {
-				$acc_type = 'Trial';
+				$acc_type = 'Trial Membership';
 			} else if ( floatval( $trial['Amount'] ) <= 0 ) {
-				$acc_type = 'Complementary';
+				$acc_type = 'Complementary Membership';
 			}
 		}
 
