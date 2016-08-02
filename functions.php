@@ -2350,12 +2350,6 @@ jQuery().ready(function($) {
 	</header>
 
 		<p><strong>Call (212) 988-2611 to join Indagare and enjoy the benefits of membership.</strong></p>
-
-<?php
-
-
-?>
-
 </div><!-- #lightbox -->
 <script>
 jQuery().ready(function($) {
@@ -2375,6 +2369,7 @@ jQuery().ready(function($) {
 });
 </script>
 <?php
+// END REMOVE ME
 	// end sign up step one page
 
 	// how to book page
