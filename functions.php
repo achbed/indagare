@@ -2341,6 +2341,40 @@ jQuery().ready(function($) {
 			}
 			echo '</div>'."\n";
 		}
+
+// REMOVE ME
+?>
+<div id="lightbox-callnow" class="lightbox white-popup contact mfp-hide">
+	<header>
+		<h2>Join Today</h2>
+	</header>
+
+		<p><strong>Call (212) 988-2611 to join Indagare and enjoy the benefits of membership.</strong></p>
+
+<?php
+
+
+?>
+
+</div><!-- #lightbox -->
+<script>
+jQuery().ready(function($) {
+	$('body.join .filters a.button').click(function(event) {
+
+		event.preventDefault();
+
+		$.magnificPopup.open({
+			items: {
+			type: 'inline',
+			src: '#lightbox-callnow', // can be a HTML string, jQuery object, or CSS selector
+			midClick: true
+			},
+		});
+
+	});
+});
+</script>
+<?php
 	// end sign up step one page
 
 	// how to book page
