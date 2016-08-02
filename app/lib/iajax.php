@@ -367,8 +367,10 @@ class AjaxHandler {
 		$contact = self::generate_sf_contact( $wpid );
 
 		$contact['Primary_Contact__c'] = true;
-
+		
 		$account->add_contact( $contact );
+
+//		var_dump ( $account );
 
 		// Save everything to Salesforce
 		return $account->create();
@@ -427,6 +429,9 @@ class AjaxHandler {
 			}
 
 			$aid = self::create_sf_account( $id, $trial );
+			
+//			var_dump ( $aid );
+			
 			if ( is_wp_error( $aid ) ) {
 				wp_delete_user( $id );
 				print json_encode(array(
@@ -485,6 +490,8 @@ class AjaxHandler {
 		}
 
 		$charge = \WPSF\Payment::charge_account( $aid, $acct_type );
+
+//		var_dump ( $charge );
 
 		if ( is_wp_error( $charge ) ) {
 			$response['message'] = 'Error occurred during processing.  '.$charge->get_error_message();
