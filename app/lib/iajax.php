@@ -404,12 +404,12 @@ class AjaxHandler {
 			}
 		}
 
-		$acct_type = 'Membership';
+		$acct_type = 'New Membership';
 		if ( ! empty( $trial['Id'] ) ) {
 			if ( $trial['Type'] == 'Trial' ) {
-				$acc_type = 'Trial Membership';
+				$acc_type = 'Trial';
 			} else if ( floatval( $trial['Amount'] ) <= 0 ) {
-				$acc_type = 'Complementary Membership';
+				$acc_type = 'Complementary';
 			}
 		}
 
@@ -557,7 +557,7 @@ class AjaxHandler {
 		}
 
 		$charge = \WPSF\Payment::charge_account( $aid, $acct_type );
-		
+
 //		var_dump ( $charge );
 
 		if ( is_wp_error( $charge ) ) {
