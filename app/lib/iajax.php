@@ -489,8 +489,6 @@ class AjaxHandler {
 			$account->update();
 		}
 
-		// Delay to allow SF to catch up.  Maybe.
-		sleep(2);
 		$charge = \WPSF\Payment::charge_account( $aid, $acct_type );
 
 //		var_dump ( $charge );
