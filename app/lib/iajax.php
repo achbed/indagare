@@ -335,6 +335,8 @@ class AjaxHandler {
 		$account['Name'] = $_POST['fn'].' '.$_POST['ln'];
 		$account['Type'] = $account->picklistValue( 'Type', 'Customer' );
 
+//		$account['RecordTypeId'] = '0121a0000001qM1AAI';
+
 		$account['Email__c'] = $_POST['email'];
 		$account['Phone'] = $_POST['phone'];
 
@@ -365,8 +367,10 @@ class AjaxHandler {
 		$contact = self::generate_sf_contact( $wpid );
 
 		$contact['Primary_Contact__c'] = true;
-
+		
 		$account->add_contact( $contact );
+
+//		var_dump ( $account );
 
 		// Save everything to Salesforce
 		return $account->create();
@@ -425,6 +429,9 @@ class AjaxHandler {
 			}
 
 			$aid = self::create_sf_account( $id, $trial );
+			
+//			var_dump ( $aid );
+			
 			if ( is_wp_error( $aid ) ) {
 				wp_delete_user( $id );
 				print json_encode(array(
@@ -435,6 +442,17 @@ class AjaxHandler {
 			}
 			$account = new \WPSF\Account( $aid );
 			$cid = $account['Contacts__x'][0]['Id'];
+
+/*
+			$account['recordTypeInfos'][0] = array( 
+				'available' => true,
+				'defaultRecordTypeMapping' => true,
+				'name' => 'Member',
+				'recordTypeId' => '0121a0000001qM1AAI'			
+			);
+*/
+
+//			$account['recordTypeId'] = '0121a0000001qM1AAI';
 
 			/** I HATE WORKAROUNDS LIKE THIS. Just let me save via the name dammit. **/
 			global $wpsf_acf_fields;
@@ -472,6 +490,8 @@ class AjaxHandler {
 		}
 
 		$charge = \WPSF\Payment::charge_account( $aid, $acct_type );
+
+//		var_dump ( $charge );
 
 		if ( is_wp_error( $charge ) ) {
 			$response['message'] = 'Error occurred during processing.  '.$charge->get_error_message();
@@ -595,6 +615,8 @@ class AjaxHandler {
 			}
 			return wp_send_json_error( $response );
 		}
+		
+//		var_dump ( $response );
 
 		return wp_send_json_success( $response );
 	}
