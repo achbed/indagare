@@ -494,7 +494,7 @@ class AjaxHandler {
 //		var_dump ( $charge );
 
 		if ( is_wp_error( $charge ) ) {
-			$response['message'] = 'Error occurred during processing.  '.$charge->get_error_message();
+			$response['message'] = 'Error occurred during processing:  '.$charge->get_error_message();
 			$response['success'] = false;
 		} else if ( $charge instanceof \WPSF\Payment ) {
 			// Well, the charge made it through the system.  Time to see what's in it.
@@ -537,6 +537,8 @@ class AjaxHandler {
 			}
 			return wp_send_json_error( $response );
 		}
+
+//		var_dump ( $response );
 
 		return wp_send_json_success( $response );
 	}
