@@ -420,8 +420,8 @@ footer #who-we-are a:hover, footer #who-we-are a:active {color:#fff;text-decorat
 #subsidiary > div#fourth {float:right;}
 ul.footer-nav {list-style:none;margin:0;}
 ul.footer-nav li {list-style:none;margin:0;}
-#subsidiary .form-combo {margin-bottom:0;-webkit-box-shadow:inset 0px 0px 0px transparent;-moz-box-shadow:inset 0px 0px 0px transparent;-ms-box-shadow:inset 0px 0px 0px transparent;box-shadow:inset 0px 0px 0px transparent;margin-bottom:1em;max-width:220px;}
-#subsidiary .element {/*23px height*/height:1.79em;line-height:1;/**/}
+#subsidiary .form-combo {margin-bottom:0;-webkit-box-shadow: inset 1px 1px 3px #666; -moz-box-shadow: inset 1px 1px 3px #666; -ms-box-shadow: inset 1px 1px 3px #666; box-shadow: inset 1px 1px 3px #666;margin-bottom:1em;max-width:220px;}
+#subsidiary .element {/*23px height*//*height:1.79em;*/line-height:1;/**/}
 #subsidiary button {height:1.79em;line-height:1.79;background-color:#2460a2;}
 #subsidiary button:hover {background-color:#fd262a;}
 #subsidiary p {margin-bottom:1em;}
