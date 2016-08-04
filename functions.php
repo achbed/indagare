@@ -6897,11 +6897,13 @@ global $count;
 	<footer>
 		<div id="emailsignup" class="newsletter-signup-wrapper">
 		<form class="login newsletter-signup-form" method="POST" action="<?php echo get_bloginfo('stylesheet_directory'); ?>/includes/email-signup.php" novalidate>
-			<div id="field1-container" class="field">
-			   <input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address">
+			<div id="field1-container" class="field clearfix">
+			   <div class="column one-third"><input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address"></div>
+			   <div class="column one-third"><input type="text" name="fname" class="newsletter-signup-fname" placeholder="First name (optional)"></div>
+			   <div class="column one-third"><input type="text" name="lname" class="newsletter-signup-lname" placeholder="Last name(optional)"></div>
 			</div>
 
-			<div id="form-submit" class="field clearfix submit">
+			<div id="form-submit" class="clearfix submit">
 			   <input type="submit" value="Submit" class="button">
 			</div>
 		</form>
@@ -7037,11 +7039,13 @@ jQuery(document).ready(function($) {
 		<h4>Sign Up: Travel Newsletter</h4>
 		<p>Receive our free, bimonthly e-Newsletter full of travel stories, reviews and insider recommendations.</p>
 		<form class="login newsletter-signup-form" method="POST" action="<?php echo get_bloginfo('stylesheet_directory'); ?>/includes/email-signup.php" novalidate>
-			<div id="field1-container" class="field">
-			   <input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address">
+			<div id="field1-container" class="field clearfix">
+			   <div class="column one-third"><input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address"></div>
+			   <div class="column one-third"><input type="text" name="fname" class="newsletter-signup-fname" placeholder="First name (optional)"></div>
+			   <div class="column one-third"><input type="text" name="lname" class="newsletter-signup-lname" placeholder="Last name(optional)"></div>
 			</div>
 
-			<div id="form-submit" class="field clearfix submit">
+			<div id="form-submit" class="clearfix submit">
 			   <input type="submit" value="Submit" class="button">
 			</div>
 		</form>

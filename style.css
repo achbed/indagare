@@ -1118,11 +1118,13 @@ ul.footer-nav { list-style: none; margin: 0; }
 
 ul.footer-nav li { list-style: none; margin: 0; }
 
-#subsidiary .form-combo { margin-bottom: 0; -webkit-box-shadow: inset 1px 1px 3px #666; -moz-box-shadow: inset 1px 1px 3px #666; -ms-box-shadow: inset 1px 1px 3px #666; box-shadow: inset 1px 1px 3px #666; margin-bottom: 1em; max-width: 220px; }
+#subsidiary .form-combo { margin-bottom: 0; -webkit-box-shadow: inset 1px 1px 3px #666; -moz-box-shadow: inset 1px 1px 3px #666; -ms-box-shadow: inset 1px 1px 3px #666; box-shadow: inset 1px 1px 3px #666; margin-bottom: 1em; /*max-width:220px;*/ }
 
 #subsidiary .element { /*23px height*/ /*height:1.79em;*/ line-height: 1; /**/ }
 
-#subsidiary button { height: 1.79em; line-height: 1.79; background-color: #2460a2; }
+#subsidiary .buttons { text-align: left; }
+
+#subsidiary button { margin-left: 0; height: 1.79em; line-height: 1.79; background-color: #2460a2; }
 
 #subsidiary button:hover { background-color: #fd262a; }
 
@@ -1581,6 +1583,8 @@ article.magazine .photo-gallery .caption { border-bottom: 1px solid #ccc; paddin
 
 .lightbox.detailed .one-third { display: inline-block; margin: 0; }
 
+#lightbox-join footer .one-third, #lightbox-email-signup footer .one-third { margin-bottom: 15px; }
+
 .lightbox .one-half { margin: 0; padding: 0 10px; width: 50%; }
 
 /* AKB */
@@ -1619,6 +1623,8 @@ article.magazine .photo-gallery .caption { border-bottom: 1px solid #ccc; paddin
 .lightbox footer p { display: inline; /*			margin: 0px 30px 0px 0px; */ margin: 0px 10px 0px 0px; }
 
 /*		#lightbox-email-signup footer #emailsignup p {*/
+#lightbox-join footer p { display: block; margin: 0 0 10px 0; }
+
 #lightbox-email-signup footer p { display: inline-block; margin: 10px 10px 0px 0px; }
 
 #lightbox-email-signup footer h3 { margin: 10px 10px 0px 0px; }
@@ -1639,6 +1645,8 @@ article.magazine .photo-gallery .caption { border-bottom: 1px solid #ccc; paddin
 .lightbox footer form .mc4wp-form-fields { display: inline-block; }
 
 .lightbox footer .field, .lightbox footer .form-item { display: inline; }
+
+#lightbox-join footer .field, #lightbox-email-signup footer .field { display: block; margin: 0 -10px 0 -10px; }
 
 .lightbox footer .form-combo { display: inline-block; margin-bottom: 0; -webkit-border-radius: 0; border-radius: 0; -webkit-box-shadow: none; -moz-box-shadow: none; -ms-box-shadow: none; box-shadow: none; }
 
@@ -2169,6 +2177,7 @@ ul.children div.comment-reply-link { margin: 0 -20px; padding: 0 20px .643em; bo
   /* 		.lightbox .column.last { 			border: none; 			padding: 0px; 			margin: 0px; 		} */
   .lightbox .column.last { border: none; }
   .lightbox .one-third { width: 100%; margin: 0; padding: 0 10px 15px; }
+  #lightbox-join footer .one-third, #lightbox-email-signup footer .one-third { margin-bottom: 0; }
   .lightbox .one-half { width: 100%; margin: 0; padding: 0 10px 15px; }
   .lightbox .one-third h3 { padding-top: 10px; border-top: 1px solid #ccc; }
   .lightbox .first h3 { padding-top: 0; border: none; }
