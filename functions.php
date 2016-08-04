@@ -6798,7 +6798,9 @@ function childtheme_override_siteinfo() {
         <p><?php print __('Receive our free email newsletter full of travel news, tips and advice.','indagare'); ?></p>
         <form class="newsletter-signup-form" method="POST" action="<?php echo get_bloginfo('stylesheet_directory'); ?>/includes/email-signup.php">
           <div class="form-combo">
-          	<span class="form-item"><input type="text" name="email" id="newsletter-signup" class="element newsletter-signup-input" placeholder="<?php print __('Your email address','indagare'); ?>" /></span>
+          	<span class="form-item"><input type="text" name="email" id="newsletter-signup" class="element newsletter-signup-input" placeholder="<?php print __('Email address (required)','indagare'); ?>" /></span>
+          	<span class="form-item"><input type="text" name="fname" class="element newsletter-signup-fname" placeholder="<?php print __('First name','indagare'); ?>" /></span>
+          	<span class="form-item"><input type="text" name="lname" class="element newsletter-signup-lname" placeholder="<?php print __('Last name','indagare'); ?>" /></span>
           </div>
           <div class="buttons">
           	<button type="submit" class="primary button"><?php print __('Submit','indagare'); ?></button>

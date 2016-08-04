@@ -173,7 +173,7 @@ jQuery().ready(function($) {
 */
 
 		//grab attributes and values out of the form
-		var data = {email: $(this).find('.newsletter-signup-input').val()};
+		var data = {email: $(this).find('.newsletter-signup-input').val(), fname: $(this).find('.newsletter-signup-fname').val(), lname: $(this).find('.newsletter-signup-lname').val()};
 		var endpoint = $(this).attr('action');
 		
 		//make the ajax request
