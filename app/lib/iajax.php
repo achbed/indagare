@@ -505,6 +505,9 @@ class AjaxHandler {
 			} else {
 				$new_response = $charge->toResult();
 				$response = array_merge( $response, $new_response );
+				$account = \WPSF\Contact::get_account_wp();
+				$account['Membership_Status__c'] = $account->picklistValue( 'Membership_Status__c', 'Active' );
+				$account->update();
 			}
 		} else if ( $charge === true ) {
 			// Well, the charge made it through the system but returned an account.
@@ -522,6 +525,8 @@ class AjaxHandler {
 			if ( ! empty( $charge['Membership__x']['Name'] ) ) {
 				$response['name'] = $charge['Membership__x']['Name'];
 			}
+			$charge['Membership_Status__c'] = $charge->picklistValue( 'Membership_Status__c', 'Active' );
+			$charge->update();
 		} else {
 			$response['success'] = false;
 			$response['message'] = print_r( $charge, true );
