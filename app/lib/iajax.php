@@ -294,20 +294,20 @@ class AjaxHandler {
 		$contact['WP_Username__c'] = $_POST['username'];
 		$contact['WPID__c'] = $wpid;
 
-		if(isset($_POST['address1'])) {
-			$contact['MailingStreet'] = $_POST['address1'];
-			$contact['MailingCity'] = $_POST['city'];
-			$contact['MailingState'] = $_POST['state'];
-			$contact['MailingPostalCode'] = $_POST['zip'];
-			$contact['MailingCountry'] = $_POST['country'];
+		if(isset($_POST['s_address1'])) {
+			$contact['MailingStreet'] = $_POST['s_address1'];
+			$contact['MailingCity'] = $_POST['s_city'];
+			$contact['MailingState'] = $_POST['s_state'];
+			$contact['MailingPostalCode'] = $_POST['s_zip'];
+			$contact['MailingCountry'] = $_POST['s_country'];
 		}
 
-		if(isset($_POST['s_address1'])) {
-			$contact['OtherStreet'] = $_POST['s_address1'];
-			$contact['OtherCity'] = $_POST['s_city'];
-			$contact['OtherState'] = $_POST['s_state'];
-			$contact['OtherPostalCode'] = $_POST['s_zip'];
-			$contact['OtherCountry'] = $_POST['s_country'];
+		if(isset($_POST['address1'])) {
+			$contact['OtherStreet'] = $_POST['address1'];
+			$contact['OtherCity'] = $_POST['city'];
+			$contact['OtherState'] = $_POST['state'];
+			$contact['OtherPostalCode'] = $_POST['zip'];
+			$contact['OtherCountry'] = $_POST['country'];
 		}
 
 		return $contact;
@@ -348,12 +348,12 @@ class AjaxHandler {
 		$account['Is_Renewal__c'] = true;
 		$account['Membership_End_Date__c'] = date( 'Y-m-d', strtotime( 'yesterday' ) );
 
-		if(isset($_POST['address1'])) {
-			$account['BillingStreet'] = $_POST['address1'];
-			$account['BillingCity'] = $_POST['city'];
-			$account['BillingState'] = $_POST['state'];
-			$account['BillingPostalCode'] = $_POST['zip'];
-			$account['BillingCountry'] = $_POST['country'];
+		if(isset($_POST['s_address1'])) {
+			$account['BillingStreet'] = $_POST['s_address1'];
+			$account['BillingCity'] = $_POST['s_city'];
+			$account['BillingState'] = $_POST['s_state'];
+			$account['BillingPostalCode'] = $_POST['s_zip'];
+			$account['BillingCountry'] = $_POST['s_country'];
 		}
 
 		if ( ! empty( $_POST['cc_num'] ) ) {
@@ -505,7 +505,7 @@ class AjaxHandler {
 			} else {
 				$new_response = $charge->toResult();
 				$response = array_merge( $response, $new_response );
-				$account = \WPSF\Contact::get_account_wp();
+				$account = new \WPSF\Account( $charge['Account__c'] );
 				$account['Membership_Status__c'] = $account->picklistValue( 'Membership_Status__c', 'Active' );
 				$account->update();
 			}
