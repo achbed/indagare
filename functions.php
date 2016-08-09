@@ -6802,7 +6802,7 @@ function childtheme_override_siteinfo() {
           </div>
           <div class="form-combo">
           	<span class="form-item"><input type="text" name="fname" class="element newsletter-signup-fname" placeholder="<?php print __('First name (optional)','indagare'); ?>" /></span>
-          	<span class="form-item"><input type="text" name="lname" class="element newsletter-signup-lname" placeholder="<?php print __('Last name (optionall)','indagare'); ?>" /></span>
+          	<span class="form-item"><input type="text" name="lname" class="element newsletter-signup-lname" placeholder="<?php print __('Last name (optional)','indagare'); ?>" /></span>
           </div>
           <div class="buttons">
           	<button type="submit" class="primary button"><?php print __('Submit','indagare'); ?></button>
