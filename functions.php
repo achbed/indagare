@@ -6900,7 +6900,7 @@ global $count;
 			<div id="field1-container" class="field clearfix">
 			   <div class="column one-third"><input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address"></div>
 			   <div class="column one-third"><input type="text" name="fname" class="newsletter-signup-fname" placeholder="First name (optional)"></div>
-			   <div class="column one-third"><input type="text" name="lname" class="newsletter-signup-lname" placeholder="Last name(optional)"></div>
+			   <div class="column one-third"><input type="text" name="lname" class="newsletter-signup-lname" placeholder="Last name (optional)"></div>
 			</div>
 
 			<div id="form-submit" class="clearfix submit">
@@ -7042,7 +7042,7 @@ jQuery(document).ready(function($) {
 			<div id="field1-container" class="field clearfix">
 			   <div class="column one-third"><input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address"></div>
 			   <div class="column one-third"><input type="text" name="fname" class="newsletter-signup-fname" placeholder="First name (optional)"></div>
-			   <div class="column one-third"><input type="text" name="lname" class="newsletter-signup-lname" placeholder="Last name(optional)"></div>
+			   <div class="column one-third"><input type="text" name="lname" class="newsletter-signup-lname" placeholder="Last name (optional)"></div>
 			</div>
 
 			<div id="form-submit" class="clearfix submit">
