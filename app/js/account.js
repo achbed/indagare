@@ -321,7 +321,9 @@ function appendCardItem(i,t) {
 function upgradeAccount(e){
 	var p=jQuery('#account-membership-upgrade-select'),t=p.val(),postdata = [];
 	postdata.push({name:'action',value:'idj-renew'});
-	postdata.push({name:'l',value:t});
+	if(isUpgrade()) {
+		postdata.push({name:'l',value:t});
+	}
 	
 	jQuery(e.target).addClass('processing').prop({disabled:true});
 	jQuery.ajax("/wp-admin/admin-ajax.php", {
@@ -598,14 +600,14 @@ function getIdFromObject(i){
 }
 
 function applyMembershipUpgradeOptions() {
-	var c=SFData.Membership.Amount__c,i,r=[],n=false;
+	var i,r=[],n=false,ma=parseFloat( SFData.Membership.Amount__c ),renew=isRenewal();
 	for(i in SFData.MembershipList) {
-		if( (SFData.MembershipList[i].Amount > SFData.Membership.Amount__c) || ( ( renewMode() === false ) && ( SFData.MembershipList[i].Id == SFData.Membership.Id ) ) ) {
+		if( (SFData.MembershipList[i].Amount > ma) || ( renew && ( SFData.MembershipList[i].Id == SFData.Membership.Id ) ) ) {
 			r.push(SFData.MembershipList[i]);
 			if ( !n ) {
 				n = SFData.MembershipList[i].Id;
 			}
-			if( SFData.MembershipList[i].Id == SFData.Membership.Id ) {
+			if ( SFData.MembershipList[i].Id == SFData.Membership.Id ) {
 				n = SFData.Membership.Id;
 			}
 		}
@@ -614,12 +616,16 @@ function applyMembershipUpgradeOptions() {
 	var t = jQuery('#account-membership-upgrade-select');
 	t.html('');
 	for(i in r) {
+		var a = parseFloat(r[i].Amount);
+		if ( ( SFData.Membership.Id != r[i].Id ) && !renew ) {
+			// This is an upgrade. Adjust the amount.
+			a = a - ma;
+			a = Math.max(a,0);
+		}
 		var o = jQuery('<option></option>')
 		.val(r[i].Id)
-		.attr({
-			amount:r[i].Amount
-		})
-		.html(r[i].Name + ' - ' + numeral(r[i].Amount).format('$0,000.00'))
+		.attr('amount',a)
+		.html(r[i].Name + ' - ' + numeral(a).format('$0,000.00'))
 		.appendTo(t);
 	}
 	if(n) {
@@ -855,7 +861,7 @@ function arrayToProps(a) {
 /**
  * Determines what mode the various form buttons should be in based on the autorenew and pulldown selections.
  * 
- *  False means Autorenew is disabled, and we should show the "Renew" option
+ *  False means Autorenew is disabled OR we're past the renewal processing date, and we should show the "Renew" option
  *  True means Autorenew is disabled, and we should show the "Enable Autorenew" button
  *  A date object means Autorenew is enabled, and we should not show either "Renew" or "Enable Autorenew"
  */
@@ -881,6 +887,36 @@ function renewMode() {
 	
 	return false;
 }
+
+function isRenewal() {
+	var end = new Date(SFData.Account.Membership_End_Date__c);
+	end.setTime( end.getTime() - 8 * 86400000 );
+	// Adjust math for Daylight Savings
+	end.setTime( end.getTime() + 12 * 1000 * 60 * 60 ); 
+	end.setHours(0);
+	
+	if ( SFData.Account.Is_Renewal__c ) {
+		// Autorenew is enabled.
+		if ( end > new Date() ) {
+			// And the renewal processing date is in the future.
+			return false;
+		}
+		// We've passed the renewal date.  Allow a renewal.
+		return true;
+	}
+	
+	if ( end > new Date() ) {
+		// The threshold is in the future.
+		return false;
+	}
+	
+	return true;
+}
+
+function isUpgrade() {
+	return ( ! isRenewal() );
+}
+
 
 /**
  * Returns a jQuery.datepicker format string for the current browser locale

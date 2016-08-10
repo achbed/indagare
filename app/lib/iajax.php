@@ -574,10 +574,10 @@ class AjaxHandler {
 		$account = \WPSF\Contact::get_account_wp();
 		$aid = $account['Id'];
 		$acct_type = 'Renewal';
+		$account['Membership_old__c'] = $account['Membership__c'];
 		if ( ! empty( $_POST['l'] ) ) {
 			if ( $account['Membership__c'] != $_POST['l'] ) {
 				$acct_type = 'Upgrade';
-				$account['Membership_old__c'] = $account['Membership__c'];
 				$account['Membership__c'] = $_POST['l'];
 				$account->update();
 			}
@@ -613,15 +613,19 @@ class AjaxHandler {
 			$response['message'] = $charge;
 		}
 
+		$account = \WPSF\Contact::get_account_wp();
+		$account['Membership_old__c'] = null;
+
 		if ( empty( $response['success'] ) ) {
 			if ( $acct_type == 'Upgrade' ) {
 				// We are in update mode, and we have a failure.  Put the old membership data back.
 				$account['Membership__c'] = $account['Membership_old__c'];
-				$account['Membership_old__c'] = null;
-				$account->update();
 			}
+			$account->update();
 			return wp_send_json_error( $response );
 		}
+
+		$account->update();
 
 //		var_dump ( $response );
 
