@@ -2,8 +2,8 @@
 //fill in these values for with your own information
 $api_key = '2b2936e2f9a2f24744769910044b6b5b-us1';
 $datacenter = 'us1';
-//$list_id = '4962a21673'; // Indagare mailing list
-$list_id = '013366b0c9'; // Indagare Test mailing list
+$list_id = '4962a21673'; // Indagare mailing list
+//$list_id = '013366b0c9'; // Indagare Test mailing list
 $email = $_POST['email'];
 $fname = '';
 $lname = '';
