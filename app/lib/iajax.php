@@ -430,8 +430,6 @@ class AjaxHandler {
 
 			$aid = self::create_sf_account( $id, $trial );
 
-//			var_dump ( $aid );
-
 			if ( is_wp_error( $aid ) ) {
 				wp_delete_user( $id );
 				print json_encode(array(
@@ -481,7 +479,7 @@ class AjaxHandler {
 			if ( ! empty( $_POST['l'] ) ) {
 				if ( $account['Membership__c'] != $_POST['l'] ) {
 					$acct_type = 'Upgrade';
-					$account['Membership_old__c'] = $account['Membership__c'];
+					$account['Membership_Old__c'] = $account['Membership__c'];
 					$account['Membership__c'] = $_POST['l'];
 				}
 			}
@@ -491,59 +489,63 @@ class AjaxHandler {
 
 		$charge = \WPSF\Payment::charge_account( $aid, $acct_type );
 
-//		var_dump ( $charge );
+		$account = new \WPSF\Account( $aid );
+		$revert = false;
 
 		if ( is_wp_error( $charge ) ) {
 			$response['message'] = 'Error occurred during processing:  '.$charge->get_error_message();
 			$response['success'] = false;
+			$revert = true;
+
 		} else if ( $charge instanceof \WPSF\Payment ) {
 			// Well, the charge made it through the system.  Time to see what's in it.
 			if ( is_wp_error( $charge->last_error ) ) {
 				// If the last thing was an error, return that.
 				$reponse['message'] = 'Error occurred during processing.  '.$charge->get_error_message();
 				$response['success'] = false;
+				$revert = true;
 			} else {
 				$new_response = $charge->toResult();
 				$response = array_merge( $response, $new_response );
-				$account = new \WPSF\Account( $charge['Account__c'] );
-				$account['Membership_Status__c'] = $account->picklistValue( 'Membership_Status__c', 'Active' );
-				$account->update();
+				if ( ! $response['success'] ) {
+					$revert = true;
+				}
+
 			}
 		} else if ( $charge === true ) {
 			// Well, the charge made it through the system but returned an account.
-			$charge = new \WPSF\Account( $aid );
 			$response['success'] = true;
 
-			if ( ! empty( $charge['Membership__x']['Period__c'] ) ) {
-				$response['length'] = $charge['Membership__x']['Period__c'];
+			if ( ! empty( $account['Membership__x']['Period__c'] ) ) {
+				$response['length'] = $account['Membership__x']['Period__c'];
 			}
 
-			if ( ! empty( $charge['Membership__x']['Membership_Type__c'] ) ) {
-				$response['membertype'] = $charge['Membership__x']['Membership_Type__c'];
+			if ( ! empty( $account['Membership__x']['Membership_Type__c'] ) ) {
+				$response['membertype'] = $account['Membership__x']['Membership_Type__c'];
 			}
 
-			if ( ! empty( $charge['Membership__x']['Name'] ) ) {
-				$response['name'] = $charge['Membership__x']['Name'];
+			if ( ! empty( $account['Membership__x']['Name'] ) ) {
+				$response['name'] = $account['Membership__x']['Name'];
 			}
-			$charge['Membership_Status__c'] = $charge->picklistValue( 'Membership_Status__c', 'Active' );
-			$charge->update();
+
 		} else {
 			$response['success'] = false;
 			$response['message'] = print_r( $charge, true );
+			$revert = true;
+
 		}
+
+		if ( $revert ) {
+			$account['Membership__c'] = $account['Membership_Old__c'];
+		} else {
+			$account['Membership_Status__c'] = $account->picklistValue( 'Membership_Status__c', 'Active' );
+		}
+		$account['Membership_Old__c'] = '';
+		$account->update();
 
 		if ( ! $response['success'] ) {
-			if ( $_POST['mode'] == 'update' ) {
-				// We are in update mode, and we have a failure.  Put the old membership data back.
-				$account = \WPSF\Contact::get_account_wp();
-				$account['Membership__c'] = $account['Membership_old__c'];
-				$account['Membership_old__c'] = null;
-				$account->update();
-			}
 			return wp_send_json_error( $response );
 		}
-
-//		var_dump ( $response );
 
 		return wp_send_json_success( $response );
 	}
@@ -555,6 +557,15 @@ class AjaxHandler {
 	public static function renew_wp() {
 		header('Content-Type: application/json');
 		global $acc;
+
+		$default_args = array(
+			'new_level' => '',
+		);
+
+		$args = array();
+		if ( ! empty( $_POST['l'] ) ) {
+			$args['new_level'] = trim( $_POST['l'] );
+		}
 
 		$response = array(
 			'success' => false,
@@ -568,66 +579,115 @@ class AjaxHandler {
 			'cardnum' => '',
 			'cardtype' => '',
 			'message' => '',
+			'args' => $args,
 		);
+
+		if ( empty( $args['new_level'] ) ) {
+			$response = array_merge( $response, array( 'message' => 'Empty membership level' ) );
+			return wp_send_json_error( $response );
+		}
 
 		// We are updating an existing account.
 		$account = \WPSF\Contact::get_account_wp();
 		$aid = $account['Id'];
 		$acct_type = 'Renewal';
-		$account['Membership_old__c'] = $account['Membership__c'];
+
+		$account = new \WPSF\Account( $aid );
+		$account['Membership_Old__c'] = $account['Membership__c'];
 		if ( ! empty( $_POST['l'] ) ) {
 			if ( $account['Membership__c'] != $_POST['l'] ) {
 				$acct_type = 'Upgrade';
 				$account['Membership__c'] = $_POST['l'];
-				$account->update();
 			}
 		}
 
-		$charge = \WPSF\Payment::charge_account( $aid, $acct_type );
-
-//		var_dump ( $charge );
-
-		if ( is_wp_error( $charge ) ) {
-			$response['message'] = $charge->get_error_message();
-		} else if ( $charge instanceof \WPSF\Payment ) {
-			// Well, the charge made it through the system.  Time to see what's in it.
-			$new_response = $charge->toResult();
-			$response = array_merge( $response, $new_response );
-		} else if ( $charge === true ) {
-			// Well, the charge made it through the system but returned an account.
-			$charge = new \WPSF\Account( $aid );
-
-			if ( ! empty( $charge['Membership__x']['Period__c'] ) ) {
-				$response['length'] = $charge['Membership__x']['Period__c'];
-			}
-
-			if ( ! empty( $charge['Membership__x']['Membership_Type__c'] ) ) {
-				$response['membertype'] = $charge['Membership__x']['Membership_Type__c'];
-			}
-
-			if ( ! empty( $charge['Membership__x']['Name'] ) ) {
-				$response['name'] = $charge['Membership__x']['Name'];
-			}
-		} else {
-			$response['success'] = false;
-			$response['message'] = $charge;
-		}
-
-		$account = \WPSF\Contact::get_account_wp();
-		$account['Membership_old__c'] = null;
-
-		if ( empty( $response['success'] ) ) {
-			if ( $acct_type == 'Upgrade' ) {
-				// We are in update mode, and we have a failure.  Put the old membership data back.
-				$account['Membership__c'] = $account['Membership_old__c'];
-			}
-			$account->update();
-			return wp_send_json_error( $response );
-		}
+		$response['debug']['post-setup'] = array(
+			'Membership__c' => $account['Membership__c'],
+			'Membership_Old__c' => $account['Membership_Old__c'],
+			'Membership_Status__c' => $account['Membership_Status__c'],
+		);
 
 		$account->update();
 
-//		var_dump ( $response );
+		$account = new \WPSF\Account( $aid );
+		$response['debug']['pre-process'] = array(
+			'Membership__c' => $account['Membership__c'],
+			'Membership_Old__c' => $account['Membership_Old__c'],
+			'Membership_Status__c' => $account['Membership_Status__c'],
+		);
+
+		$charge = \WPSF\Payment::charge_account( $aid, $acct_type );
+
+		// Reload the account now (to pick up any changes from the payment process)
+		$account = new \WPSF\Account( $aid );
+		$revert = false;
+
+		// Debug info
+		$response['debug']['post-process'] = array(
+			'Membership__c' => $account['Membership__c'],
+			'Membership_Old__c' => $account['Membership_Old__c'],
+		);
+
+		if ( is_wp_error( $charge ) ) {
+			$response['message'] = $charge->get_error_message();
+			$response['success'] = false;
+			$revert = true;
+
+		} else if ( $charge instanceof \WPSF\Payment ) {
+			// Well, the charge made it through the system.  Time to see what's in it.
+			if ( is_wp_error( $charge->last_error ) ) {
+				// If the last thing was an error, return that.
+				$reponse['message'] = 'Error occurred during processing.  '.$charge->get_error_message();
+				$response['success'] = false;
+				$revert = true;
+
+			} else {
+				$new_response = $charge->toResult();
+				$response = array_merge( $response, $new_response );
+				if ( ! $response['success'] ) {
+					$revert = true;
+				}
+			}
+		} else if ( $charge === true ) {
+			// Well, the charge made it through the system but returned an account without a payment object.
+			// This should happen during trial or complimentary membership processing only.
+			$response['success'] = true;
+
+			if ( ! empty( $charge['Membership__x']['Period__c'] ) ) {
+				$response['length'] = $account['Membership__x']['Period__c'];
+			}
+
+			if ( ! empty( $charge['Membership__x']['Membership_Type__c'] ) ) {
+				$response['membertype'] = $account['Membership__x']['Membership_Type__c'];
+			}
+
+			if ( ! empty( $charge['Membership__x']['Name'] ) ) {
+				$response['name'] = $account['Membership__x']['Name'];
+			}
+		} else {
+			$response['success'] = false;
+			$response['message'] = print_r( $charge, true );
+			$revert = true;
+		}
+
+		if ( $revert ) {
+			$account['Membership__c'] = $account['Membership_Old__c'];
+		} else {
+			$account['Membership_Status__c'] = $account->picklistValue( 'Membership_Status__c', 'Active' );
+		}
+		$account['Membership_Old__c'] = '';
+		$account->update();
+
+		$response['debug']['revert'] = $revert;
+		$response['debug']['post-revert'] = array(
+			'Membership__c' => $account['Membership__c'],
+			'Membership_Old__c' => $account['Membership_Old__c'],
+			'Membership_Status__c' => $account['Membership_Status__c'],
+		);
+
+		if ( empty( $response['success'] ) ) {
+			return wp_send_json_error( $response );
+		}
 
 		return wp_send_json_success( $response );
 	}

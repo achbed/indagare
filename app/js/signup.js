@@ -496,21 +496,18 @@ if (!signup) {
 								var s = false, b = '#lightbox-signup-complete';
 
 								if ( result.success ) {
-									jQuery('#memberdate>span').html(result.data.startdate);
-									jQuery('#memberenddate>span').html(result.data.enddate);
-									jQuery('#membercardholder>span').html(
-											jQuery('#contact-FirstName').val() + ' ' + jQuery('#contact-LastName').val()
-											);
-									jQuery('#membercard>span')
-											.html(result.data.cardnum.substr(result.data.cardnum.length - 4));
-									jQuery('#membertransaction>span').html(
-											result.data.r_ref);
-									jQuery('#memberlength>span').html(
-											result.data.length);
-									jQuery('#memberlevel>span').html(
-											result.data.membertype);
-									jQuery('#membercost>span').html(
-											numeral(result.data.price).format('$0,000.00'));
+									_setrm('#memberdate>span', result.data.startdate );
+									_setrm('#memberenddate>span', result.data.enddate );
+									_setrm('#membercardholder>span', jQuery('#contact-FirstName').val() + ' ' + jQuery('#contact-LastName').val() );
+									_setrm('#membercard>span', result.data.cardnum.substr(result.data.cardnum.length - 4) );
+									_setrm('#membertransaction>span', result.data.r_ref );
+									_setrm('#memberlength>span', result.data.length );
+									_setrm('#memberlevel>span', result.data.membertype );
+									if(result.data.price>0) {
+										_setrm('#membercost>span', numeral(result.data.price).format('$0,000.00') );
+									} else {
+										_setrm('#membercost>span', false );
+									}
 
 									jQuery('#membercomplete').on('click',
 											function() {
@@ -724,3 +721,10 @@ if (!signup) {
 		window.attachEvent('onload', init);
 	}
 }());
+function _setrm(t,v) {
+	if(!v || v=='') {
+		jQuery(t).parent().remove();
+		return;
+	}
+	jQuery(t).html(v);
+}

@@ -321,7 +321,7 @@ function appendCardItem(i,t) {
 function upgradeAccount(e){
 	var p=jQuery('#account-membership-upgrade-select'),t=p.val(),postdata = [];
 	postdata.push({name:'action',value:'idj-renew'});
-	if(isUpgrade()) {
+	if(p.find(':selected').attr('upgradeMode') == 'upgrade') {
 		postdata.push({name:'l',value:t});
 	}
 	
@@ -331,10 +331,10 @@ function upgradeAccount(e){
 		data : postdata 
 	}).done(function(result) {
 		jQuery(e.target).removeClass('processing').prop({disabled:false});
-		if(progressDialog) {
-			progressDialog.close();
-		}
 		if(!result.success) {
+			if(progressDialog) {
+				progressDialog.close();
+			}
 			jQuery.alert({
 				title:'Account Update Failed',
 				content:'Failed to update the account.  '+result.data.message
@@ -600,31 +600,49 @@ function getIdFromObject(i){
 }
 
 function applyMembershipUpgradeOptions() {
+	var t = jQuery('#account-membership-upgrade-select');
+	if(!t || !SFData.MembershipList) {
+		fixUpgradeButtonText();
+		return;
+	}
+	
 	var i,r=[],n=false,ma=parseFloat( SFData.Membership.Amount__c ),renew=isRenewal();
 	for(i in SFData.MembershipList) {
-		if( (SFData.MembershipList[i].Amount > ma) || ( renew && ( SFData.MembershipList[i].Id == SFData.Membership.Id ) ) ) {
+		if ( SFData.MembershipList[i].Amount > ma ) {
+			SFData.MembershipList[i].upgradeMode = 'upgrade';
+			if(renew) {
+				SFData.MembershipList[i].upgradeMode = 'renew';
+			}
 			r.push(SFData.MembershipList[i]);
 			if ( !n ) {
 				n = SFData.MembershipList[i].Id;
 			}
+		} else if ( renew && ( SFData.MembershipList[i].Id == SFData.Membership.Id ) ) {
+			SFData.MembershipList[i].upgradeMode = 'renew';
+			r.push(SFData.MembershipList[i]);
 			if ( SFData.MembershipList[i].Id == SFData.Membership.Id ) {
 				n = SFData.Membership.Id;
 			}
 		}
 	}
 	
-	var t = jQuery('#account-membership-upgrade-select');
+	if(!r.length) {
+		t.remove();
+		fixUpgradeButtonText();
+		return;
+	}
+	
 	t.html('');
 	for(i in r) {
 		var a = parseFloat(r[i].Amount);
-		if ( ( SFData.Membership.Id != r[i].Id ) && !renew ) {
+		if ( r[i].upgradeMode == 'upgrade' ) {
 			// This is an upgrade. Adjust the amount.
 			a = a - ma;
 			a = Math.max(a,0);
 		}
 		var o = jQuery('<option></option>')
 		.val(r[i].Id)
-		.attr('amount',a)
+		.attr({amount:a,upgradeMode:r[i].upgradeMode})
 		.html(r[i].Name + ' - ' + numeral(a).format('$0,000.00'))
 		.appendTo(t);
 	}
@@ -635,11 +653,19 @@ function applyMembershipUpgradeOptions() {
 }
 
 function fixUpgradeButtonText() {
-	var t = jQuery('#account-membership-upgrade-select').val(),x="Upgrade Now";
-	if(t == SFData.Membership.Id) {
-		x = "Renew Now";
+	var s = jQuery('#account-membership-upgrade-select'),b=jQuery('#upgrade-button');
+	if(b.length) {
+		if(!s.length) {
+			b.remove();
+			jQuery('#field-account-membership-upgrade-select label').html('No more upgrade options available');
+		} else {
+			var t = s.val(),x="Upgrade Now";
+			if(t == SFData.Membership.Id) {
+				x = "Renew Now";
+			}
+			b.html(x);
+		}
 	}
-	jQuery('#upgrade-button').html(x);
 	
 	var end = renewMode();
 	if ( end === false ) {
@@ -889,6 +915,13 @@ function renewMode() {
 }
 
 function isRenewal() {
+	if(!!SFData.Membership.Membership_Type__c) {
+		if ( SFData.Membership.Membership_Type__c == 'Trial' ) {
+			// Never allow a renewal of a trial membership
+			return false;
+		}
+	}
+	
 	var end = new Date(SFData.Account.Membership_End_Date__c);
 	end.setTime( end.getTime() - 8 * 86400000 );
 	// Adjust math for Daylight Savings
@@ -901,6 +934,7 @@ function isRenewal() {
 			// And the renewal processing date is in the future.
 			return false;
 		}
+		
 		// We've passed the renewal date.  Allow a renewal.
 		return true;
 	}
