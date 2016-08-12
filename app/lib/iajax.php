@@ -593,6 +593,13 @@ class AjaxHandler {
 		$acct_type = 'Renewal';
 
 		$account = new \WPSF\Account( $aid );
+
+		$response['debug']['pre-setup'] = array(
+			'Membership__c' => $account['Membership__c'],
+			'Membership_Old__c' => $account['Membership_Old__c'],
+			'Membership_Status__c' => $account['Membership_Status__c'],
+		);
+
 		$account['Membership_Old__c'] = $account['Membership__c'];
 		if ( ! empty( $_POST['l'] ) ) {
 			if ( $account['Membership__c'] != $_POST['l'] ) {
@@ -600,12 +607,6 @@ class AjaxHandler {
 				$account['Membership__c'] = $_POST['l'];
 			}
 		}
-
-		$response['debug']['post-setup'] = array(
-			'Membership__c' => $account['Membership__c'],
-			'Membership_Old__c' => $account['Membership_Old__c'],
-			'Membership_Status__c' => $account['Membership_Status__c'],
-		);
 
 		$account->update();
 
