@@ -75,6 +75,12 @@ include_once('includes/search-destination.php');
 // Include an update to allow old-style users to map to new capabilities.
 include_once('includes/induser_caps.php');
 
+add_filter( 'password_hint', 'ind_password_hint', 10, 1 );
+function ind_password_hint( $hint ) {
+	$hint = __( 'The above password is only a suggestion.  Feel free to delete it and choose your own.<br/><br/>The password must be at least eight characters long and contain both letters and numbers.  To make it stronger, include uppercase and lowercase letters as well as symbols like ! " ? $ % ^ &amp; ).' );
+	return $hint;
+}
+
 /**
  * Hide the admin bar for non-admin users
  */

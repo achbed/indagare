@@ -281,8 +281,8 @@ if (!signup) {
 
 		this.validatePassword = function() {
 			var settings = {
-				minLength : 6,
-				mixedCase : true,
+				minLength : 8,
+				mixedCase : false,
 				numbers : true,
 				specialChars : false
 			};

@@ -157,8 +157,8 @@ if (!shrValidate) {
 				pw = jQuery('input[validate-type="password"][validate-group="'+g+'"]'),
 				pv = jQuery('input[validate-type="password-verify"][validate-group="'+g+'"]'),
 				settings = {
-					minLength : 6,
-					mixedCase : true,
+					minLength : 8,
+					mixedCase : false,
 					numbers : true,
 					specialChars : false
 				};
