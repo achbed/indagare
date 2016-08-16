@@ -238,7 +238,8 @@ class AjaxHandler {
 			$response = array(
 				'valid' => true,
 				'id' => $codes[0]['Id'],
-				'name' => $codes[0]['Name'],
+				'trialname' => $codes[0]['Name'],
+				'name' => $codes[0]['Membership']['Name'],
 				'length' => $codes[0]['Period'],
 			);
 		} catch( \Exception $e ) {
