@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-16 11:12-0500\n"
-"PO-Revision-Date: 2016-08-16 12:17-0600\n"
+"POT-Creation-Date: 2016-08-16 12:47-0500\n"
+"PO-Revision-Date: 2016-08-16 12:48-0600\n"
 "Last-Translator: Dennis Wallace <dwallace@shr.global>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -58,11 +58,28 @@ msgstr ""
 "The password must be at least eight characters long and contain both letters "
 "and numbers."
 
-#: functions.php:445
+#: functions.php:99
+msgid ""
+"Please enter your username or email address. You will receive a link to "
+"create a new password via email."
+msgstr ""
+"Please enter your username or email address. You will receive a link to "
+"create a new password via email."
+
+#: functions.php:101
+msgid ""
+"Please enter your username or email address to reset your password. You will "
+"receive a link via email to continue the process."
+msgstr ""
+"To experience the new and improved Indagare, we require that you reset your "
+"password today. Please enter your email (or username). You will receive a "
+"link to create a new password via email."
+
+#: functions.php:456
 msgid "Biographical Info"
 msgstr "Biographical Info"
 
-#: functions.php:451
+#: functions.php:462
 msgid ""
 "Share a little biographical information to fill out your profile. This may "
 "be shown publicly."
@@ -70,84 +87,84 @@ msgstr ""
 "Share a little biographical information to fill out your profile. This may "
 "be shown publicly."
 
-#: functions.php:487
+#: functions.php:498
 msgid "Recent Posts"
 msgstr "Recent Posts"
 
-#: functions.php:723
+#: functions.php:734
 msgid "Review Image"
 msgstr "Review Image"
 
-#: functions.php:812
+#: functions.php:823
 msgid "Logging in..."
 msgstr "Logging in..."
 
-#: functions.php:845
+#: functions.php:856
 msgid "Login successful, redirecting..."
 msgstr "Login successful, redirecting..."
 
-#: functions.php:853
+#: functions.php:864
 msgid "Incorrect login - please try again"
 msgstr "Incorrect login - please try again"
 
-#: functions.php:6816
+#: functions.php:6827
 msgid "Newsletter"
 msgstr "Newsletter"
 
-#: functions.php:6817
+#: functions.php:6828
 msgid "Receive our free email newsletter full of travel news, tips and advice."
 msgstr ""
 "Receive our free email newsletter full of travel news, tips and advice."
 
-#: functions.php:6820
+#: functions.php:6831
 msgid "Your email address"
 msgstr "Your email address"
 
-#: functions.php:6823
+#: functions.php:6834
 msgid "First name (optional)"
 msgstr "First name (optional)"
 
-#: functions.php:6824
+#: functions.php:6835
 msgid "Last name (optional)"
 msgstr "Last name (optional)"
 
-#: functions.php:6827
+#: functions.php:6838
 msgid "Submit"
 msgstr "Submit"
 
-#: functions.php:6832
+#: functions.php:6843
 msgid "Connect"
 msgstr "Connect"
 
-#: functions.php:6839
+#: functions.php:6850
 msgid "Email Us"
 msgstr "Email Us"
 
-#: functions.php:6842
+#: functions.php:6853
 msgid "facebook"
 msgstr "facebook"
 
-#: functions.php:6842
+#: functions.php:6853
 msgid "twitter"
 msgstr "twitter"
 
-#: functions.php:6842
+#: functions.php:6853
 msgid "instagram"
 msgstr "instagram"
 
-#: functions.php:6846
+#: functions.php:6857
 msgid "Membership"
 msgstr "Membership"
 
-#: functions.php:6853
+#: functions.php:6864
 msgid "About"
 msgstr "About"
 
-#: functions.php:7810
+#: functions.php:7821
 msgid "Booking ID"
 msgstr "Booking ID"
 
-#: functions.php:7956
+#: functions.php:7967
 msgid "All "
 msgstr "All "
 

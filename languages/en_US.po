@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-16 12:47-0500\n"
-"PO-Revision-Date: 2016-08-16 12:48-0600\n"
+"POT-Creation-Date: 2016-08-16 15:47-0500\n"
+"PO-Revision-Date: 2016-08-16 15:48-0600\n"
 "Last-Translator: Dennis Wallace <dwallace@shr.global>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -75,11 +75,23 @@ msgstr ""
 "password today. Please enter your email (or username). You will receive a "
 "link to create a new password via email."
 
-#: functions.php:456
+#: functions.php:115
+msgid "The password must be at least 8 characters long."
+msgstr "The password must be at least 8 characters long."
+
+#: functions.php:120
+msgid "The password must contain one or more letters."
+msgstr "The password must contain one or more letters."
+
+#: functions.php:125
+msgid "The password must contain one or more numbers."
+msgstr "The password must contain one or more numbers."
+
+#: functions.php:483
 msgid "Biographical Info"
 msgstr "Biographical Info"
 
-#: functions.php:462
+#: functions.php:489
 msgid ""
 "Share a little biographical information to fill out your profile. This may "
 "be shown publicly."
@@ -87,84 +99,84 @@ msgstr ""
 "Share a little biographical information to fill out your profile. This may "
 "be shown publicly."
 
-#: functions.php:498
+#: functions.php:525
 msgid "Recent Posts"
 msgstr "Recent Posts"
 
-#: functions.php:734
+#: functions.php:761
 msgid "Review Image"
 msgstr "Review Image"
 
-#: functions.php:823
+#: functions.php:850
 msgid "Logging in..."
 msgstr "Logging in..."
 
-#: functions.php:856
+#: functions.php:883
 msgid "Login successful, redirecting..."
 msgstr "Login successful, redirecting..."
 
-#: functions.php:864
+#: functions.php:891
 msgid "Incorrect login - please try again"
 msgstr "Incorrect login - please try again"
 
-#: functions.php:6827
+#: functions.php:6854
 msgid "Newsletter"
 msgstr "Newsletter"
 
-#: functions.php:6828
+#: functions.php:6855
 msgid "Receive our free email newsletter full of travel news, tips and advice."
 msgstr ""
 "Receive our free email newsletter full of travel news, tips and advice."
 
-#: functions.php:6831
+#: functions.php:6858
 msgid "Your email address"
 msgstr "Your email address"
 
-#: functions.php:6834
+#: functions.php:6861
 msgid "First name (optional)"
 msgstr "First name (optional)"
 
-#: functions.php:6835
+#: functions.php:6862
 msgid "Last name (optional)"
 msgstr "Last name (optional)"
 
-#: functions.php:6838
+#: functions.php:6865
 msgid "Submit"
 msgstr "Submit"
 
-#: functions.php:6843
+#: functions.php:6870
 msgid "Connect"
 msgstr "Connect"
 
-#: functions.php:6850
+#: functions.php:6877
 msgid "Email Us"
 msgstr "Email Us"
 
-#: functions.php:6853
+#: functions.php:6880
 msgid "facebook"
 msgstr "facebook"
 
-#: functions.php:6853
+#: functions.php:6880
 msgid "twitter"
 msgstr "twitter"
 
-#: functions.php:6853
+#: functions.php:6880
 msgid "instagram"
 msgstr "instagram"
 
-#: functions.php:6857
+#: functions.php:6884
 msgid "Membership"
 msgstr "Membership"
 
-#: functions.php:6864
+#: functions.php:6891
 msgid "About"
 msgstr "About"
 
-#: functions.php:7821
+#: functions.php:7848
 msgid "Booking ID"
 msgstr "Booking ID"
 
-#: functions.php:7967
+#: functions.php:7994
 msgid "All "
 msgstr "All "
 
