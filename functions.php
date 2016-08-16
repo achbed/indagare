@@ -75,11 +75,62 @@ include_once('includes/search-destination.php');
 // Include an update to allow old-style users to map to new capabilities.
 include_once('includes/induser_caps.php');
 
+/**
+ * Load translations
+ */
+if ( ! load_theme_textdomain( 'indagare', get_stylesheet_directory() . '/languages' ) ) {
+	header( 'X-DEBUG-FailedLoadingTextDomain: ' . $f );
+}
+
+/**
+ * Filters for the various Login process screens.
+ */
+
 add_filter( 'password_hint', 'ind_password_hint', 10, 1 );
 function ind_password_hint( $hint ) {
-	$hint = __( 'The above password is only a suggestion.  Feel free to delete it and choose your own.<br/><br/>The password must be at least eight characters long and contain both letters and numbers.  To make it stronger, include uppercase and lowercase letters as well as symbols like ! " ? $ % ^ &amp; ).' );
+	$hint = __( 'The above password is only a suggestion. Feel free to delete it and choose your own.', 'indagare' );
+	$hint .= '<br/><br/>';
+	$hint .= __( 'The password must be at least eight characters long and contain both letters and numbers.  To make it stronger, include uppercase and lowercase letters as well as symbols like ! " ? $ % ^ &amp; ).', 'indagare' );
 	return $hint;
 }
+
+add_filter( 'login_message', 'ind_login_message', 10, 1 );
+function ind_login_message( $message ) {
+	$reset_message = '<p class="message">' . __('Please enter your username or email address. You will receive a link to create a new password via email.') . '</p>';
+	if($message == $reset_message) {
+		$message = '<p class="message">' . __('Please enter your username or email address to reset your password. You will receive a link via email to continue the process.', 'indagare') . '</p>';
+	}
+
+	return $message;
+}
+
+function ind_validate_password_reset( $errors, $user ) {
+	if ( $errors->get_error_code() ) {
+		return;
+	}
+
+	if ( ( ! $errors->get_error_code() ) && isset( $_POST['pass1'] ) && !empty( $_POST['pass1'] ) ) {
+		$ok = true;
+		if ( strlen( $_POST['pass1'] ) < 8 ) {
+			$errors->add( 'password_reset_length', __( 'The password must be at least 8 characters long.' ) );
+			$ok = false;
+		}
+
+		if ( preg_match( '/[a-z]/i', $_POST['pass1'] ) != 1 ) {
+			$errors->add( 'password_reset_length', __( 'The password must contain one or more letters.' ) );
+			$ok = false;
+		}
+
+		if ( preg_match( '/[0-9]/', $_POST['pass1'] ) != 1 ) {
+			$errors->add( 'password_reset_length', __( 'The password must contain one or more numbers.' ) );
+			$ok = false;
+		}
+	}
+};
+
+// add the action
+add_action( 'validate_password_reset', 'ind_validate_password_reset', 10, 2 );
+
 
 /**
  * Hide the admin bar for non-admin users
