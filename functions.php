@@ -6403,9 +6403,33 @@ jQuery().ready(function($) {
 			echo '</div><!-- #primary -->'."\n";
 		}
 
+		$rowsscout = get_field('author-currently-scouting', $userid);
 		$rows = get_field('author-recently-visited', $userid);
 
-			if ( $rows ) {
+		if ( $rowsscout ) {
+
+			echo '<section class="recent-articles contain">'."\n";
+				echo '<div class="header divider"><h2>'.$user->first_name.' is Currently Scouting</h2></div>'."\n";
+				foreach ( $rowsscout as $row ) {
+					$imageobj = $row['author-currently-scouting-image'];
+					$image = $imageobj['sizes']['thumb-small'];
+
+					echo '<article>'."\n";
+						echo '<a href="'.$row['author-currently-scouting-url'].'">'."\n";
+							if ( $image ) {
+								echo '<img src="'.$image.'" alt="Related" />'."\n";
+							} else {
+								echo '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-small-logo.png" alt="Related" />'."\n";
+							}
+							echo '<h3>'.$row['author-currently-scouting-title'].'</h3>'."\n";
+						echo '</a>'."\n";
+					echo '</article>'."\n";
+				}
+			echo '</section><!-- .recent-articles -->'."\n";
+
+		}
+
+		if ( $rows ) {
 
 			echo '<section class="recent-articles contain">'."\n";
 				echo '<div class="header divider"><h2>'.$user->first_name.' Recently Visited</h2></div>'."\n";
