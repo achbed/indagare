@@ -136,6 +136,9 @@ class AjaxHandler {
 
 			add_action( 'wp_ajax_idj-newcontact', array( $this, 'newcontact_wp' ) );
 			add_action( 'wp_ajax_nopriv_idj-newcontact', array( $this, 'newcontact_wp' ) );
+
+			add_action( 'wp_ajax_idj-invite', array( $this, 'invite_wp' ) );
+			add_action( 'wp_ajax_nopriv_idj-invite', array( $this, 'invite_wp' ) );
 		}
 	}
 
@@ -268,12 +271,26 @@ class AjaxHandler {
 	 * @return integer|\WP_Error The ID of the new account, or WP_Error on failure.
 	 */
 	private static function create_wp_account() {
+		if ( ! empty( $_POST['cid'] ) ) {
+			$c = new \WPSF\Contact( $_POST['cid'] );
+			if ( empty( $c ) ) {
+				return new \WP_Error('Error getting Contact information');
+			}
+			$email = $c->Email;
+			$fn = $c->FirstName;
+			$ln = $c->LastName;
+		} else {
+			$email = $_POST['email'];
+			$fn = $_POST['fn'];
+			$ln = $_POST['ln'];
+		}
+
 		$u = new \WP_User();
 		$u->user_login = $_POST['username'];
 		$u->user_pass = $_POST['password'];
-		$u->user_email = $_POST['email'];
-		$u->user_firstname = $_POST['fn'];
-		$u->user_lastname = $_POST['ln'];
+		$u->user_email = $email;
+		$u->user_firstname = $fn;
+		$u->user_lastname = $ln;
 		$u->roles = array('subscriber');
 		return wp_insert_user( $u );
 	}
@@ -547,6 +564,47 @@ class AjaxHandler {
 		if ( ! $response['success'] ) {
 			return wp_send_json_error( $response );
 		}
+
+		return wp_send_json_success( $response );
+	}
+
+	/**
+	 * Handles account setup for a paid membership that has an invite on it.
+	 * Returns status as a JSON object.
+	 */
+	public static function invite_wp() {
+		header('Content-Type: application/json');
+		global $acc;
+
+		$response = array(
+			'success' => true,
+		);
+
+		$cid = $_POST['cid'];
+		$c = new \WPSF\Contact( $cid );
+
+		// We are creating new.
+		$id = self::create_wp_account();
+		if ( is_wp_error( $id ) ) {
+			print json_encode(array(
+				'error' => 'WP user creation failure.',
+				'messages' => $id->get_error_messages(),
+			));
+			exit();
+		}
+
+		/** I HATE WORKAROUNDS LIKE THIS. Just let me save via the name dammit. **/
+		global $wpsf_acf_fields;
+		update_field( $wpsf_acf_fields['wpsf_contactid'], $cid, 'user_'.$id );
+
+		wp_signon( array(
+			'user_login' => $_POST['username'],
+			'user_password' => $_POST['password'],
+			'remember' => true,
+		) );
+
+		$c['WP_Username__c'] = $_POST['username'];
+		$c->update();
 
 		return wp_send_json_success( $response );
 	}

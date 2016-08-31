@@ -4,15 +4,77 @@ include_once 'user.php';
 include_once 'db.php';
 
 class WPContent {
+	/**
+	 * Reads the given resource file from the resources folder, and returns
+	 * it as a single string.
+	 *
+	 * @param string $file The name of the resource file (without any path).
+	 *
+	 * @return string The contents of the resource file or false on failure.
+	 */
+	private static function get_resource( $file ) {
+		$path = dirname( __DIR__ ) . DIRECTORY_SEPARATOR . $file;
+
+		if ( ! file_exists( $path ) ) {
+			return '';
+		}
+
+		$r = file_get_contents( $path );
+
+		if( $r === false ) {
+			$r = '';
+		}
+
+		return $r;
+	}
+
+	/**
+	 * Returns HTML content for a given page
+	 *
+	 * @param string $page The page to retrieve.  Currently supports "signup", "account", or "invite".
+	 *
+	 * @return string The HTML content.
+	 */
 	public static function getContent($page) {
 		switch ($page) {
 			case "signup" :
 				return WPContent::getSignup();
 			case "account" :
 				return WPContent::getAccount();
+			case "invite" :
+				return WPContent::getInvite();
 			default :
 				return "Content not available";
 		}
+	}
+
+	/**
+	 * Returns the HTML for the Site Invite form.
+	 *
+	 * @return string The HTML content.
+	 */
+	private static function getInvite() {
+		$content = '';
+
+		if ( empty( $_GET['c'] ) || empty( $_GET['h'] ) ) {
+			// No data.  Redirect to ..... homepage?
+			wp_redirect( '/' );
+			return '';
+		}
+
+		$cid = $_GET['c'];
+		$hash = $_GET['h'];
+		$c = new \WPSF\Contact( $cid );
+		if ( $hash != $c->get_invite_hash() ) {
+			// Hash error. Redirect to ..... homepage for now, we need to
+			// build an error page
+			wp_redirect( '/' );
+			return '';
+		}
+
+		$content .= self::get_resource('invite.html');
+
+		return $content;
 	}
 
 	private static function getAccount() {
@@ -65,7 +127,8 @@ class WPContent {
 		$content .= "};\n";
 		$content .= "</script>\n";
 
-		$content .= file_get_contents( $_SERVER['DOCUMENT_ROOT'].'/wp-content/themes/indagare/app/resources/account.html');
+		//$content .= file_get_contents( $_SERVER['DOCUMENT_ROOT'].'/wp-content/themes/indagare/app/resources/account.html');
+		$content .= self::get_resource('account.html');
 
 		$front = get_option('page_on_front');
 		$rows = get_field('home-featured', $front );
@@ -129,14 +192,6 @@ class WPContent {
 		$mb_js_arr = json_encode( $mb_js_arr );
 
 		$mb_y = 0;
-		/*
-		if (isset($_GET["referralcode"])) {
-			$rc = sanitize_text_field( urldecode( $_GET["referralcode"] ) );
-			if ("TRIAL-B" == substr($rc, 0, 7)) {
-				$reftype = 1;
-			}
-		}*/
-		//echo $acc->user->toString();
 		$getstrings=array("pc","gdsType","cin","cout");
 		$content = "<script type='text/javascript'>
 			var trialCode = '" . $trial . "';
@@ -168,7 +223,8 @@ class WPContent {
 		}
 		$content.="</script>\n";
 
-		$content = $content . file_get_contents( $_SERVER['DOCUMENT_ROOT'].'/wp-content/themes/indagare/app/resources/signup.html');
+		//$content = $content . file_get_contents( $_SERVER['DOCUMENT_ROOT'].'/wp-content/themes/indagare/app/resources/signup.html');
+		$content .= self::get_resource('signup.html');
 
 		return $content;
 	}
