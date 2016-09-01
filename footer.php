@@ -12,6 +12,10 @@
  */
 	// action hook for placing content above the closing of the #main div
 	thematic_abovemainclose();
+
+	if ( is_page() && ( get_field('membership') == 'yes' ) ) {
+		echo '</div><!-- .candy-inner -->'."\n";
+	}
 ?>
 			</div><!-- .candy-wrapper -->
 		</div><!-- #main -->
