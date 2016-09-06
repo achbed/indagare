@@ -401,6 +401,14 @@ article.custom h2 {border-top:1px solid #ccc;padding-top:.95em;}
 	padding: 0 10px;
 }
 
+.join h1, .join.ourprocess h1 {
+	padding-bottom: 0;
+	color: #986A4C;
+	border-bottom: none;
+	font-size: 2.5em;
+	font-family: 'Helvetica Neue Thin', sans-serif;
+}
+
 .join #main .image-wrapper {
 	max-width: 1280px;
 	margin: 0 auto;
@@ -412,8 +420,11 @@ article.custom h2 {border-top:1px solid #ccc;padding-top:.95em;}
 }
 
 .join #main .step {
+	max-width: 630px;
+	margin: 0 auto;
 	padding-top: 4.5em;
 	text-align: center;
+/*	color: #404040; */
 }
 
 .join #main .stepnumber {
@@ -424,11 +435,42 @@ article.custom h2 {border-top:1px solid #ccc;padding-top:.95em;}
     width: 1.25em;
     height: 1.25em;
     text-align: center;
-    line-height: 1.25em;
+    line-height: 1em;
     font-size: 7em;
 	background: #fff;
+	color: #000;
     border-radius: 1.25em;
     -webkit-border-radius: 1.25em;
+    font-family: Georgia, Times New Roman, Times, serif;
+    font-weight: 700;
+}
+
+.join #main .step h2 {
+	color: #986A4C;
+	font-size: 3em;
+	font-family: 'Helvetica Neue Thin', sans-serif;
+}
+
+.join #main .step p {
+	font-size: 1.2857em;
+}
+
+.join #main .join-cta {
+	text-align: center;
+    margin: 2em 0;
+    border-top: 1px solid #000;
+    line-height: 0;
+    font-size: 2.5em;
+	font-family: 'Helvetica Neue Thin', sans-serif;
+}
+
+.join #main .join-cta a {
+	color: #fff;
+    background: #336699;
+    padding: .25em 40px;
+    border-left: 20px solid #f5f6f7;
+    border-right: 20px solid #f5f6f7;
+    font-weight: 100;
 }
 
 #join-today {padding:0 10px;margin:1.429em 0;}

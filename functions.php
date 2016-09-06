@@ -5359,6 +5359,8 @@ function child_singlepost($content) {
 				$content .= $stepcontent;
 				$content .= '</div>'."\n";
 				
+				$content .= '<div class="join-cta"><a href="/join/">Join</a></div>'."\n";
+				
 				$i++;
 				
 			}
