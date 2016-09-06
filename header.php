@@ -88,3 +88,8 @@
     ?>
 	<div id="main">
 		<div class="candy-wrapper contain">
+<?php
+	if ( is_page() && ( get_field('membership') == 'yes' ) ) {
+		echo '<div class="candy-inner">'."\n";
+	}
+?>

@@ -1041,6 +1041,22 @@ article.custom h2 { border-top: 1px solid #ccc; padding-top: .95em; }
 
 /* join */
 /* ------------------------------------------------------------------------- */
+.join #main { padding-left: 0; padding-right: 0; }
+
+.join #main .candy-wrapper { max-width: 1020px; padding-top: 1.125em; padding-left: 10px; padding-right: 10px; background: #f5f6f7; }
+
+.join #main .candy-inner { max-width: 940px; margin: 0 auto; }
+
+.join #main .container.standard { float: none; width: 100%; padding: 0 10px; }
+
+.join #main .image-wrapper { max-width: 1280px; margin: 0 auto; }
+
+.join #main .image-wrapper img { display: block; width: 100%; }
+
+.join #main .step { padding-top: 4.5em; text-align: center; }
+
+.join #main .stepnumber { position: absolute; left: 50%; margin-left: -.625em; top: -.625em; width: 1.25em; height: 1.25em; text-align: center; line-height: 1.25em; font-size: 7em; background: #fff; border-radius: 1.25em; -webkit-border-radius: 1.25em; }
+
 #join-today { padding: 0 10px; margin: 1.429em 0; }
 
 .join-indagare { display: table; border-radius: 4px; height: 1%; width: 100%; background-color: #2362a6; color: #fff; }
@@ -1876,7 +1892,10 @@ section article a {
 
 .about .recent-articles article { width: 25%; }
 
-.ourprocess #container.standard { float: left; width: 66.66%; }
+.ourprocess #container.standard { /*
+	float: left;
+	width: 66.66%;
+*/ }
 
 .ourprocess h1 { margin: 0 0 0.6786em; padding-bottom: .5357em; border-bottom: 1px solid #ccc; }
 

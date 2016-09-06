@@ -2486,6 +2486,7 @@ jQuery().ready(function($) {
 	// how we work page
 	} else if (is_page_template ( 'template-page-how-we-work.php' ) ) {
 
+/*
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
 		$image = $imageobj[0];
 
@@ -2496,6 +2497,8 @@ jQuery().ready(function($) {
 			}
 			echo '</div>'."\n";
 		}
+*/
+
 	// end how we work page
 
 	// welcome page
@@ -5336,11 +5339,42 @@ function child_singlepost($content) {
 	// 	how we work page
 	} else if (is_page_template ( 'template-page-how-we-work.php' ) ) {
 
+		$rows = get_field('steps');
+
 		$content = '';
 
 		$content .= '<h1>'.get_the_title().'</h1>'."\n";
 
 		$content .= $basecontent;
+		
+		$i = 1;
+		
+		if ( $rows ) {
+		
+			foreach($rows as $row) {
+
+				$steptitle = $row['step-title'];
+				$stepcontent = $row['step-content'];
+				$imageobj = $row['step-image'];
+				$image = $imageobj['url'];
+
+				if ($imageobj) {
+					$content .= '</div></div></div></div></div></div>'."\n";
+					$content .= '<div class="image-wrapper"><img src="'.$image.'" alt="" /></div>'."\n";
+					$content .= '<div class="candy-wrapper contain"><div class="candy-inner"><div class="container standard"><div class="content"><div class="hentry"><div class="entry-content">'."\n";
+				}
+
+				$content .= '<div class="step">'."\n";
+				$content .= '<div class="stepnumber">'.$i.'</div>'."\n";
+				$content .= '<h2>'.$steptitle.'</h2>'."\n";
+				$content .= $stepcontent;
+				$content .= '</div>'."\n";
+				
+				$i++;
+				
+			}
+		
+		}
 
 	// end how we work page
 
@@ -6516,6 +6550,7 @@ jQuery().ready(function($) {
 	// sidebar for how we work page
 	if ( is_page_template('template-page-how-we-work.php') ) {
 
+/*
 		echo '<div id="primary">'."\n";
 
 			echo '<a class="contact" href="/why-join/"><img src="'.get_bloginfo('stylesheet_directory').'/images/contact-how-we-work.png"></a>'."\n";
@@ -6549,6 +6584,8 @@ jQuery().ready(function($) {
 			}
 
 		echo '</div><!-- #primary -->'."\n";
+
+*/
 
 	} // end sidebar for how we work page
 
