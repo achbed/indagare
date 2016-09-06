@@ -5367,6 +5367,11 @@ function child_singlepost($content) {
 		
 		}
 
+		$content .= '<div class="join-contact">'."\n";
+		$content .= '<div class="left"><h4>Question about Indagare? </h4></div>';
+		$content .= '<div class="right"><span>Contact Us:</span> <a href="tel:+12129882611">212-988-2611</a>&nbsp;|&nbsp;<a href="mailto:membership@indagare.com">membership@indagare.com</a></div>';
+		$content .= '</div>'."\n";
+
 	// end how we work page
 
 	// why join page

@@ -1063,9 +1063,19 @@ article.custom h2 { border-top: 1px solid #ccc; padding-top: .95em; }
 
 .join #main .step p { font-size: 1.2857em; }
 
-.join #main .join-cta { text-align: center; margin: 2em 0; border-top: 1px solid #000; line-height: 0; font-size: 2.5em; font-family: 'Helvetica Neue Thin', sans-serif; }
+.join #main .join-cta { text-align: center; margin: 2em 0; border-top: 2px solid #000; line-height: 0; font-size: 2.5em; font-family: 'Helvetica Neue Thin', sans-serif; }
 
 .join #main .join-cta a { color: #fff; background: #336699; padding: .25em 40px; border-left: 20px solid #f5f6f7; border-right: 20px solid #f5f6f7; font-weight: 100; }
+
+.join #main .join-contact { margin-bottom: 2em; padding: 1.5em 0; border-top: 2px solid #000; border-bottom: 2px solid #000; font-size: 1.5em; }
+
+.join #main .join-contact div.left { display: inline-block; }
+
+.join #main .join-contact div.right { display: inline-block; }
+
+.join #main .join-contact h4 { display: inline-block; color: #986A4C; text-transform: none; font-size: 1.33em; }
+
+.join #main .join-contact span { text-transform: uppercase; font-size: .75em; font-weight: 700; }
 
 #join-today { padding: 0 10px; margin: 1.429em 0; }
 
