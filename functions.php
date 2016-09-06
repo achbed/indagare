@@ -135,13 +135,24 @@ add_action( 'validate_password_reset', 'ind_validate_password_reset', 10, 2 );
 /**
  * Hide the admin bar for non-admin users
  */
-add_action('after_setup_theme', 'remove_admin_bar');
-
-function remove_admin_bar() {
-	if (!current_user_can('administrator') && !is_admin()) {
-		show_admin_bar(false);
+function ind_after_setup_theme() {
+	if ( ! is_admin() ) {
+		// We're not on an admin page.
+		show_admin_bar( current_user_can( 'admin_toolbar' ) );
 	}
 }
+add_action( 'after_setup_theme', 'ind_after_setup_theme');
+
+
+function restrict_admin_with_redirect() {
+	if ( ! current_user_can( 'manage_options' ) && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
+		// Revoke access to the admin pages
+		wp_redirect( site_url() );
+		exit;
+	}
+}
+add_action( 'admin_init', 'restrict_admin_with_redirect', 1 );
+
 
 add_action('wp','indagare_wp_handle');
 function indagare_wp_handle() {
