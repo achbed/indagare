@@ -8718,8 +8718,6 @@ function reset_user_password( $login ) {
 function user_has_permission() {
 	global $wp_query;
 
-	if ( is_admin() || current_user_can( 'manage_options' ) ) { return true; }
-
 	if ( is_posttype( 'itinerary', POSTTYPE_ARCHIVEONLY ) ) {
 		return current_user_can( 'ind_read_itinerary' );
 	}
@@ -8731,5 +8729,5 @@ function user_has_permission() {
 			( $current /* && current_user_can( 'ind_read_magazine' ) */ ) );
 	}
 
-	return false;
+	return true;
 }
