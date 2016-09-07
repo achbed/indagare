@@ -1079,6 +1079,12 @@ article.custom h2 { border-top: 1px solid #ccc; padding-top: .95em; }
 
 .join #main h2 a:active, .join #main h2 a:hover { color: #000; }
 
+.join .believeleft { float: left; width: 39%; padding-right: 10px; }
+
+.join .believeright { float: right; width: 61%; padding-left: 10px; }
+
+.join .believeright img { width: 100%; }
+
 .join #main .indbenefit, .join #main .advantage { margin-left: -10px; margin-right: -10px; }
 
 .join #main .indbenefit article { margin: 0 auto 1.072em; text-align: center; }
@@ -1095,7 +1101,7 @@ article.custom h2 { border-top: 1px solid #ccc; padding-top: .95em; }
 
 .join #main .advantage p { /*	font-size: 2em; */ }
 
-.join #main .join-cta { text-align: center; margin: 2em 0; border-top: 2px solid #000; line-height: 0; font-size: 2.5em; font-family: 'Helvetica Neue Thin', sans-serif; }
+.join #main .join-cta { text-align: center; margin: 2em 0; border-top: 2px solid #000; line-height: 0; font-size: 2.5em; font-family: 'Helvetica Neue Thin', sans-serif; clear: both; }
 
 .join #main .join-cta a { color: #fff; background: #3A8ECD; padding: .25em 40px; border-left: 20px solid #f5f6f7; border-right: 20px solid #f5f6f7; font-weight: 100; }
 
@@ -2215,11 +2221,15 @@ ul.children div.comment-reply-link { margin: 0 -20px; padding: 0 20px .643em; bo
   .home #rslideswrapper .next:after, .book #rslideswrapper .next:after, .archive .rslideswrapper .next:after, .single #rslideswrapper .next:after, .welcome #rslideswrapper .next:after { background-position: -36px 0; }
   /* AKB */ }
 /* content */
-@media screen and (max-width: 930px) { .join #main .join-contact div.left, .join #main .join-contact div.right { display: block; float: none; margin: 0 auto; text-align: center; } }
+@media screen and (max-width: 930px) { .join #main .join-contact div.left, .join #main .join-contact div.right { display: block; float: none; margin: 0 auto; text-align: center; }
+  .join .believeleft { width: 50%; }
+  .join .believeright { width: 50%; } }
 @media screen and (max-width: 750px) { .header br { display: none; }
   /* AKB */
   /* additional styles for intro page articles */
-  .intro .all-destinations.center article { width: 50%; margin-left: 0; margin-right: 0; } }
+  .intro .all-destinations.center article { width: 50%; margin-left: 0; margin-right: 0; }
+  .join .believeleft { float: none; width: 100%; padding-right: 0; }
+  .join .believeright { float: none; width: 100%; padding-left: 0; } }
 @media screen and (max-width: 590px) { .all-magazines article .magazine { min-height: 450px; }
   .join .collapsegroup ul { float: none; width: 100%; margin-bottom: 0; } }
 @media screen and (max-width: 500px) { .pullquote { float: none; width: 100%; padding: .714em 0 0 0; }

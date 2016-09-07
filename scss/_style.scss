@@ -485,6 +485,22 @@ article.custom h2 {border-top:1px solid #ccc;padding-top:.95em;}
 	color: #000;
 }
 
+.join .believeleft {
+	float: left;
+	width: 39%;
+	padding-right: 10px;
+}
+
+.join .believeright {
+	float: right;
+	width: 61%;
+	padding-left: 10px;
+}
+
+.join .believeright img {
+	width: 100%;
+}
+
 .join #main .indbenefit, .join #main .advantage {
 	margin-left: -10px;
 	margin-right: -10px;
@@ -536,6 +552,7 @@ article.custom h2 {border-top:1px solid #ccc;padding-top:.95em;}
     line-height: 0;
     font-size: 2.5em;
 	font-family: 'Helvetica Neue Thin', sans-serif;
+	clear: both;
 }
 
 .join #main .join-cta a {
@@ -2849,6 +2866,14 @@ ul.children div.comment-reply-link { margin: 0 -20px; padding: 0 20px .643em; bo
 		margin: 0 auto;
 		text-align: center;
 	}
+	
+	.join .believeleft {
+		width: 50%;
+	}
+
+	.join .believeright {
+		width: 50%;
+	}
 }
 
 @media screen and (max-width:750px){
@@ -2859,6 +2884,18 @@ ul.children div.comment-reply-link { margin: 0 -20px; padding: 0 20px .643em; bo
 		width: 50%;
 		margin-left: 0;
 		margin-right: 0;
+	}
+
+	.join .believeleft {
+		float: none;
+		width: 100%;
+		padding-right: 0;
+	}
+
+	.join .believeright {
+		float: none;
+		width: 100%;
+		padding-left: 0;
 	}
 
 }
