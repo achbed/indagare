@@ -1310,10 +1310,8 @@ global $post;
 	    }
 
 	// archive itinerary - lock out unless visitor is logged-in user
-	} else if ( is_posttype( 'itinerary', POSTTYPE_ARCHIVEONLY ) ) {
-		if( !current_user_can( 'ind_read_itinerary' ) ) {
-			wp_enqueue_script('show.join.popup');
-	    }
+	} else if ( ! user_has_permission() ) {
+		wp_enqueue_script('show.join.popup');
 	}
 
 }
@@ -5335,11 +5333,11 @@ function child_singlepost($content) {
 		$content .= '<h1>'.get_the_title().'</h1>'."\n";
 
 		$content .= $basecontent;
-		
+
 		$i = 1;
-		
+
 		if ( $rows ) {
-		
+
 			foreach($rows as $row) {
 
 				$steptitle = $row['step-title'];
@@ -5358,11 +5356,11 @@ function child_singlepost($content) {
 				$content .= '<h2>'.$steptitle.'</h2>'."\n";
 				$content .= $stepcontent;
 				$content .= '</div>'."\n";
-				
+
 				$i++;
-				
+
 			}
-		
+
 		}
 
 	// end how we work page
@@ -7063,7 +7061,7 @@ jQuery(document).ready(function($) {
 		<h2>Member Login</h2>
 	</header>
 
-	<form id="form-login" class="login" method="post" novalidate<?php
+	<form id="form-login" class="login ajax-login" method="post" novalidate<?php
 	if (is_page_template ( 'template-page-intro.php' ) ) {
 		print ' data-successurl="/"';
 	}
@@ -7131,7 +7129,7 @@ jQuery(document).ready(function($) {
 		<h3>Already a Member?</h3>
 		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/join-3.jpg" alt="" />
 
-		<form id="form-login" class="login" method="post" novalidate>
+		<form id="form-login" class="login ajax-login" method="post" novalidate>
 			<div id="field1-container" class="field">
 			   <label for="field1">
 					Username or Email
@@ -7175,7 +7173,39 @@ jQuery(document).ready(function($) {
 	</footer>
 </div><!-- #lightbox-join -->
 <?php
-	} // end content lockout modal
+	} else if ( ! user_has_permission() ) {
+		// User is logged in but still has no permission. This dialog should prompt them to upgrade or renew their membership
+?>
+<div id="lightbox-join" class="lightbox white-popup mfp-hide">
+	<header>
+		<h2>Sorry!</h2>
+		<p>You've exceeded the amount of content available to non-paying members. We would love to have you as part of our community.
+		If you're not ready to renew your membership, <a href="/">return to our hotel reviews</a> &#8212; these are available to everyone.</p>
+	</header>
+	<div class="column one-half first">
+		<h3>Why Renew?</h3>
+		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/join-1.jpg" alt="" />
+		<ul>
+			<li>To enjoy unlimited access to the online content and our Black Book magazines.</li>
+			<li>To receive special rates &amp; amenities at hundreds of hotels and resorts worldwide.</li>
+			<li>To benefit from customized trip planning from our expert team.</li>
+			<li>To gain access to Insider Trips, events and more.</li>
+		</ul>
+		<a href="/why-join/" class="button">Learn More</a>
+	</div><!-- .column -->
+
+	<div class="column one-half">
+		<h3>Renew or Upgrade Now</h3>
+		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/join-2.jpg" alt="" />
+		<ul>
+			<li>Four levels of membership designed for everyone from the leisure traveler to the corporate client.</li>
+			<li>Savings on just one hotel booking usually surpass the cost of a basic membership thanks to special rates.</li>
+		</ul>
+		<a href="/account" class="button">Renew Now</a>
+	</div><!-- .column -->
+</div><!-- #lightbox-join -->
+<?php
+	}// end content lockout modal
 
 	// lightbox interstitial modals for booking and flights
 	if ( ! ind_logged_in() ) {
@@ -8525,4 +8555,26 @@ function reset_user_password( $login ) {
 		wp_die( __('The email could not be sent.') . "<br />\n" . __('Possible reason: your host may have disabled the mail() function.') );
 
 	return true;
+}
+
+/**
+ * Checks to see if the current logged in user has permission to view this page/item/something.
+ *
+ * @return boolean True if they have permission, False if not.
+ */
+function user_has_permission() {
+	global $wp_query;
+
+	if ( is_posttype( 'itinerary', POSTTYPE_ARCHIVEONLY ) ) {
+		return current_user_can( 'ind_read_itinerary' );
+	}
+
+	if ( is_posttype( 'magazine', POSTTYPE_ARCHIVEONLY ) ) {
+		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+		$current = ( $paged == 1 && $wp_query->current_post == 0 );
+		return ( current_user_can( 'ind_read_magazine_archive' ) ||
+			( $current /* && current_user_can( 'ind_read_magazine' ) */ ) );
+	}
+
+	return false;
 }
