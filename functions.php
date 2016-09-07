@@ -8718,12 +8718,17 @@ function reset_user_password( $login ) {
 function user_has_permission() {
 	global $wp_query;
 
-	if ( is_posttype( 'itinerary', POSTTYPE_ARCHIVEONLY ) ) {
+	if ( is_posttype( 'itinerary', POSTTYPE_ARCHIVEORSINGLE ) ) {
 		return current_user_can( 'ind_read_itinerary' );
 	}
 
+	if ( is_posttype( 'magazine', POSTTYPE_SINGLEONLY ) ) {
+		// Check if this is the most recent post somehow
+	}
+
 	if ( is_posttype( 'magazine', POSTTYPE_ARCHIVEONLY ) ) {
-		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+		return true;
+		$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 		$current = ( $paged == 1 && $wp_query->current_post == 0 );
 		return ( current_user_can( 'ind_read_magazine_archive' ) ||
 			( $current /* && current_user_can( 'ind_read_magazine' ) */ ) );
