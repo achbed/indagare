@@ -477,6 +477,14 @@ article.custom h2 {border-top:1px solid #ccc;padding-top:.95em;}
 	color: #3A8ECD;
 }
 
+.join #main h2 a:link, .join #main h2 a:visited {
+	color: #986A4C;
+}
+
+.join #main h2 a:active, .join #main h2 a:hover {
+	color: #000;
+}
+
 .join #main .indbenefit, .join #main .advantage {
 	margin-left: -10px;
 	margin-right: -10px;
