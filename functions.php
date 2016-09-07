@@ -5419,11 +5419,19 @@ function child_singlepost($content) {
 	// why join page
 	} else if (is_page_template ( 'template-page-why-join.php' ) ) {
 
+		$imgsrc = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' );
+		
 		$content = '';
 
 		$content .= '<h1>'.get_the_title().'</h1>'."\n";
 
 		$content .= $basecontent;
+
+		if ( $imgsrc ) {
+
+			$content .= '<div><img src="'.$imgsrc.'" /></div>'."\n";		
+
+		}
 
 		$content .= '<div class="join-cta"><a href="/join/">Join</a></div>'."\n";
 
