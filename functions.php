@@ -1062,7 +1062,7 @@ function enqueue_scripts_here() {
 		if ( gallery_shortcode($post->ID) ){
 			register_new_royalslider_files(1);
 		}
-		
+
 		// why join page
 		$rows = get_field('gallery');
 		if($rows && is_page_template ( 'template-page-why-join.php' ) ) {
@@ -5336,7 +5336,7 @@ function child_singlepost($content) {
 				$content .= '<div>'."\n";
 					$content .= '<h2><a href="#faq'.$i.'">'.$q.'</a></h2>'."\n";
 				$content .= '</div>'."\n";
-				
+
 				$i++;
 			}
 		}
@@ -5402,7 +5402,7 @@ function child_singlepost($content) {
 				$content .= '</div>'."\n";
 
 				$content .= '<div class="join-cta"><a href="/join/">Join</a></div>'."\n";
-				
+
 				$i++;
 
 			}
@@ -5459,13 +5459,13 @@ function child_singlepost($content) {
 				}
 
 			$content .= '</section>'."\n";
-		
+
 		}
 
 		$rows = get_field('gallery');
 
 		if ( $rows ) {
-		
+
 			$content .= '</div></div></div></div></div></div>'."\n";
 
 			$content .= '<div class="image-wrapper">'."\n";
@@ -5499,7 +5499,7 @@ function child_singlepost($content) {
 			$content .= '</ul><!--.hero.rslides-->'."\n";
 
 			$content .= '</div>'."\n";
-		
+
 			$content .= '<div class="candy-wrapper contain"><div class="candy-inner"><div class="container standard"><div class="content"><div class="hentry"><div class="entry-content">'."\n";
 
 		}
@@ -5528,7 +5528,7 @@ function child_singlepost($content) {
 				}
 
 			$content .= '</section>'."\n";
-		
+
 		}
 
 		$content .= '<div class="join-contact">'."\n";
@@ -8737,5 +8737,5 @@ function user_has_permission() {
 			( $current /* && current_user_can( 'ind_read_magazine' ) */ ) );
 	}
 
-	return false;
+	return true;
 }
