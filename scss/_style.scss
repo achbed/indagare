@@ -2031,6 +2031,21 @@ article.magazine .photo-gallery {
 	.signup  #subnav-magazine .menu-item-16842 a /* AKB */ {
 		border-bottom: 1px solid #ccc;
 	}
+	
+	.join #subnav-magazine a:link, .join #subnav-magazine a:visited {
+		color: #808080;
+	}
+	
+	.join #subnav-magazine .current a,
+	.join #subnav-magazine .current-menu-item a {
+		color: #000;
+		border-bottom: 3px solid #000;
+	}
+
+	.join #subnav-magazine a:hover, .join #subnav-magazine a:active {
+		color: #000;
+	}
+
 
 .about .header.magazine {
 	border: none;
