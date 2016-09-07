@@ -5429,6 +5429,33 @@ function child_singlepost($content) {
 
 		$content .= '<div class="join-cta"><a href="/join/">Join</a></div>'."\n";
 
+		$content .= '<div class="header"><h2>What We Do Best</h2></div>'."\n";
+
+		$rows = get_field('benefit');
+
+		if($rows) {
+
+			$content .= '<section class="all-destinations contain indbenefit">'."\n";
+
+				foreach($rows as $row) {
+
+					$benefittitle = $row['benefit-title'];
+					$benefitcontent = $row['benefit-content'];
+					$imageobj = $row['benefit-image'];
+					$image = $imageobj['url'];
+
+					$content .= '<article>'."\n";
+						$content .= '<img src="'.$image.'" alt="" />'."\n";
+						$content .= '<h3>'.$benefittitle.'</h3>'."\n";
+						$content .= $benefitcontent;
+					$content .= '</article>'."\n";
+
+				}
+
+			$content .= '</section>'."\n";
+		
+		}
+
 		$rows = get_field('gallery');
 
 		if ( $rows ) {
