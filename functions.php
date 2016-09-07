@@ -5423,14 +5423,24 @@ function child_singlepost($content) {
 		
 		$content = '';
 
+		if ( $imgsrc ) {
+
+			$content .= '<div class="contain">'."\n";
+
+			$content .= '<div class="believeright"><img src="'.$imgsrc[0].'" /></div>'."\n";		
+			$content .= '<div class="believeleft">'."\n";
+
+		}
+
 		$content .= '<h1>'.get_the_title().'</h1>'."\n";
 
 		$content .= $basecontent;
 
 		if ( $imgsrc ) {
 
-			$content .= '<div><img src="'.$imgsrc.'" /></div>'."\n";		
+			$content .= '</div>'."\n";
 
+			$content .= '</div>'."\n";
 		}
 
 		$content .= '<div class="join-cta"><a href="/join/">Join</a></div>'."\n";
