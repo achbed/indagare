@@ -831,6 +831,7 @@ function register_scripts() {
 //    wp_register_script('responsivemap', $f.'/js/jquery.rwdImageMaps.min.js', array('jquery'), '', true);
     wp_register_script('customselect', $f.'/js/jquery.customSelect.min.js', array('jquery'), '', true);
     wp_register_script('lazyload', $f.'/js/jquery.lazyload.min.js', array('jquery'), '', true);
+    wp_register_script('equalheight', $f.'/js/jquery.matchHeight.js', array('jquery'), '', true);
 
     wp_register_script('indagare.maps-locations.google', '//maps.googleapis.com/maps/api/js?v=3?key=AIzaSyAkv3l4uMtV3heGoszUd_LR-Xy7Qxeecmw&sensor=false', array('jquery'), '', false);
 
@@ -931,9 +932,10 @@ function enqueue_scripts() {
 	    wp_enqueue_script('rslidesalt');
     }
 
-	// join page - responsive slides
+	// join page - responsive slides and equal height
 	if (is_page_template ( 'template-page-user-signup.php' ) ) {
 	    wp_enqueue_script('rslidesalt');
+	    wp_enqueue_script('equalheight');
     }
 
 	// why join page - responsive slides
@@ -5279,17 +5281,23 @@ function child_singlepost($content) {
 			}
 		}
 */
-		global $post;
 
-		$array = \WPSF\Membership::query_sellable();
-		if ( ! is_wp_error( $array ) ) {
-			foreach ( $array as $m ) {
-				$content .= $m->render();
+		$content .= '<section class="all-destinations memberlevels contain">'."\n";
+
+			global $post;
+
+			$array = \WPSF\Membership::query_sellable();
+			if ( ! is_wp_error( $array ) ) {
+				foreach ( $array as $m ) {
+					$content .= $m->render();
+				}
 			}
-		}
 
-		// Reset things back to normal
-		wp_reset_postdata();
+			// Reset things back to normal
+			wp_reset_postdata();
+
+		$content .= '</section>'."\n";
+
 
 		$rows = get_field('gallery');
 
@@ -7852,8 +7860,8 @@ jQuery().ready(function($) {
 
  	// join page
  	if ( is_page_template('template-page-user-signup.php') ) {
-?>
 
+/*
   $(function() {
     $(".rslides").responsiveSlides({
 		auto: true,             // Boolean: Animate automatically, true or false
@@ -7866,6 +7874,12 @@ jQuery().ready(function($) {
 
 	$('.rslides_tabs').insertAfter('#rslideswrapper');
   });
+*/
+
+?>
+
+    $('.memberlevelitems').matchHeight();
+    $('.memberlevelrecap').matchHeight();
 
 <?php
 	} // end join page

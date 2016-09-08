@@ -1103,6 +1103,16 @@ article.custom h2 { border-top: 1px solid #ccc; padding-top: .95em; }
 
 .join #main .advantage p { /*	font-size: 2em; */ }
 
+.join #main .memberlevel h2 { padding-bottom: 10px; border-bottom: 2px solid #000; }
+
+.join #main .memberlevel h3 { margin: 0 0 1.1em; padding: 10px 0; border-bottom: 2px solid #000; border-top: 2px solid #000; }
+
+.join #main .memberlevel p { font-size: 1.2857em; }
+
+.join #main .memberlevel ul { margin-left: 0; }
+
+.join #main .memberlevel li { margin-top: 10px; padding-bottom: 10px; border-bottom: 1px solid #404040; list-style: none; font-size: 1.1429em; }
+
 .join #main .join-cta { text-align: center; margin: 2em 0; border-top: 2px solid #000; line-height: 0; font-size: 2.5em; font-family: 'Helvetica Neue Thin', sans-serif; clear: both; }
 
 .join #main .join-cta a { color: #fff; background: #3A8ECD; padding: .25em 40px; border-left: 20px solid #f5f6f7; border-right: 20px solid #f5f6f7; font-weight: 100; }
