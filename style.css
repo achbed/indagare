@@ -1059,7 +1059,7 @@ article.custom h2 { border-top: 1px solid #ccc; padding-top: .95em; }
 
 .join #main strong { font-family: 'Helvetica Neue', sans-serif; }
 
-.join #main .image-wrapper { position: relative; max-width: 1280px; margin: 0 auto; }
+.join #main .image-wrapper { position: relative; /*	max-width: 1280px; */ max-height: 640px; margin: 0 auto; overflow: hidden; }
 
 .join #main .image-wrapper img { position: relative; display: block; width: 100%; }
 
@@ -1068,6 +1068,8 @@ article.custom h2 { border-top: 1px solid #ccc; padding-top: .95em; }
 .join #main .stepnumber { position: absolute; left: 50%; margin-left: -.625em; top: -.625em; width: 1.25em; height: 1.25em; text-align: center; line-height: 1em; font-size: 7em; background: #fff; color: #000; border-radius: 1.25em; -webkit-border-radius: 1.25em; font-family: Georgia, Times New Roman, Times, serif; font-weight: 700; }
 
 .join #main h2 { color: #986A4C; font-size: 1.7143em; font-family: 'Helvetica Neue Thin', sans-serif; }
+
+.join #main .step h2 { font-size: 2.5em; }
 
 .join #main .header h2 { font-size: 2.5em; }
 
@@ -1494,6 +1496,8 @@ button.filters .toggle { font-size: 150%; vertical-align: middle; line-height: 6
 .join .image-wrapper .rslides_tabs li a { background: #fff; }
 
 .join .image-wrapper .rslides_tabs li.rslides_here a, .join .image-wrapper .rslides_tabs li:hover a { background: #3A8ECD; }
+
+.join .image-wrapper .rslides_tabs_wrapper { position: absolute; bottom: 0; width: 100%; }
 
 .join .quotewrapper { position: relative; max-width: 1020px; margin: 0 auto; z-index: 10; text-align: center; }
 

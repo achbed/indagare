@@ -420,8 +420,10 @@ article.custom h2 {border-top:1px solid #ccc;padding-top:.95em;}
 
 .join #main .image-wrapper {
 	position: relative;
-	max-width: 1280px;
+/*	max-width: 1280px; */
+	max-height: 640px;
 	margin: 0 auto;
+	overflow: hidden;
 }
 
 .join #main .image-wrapper img {
@@ -463,6 +465,7 @@ article.custom h2 {border-top:1px solid #ccc;padding-top:.95em;}
 }
 
 .join #main .step h2 {
+	font-size: 2.5em;
 }
 
 .join #main .header h2 {
@@ -1335,6 +1338,8 @@ button.apply-filters {
 }
 
 .join .image-wrapper .rslides_tabs li.rslides_here a, .join .image-wrapper .rslides_tabs li:hover a { background: #3A8ECD; }
+
+.join .image-wrapper .rslides_tabs_wrapper { position: absolute; bottom: 0; width: 100%; }
 
 .join .quotewrapper {
 	position: relative;
