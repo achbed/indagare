@@ -27,7 +27,7 @@ echo '<article class="memberlevel">'."\n";
 		echo wpautop("<strong>Best For:</strong> " . $post->post_content);
 	echo '</div>'."\n";
 	
-	echo '<div class="memberlevelselect"><a href="/join/?mb='.$post->membership->Id.'">Select</a></div>'."\n";	
+	echo '<div class="memberlevelselect"><a href="/signup?mb='.$post->membership->Id.'">Select</a></div>'."\n";	
 	
 echo '</article>'."\n";
 
