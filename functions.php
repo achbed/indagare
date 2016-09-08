@@ -5246,12 +5246,16 @@ function child_singlepost($content) {
 			$sorted = array();
 			foreach ( $array as $m ) {
 				$m->load_post();
+				$kamt = 0;
+				if ( ! empty( $m->Amount__c ) ) {
+					$kamt = $m->Amount__c;
+				}
 				if(empty($m->post) ) {
-					$k = 9999;
+					$k = 10000 + $kamt;
 				} else {
 					$k = get_field( 'sort', $m->post->ID );
 					if ( empty( $k ) ) {
-						$k = 9999;
+						$k = 10000 + $kamt;
 					}
 				}
 				$k = intval( $k );
