@@ -1046,8 +1046,10 @@ function enqueue_scripts_here() {
 		is_singular( 'hotel' ) || is_singular( 'restaurant' ) || is_singular( 'shop' ) || is_singular( 'activity' ) || is_singular( 'article' ) || is_singular( 'offer' ) || is_singular( 'insidertrip' )
 		// itinerary archive
 		|| (is_archive() && get_query_var('post_type') == 'itinerary')
+/*
 		// why join page
 		|| ( is_page_template ( 'template-page-why-join.php' ) )
+*/
 	) {
 
 		// queue up if there are gallery header images
@@ -1063,11 +1065,13 @@ function enqueue_scripts_here() {
 			register_new_royalslider_files(1);
 		}
 
+/*
 		// why join page
 		$rows = get_field('gallery');
 		if($rows && is_page_template ( 'template-page-why-join.php' ) ) {
 			register_new_royalslider_files(1);
 		}
+*/
 
 	}
 
@@ -2390,6 +2394,7 @@ jQuery().ready(function($) {
 	// sign up step one page
 	} else if (is_page_template ( 'template-page-user-signup.php' ) ) {
 
+/*
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
 		$image = $imageobj[0];
 		$overview = $post->post_content;
@@ -2408,6 +2413,7 @@ jQuery().ready(function($) {
 			}
 			echo '</div>'."\n";
 		}
+*/
 
 	// end sign up step one page
 
@@ -5229,6 +5235,10 @@ function child_singlepost($content) {
 
 		$content = '';
 
+		$content .= '<h1>'.get_the_title().'</h1>'."\n";
+
+		$content .= $basecontent;
+
 /*
 		$promocode_value = '';
 
@@ -5268,6 +5278,56 @@ function child_singlepost($content) {
 			}
 		}
 
+		$rows = get_field('gallery');
+
+		if ( $rows ) {
+
+			$content .= '</div></div></div></div></div></div>'."\n";
+
+			$content .= '<div class="image-wrapper">'."\n";
+
+			$content .= '<ul class="rslides">'."\n";
+
+				foreach($rows as $row) {
+
+					$quote = $row['gallery-quote'];
+					$citation = $row['gallery-citation'];
+					$imageobj = $row['gallery-image'];
+					$image = $imageobj['url'];
+
+					$content .= '<li>'."\n";
+						$content .= '<img src="'.$image.'" alt="" />'."\n";
+						if ( $quote ) {
+							$content .= '<div class="quotewrapper">'."\n";
+								$content .= '<div class="quoteinner">'."\n";
+									$content .= '<p>&ldquo;'.$quote.'&rdquo;';
+									if ( $citation ) {
+										$content .= '<br /><em>'.$citation.'</em>';
+									}
+									$content .= '</p>';
+								$content .= '</div>'."\n";
+							$content .= '</div>'."\n";
+						}
+					$content .= '</li>'."\n";
+
+				}
+
+			$content .= '</ul><!--.hero.rslides-->'."\n";
+			
+			$content .= '<div class="rslides_tabs_wrapper"></div>'."\n";
+
+			$content .= '</div>'."\n";
+
+			$content .= '<div class="candy-wrapper contain"><div class="candy-inner"><div class="container standard"><div class="content"><div class="hentry"><div class="entry-content">'."\n";
+
+		}
+
+		$content .= '<div class="join-contact">'."\n";
+		$content .= '<div class="left"><h4>Question about Indagare? </h4></div>';
+		$content .= '<div class="right"><span>Contact Us:</span> <a href="tel:+12129882611">212-988-2611</a>&nbsp;|&nbsp;<a href="mailto:membership@indagare.com">membership@indagare.com</a></div>';
+		$content .= '</div>'."\n";
+
+/*
 		$rows = get_field('join-quote');
 		if ( $rows ) {
 
@@ -5297,6 +5357,7 @@ function child_singlepost($content) {
 			$content .= '</div>'."\n";
 
 		}
+*/
 
 	// end sign up step one page
 
@@ -5507,13 +5568,14 @@ function child_singlepost($content) {
 				}
 
 			$content .= '</ul><!--.hero.rslides-->'."\n";
+			
+			$content .= '<div class="rslides_tabs_wrapper"></div>'."\n";
 
 			$content .= '</div>'."\n";
 
 			$content .= '<div class="candy-wrapper contain"><div class="candy-inner"><div class="container standard"><div class="content"><div class="hentry"><div class="entry-content">'."\n";
 
 		}
-
 
 		$content .= '<div class="join-cta"><a href="/join/">Join</a></div>'."\n";
 
@@ -7943,6 +8005,13 @@ jQuery().ready(function($) {
 				}
 			}
 		}
+	// sign up step one page
+	} else if ( is_page_template ( 'template-page-user-signup.php' ) ) {
+		$gallery = get_field('gallery');
+		if ( $gallery ) {
+			$gallerycount = count($gallery);
+		}
+
 	// why join page
 	} else if ( is_page_template ( 'template-page-why-join.php' ) ) {
 		$gallery = get_field('gallery');
@@ -7953,7 +8022,10 @@ jQuery().ready(function($) {
 
 	echo '<!-- gallerycount '.$gallerycount.' -->'."\n";
 
-	if ( $gallerycount > 1 && !is_singular( 'hotel' ) && !is_singular( 'restaurant' ) && !is_singular( 'shop' ) && !is_singular( 'activity' ) && !is_singular('article') && !is_singular('offer') && !is_singular( 'insidertrip' ) && !is_post_type_archive('itinerary') && !is_page_template ( 'template-page-why-join.php' ) ) {
+	if ( 
+		$gallerycount > 1 && !is_singular( 'hotel' ) && !is_singular( 'restaurant' ) && !is_singular( 'shop' ) && !is_singular( 'activity' ) && !is_singular('article') && !is_singular('offer') && !is_singular( 'insidertrip' ) && !is_post_type_archive('itinerary') 
+		&& !is_page_template ( 'template-page-user-signup.php' ) && !is_page_template ( 'template-page-why-join.php' ) 
+	) {
 ?>
 <script>
 jQuery(document).ready(function($) {
@@ -8017,6 +8089,24 @@ jQuery(document).ready(function($) {
 });
 </script>
 <?php
+	} else if ( $gallerycount > 1 && is_page_template ( 'template-page-user-signup.php' ) ) {
+?>
+<script>
+jQuery(document).ready(function($) {
+    $(".rslides").responsiveSlides({
+		auto: true,             // Boolean: Animate automatically, true or false
+		speed: 500,            // Integer: Speed of the transition, in milliseconds
+		timeout: 4000,          // Integer: Time between slide transitions, in milliseconds
+		pager: true,           // Boolean: Show pager, true or false
+		nav: false,             // Boolean: Show navigation, true or false
+		pause: true
+	});
+
+	$('.rslides_tabs_wrapper').append( $('.rslides_tabs') );
+
+});
+</script>
+<?php
 	} else if ( $gallerycount > 1 && is_page_template ( 'template-page-why-join.php' ) ) {
 ?>
 <script>
@@ -8029,6 +8119,8 @@ jQuery(document).ready(function($) {
 		nav: false,             // Boolean: Show navigation, true or false
 		pause: true
 	});
+
+	$('.rslides_tabs_wrapper').append( $('.rslides_tabs') );
 
 });
 </script>
