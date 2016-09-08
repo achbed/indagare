@@ -1105,7 +1105,9 @@ article.custom h2 { border-top: 1px solid #ccc; padding-top: .95em; }
 
 .join #main .memberlevel h2 { padding-bottom: 10px; border-bottom: 2px solid #000; }
 
-.join #main .memberlevel h3 { margin: 0 0 1.1em; padding: 10px 0; border-bottom: 2px solid #000; border-top: 2px solid #000; }
+.join #main .memberlevel h3 { margin: 0 0 1.1em; padding: 10px 0; border-bottom: 2px solid #000; border-top: 2px solid #000; font-size: 1.7143em; font-family: 'Helvetica Neue', sans-serif; font-weight: 700; color: #3A8ECD; }
+
+.join #main .memberlevel h3 span { font-size: 0.5417em; color: #808080; }
 
 .join #main .memberlevel p { font-size: 1.2857em; }
 
