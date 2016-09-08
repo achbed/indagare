@@ -7205,7 +7205,7 @@ global $count;
 	} // end first visit modal - intro page
 
 	// email signup modal
-    if ( ( indagare\cookies\PageCountAll::getPageCountAll() == 5 || $_GET['modalemail'] ) && ! ind_logged_in() ) {
+    if ( ind_show_email_popup() ) {
 ?>
 <div id="lightbox-email-signup" class="lightbox lightbox-two-col lightbox-no-borders white-popup mfp-hide">
 	<header>
@@ -8840,4 +8840,40 @@ function user_has_permission() {
 	}
 
 	return true;
+}
+
+function ind_show_email_popup() {
+	if ( isset( $_GET['modalemail'] ) ) {
+		return true;
+	}
+
+	if ( ind_logged_in() ) {
+		// We're logged in.  Never show this thing.
+		return false;
+	}
+
+	// Don't count these page templates towards the email signup
+	$templates = array(
+		'template-page-user-signup.php',
+		'template-page-why-join.php',
+		'template-page-intro.php',
+		'template-page-about-mission.php',
+		'template-page-user-signup-step-two.php',
+		'template-page-account-edit.php',
+		'template-page-how-we-work.php',
+		'template-page-how-to-book.php',
+	);
+
+	$this_template = basename( get_page_template() );
+	foreach( $templates as $t ) {
+		if ( $t == $this_template ) {
+			return false;
+		}
+	}
+
+	if ( \indagare\cookies\PageCountAll::getPageCountAll() == 5 ) {
+		return true;
+	}
+
+	return false;
 }
