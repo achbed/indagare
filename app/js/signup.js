@@ -113,8 +113,18 @@ if (!signup) {
 			}
 
 			if(!!QueryString.mb) {
-				var mb = Number(QueryString.mb);
-				jQuery('#Membership_Level__c :nth-child('+mb+')').prop('selected',true);
+				var mb = Number(QueryString.mb), mbtarget = false;
+				if(mb) {
+					mbtarget = '#Membership_Level__c :nth-child('+mb+')';
+				} else {
+					mbtarget = '#Membership_Level__c [value="'+QueryString.mb+'"]';
+				}
+				if(mbtarget) {
+					mbtarget = jQuery(mbtarget);
+					if(mbtarget.length) {
+						mbtarget.prop('selected',true);
+					}
+				}
 			}
 			jQuery('#Membership_Level__c').trigger("render");
 			

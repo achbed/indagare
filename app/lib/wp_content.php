@@ -12,11 +12,11 @@ class WPContent {
 	 *
 	 * @return string The contents of the resource file or false on failure.
 	 */
-	private static function get_resource( $file ) {
-		$path = dirname( __DIR__ ) . DIRECTORY_SEPARATOR . $file;
+	private static function get_resource( $file, $folder = 'resources' ) {
+		$path = dirname( __DIR__ ) . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR . $file;
 
 		if ( ! file_exists( $path ) ) {
-			return '';
+			return '<!-- missing '. $path.' -->';
 		}
 
 		$r = file_get_contents( $path );
@@ -36,6 +36,7 @@ class WPContent {
 	 * @return string The HTML content.
 	 */
 	public static function getContent($page) {
+		print '<!-- '.__FUNCTION__.' called -->';
 		switch ($page) {
 			case "signup" :
 				return WPContent::getSignup();
@@ -78,6 +79,7 @@ class WPContent {
 	}
 
 	private static function getAccount() {
+		print '<!-- '.__FUNCTION__.' called -->';
 		$json_mode = 0;//JSON_PRETTY_PRINT;
 		$content = "<script>\n";
 
@@ -166,8 +168,7 @@ class WPContent {
 	}
 
 	private static function getSignup() {
-
-		$acc = \indagare\users\AccountCreator::getAccountCreator();
+		print '<!-- '.__FUNCTION__.' called -->';
 		$discount = 0;
 		$mb = "1";
 		$rc = "";
