@@ -5238,66 +5238,34 @@ function child_singlepost($content) {
 		$content = '';
 
 		$content .= '<h1>'.get_the_title().'</h1>'."\n";
-
 		$content .= $basecontent;
 
-/*
-		$promocode_value = '';
-
-		$my_query = indmem_getquery_membership();
-		if ( $my_query->have_posts() ) {
-			while ( $my_query->have_posts() ) {
-				$my_query->the_post();
-				include 'render-memberlevel.tpl.php';
-			}
-		}
-		wp_reset_postdata();
-*/
-
-/*
-		$rows = get_field('membership-level');
-
-		if($rows) {
-			foreach($rows as $row) {
-
-				$name = $row['membership-name'];
-				$rate = $row['membership-rate'];
-				$link = $row['membership-link'];
-
-				if (isset($_GET["referralcode"])) {
-					$link .= '&referralcode='.$_GET["referralcode"];
+		$array = \WPSF\Membership::query_sellable();
+		if ( ! is_wp_error( $array ) ) {
+			$content .= '<section class="all-destinations memberlevels contain">'."\n";
+			$sorted = array();
+			foreach ( $array as $m ) {
+				$m->load_post();
+				if(empty($m->post) ) {
+					$k = 9999;
+				} else {
+					$k = get_field( 'sort', $m->post->ID );
+					if ( empty( $k ) ) {
+						$k = 9999;
+					}
 				}
-
-				$details = $row['membership-details'];
-
-				$content .= '<div class="filters filtersflip show-this">'."\n";
-					$content .= '<p class="open-close"><span class="title membertitle">'.$name.'</span><span class="rate">From $'.$rate.'</span><a class="button primary" href="/signup/?mb='.$link.'">Join</a></p>'."\n";
-					$content .= '<div class="collapse">'."\n";
-						$content .= '<div class="collapsegroup">'."\n";
-						$content .= $details;
-						$content .= '</div>'."\n";
-					$content .= '</div>'."\n";
-				$content .= '</div>'."\n";
-			}
-		}
-*/
-
-		$content .= '<section class="all-destinations memberlevels contain">'."\n";
-
-			global $post;
-
-			$array = \WPSF\Membership::query_sellable();
-			if ( ! is_wp_error( $array ) ) {
-				foreach ( $array as $m ) {
-					$content .= $m->render();
+				$k = intval( $k );
+				while ( array_key_exists( $k, $sorted ) ) {
+					$k++;
 				}
+				$sorted[$k] = $m;
 			}
-
-			// Reset things back to normal
-			wp_reset_postdata();
-
-		$content .= '</section>'."\n";
-
+			ksort( $sorted );
+			foreach ( $sorted as $m ) {
+				$content .= $m->render();
+			}
+			$content .= '</section>'."\n";
+		}
 
 		$rows = get_field('gallery');
 
@@ -5334,7 +5302,7 @@ function child_singlepost($content) {
 				}
 
 			$content .= '</ul><!--.hero.rslides-->'."\n";
-			
+
 			$content .= '<div class="rslides_tabs_wrapper"></div>'."\n";
 
 			$content .= '</div>'."\n";
@@ -5502,14 +5470,14 @@ function child_singlepost($content) {
 	} else if (is_page_template ( 'template-page-why-join.php' ) ) {
 
 		$imgsrc = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' );
-		
+
 		$content = '';
 
 		if ( $imgsrc ) {
 
 			$content .= '<div class="contain">'."\n";
 
-			$content .= '<div class="believeright"><img src="'.$imgsrc[0].'" /></div>'."\n";		
+			$content .= '<div class="believeright"><img src="'.$imgsrc[0].'" /></div>'."\n";
 			$content .= '<div class="believeleft">'."\n";
 
 		}
@@ -5589,7 +5557,7 @@ function child_singlepost($content) {
 				}
 
 			$content .= '</ul><!--.hero.rslides-->'."\n";
-			
+
 			$content .= '<div class="rslides_tabs_wrapper"></div>'."\n";
 
 			$content .= '</div>'."\n";
@@ -8049,9 +8017,9 @@ jQuery().ready(function($) {
 
 	echo '<!-- gallerycount '.$gallerycount.' -->'."\n";
 
-	if ( 
-		$gallerycount > 1 && !is_singular( 'hotel' ) && !is_singular( 'restaurant' ) && !is_singular( 'shop' ) && !is_singular( 'activity' ) && !is_singular('article') && !is_singular('offer') && !is_singular( 'insidertrip' ) && !is_post_type_archive('itinerary') 
-		&& !is_page_template ( 'template-page-user-signup.php' ) && !is_page_template ( 'template-page-why-join.php' ) 
+	if (
+		$gallerycount > 1 && !is_singular( 'hotel' ) && !is_singular( 'restaurant' ) && !is_singular( 'shop' ) && !is_singular( 'activity' ) && !is_singular('article') && !is_singular('offer') && !is_singular( 'insidertrip' ) && !is_post_type_archive('itinerary')
+		&& !is_page_template ( 'template-page-user-signup.php' ) && !is_page_template ( 'template-page-why-join.php' )
 	) {
 ?>
 <script>
