@@ -7,20 +7,16 @@ $rows = get_field('comparison',$post->ID);
 echo '<article class="memberlevel">'."\n";
 	echo '<h2>'.$post->post_title.'</h2>'."\n";
 	
-	if ( $rows ) {
+  echo '<ul class="memberlevelitems">'."\n";
 
-		echo '<ul class="memberlevelitems">'."\n";
-	
-		foreach ( $rows as $row ) {
-		
-			echo '<li>'.$row['message'].'</li>'."\n";
-		
-		}
-	
-		echo '</ul>'."\n";
-	
-	}
+  foreach ( $rows as $row ) {
+  
+    echo '<li>'.$row['message'].'</li>'."\n";
+  
+  }
 
+  echo '</ul>'."\n";
+	
 	echo '<h3>$'.$post->membership->Amount__c.' <span>annually</span></h3>'."\n";
 	
 	echo '<div class="memberlevelrecap">'."\n";
