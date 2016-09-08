@@ -5279,6 +5279,17 @@ function child_singlepost($content) {
 			}
 		}
 */
+		global $post;
+
+		$array = \WPSF\Membership::query_sellable();
+		if ( ! is_wp_error( $array ) ) {
+			foreach ( $array as $m ) {
+				$content .= $m->render();
+			}
+		}
+
+		// Reset things back to normal
+		wp_reset_postdata();
 
 		$rows = get_field('gallery');
 
@@ -5328,32 +5339,6 @@ function child_singlepost($content) {
 		$content .= '<div class="left"><h4>Question about Indagare? </h4></div>';
 		$content .= '<div class="right"><span>Contact Us:</span> <a href="tel:+12129882611">212-988-2611</a>&nbsp;|&nbsp;<a href="mailto:membership@indagare.com">membership@indagare.com</a></div>';
 		$content .= '</div>'."\n";
-
-		global $post;
-
-		$array = \WPSF\Membership::query_sellable();
-		if ( is_wp_error( $array ) ) {
-			// We have an error.  Handle it.
-			return;
-		}
-
-//		foreach ( $array as $membership ) {
-//			print_r( $membership->toArray() );
-//		}
-
-		foreach ( $array as $m ) {
-			$m->load_post();
-			// $m->post now holds the WP_Post object.
-			if ( ! empty( $m->post ) ) {
-				$post = $m->post;
-				setup_postdata( $post );
-				// Render now!
-				print_r( $m->toArray() );
-			}
-		}
-
-		// Reset things back to normal
-		wp_reset_postdata();
 
 /*
 		$rows = get_field('join-quote');
