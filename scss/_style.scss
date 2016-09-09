@@ -596,15 +596,16 @@ article.custom h2 {border-top:1px solid #ccc;padding-top:.95em;}
 }
 
 .join #main .memberlevelselect a {
-color: #fff;
-    background: #3A8ECD;
-	border-radius: 4em;
-    width: 4em;
-    height: 4em;
+    border-radius: 4em;
+    width: 6em;
+    height: 6em;
     line-height: 4em;
     text-align: center;
     margin: 0 auto;
-    margin-top: -2em;
+    margin-top: -3em;
+    border: 1em solid #f5f6f7;
+	color: #fff;
+    background: #3A8ECD;
 }
 
 .join #main .join-cta {

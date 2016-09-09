@@ -1117,7 +1117,7 @@ article.custom h2 { border-top: 1px solid #ccc; padding-top: .95em; }
 
 .join #main .memberlevelselect { margin: 3em 0 0; text-align: center; font-size: 1.4286em; border-top: 1px solid #000; line-height: 0; font-family: 'Helvetica Neue Thin', sans-serif; }
 
-.join #main .memberlevelselect a { color: #fff; background: #3A8ECD; border-radius: 4em; width: 4em; height: 4em; line-height: 4em; text-align: center; margin: 0 auto; margin-top: -2em; }
+.join #main .memberlevelselect a { border-radius: 4em; width: 6em; height: 6em; line-height: 4em; text-align: center; margin: 0 auto; margin-top: -3em; border: 1em solid #f5f6f7; color: #fff; background: #3A8ECD; }
 
 .join #main .join-cta { text-align: center; margin: 2em 0; border-top: 2px solid #000; line-height: 0; font-size: 2.5em; font-family: 'Helvetica Neue Thin', sans-serif; clear: both; }
 
