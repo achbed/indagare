@@ -1,6 +1,8 @@
-/* ========================================================================= */
-/* general styles */
-/* ------------------------------------------------------------------------- */
+@import 'settings.scss';
+
+// ========================================================================= */
+// general styles */
+// ------------------------------------------------------------------------- */
 html{font-size:87.5%;min-height:100%;}
 body{font-size:1em;font-family:'Helvetica Neue',Arial,sans-serif;line-height:1.4286;color:#333;min-height:100%;position:relative;}
 h1{font-size:2em;font-weight:300;line-height:1;}
@@ -18,18 +20,18 @@ b {font-weight:normal;}
 blockquote {font-size:1.715em;font-family:Georgia, Times, sans-serif;line-height:1.33;margin-bottom:.29167em;}
 cite {font-size:1.14em;font-family:Georgia, Times, sans-serif;line-height:1.25;font-style:normal;}
 
-/* general styles - links */
-/* ------------------------------------------------------------------------- */
+// general styles - links */
+// ------------------------------------------------------------------------- */
 a:link, a:visited{color:#336699;text-decoration:none;}
 a:hover, a:active{color:#fd252a;}
 h2 a, h3 a, h4 a, h5 a, a h1, a h2, a p {text-decoration:none;}
 
-/* general styles - form elements */
-/* ------------------------------------------------------------------------- */
+// general styles - form elements */
+// ------------------------------------------------------------------------- */
 label, .label {display:inline-block;}
 input, select, textarea, .button {font-size:1em;display:inline-block;border:0 none;padding-left:.715em;padding-right:.715em;position:relative;}
 input, select, textarea, button, .button {font-family:Arial,sans-serif;border:0 none;}
-select {-webkit-appearance: none;}
+select {-webkit-appearance: none;-moz-appearance: none; &::-ms-expand{display:none;}}
 .element {/*35px height and line-height mtatch*/height:2.5em;line-height:1;/**/overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 .buttons {text-align:right;}
 .buttons .button {margin-left:.5em;}
@@ -39,11 +41,13 @@ select {-webkit-appearance: none;}
 .secondary, a.secondary {color:#336699;background-color:rgba(0,0,0,.1)}
 .secondary:hover, a.secondary:hover {background-color:rgba(0,0,0,.5);color:#fff;}
 .floatright { float: right; margin: 0 0 .719em .719em; }
-/* focus */
+
+// focus */
 input.element:focus {outline: none;}
 
-/* general styles - icons */
-/* ------------------------------------------------------------------------- */
+// general styles - icons */
+// ------------------------------------------------------------------------- */
+.loading {text-indent:-9999em;min-height:32px; min-width:32px; background: transparent 50% 50% no-repeat url('images/preloader.gif');}
 b.icon {font-size:1.429em;height:1em;display:inline-block;}
 .form-item b.icon {font-size:1.072em;}
 b.petite {font-size:1.143em;line-height:1;}
@@ -82,9 +86,9 @@ b.box {display:inline-block;height:1.5em;width:1.5em;line-height:1.5em;backgroun
 .active-box b {color:#fff;background-color:#ff9200;border-color:#ff9200;}
 
 
-/* ========================================================================= */
-/* layout */
-/* ------------------------------------------------------------------------- */
+// ========================================================================= */
+// layout */
+// ------------------------------------------------------------------------- */
 .candy-wrapper {max-width:960px;margin:0 auto;position: relative;}
 #main {min-height:40em;padding:2.858em 10px 1.429em;}
 #container.standard {float:left;width:66.66%;padding:0 10px 1.429em;}
@@ -93,9 +97,11 @@ b.box {display:inline-block;height:1.5em;width:1.5em;line-height:1.5em;backgroun
 #primary, #secondary {float:right;width:33.33%;padding:0 10px;}
 #secondary {margin-bottom:1.429em;clear:right;}
 
-/* ========================================================================= */
-/* header */
-/* ------------------------------------------------------------------------- */
+@import 'dialogs.scss';
+
+// ========================================================================= */
+// header */
+// ------------------------------------------------------------------------- */
 header {background-color:#000;color:#fff;padding-left:10px;padding-right:10px;}
 header a:link, header a:visited {color:#fff;}
 header a:hover, header a:active {color:#fff;text-decoration: underline;}
@@ -229,13 +235,6 @@ p.view-more a.map { margin-right: 2em; } /* AKB */
 .hero .hero { border-bottom: none; } /* AKB */
 .map .hero { border-bottom: none; } /* AKB */
 .new .hero { margin-bottom: 2.714em; border-bottom: none; }
-/*	DA .widget-wrapper.home {
-		float: left;  AKB 
- AKB
-		width: 32%;
-		padding: 0px;
-		
-	}*/
 .widget-wrapper.book { /* AKB */
 	float: none;
 	width: 100%;
@@ -421,9 +420,10 @@ footer #who-we-are a:hover, footer #who-we-are a:active {color:#fff;text-decorat
 #subsidiary > div#fourth {float:right;}
 ul.footer-nav {list-style:none;margin:0;}
 ul.footer-nav li {list-style:none;margin:0;}
-#subsidiary .form-combo {margin-bottom:0;-webkit-box-shadow:inset 0px 0px 0px transparent;-moz-box-shadow:inset 0px 0px 0px transparent;-ms-box-shadow:inset 0px 0px 0px transparent;box-shadow:inset 0px 0px 0px transparent;margin-bottom:1em;max-width:220px;}
-#subsidiary .element {/*23px height*/height:1.79em;line-height:1;/**/}
-#subsidiary button {height:1.79em;line-height:1.79;background-color:#2460a2;}
+#subsidiary .form-combo {margin-bottom:0;-webkit-box-shadow: inset 1px 1px 3px #666; -moz-box-shadow: inset 1px 1px 3px #666; -ms-box-shadow: inset 1px 1px 3px #666; box-shadow: inset 1px 1px 3px #666;margin-bottom:1em;/*max-width:220px;*/}
+#subsidiary .element {/*23px height*//*height:1.79em;*/line-height:1;/**/}
+#subsidiary .buttons { text-align: left; }
+#subsidiary button { margin-left: 0;height:1.79em;line-height:1.79;background-color:#2460a2;}
 #subsidiary button:hover {background-color:#fd262a;}
 #subsidiary p {margin-bottom:1em;}
 #subsidiary p.social {margin-bottom:0;line-height:1;}
@@ -1455,7 +1455,9 @@ article.magazine .photo-gallery {
 
 	.lightbox .one-third { padding: 0 10px; width: 33.33%; }
 		.lightbox.detailed .one-third { display: inline-block; margin: 0; }
-
+		#lightbox-join footer .one-third, 
+		#lightbox-email-signup footer .one-third { margin-bottom: 15px; }
+		
 	.lightbox .one-half { margin: 0; padding: 0 10px; width: 50%; } /* AKB */
 		.lightbox.detailed .one-half { display: inline-block; }
 
@@ -1546,6 +1548,10 @@ article.magazine .photo-gallery {
 		}
 		
 /*		#lightbox-email-signup footer #emailsignup p {*/
+		#lightbox-join footer p {
+			display: block;
+			margin: 0 0 10px 0;
+		}
 		#lightbox-email-signup footer p {
 			display: inline-block;
 			margin: 10px 10px 0px 0px;
@@ -1567,9 +1573,37 @@ article.magazine .photo-gallery {
 		.lightbox footer form {
 			display: inline;
 		}
-		.lightbox footer .field {
+		.lightbox footer form .mc4wp-form-fields {
+			display: inline-block;
+		}
+		.lightbox footer .field, .lightbox footer .form-item {
 			display: inline;
 		}
+		#lightbox-join footer .field, 
+		#lightbox-email-signup footer .field {
+			display: block;
+			margin: 0 -10px 0 -10px;
+		}
+		.lightbox footer .form-combo {
+			display: inline-block;
+			margin-bottom: 0;
+			-webkit-border-radius: 0;
+			border-radius: 0;
+			-webkit-box-shadow:none;
+			-moz-box-shadow:none;
+			-ms-box-shadow:none;
+			box-shadow:none;
+		}
+		.lightbox footer .form-combo .element {
+			width: auto;
+			border: 2px solid #E7E7E7;
+			padding: 3px 10px;
+			-webkit-border-radius: 5px;
+			border-radius: 5px;
+		}
+		.lightbox footer .buttons {
+			float: right;
+		}		
 		.lightbox footer input[type="text"] {
 		
 		}
@@ -1917,11 +1951,11 @@ article.magazine .photo-gallery {
 
 	.validate { /* AKB */
 		padding: 3px 10px;
-		color: #fd252a;
+		/*color: #fd252a;*/
 	}
 	
 	.validated { /* AKB */
-		color: #2ab91b;
+		/*color: #2ab91b;*/
 	}
 	
 	div.validate {
@@ -1931,6 +1965,17 @@ article.magazine .photo-gallery {
 	}
 	
 	#terms { margin-left: 150px; }
+
+body.page-template-template-page-account-edit {
+  .tab {
+    .field {
+      textarea, input[type="text"] {
+        width: 300px;
+      }
+    }
+  }
+}
+
 
 /*Masonry*/
 #masonry {
@@ -2675,6 +2720,9 @@ ul.children div.comment-reply-link { margin: 0 -20px; padding: 0 20px .643em; bo
 	}
 
 	.lightbox .one-third { width: 100%; margin: 0; padding: 0 10px 15px; }
+	#lightbox-join footer .one-third, 
+	#lightbox-email-signup footer .one-third { margin-bottom: 0; }
+
 
 	.lightbox .one-half { width: 100%; margin: 0; padding: 0 10px 15px; }
 	
@@ -2924,6 +2972,16 @@ body.modalmap #map-buttons-container {
 	margin-top: 1.5em;
 }
 
+
+.field.validate {
+  select, option {
+    height:25px;
+    min-height:25px;
+  }
+}
+
+
+.input-field,
 .field.validate {
   &.validated {
   	color: black;
@@ -2947,9 +3005,12 @@ body.modalmap #map-buttons-container {
       color: #090;
   }
   
-  &.validated.validate-error:before {
+  &.validated.validate-error {
+    background: #fee;
+    &:before {
       content: "\f057";
       color: #c00;
+    }
   }
   
   span.errmsg,
@@ -3020,11 +3081,29 @@ body.modalmap #map-buttons-container {
     list-style-type: none;
 }
 
+.passmatch-hide li#passmatch,
+.passlen-hide li#passlen,
+.passcase-hide li#passcase,
+.passnum-hide li#passnum,
+.passchar-hide li#passchar,
+.passmatch-hide .passmatch-msg,
+.passlen-hide .passlen-msg,
+.passcase-hide .passcase-msg,
+.passnum-hide .passnum-msg,
+.passchar-hide .passchar-msg {
+  display:none;
+}
+
 .faildetail.passmatch-fail li#passmatch,
 .faildetail.passlen-fail li#passlen,
 .faildetail.passcase-fail li#passcase,
 .faildetail.passnum-fail li#passnum,
-.faildetail.passchar-fail li#passchar {
+.faildetail.passchar-fail li#passchar,
+.faildetail.passmatch-fail .passmatch-msg,
+.faildetail.passlen-fail .passlen-msg,
+.faildetail.passcase-fail .passcase-msg,
+.faildetail.passnum-fail .passnum-msg,
+.faildetail.passchar-fail .passchar-msg {
     color: #c00;
 }
 
@@ -3032,7 +3111,12 @@ body.modalmap #map-buttons-container {
 .faildetail.passlen-fail li#passlen:before,
 .faildetail.passcase-fail li#passcase:before,
 .faildetail.passnum-fail li#passnum:before,
-.faildetail.passchar-fail li#passchar:before {
+.faildetail.passchar-fail li#passchar:before,
+.faildetail.passmatch-fail .passmatch-msg:before,
+.faildetail.passlen-fail .passlen-msg:before,
+.faildetail.passcase-fail .passcase-msg:before,
+.faildetail.passnum-fail .passnum-msg:before,
+.faildetail.passchar-fail .passchar-msg:before {
     content:"\f057";
 }
 
@@ -3070,4 +3154,1071 @@ body.modalmap #map-buttons-container {
 
 .tab.is-trial .trial {
 	display: block !important;
+}
+
+
+
+/* Account Bar stylings */
+
+/*
+
+.expand-button {
+  a.button-item .button-icon::after {
+    content: '\f0d7';
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    text-align: center;
+    font-family: "icomoon";
+    font-weight: 800;
+    font-size:1.375em;
+    padding:0;
+    margin:0;
+    line-height: 1em;
+    color:#333;
+  }
+  
+  .collapsed & {
+    a.button-item .button-icon::after {
+      content: '\f0da';
+    }
+  }
+  
+  padding-right: 0.5em;
+  display: inline-block;
+  line-height:1em;
+}
+
+.collapsed {
+  height: 0px;
+  overflow:hidden;
+  
+  &.bar-element{
+    height:auto;
+  }
+  
+  &.detail-element {
+    padding:0;
+  }
+}
+
+.detail-element {
+  padding:1em;
+  border: 1px solid #ccc;
+  border-top: none;
+  
+  label {
+    display: block;
+    position: absolute;
+    top: 0;
+    font-size: 75%;
+    padding-top: 0.625em;
+    padding-left:1.5em;
+    color: #888;
+    z-index:2;
+    width:100%;
+    
+    &.checkbox {
+      position: relative;
+      font-size: 100%;
+      margin: 0;
+      width: auto;
+      display: block;
+      padding-top:0.5em;
+      padding-bottom:0.5em;
+    }  
+  }
+  
+  div.checkboxes,
+  select,
+  textarea,
+  input {
+    width: 100%;
+    border: 2px solid #ccc;
+    padding: 1.5em 1em 0.5em;
+    -webkit-border-radius: 0.25em;
+    border-radius: 0.25em;
+    display: block;
+    position: relative;
+    background: transparent;
+    z-index:1;
+  }
+  
+  select+label:after {
+    content: '\f0d7';
+    display: block;
+    position: absolute;
+    font-size: 1.5em;
+    font-family: icomoon;
+    top: 0;
+    right: 0;
+    padding-top: 1em;
+    padding-right: 0.5em;
+  }
+
+  div.checkboxes {
+    input[type="checkbox"] {
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+      margin: 0.5em 1em 0.5em 0;
+      position: relative;
+      top: 0.125em;
+    }
+    
+    .checkbox-label {
+        display: inline-block;
+        position: relative;
+    }
+    
+    .checkbox-item {
+      width:90%;
+      max-width:20em;
+      float:left;
+      display:block;
+      padding:0;
+      margin:0.125em;
+      text-align:left;
+    }
+    
+    text-align:center;
+  }
+
+  textarea {resize: vertical;}
+
+  >form>*,
+  .input-field {
+    width: 100%;
+    position: relative;
+    padding: .125em 0;
+    display: block;
+    float: left;
+  }
+  
+  #contact .input-field {
+    max-width:100%;
+    width:auto;
+  }
+}
+
+textarea[readonly] {
+    background: #e7e7e7;
+    color: #555;
+}
+
+.bar-element {
+  background: #f1f1f1;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-bottom: none;
+  
+  &#status-bar {
+    background: #1471c0;
+    color: white;
+    border: 1px solid #1471c0;
+    border-top: none;
+    border-bottom: none;
+    cursor:auto;
+    
+    .expand-button{
+      &,a,a:link,a:hover,a:active,a:visited{
+        color: white;
+      }
+    }
+  }
+  
+  >* {
+    float:left;
+  }
+  
+  .bar-item {
+    margin: 0 2em 0 0;
+    label {
+      padding-right:0.5em;
+    }
+  }
+  
+  .bar-item-right {
+    float:right;
+  }
+}
+
+.jconfirm-box .detail-element {
+  border: none;
+}
+
+
+#profile-detail {
+  padding: 0;
+}
+
+.card-list {
+  width: 100%;
+  padding:0;
+  margin:0;
+  text-align: center;
+  position: relative;
+}
+
+.card-item {
+  max-width: 20em;
+  width: 90%;
+  border: 0.5em solid #eee;
+  background: #fff;
+  padding: 0.5em;
+  margin: 1em;
+  display:inline-block;
+  float:left;
+  text-align: center;
+  border-radius: 0.5em;
+  position: relative;
+  &.card-item-button {
+    background: #eee;
+  }
+}
+
+a.card-button-large {
+  &:link,
+  &:hover,
+  &:active,
+  &:visited {
+    width: 100%;
+    text-align:center;
+    padding:.5em 0;
+    background:green;
+    border-radius: 0.25em;
+    color: white;
+    display:inline-block;
+    position: relative;
+    margin-top: 1em;
+  }
+
+  &.card-delete-button {
+    background: #aa0000;
+  }
+  &.processing {
+    background: #888 url('images/preloader.gif') no-repeat center;
+    text-indent: -999em;
+  }
+}
+
+.card-list .card-item-button a.card-button-large {
+  width: 90%;
+  margin-top:0;
+}
+
+
+$formwidth:65em;
+// Account Field widths
+#contact  {
+  #field-contact-Birthdate,
+  #field-contact-HomePhone,
+  #field-contact-AssistantName,
+  #field-contact-MailingStreet,
+  #field-contact-OtherStreet {
+    clear:both;
+  }
+  
+  #field-contact-Salutation {
+      width: 7em;
+  }
+  
+  #field-contact-Title {
+      width: 12em;
+  }
+  
+  #field-contact-FirstName,
+  #field-contact-LastName {
+      width: floor( ( $formwidth - 7 - 12 ) / 2 * 100 ) / 100;
+  }
+  
+  #field-contact-AssistantName,
+  #field-contact-Birthdate,
+  #field-contact-Anniversary_Date__c,
+  #field-contact-Assistant_Email__c {
+      width: floor( $formwidth / 2 * 100 ) / 100;
+  }
+  
+  #field-contact-MailingCity,
+  #field-contact-MailingState,
+  #field-contact-MailingPostalCode,
+  #field-contact-MailingCountry,
+  #field-contact-OtherCity,
+  #field-contact-OtherState,
+  #field-contact-OtherPostalCode,
+  #field-contact-OtherCountry {
+      width: floor( $formwidth / 4 * 100 ) / 100;
+  }
+  
+  #field-contact-MobilePhone,
+  #field-contact-Phone,
+  #field-contact-HomePhone {
+      width: floor( $formwidth / 3 * 100 ) / 100;
+  }
+  
+  #field-contact-Email,
+  #field-contact-MailingStreet,
+  #field-contact-OtherStreet {
+      width:$formwidth;
+  }
+}
+*/
+$formwidth:65em;
+$columnwidth:5em;
+
+#account-tab-container, #signup-form-container {
+  background: $white;
+  
+      -webkit-transition-duration: 1s;
+       -moz-transition-duration: 1s;
+         -o-transition-duration: 1s;
+            transition-duration: 1s;
+
+  .tab {
+    
+    label {
+      display: block;
+      margin: 0;
+      min-width: 0;
+      float: none;
+      padding: 0 0.075em;
+    }
+  }
+  
+  h2 {
+    font-size: 2em;
+    margin: 1em 0 0.5em;
+    width: 100%;
+    display: block;
+    border-bottom: 1px solid $black;
+    padding: 0 0 0.25em;
+    font-weight: 200;
+    clear:both;
+  }
+
+  #account-tab-container-nav ul {
+    font-size:0.875em;
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid $black;
+    margin: 0;
+    padding: 0;
+    color:$gray;
+    
+    a,a:link,a:visited{
+      color:$gray;
+    }
+    
+    >li {
+      float:left;
+      margin:0 2em 0 0;
+      padding:0 0 0.25em;
+      list-style: none;
+      
+      &.activeli {
+        border-bottom: 3px solid $black;
+        margin-bottom: -2px;
+
+        a,a:link,a:visited {
+          color:$black;
+        }
+      }
+    }
+  }
+  
+  #account-header-display {
+    margin: 2em 0 1em;
+    label {
+      margin: 0 0.5em 0 0;
+      font-weight: 400;
+    }
+    
+    [data-display-field] {
+      font-weight: 600;
+    }
+    
+    #account-display-membership-level, .valid-through {
+      margin-top:0.5em;
+    }
+    
+    #new-contact-link {
+      color: $blue;
+      font-size: 0.875em;
+    }
+    .renew-wrapper a {
+      color:$orange;
+      font-size: 0.875em;
+    }
+  }
+}
+  
+.jconfirm-box,
+#account-tab-container, 
+#signup-form-container {
+  form {
+    a.form-edit-link,
+    a.form-save-button, 
+    a.form-cancel-button { 
+      color:$blue;
+      font-size:0.875em;
+      clear:both;
+    }
+
+    a.form-edit-link { display:block; }
+    a.form-save-button, a.form-cancel-button { display:none; }
+    
+    label {
+      display: block;
+      position: absolute;
+      top: 0;
+      padding-top: 0em;
+      padding-left:0em;
+      color: $black;
+      font-weight:bold;
+      font-size:0.875em;
+      z-index:1;
+      width:100%;
+      &:after {
+        content:':';
+      }
+    }
+    
+    div.checkboxes,
+    select,
+    textarea,
+    input {
+      width: 100%;
+      border: 1px solid $white;
+      padding: 1em 0 0.5em;
+      -webkit-border-radius: 0;
+      border-radius: 0;
+      display: block;
+      position: relative;
+      background: transparent;
+      z-index:2;
+      color:$black;
+    }
+
+  div.checkboxes {
+    input[type="checkbox"] {
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+      margin: 0.5em 1em 0.5em 0;
+      position: relative;
+      top: 0.125em;
+    }
+    
+    .checkbox-label {
+        display: inline-block;
+        position: relative;
+    }
+    
+    .checkbox-item {
+      width:90%;
+      max-width:20em;
+      float:left;
+      display:block;
+      padding:0;
+      margin:0.125em;
+      text-align:left;
+      label {
+        position: relative;
+        font-weight: 400;
+		font-size: 1em;
+        &:after {
+          content:'';
+        }
+      }
+    }
+    
+    text-align:center;
+  }
+
+  textarea {resize: vertical;}
+
+  >form>*,
+  .input-field {
+    width: 100%;
+    position: relative;
+    padding: 0;
+    display: block;
+    float: left;
+  }
+  
+
+
+    &.editing {
+      a.form-edit-link { display:none; }
+      a.form-cancel-button { 
+        display:inline-block;
+        padding:1em 3em;
+        background:$white;
+        color:$blue;
+        text-align:center;
+        float:right;
+        clear:none;
+      }
+      a.form-save-button { 
+        display:inline-block; 
+        padding:1em 0;
+        background: $green;
+        color: $white;
+        text-align:center;
+        float:left;
+        &.processing {
+          color: $gray;
+          background: transparent 50% 50% no-repeat url('images/preloader.gif');
+          text-indent:-9999em;
+        }
+      }
+      
+      label {
+/*        font-size: 100%;*/
+        padding-top: 0.625em;
+        padding-left:1.125em;
+        color: $gray;
+      }
+        
+      div.checkboxes,
+      select,
+      textarea,
+      input {
+        border: 1px solid $gray;
+        padding: 1.5em 1em 0.5em;
+        color: $black;
+        min-height: 3.75em;
+      }
+      
+  select+label:after {
+    content: '\f0d7';
+    display: block;
+    position: absolute;
+    font-size: 1.5em;
+    font-family: icomoon;
+    top: 0;
+    right: 0;
+    padding-top: 1em;
+    padding-right: 0.5em;
+  }
+
+    }
+  }
+
+
+
+.card-list {
+    text-align: left;
+    position: relative;
+    width:100%;
+    
+  .card-item {
+      width: 100%;
+      display: inline-block;
+//      margin: 0.5em;
+	  margin: .25em 0;
+      position: relative;
+      
+      
+      form {
+        padding: 0;
+        position: relative;
+        
+        label {
+          text-align:left;
+        }
+        
+        a.form-edit-link {
+            text-align: left;
+        }
+                
+        a.card-save-button {
+          margin: 0.5em 0;
+          padding: 0.5em 0;
+          width: 7%;
+          display: none;
+          background: $green;
+          color:$white;
+          text-align: center;
+          float:right;
+        }
+        
+        a.card-delete-button {
+          font-size: 0.875em;
+          margin: 0.5em 0 0;
+          padding: 0.5em 0;
+          width: 7%;
+          display: none;
+          background: $orange;
+          color:$white;
+          font-size: 0.875em;
+          text-align: center;
+          float:left;
+        }
+        
+        select, input {
+          padding:0;
+        }
+        
+        .field-carditem-Name,
+        .field-carditem-Frequent_Traveler_Program__c,
+        .field-carditem-Legal_Name__c,
+        .field-carditem-Number__c,
+        .field-carditem-Expiry_Date__c,
+        label {
+          display:none;
+        }
+  
+        .field-carditem-RecordTypeId,
+        .field-carditem-Carrier_Hotel_Operator__c {
+          input,select {
+            font-weight:600;
+          }
+        }
+        
+        &.editing {
+          border: 1px solid #808080;
+          padding: 1em;
+
+          a.card-close-button {
+            display: block;
+          }
+          
+          a.card-delete-button,
+          a.card-save-button {
+            display: inline-block;
+          }
+          
+          input,select{
+            padding:1.5em 1em 0.5em;
+          }
+          
+          .field-carditem-Name,
+          .field-carditem-Frequent_Traveler_Program__c,
+          .field-carditem-Legal_Name__c,
+          .field-carditem-Number__c,
+          .field-carditem-Expiry_Date__c,
+          label {
+            display:block;
+          }
+        .field-carditem-RecordTypeId,
+        .field-carditem-Carrier_Hotel_Operator__c {
+          input,select {
+            font-weight:400;
+          }
+        }
+        } // &.editing
+  
+
+      }  // form
+    }
+  }
+
+  form.editing label:after {
+    content: '';
+  }
+}
+
+#account-tab-container,
+#signup-form-container,
+.jconfirm-box {
+  form.editing div.checkboxes {
+    .checkbox-label {
+      margin:0;
+      padding:1em 0.5em;
+      line-height:1em;
+      float:left;
+    }
+    input {
+      float:left;
+      margin: 1em 0;
+      padding: 0;
+      min-height: 0;
+      top: auto;
+    }
+  }
+}
+
+.input-field {
+  &.validated,
+  &.validating {
+    &:before {
+      position:absolute;
+      right: 1.5em;
+      top: 1.125em;
+      left: auto;
+    }
+    
+    &.validate-error span.errmsg {
+      position: absolute;
+      background: #fee;
+      padding: 0.5em 1em;
+      display: none;
+      z-index: 100;
+      left: 0;
+      top: 100%;
+      margin: 0;
+      font-size: 75%;
+      width: 100%;
+      border:4px solid #c00;
+      ul {
+        margin-bottom:0;
+      }
+    }
+    &.validate-error:hover span.errmsg {
+      display:block;
+    }
+  }
+}
+$formwidth:65em;
+$itempadding:0.25em;
+$columnwidth: ( $formwidth - $itempadding * 7 ) / 8;
+
+#signup-form-container form .input-field {
+  max-width: 100%;
+//  margin-left: $itempadding;
+  margin-right: $itempadding;
+  margin-bottom: $itempadding;
+  
+  &.iform-row-clear { clear:both; }
+  &.iform-row-noclear { clear:none; }
+//  &.iform-row-1col { width: $formwidth; }
+  &.iform-row-1col { width: 100%; }
+//  &.iform-row-2col { width: floor( $columnwidth * 7 * 100 ) / 100; }
+  &.iform-row-2col { width: 49.5%; }
+//  &.iform-row-3col { width: floor( ( ( $formwidth - ( $itempadding * 2 ) ) / 3 ) * 100 ) / 100; }
+  &.iform-row-3col { width: 32.8%; }
+//  &.iform-row-4col { width: floor( ( ( $formwidth - ( $itempadding * 3 ) ) / 4 ) * 100 ) / 100; }
+  &.iform-row-4col { width: 24.6%; }
+  &.iform-row-5col { width: floor( ( ( $formwidth - ( $itempadding * 4 ) ) / 5 ) * 100 ) / 100; }
+//  &.iform-row-6col { width: floor( ( ( $formwidth - ( $itempadding * 5 ) ) / 6 ) * 100 ) / 100; }
+  &.iform-row-6col { width: 16.3%; }
+  &.iform-row-7col { width: floor( ( ( $formwidth - ( $itempadding * 6 ) ) / 7 ) * 100 ) / 100; }
+  &.iform-row-8col { width: floor( ( ( $formwidth - ( $itempadding * 7 ) ) / 8 ) * 100 ) / 100; }
+}
+
+#account-tab-container {
+  form .input-field, form .form-save-button {
+    max-width: 100%;
+//    margin-left: $itempadding;
+    margin-right: $itempadding;
+    margin-bottom: $itempadding;
+  }
+  
+  #field-contact-Birthdate,
+  #field-contact-HomePhone,
+  #field-contact-AssistantName,
+  #field-contact-MailingStreet,
+  #field-contact-OtherStreet {
+    clear:both;
+  }
+  
+  #field-contact-HomePhone.signup-form {
+    clear:none;
+  }
+
+  #field-contact-Salutation {
+//    width: floor( ( ( $formwidth - ( $itempadding * 7 ) ) / 8 ) * 100 ) / 100;
+	width: 16%;
+  }
+  
+  #field-contact-Title {
+//    width: floor( ( ( $formwidth - ( $itempadding * 7 ) ) / 8 ) * 100 ) / 100;
+	width: 16%;
+  }
+  
+  #field-contact-FirstName,
+  #field-contact-LastName {
+//    width: floor( ( ( $formwidth - ( $itempadding * 7 ) ) / 8 ) * 100 ) / 100 * 3 + ( $itempadding * 2 );
+	width: 33%;
+  }
+  
+  #field-account-tgCode,
+  #field-account-Membership_Level__c,
+  #field-contact-AssistantName,
+  #field-contact-Birthdate,
+  #field-contact-Anniversary_Date__c,
+  #field-contact-Assistant_Email__c {
+//    width: floor( ( ( $formwidth - ( $itempadding * 1 ) ) / 2 ) * 100 ) / 100;
+	 width: 49.5%;
+  }
+  
+  #field-payment-detail-form-Credit_Card_Type__c{
+    display:none;
+  }
+
+  .form-save-button,
+  #field-payment-detail-form-Credit_Card_Number__c,
+  #field-payment-detail-form-Credit_Card_Year__c,
+  #field-payment-detail-form-Credit_Card_Month__c,
+  #field-payment-detail-form-Card_CVV_Number__c,
+  #field-billing-detail-form-BillingCity,
+  #field-billing-detail-form-BillingState,
+  #field-billing-detail-form-BillingPostalCode,
+  #field-billing-detail-form-BillingCountry,
+  #field-contact-MailingCity,
+  #field-contact-MailingState,
+  #field-contact-MailingPostalCode,
+  #field-contact-MailingCountry,
+  #field-contact-OtherCity,
+  #field-contact-OtherState,
+  #field-contact-OtherPostalCode,
+  #field-contact-OtherCountry {
+//      width: floor( ( ( $formwidth - ( $itempadding * 3 ) ) / 4 ) * 100 ) / 100;
+	width: 24.4%;
+  }
+  
+  #field-contact-MobilePhone,
+  #field-contact-Phone,
+  #field-contact-HomePhone {
+//      width: floor( ( ( $formwidth - ( $itempadding * 2 ) ) / 3 ) * 100 ) / 100;
+	width: 32.7%;
+  }
+  
+  #field-account-membership-upgrade-select,
+  #field-payment-detail-form-Name,
+  #field-contact-Email,
+  #field-contact-MailingStreet,
+  #field-billing-detail-form-BillingStreet,
+  #field-contact-OtherStreet {
+//      width:$formwidth;
+	width: 100%;
+  }
+
+}
+
+#account-tab-container .card-list .card-item form {
+//  width:$formwidth;
+	width: 100%;
+  &.editing {
+    padding:0;
+    border:none;
+  }
+  
+  
+  .input-field {
+//      width: floor( $columnwidth * 8 * 100 ) / 100;
+	width: 20.4%;
+  }
+  a.card-edit-link,
+  a.card-delete-button,
+  a.card-save-button {
+    clear:none;
+    width:auto;
+    padding:1.375em .5em;
+    margin:0;
+    margin-right: .25em;
+  }
+  a.card-save-button {
+    float:left;
+    display:none;
+    min-width:8%;
+  }
+  &.editing a.card-save-button {
+    display: inline-block;
+  }
+  a.card-edit-link {
+    float:left;
+    display: inline-block;
+    padding: 0em 1%;
+  }
+  &.editing a.card-edit-link {
+    display:none;
+  }
+  
+  a.card-delete-button {
+    float:left;
+    display:none;
+    background:$white;
+    color:$red;
+  }
+  &.editing a.card-delete-button {
+    display: inline-block;
+  }
+}
+
+#account-tab-container .card-list .card-item-passport form {
+  .input-field {
+	width: 16.7%;
+  }
+}
+
+#account-display-contact-wrapper {
+  position: relative;
+  
+  select {
+    font-size: 2em;
+    font-weight: 200;
+    font-family: 'Helvetica Neue',Arial,sans-serif;
+    padding: 0 1.375em 0 0;
+    margin: 0;
+    display: inline-block;
+    z-index: 2;
+    position: relative;
+    background: transparent;  
+  }
+
+  &:after {
+    content: '\f0d7';
+    font-size: 2em;
+    color: #00aeef;
+    display: inline-block;
+    font-family: icomoon;
+    z-index: 1;
+    margin: 0 0 0 -1em;
+    line-height: 1em;
+    position: relative;
+  }
+}
+
+.card-button-list {
+  .card-item-button {
+    display: inline-block;
+    padding: 0;
+    width: 100%;
+    border: 1px solid $gray;
+    position: relative;
+    z-index:0;
+    
+    a {
+      padding: 1em 1em 1em 4em;
+      width: 100%;
+      display: inline-block;
+      text-align: center;
+      z-index: 1;
+      background: transparent;
+      color: $blue;
+    }
+    
+    &:before {
+      content: '+';display: block;position: absolute;top: 50%;margin-top: -0.875em;font-size: 2em;color: $blue;left: 1em;z-index: -1;
+    }
+  }
+}
+
+#signup-form-container {
+  #field-s_state,
+  #field-s_country,
+  #field-account-Membership_Level__c,
+  #field-cc_month {
+    &:before {
+      display: none;
+    }
+  }
+}
+
+.help-box-wrapper {
+    background: $cyan;
+    width: 100%;
+    margin: 3em 0 0;
+    color: $black;
+}
+
+.help-box {
+    padding: 2em;
+    a, a:link, a:visited {
+        color: $black;
+        text-decoration: none;
+        font-weight: 800;
+    }
+}
+
+h2.help-box-title {
+    font-size: 2.5em;
+    font-weight: 200;
+}
+
+.help-box-content {
+    font-size: 1.5em;
+    font-weight: 200;
+}
+
+
+span.keep-together {
+    display: inline-block;
+}
+
+#account-tab-container>div.tab {
+  display:none;
+}
+
+#account-header-display .renewal-text {
+      font-size: 0.875em;
+      color:$black;
+      font-style:italic;
+}
+
+form.processing .button {
+    background: gray;
+    color: #bbb;
+    cursor: progress;
+}
+
+// Tabbed nav bar mobile implementation
+#account-tab-nav-menu, .mobile {
+    display:none;
+}
+
+@media(max-width:767px) {
+  #account-tab-container {
+    #account-tab-nav-menu {
+      display: inline-block;
+      cursor: pointer;
+      &:after {
+        content: "\f0c9";
+        font-size: 1.75em;
+        font-family: icomoon;
+        padding: 0;
+      }
+    }
+    
+    #account-tab-container-nav ul {
+      position:relative;
+      li {
+        display:none;
+        float:none;
+        
+        &.mobile {
+          display: block;
+        }
+        &.activeli {
+          display: block;
+          z-index: 0;
+          margin: 0 2em;
+          border-bottom: none;
+          font-size: 2em;
+          text-align: center;
+        }
+        &.prevbutton,
+        &.nextbutton {
+          font-family:icomoon;
+          font-size:2em;
+          top:0;
+          position:absolute;
+          margin:0;
+        }
+        &.nextbutton {
+          div:after{
+          content:"\F0DA"; 
+          padding:0 0.5em;
+          cursor:pointer;
+          }
+          right:0;
+        }
+        &.prevbutton {
+          div:after{
+          content:"\F0D9";
+          padding:0 0.5em;
+          cursor:pointer;
+          }
+          left:0;
+        }
+        &.activeli{
+          display:block;
+        }
+      }
+    }
+  }
 }

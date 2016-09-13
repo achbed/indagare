@@ -17,6 +17,7 @@
  */
 
 require_once 'app/lib/wpdef.php';
+require_once 'app/lib/wp_content.php';
 
 // Theme updates
 require 'theme-updates/theme-update-checker.php';
@@ -73,6 +74,86 @@ include_once('includes/search-destination.php');
 
 // Include an update to allow old-style users to map to new capabilities.
 include_once('includes/induser_caps.php');
+
+/**
+ * Load translations
+ */
+if ( ! load_theme_textdomain( 'indagare', get_stylesheet_directory() . '/languages' ) ) {
+	header( 'X-DEBUG-FailedLoadingTextDomain: ' . $f );
+}
+
+/**
+ * Filters for the various Login process screens.
+ */
+
+add_filter( 'password_hint', 'ind_password_hint', 10, 1 );
+function ind_password_hint( $hint ) {
+	$hint = __( 'The above password is only a suggestion. Feel free to delete it and choose your own.', 'indagare' );
+	$hint .= '<br/><br/>';
+	$hint .= __( 'The password must be at least eight characters long and contain both letters and numbers.  To make it stronger, include uppercase and lowercase letters as well as symbols like ! " ? $ % ^ &amp; ).', 'indagare' );
+	return $hint;
+}
+
+add_filter( 'login_message', 'ind_login_message', 10, 1 );
+function ind_login_message( $message ) {
+	$reset_message = '<p class="message">' . __('Please enter your username or email address. You will receive a link to create a new password via email.') . '</p>';
+	if($message == $reset_message) {
+		$message = '<p class="message">' . __('Please enter your username or email address to reset your password. You will receive a link via email to continue the process.', 'indagare') . '</p>';
+	}
+
+	return $message;
+}
+
+function ind_validate_password_reset( $errors, $user ) {
+	if ( $errors->get_error_code() ) {
+		return;
+	}
+
+	if ( ( ! $errors->get_error_code() ) && isset( $_POST['pass1'] ) && !empty( $_POST['pass1'] ) ) {
+		$ok = true;
+		if ( strlen( $_POST['pass1'] ) < 8 ) {
+			$errors->add( 'password_reset_length', __( 'The password must be at least 8 characters long.' ) );
+			$ok = false;
+		}
+
+		if ( preg_match( '/[a-z]/i', $_POST['pass1'] ) != 1 ) {
+			$errors->add( 'password_reset_length', __( 'The password must contain one or more letters.' ) );
+			$ok = false;
+		}
+
+		if ( preg_match( '/[0-9]/', $_POST['pass1'] ) != 1 ) {
+			$errors->add( 'password_reset_length', __( 'The password must contain one or more numbers.' ) );
+			$ok = false;
+		}
+	}
+};
+
+// add the action
+add_action( 'validate_password_reset', 'ind_validate_password_reset', 10, 2 );
+
+
+/**
+ * Hide the admin bar for non-admin users
+ */
+add_action('after_setup_theme', 'remove_admin_bar');
+
+function remove_admin_bar() {
+	if (!current_user_can('administrator') && !is_admin()) {
+		show_admin_bar(false);
+	}
+}
+
+add_action('wp','indagare_wp_handle');
+function indagare_wp_handle() {
+	if(function_exists('acf_add_options_page'))
+	acf_add_options_page(array(
+		'page_title' 	=> 'Indagare Settings',
+		'menu_title'	=> 'Indagare Settings',
+		'menu_slug' 	=> 'acf-options',
+		'capability'	=> 'edit_posts',
+		'redirect'		=> false
+	));
+}
 
 /**
  * Define theme setup
@@ -222,6 +303,15 @@ function childtheme_header_style() {
 
 	}
 }
+
+
+function ajax_export_destinations() {
+	export_destinations( true );
+	export_hotels( true );
+	wp_send_json_success();
+}
+add_action( 'wp_ajax_do-export', 'ajax_export_destinations' );
+add_action( 'wp_ajax_nopriv_do-export', 'ajax_export_destinations' );
 
 
 /**
@@ -626,9 +716,11 @@ function admin_styles() {
     wp_register_script('admin-js', get_bloginfo('stylesheet_directory').'/js/admin.js', array('jquery'), '', true);
     wp_register_script('tinysort', get_bloginfo('stylesheet_directory').'/js/jquery.tinysort.min.js', array('jquery'), '', true);
     wp_register_script('qtip', get_bloginfo('stylesheet_directory').'/js/jquery.qtip.min.js', array('jquery'), '', true);
+    wp_register_script('hammer', get_bloginfo('stylesheet_directory').'/js/hammer.min.js', array(), '', false);
 
     wp_enqueue_script('tinysort');
     wp_enqueue_script('qtip');
+    wp_enqueue_script('hammer');
     wp_enqueue_script('admin-js');
 
     wp_register_script('velocity', get_bloginfo('stylesheet_directory').'/js/velocity.min.js', array(), '', false);
@@ -727,13 +819,14 @@ add_action('thematic_child_init','childtheme_no_superfish');
 function register_scripts() {
 	$f = get_bloginfo('stylesheet_directory');
 
-    wp_register_script('tabs', $f.'/js/yetii-min.js', array('jquery'), '', true);
+    wp_register_script('hammer', $f.'/js/hammer.min.js', array(), '', false);
+	wp_register_script('tabs', $f.'/js/yetii-min.js', array('jquery','hammer'), '', false);
     wp_register_script('autocomplete', $f.'/js/jquery.autocomplete.mod.js', array('jquery'), '', true);
     wp_register_script('magnificpopup', $f.'/js/jquery.magnific-popup.min.js', array('jquery'), '', true);
     wp_register_script('rslidesalt', $f.'/js/responsiveslides.min.js', array('jquery'), '', true);
     wp_register_script('imagesloaded', $f.'/js/imagesloaded.pkgd.min.js', array('jquery'), '', true);
     wp_register_script('masonry', $f.'/js/masonry.pkgd.min.js', array('jquery'), '', true);
-    wp_register_script('datepicker', $f.'/js/jquery-ui-1.10.3.custom.min.js', array('jquery'), '', true);
+    wp_register_script('datepicker', $f.'/js/jquery-ui-1.10.3.custom.min.js', array('jquery'), '', false);
 //    wp_register_script('qtip', $f.'/js/jquery.qtip.min.js', array('jquery'), '', true);
 //    wp_register_script('responsivemap', $f.'/js/jquery.rwdImageMaps.min.js', array('jquery'), '', true);
     wp_register_script('customselect', $f.'/js/jquery.customSelect.min.js', array('jquery'), '', true);
@@ -749,18 +842,23 @@ function register_scripts() {
     wp_register_script('template-page-map_footer', $f.'/js/template-page-map_footer.js', array('jquery'), '', true);
 
     wp_register_script('velocity', $f.'/js/velocity.min.js', array('jquery'), '', false);
-    wp_register_script('show.join.popup', $f.'/js/joinpopup.js', array('jquery'), '', false);
+    wp_register_script('show.join.popup', $f.'/js/joinpopup.js', array('jquery'), '', true);
 
     wp_localize_script( 'template-page_footer', 'ajax_login_object', array(
     	'ajaxurl' => admin_url( 'admin-ajax.php' ),
     	'redirecturl' => home_url(),
     	'loadingmessage' => __('Logging in...')
     ));
-
 }
 add_action('init', 'register_scripts');
 
+global $ajaxlogin_processing;
+$ajaxlogin_processing = false;
+
 function ajax_login(){
+	global $ajaxlogin_processing;
+	$ajaxlogin_processing = true;
+	header('Content-Type: application/json');
 
 	// First check the nonce, if it fails the function will break
 	check_ajax_referer( 'ajax-login-nonce', 'security' );
@@ -773,24 +871,15 @@ function ajax_login(){
 
 	$user_signon = wp_signon( $info, false );
 	if ( ! is_wp_error($user_signon) ) {
+		wp_set_current_user($user_signon->ID);
+		$account = \WPSF\Contact::get_account_wp();
+		$token = '';
+		if( method_exists( $account, 'get_ssotoken' ) ) {
+			$token = $account->get_ssotoken();
+		}
 		echo json_encode( array(
 			'login' => true,
-			'ssotoken' => '',
-			'message' => __( 'Login successful, redirecting...' )
-		) );
-		die();
-	}
-
-	include_once 'app/lib/user.php';
-	include_once 'app/lib/db.php';
-
-	$u = indagare\db\CrmDB::getUser( $_POST["username"] );
-	if ( ( $u != false ) && $u->validatePwd( $_POST["password"] ) ) {
-		$u->startSession();
-
-		echo json_encode( array(
-			'login' => true,
-			'ssotoken' => $_SESSION["SSODATA"],
+			'ssotoken' => $token,
 			'message' => __( 'Login successful, redirecting...' )
 		) );
 		die();
@@ -799,18 +888,22 @@ function ajax_login(){
 	echo json_encode( array(
 		'login' => false,
 		'ssotoken' => '',
-		'message' => __( 'Wrong username or password.' )
+		'message' => __( 'Incorrect login - please try again' )
 	) );
 	die();
 }
+add_action( 'wp_ajax_ajaxlogin', 'ajax_login' );
 add_action( 'wp_ajax_nopriv_ajaxlogin', 'ajax_login' );
 
 function enqueue_scripts() {
 
     wp_enqueue_style('fontawesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', array(), null);
 
-	wp_enqueue_script('velocity');
+    wp_enqueue_script('hammer');
+    wp_enqueue_script('velocity');
 	wp_enqueue_script('template-page_footer');
+	wp_enqueue_style('datepicker-css', get_bloginfo('stylesheet_directory') . '/css/jquery-ui-1.10.3.custom.css');
+	wp_enqueue_script('datepicker');
 
 	if ( is_singular() ) {
 		$destinationstree = destinationstree();
@@ -941,6 +1034,7 @@ function enqueue_scripts_here() {
 	global $post;
 
     wp_enqueue_script('customselect');
+    wp_enqueue_script('tabs');
 
 	if (
 		// singular hotel | resaurant | shop | activity | article | offer | insidertrip
@@ -1032,13 +1126,6 @@ function headscript() {
 global $post;
 	$upload_dir = wp_upload_dir();
 
-	?>
-	<script type="text/javascript">
-		var theme_path="<?php print get_bloginfo('stylesheet_directory'); ?>";
-		var uploads_path="<?php print $upload_dir['url']; ?>";
-	</script>
-	<?php
-
 	if ( is_singular( 'hotel' ) || is_singular( 'restaurant' ) || is_singular( 'shop' ) || is_singular( 'activity' ) || is_singular( 'article' ) || is_singular( 'offer' ) || is_singular( 'insidertrip' )
 		|| ( is_archive() && get_query_var('post_type') == 'hotel' )
 		|| ( is_archive() && get_query_var('post_type') == 'restaurant' )
@@ -1066,8 +1153,8 @@ global $post;
 		if ( !is_archive() ) {
 
 ?>
-<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-<script type="text/javascript">stLight.options({publisher: "57b6201a-026d-422d-bb3f-937fdc9a3513", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+<script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">window.onload = function(){ stLight.options({publisher: "57b6201a-026d-422d-bb3f-937fdc9a3513", doNotHash: false, doNotCopy: false, hashAddressBar: false}); }</script>
 
 <?php
 
@@ -1220,45 +1307,13 @@ global $post;
 		}
 
 		if( ! ind_logged_in() && ! indagare\cookies\Counter::updateCounter() ) {
-//			wp_enqueue_script('show.join.popup');
-?>
-<script>
-jQuery(document).ready(function($) {
-
-	$.magnificPopup.open({
-	  items: {
-		type: 'inline',
-		src: '#lightbox-join', // can be a HTML string, jQuery object, or CSS selector
-		midClick: true
-	  },
-	  modal: true
-	});
-
-});
-</script>
-<?php
+			wp_enqueue_script('show.join.popup');
 	    }
 
 	// archive itinerary - lock out unless visitor is logged-in user
 	} else if ( is_posttype( 'itinerary', POSTTYPE_ARCHIVEONLY ) ) {
 		if( !current_user_can( 'ind_read_itinerary' ) ) {
-//			wp_enqueue_script('show.join.popup');
-?>
-<script>
-jQuery(document).ready(function($) {
-
-	$.magnificPopup.open({
-	  items: {
-		type: 'inline',
-		src: '#lightbox-join', // can be a HTML string, jQuery object, or CSS selector
-		midClick: true
-	  },
-	  modal: true
-	});
-
-});
-</script>
-<?php
+			wp_enqueue_script('show.join.popup');
 	    }
 	}
 
@@ -2343,6 +2398,7 @@ jQuery().ready(function($) {
 			}
 			echo '</div>'."\n";
 		}
+
 	// end sign up step one page
 
 	// how to book page
@@ -3901,10 +3957,10 @@ global $post;
 
 // post content format
 function child_singlepost($content) {
-global $post;
-global $wp_query;
+	global $post;
+	global $wp_query;
 
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+	$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 	// start child_singlepost conditional
 	$basecontent = $content;
@@ -4651,7 +4707,7 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 		$content .= '<article class="magazine detail">'."\n";
 
-		$content .= '<iframe id="issuu" src="http://issuu.com/indagare/docs/'.$issuu.'?mode=window&amp;printButtonEnabled=false&amp;shareButtonEnabled=false&amp;searchButtonEnabled=false&amp;backgroundColor=%23ffffff"></iframe>'."\n";
+		$content .= '<iframe id="issuu" src="https://issuu.com/indagare/docs/'.$issuu.'?mode=window&amp;printButtonEnabled=false&amp;shareButtonEnabled=false&amp;searchButtonEnabled=false&amp;backgroundColor=%23ffffff"></iframe>'."\n";
 
 		$content .= '<h4>'.$subtitle.'</h4>'."\n";
 		$content .= $basecontent;
@@ -5227,11 +5283,7 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 	// sign up step two page
 	} else if (is_page_template ( 'template-page-user-signup-step-two.php' ) ) {
-
-	    include_once 'app/lib/wp_content.php';
-
     	$content = \indagare\wp\WPContent::getContent('signup');
-
 	// end sign up step two page
 
 	// contact page
@@ -5540,17 +5592,10 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 	// my account page
 	} else if ( is_page_template ( 'template-page-account-edit.php' ) ) {
-
-		include_once 'app/lib/wp_content.php';
-
-		if ( indagare\users\User::hasUserSession() ) {
-
+		if ( ind_logged_in() ) {
 			$content = \indagare\wp\WPContent::getContent("account");
-
 		} else {
-
 			$content = '<p>You need to log in to see this page.</p>'."\n";
-
 		}
 
 	// end my account page
@@ -5560,7 +5605,7 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 		$content = '';
 
-		if ( !indagare\users\User::hasUserSession() ) {
+		if ( ! ind_logged_in() ) {
 
 //			header('Location: /' );
 
@@ -6161,7 +6206,7 @@ jQuery().ready(function($) {
 			echo '<div id="form-buzz" class="newsletter-signup-wrapper">'."\n";
 				echo '<h2>The Buzz</h2>'."\n";
 				echo '<p>Subscribe to our free e-Newsletter for current travel news and tips.</p>'."\n";
-				echo '<form class="newsletter-signup-form">'."\n";
+				echo '<form class="newsletter-signup-form" method="POST" action="'.get_bloginfo('stylesheet_directory').'/includes/email-signup.php">'."\n";
 				  echo '<div class="form-combo">'."\n";
 					echo '<span class="form-item"><input type="text" name="email" id="newsletter-signup-buzz" class="element newsletter-signup-input" placeholder="Your email address" /></span>'."\n";
 				  echo '</div>'."\n";
@@ -6358,9 +6403,33 @@ jQuery().ready(function($) {
 			echo '</div><!-- #primary -->'."\n";
 		}
 
+		$rowsscout = get_field('author-currently-scouting', $userid);
 		$rows = get_field('author-recently-visited', $userid);
 
-			if ( $rows ) {
+		if ( $rowsscout ) {
+
+			echo '<section class="recent-articles contain">'."\n";
+				echo '<div class="header divider"><h2>'.$user->first_name.' is Currently Scouting</h2></div>'."\n";
+				foreach ( $rowsscout as $row ) {
+					$imageobj = $row['author-currently-scouting-image'];
+					$image = $imageobj['sizes']['thumb-small'];
+
+					echo '<article>'."\n";
+						echo '<a href="'.$row['author-currently-scouting-url'].'">'."\n";
+							if ( $image ) {
+								echo '<img src="'.$image.'" alt="Related" />'."\n";
+							} else {
+								echo '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-small-logo.png" alt="Related" />'."\n";
+							}
+							echo '<h3>'.$row['author-currently-scouting-title'].'</h3>'."\n";
+						echo '</a>'."\n";
+					echo '</article>'."\n";
+				}
+			echo '</section><!-- .recent-articles -->'."\n";
+
+		}
+
+		if ( $rows ) {
 
 			echo '<section class="recent-articles contain">'."\n";
 				echo '<div class="header divider"><h2>'.$user->first_name.' Recently Visited</h2></div>'."\n";
@@ -6808,9 +6877,13 @@ function childtheme_override_siteinfo() {
       <div id="first" class="newsletter-signup-wrapper">
         <h4><?php print __('Newsletter','indagare'); ?></h4>
         <p><?php print __('Receive our free email newsletter full of travel news, tips and advice.','indagare'); ?></p>
-        <form class="newsletter-signup-form">
+        <form class="newsletter-signup-form" method="POST" action="<?php echo get_bloginfo('stylesheet_directory'); ?>/includes/email-signup.php">
           <div class="form-combo">
           	<span class="form-item"><input type="text" name="email" id="newsletter-signup" class="element newsletter-signup-input" placeholder="<?php print __('Your email address','indagare'); ?>" /></span>
+          </div>
+          <div class="form-combo">
+          	<span class="form-item"><input type="text" name="fname" class="element newsletter-signup-fname" placeholder="<?php print __('First name (optional)','indagare'); ?>" /></span>
+          	<span class="form-item"><input type="text" name="lname" class="element newsletter-signup-lname" placeholder="<?php print __('Last name (optional)','indagare'); ?>" /></span>
           </div>
           <div class="buttons">
           	<button type="submit" class="primary button"><?php print __('Submit','indagare'); ?></button>
@@ -6904,12 +6977,14 @@ global $count;
 
 	<footer>
 		<div id="emailsignup" class="newsletter-signup-wrapper">
-		<form class="login newsletter-signup-form" method="post" novalidate>
-			<div id="field1-container" class="field">
-			   <input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address">
+		<form class="login newsletter-signup-form" method="POST" action="<?php echo get_bloginfo('stylesheet_directory'); ?>/includes/email-signup.php" novalidate>
+			<div id="field1-container" class="field clearfix">
+			   <div class="column one-third"><input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address"></div>
+			   <div class="column one-third"><input type="text" name="fname" class="newsletter-signup-fname" placeholder="First name (optional)"></div>
+			   <div class="column one-third"><input type="text" name="lname" class="newsletter-signup-lname" placeholder="Last name (optional)"></div>
 			</div>
 
-			<div id="form-submit" class="field clearfix submit">
+			<div id="form-submit" class="clearfix submit">
 			   <input type="submit" value="Submit" class="button">
 			</div>
 		</form>
@@ -6947,7 +7022,11 @@ jQuery(document).ready(function($) {
 		<h2>Member Login</h2>
 	</header>
 
-	<form id="form-login" class="login" method="post" novalidate>
+	<form id="form-login" class="login" method="post" novalidate<?php
+	if (is_page_template ( 'template-page-intro.php' ) ) {
+		print ' data-successurl="/"';
+	}
+	?>>
 		<div id="field1-container" class="field">
 			<label for="field1">Username</label>
 			<input type="text" name="username" id="field1" required="required" placeholder="Your username">
@@ -6961,7 +7040,7 @@ jQuery(document).ready(function($) {
 		<div id="form-submit" class="field clearfix submit">
 			<label for=""></label>
 		   <input type="submit" value="Submit" class="button primary">
-		   <a id="forgot" href="/forgot-password/" class="button secondary">Forgot Password</a>
+		   <a id="forgot" href="/wp-login.php?action=lostpassword" class="button secondary">Forgot Password</a>
 		</div>
 
 		<div class="field message">
@@ -7028,7 +7107,7 @@ jQuery(document).ready(function($) {
 
 			<div id="form-submit" class="field clearfix submit">
 			   <input type="submit" value="Login" class="button">
-			   <a id="forgot" href="/forgot-password/" class="button secondary">Forgot Password</a>
+			   <a id="forgot" href="/wp-login.php?action=lostpassword" class="button secondary">Forgot Password</a>
 			</div>
 
 			<div class="field message">
@@ -7037,18 +7116,19 @@ jQuery(document).ready(function($) {
         	<?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
    		</form>
 	</div><!-- .column -->
-	<footer class="newsletter-signup-wrapper">
+	<footer id="emailsignup" class="newsletter-signup-wrapper">
 		<h4>Sign Up: Travel Newsletter</h4>
 		<p>Receive our free, bimonthly e-Newsletter full of travel stories, reviews and insider recommendations.</p>
-		<form class="login newsletter-signup-form" method="post" novalidate>
-			<div id="field1-container" class="field">
-			   <input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address">
+		<form class="login newsletter-signup-form" method="POST" action="<?php echo get_bloginfo('stylesheet_directory'); ?>/includes/email-signup.php" novalidate>
+			<div id="field1-container" class="field clearfix">
+			   <div class="column one-third"><input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address"></div>
+			   <div class="column one-third"><input type="text" name="fname" class="newsletter-signup-fname" placeholder="First name (optional)"></div>
+			   <div class="column one-third"><input type="text" name="lname" class="newsletter-signup-lname" placeholder="Last name (optional)"></div>
 			</div>
 
-			<div id="form-submit" class="field clearfix submit">
+			<div id="form-submit" class="clearfix submit">
 			   <input type="submit" value="Submit" class="button">
 			</div>
-
 		</form>
 
 	</footer>
@@ -7094,7 +7174,7 @@ jQuery(document).ready(function($) {
 
 			<div id="form-submit" class="field clearfix submit">
 			   <input type="submit" value="Sign In" class="button">
-			   <input type="submit" value="Forgot Password" class="button secondary">
+			   <a id="forgot" href="/wp-login.php?action=lostpassword" class="button secondary">Forgot Password</a>
 			</div>
 
 			<div class="field message">
@@ -7126,7 +7206,7 @@ jQuery(document).ready(function($) {
 
 			<div id="form-submit" class="field clearfix submit">
 			   <input type="submit" value="Sign In" class="button">
-			   <input type="submit" value="Forgot Password" class="button secondary">
+			   <a id="forgot" href="/wp-login.php?action=lostpassword" class="button secondary">Forgot Password</a>
 				<a href="/join/" class="button">Join</a>
 			</div>
 
@@ -7154,10 +7234,11 @@ jQuery(document).ready(function($) {
 
 <div id="lightbox-signup-error" class="lightbox white-popup login mfp-hide">
 	<header>
-		<h2>Credit Card Payment Error</h2>
+		<h2>Payment Error</h2>
 	</header>
 
-	<p>There was an error verifying your credit card information for payment. Please check the information that you entered and try again.</p>
+	<p>There was an error verifying your credit card information for payment. Please go to the <a href="/account#billing-tab">Billing section</a>
+	of your account, and try processing your payment again.</p>
 
 	<p class="tiny" id="errordetail"></p>
 </div><!-- #lightbox-signup-error -->
@@ -7169,11 +7250,12 @@ jQuery(document).ready(function($) {
 
 	<p>Here's your new membership information for your records. A confirmation message has been sent to the email in your account.</p>
 
-	<p id="memberdate"><strong>Signup Date:</strong> <span></span></p>
+	<p id="membercardholder"><strong>Member Name:</strong> <span></span></p>
 	<p id="memberlevel"><strong>Membership Level:</strong> <span></span></p>
-	<p id="membercost"><strong>Price:</strong> <span></span></p>
 	<p id="memberlength"><strong>Duration:</strong> <span></span></p>
-	<p id="membercardholder"><strong>Cardholder Name:</strong> <span></span></p>
+	<p id="membercost"><strong>Price:</strong> <span></span></p>
+	<p id="memberdate"><strong>Signup Date:</strong> <span></span></p>
+	<p id="memberenddate"><strong>Valid Through:</strong> <span></span></p>
 	<p id="membercard"><strong>Payment Using Credit Card Ending In:</strong> <span></span></p>
 	<p id="membertransaction"><strong>Transaction Code:</strong> <span></span></p>
 
@@ -7217,23 +7299,25 @@ jQuery(document).ready(function($) {
 
 <?php
 
+/*
 		// is user logged in
 		if ( ind_logged_in() ) {
 
-			include_once 'app/lib/user.php';
-			include_once 'app/lib/db.php';
-
-			$userid = \indagare\users\User::getSessionUserID();
-	        $user = \indagare\db\CrmDB::getExtendedUserById($userid);
-	        $userlevel = $user->membership_level;
+	        $userlevel = 99999;
+			if ( \indagare\users\User::hasUserSession() ) {
+				$userid = \indagare\users\User::getSessionUserID();
+		        $user = \indagare\db\CrmDB::getExtendedUserById($userid);
+		        $userlevel = $user->membership_level;
+			}
 
 			$query = new WP_Query( array( 'posts_per_page' => -1, 'post_type' => 'page', 'meta_key' => '_wp_page_template', 'meta_value' => 'template-page-user-signup.php', 'orderby' => 'name', 'order' => 'ASC' ) );
 
-			if ( $query->have_posts() ) while ( $query->have_posts() ) : $query->the_post();
-
-				$rows = get_field('membership-level');
-
-			endwhile; // end of the loop
+			if ( $query->have_posts() ) {
+				while ( $query->have_posts() ) {
+					$query->the_post();
+					$rows = get_field('membership-level');
+				}
+			}
 
 			wp_reset_postdata();
 
@@ -7252,20 +7336,8 @@ jQuery(document).ready(function($) {
 				}
 				echo '</div>'."\n";
 			}
-?>
-<script>
-jQuery().ready(function($) {
-
-	$('#benefits').appendTo('#tab3');
-	$('#benefits').addClass('show-this');
-
-//	$('.customselect').customSelect();
-
-})
-</script>
-<?php
 		}
-
+*/
 
 	} // end my account modals
 
@@ -7419,14 +7491,19 @@ echo do_shortcode('[contact-form-7 id="32337" title="Contact Insider Trips"]');
 
 		var ssotokenvalue_default = 'x4T306PLm1KWuXktHqtGzw%3D%3D';
 		var ssotokenvalue = ssotokenvalue_default;
-		<?php if ( ind_logged_in() ) : ?>
-			ssotokenvalue = '<?php echo $_SESSION["SSODATA"] ?>';
+		<?php if ( ind_logged_in() ) {
+			$account = \WPSF\Contact::get_account_wp();
+			if ( method_exists( $account, 'get_ssotoken' ) ) {
+				print 'ssotokenvalue = "' . $account->get_ssotoken() . '";';
+			}
+		}
+		?>
 		<?php endif; ?>
-	<?php endif; ?>
 
 ////////////////////////////////////////////////////////////////////////////
 jQuery().ready(function($) {
 	<?php if (is_page_template ( 'template-page-password-reset.php' ) ) :  // password reset page ?>
+		/*
 		$("#form-reset").submit(function(event) {
 			var url = theme_path+'/process_password_reset.php';
 			emailvars = $('#form-reset #email').val();
@@ -7457,6 +7534,7 @@ jQuery().ready(function($) {
 			event.preventDefault();
 
 		});
+		*/
 <?php endif;  // end password reset page ?>
 
 <?php
@@ -8151,7 +8229,7 @@ function export_hotels( $flush = true ) {
 
 	global $post;
 
-	if ( $post->post_type == 'hotel' ) {
+	//if ( $post->post_type == 'hotel' ) {
 
 		$args = array('numberposts' => -1, 'post_type' => 'hotel', 'orderby' => 'name', 'order' => 'ASC', 'post_status' => 'publish', 'fields' => 'ids');
 		$hotels = get_posts($args);
@@ -8204,7 +8282,7 @@ function export_hotels( $flush = true ) {
 
 		$jsonhotelsurls = json_encode($datahotelsurls);
 		file_put_contents( $_SERVER['DOCUMENT_ROOT'].'/export/datahotelsurls.json', $jsonhotelsurls);
-	}
+	//}
 
 	export_bookingwidget();
 }

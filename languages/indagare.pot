@@ -1,0 +1,351 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-08-16 15:47-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: author.php:67
+msgid "Email "
+msgstr ""
+
+#: comments.php:28
+msgid "Please do not load this page directly."
+msgstr ""
+
+#: comments.php:37
+msgid ""
+"This post is password protected. Enter the password to view any comments."
+msgstr ""
+
+#: comments.php:115
+msgid "Trackbacks"
+msgstr ""
+
+#: comments.php:115
+#, php-format
+msgid "%1$sOne%2$s Trackback"
+msgstr ""
+
+#: functions.php:91
+msgid ""
+"The above password is only a suggestion. Feel free to delete it and choose "
+"your own."
+msgstr ""
+
+#: functions.php:93
+msgid ""
+"The password must be at least eight characters long and contain both letters "
+"and numbers.  To make it stronger, include uppercase and lowercase letters "
+"as well as symbols like ! \" ? $ % ^ &amp; )."
+msgstr ""
+
+#: functions.php:99
+msgid ""
+"Please enter your username or email address. You will receive a link to "
+"create a new password via email."
+msgstr ""
+
+#: functions.php:101
+msgid ""
+"Please enter your username or email address to reset your password. You will "
+"receive a link via email to continue the process."
+msgstr ""
+
+#: functions.php:115
+msgid "The password must be at least 8 characters long."
+msgstr ""
+
+#: functions.php:120
+msgid "The password must contain one or more letters."
+msgstr ""
+
+#: functions.php:125
+msgid "The password must contain one or more numbers."
+msgstr ""
+
+#: functions.php:483
+msgid "Biographical Info"
+msgstr ""
+
+#: functions.php:489
+msgid ""
+"Share a little biographical information to fill out your profile. This may "
+"be shown publicly."
+msgstr ""
+
+#: functions.php:525
+msgid "Recent Posts"
+msgstr ""
+
+#: functions.php:761
+msgid "Review Image"
+msgstr ""
+
+#: functions.php:850
+msgid "Logging in..."
+msgstr ""
+
+#: functions.php:883
+msgid "Login successful, redirecting..."
+msgstr ""
+
+#: functions.php:891
+msgid "Incorrect login - please try again"
+msgstr ""
+
+#: functions.php:6854
+msgid "Newsletter"
+msgstr ""
+
+#: functions.php:6855
+msgid "Receive our free email newsletter full of travel news, tips and advice."
+msgstr ""
+
+#: functions.php:6858
+msgid "Your email address"
+msgstr ""
+
+#: functions.php:6861
+msgid "First name (optional)"
+msgstr ""
+
+#: functions.php:6862
+msgid "Last name (optional)"
+msgstr ""
+
+#: functions.php:6865
+msgid "Submit"
+msgstr ""
+
+#: functions.php:6870
+msgid "Connect"
+msgstr ""
+
+#: functions.php:6877
+msgid "Email Us"
+msgstr ""
+
+#: functions.php:6880
+msgid "facebook"
+msgstr ""
+
+#: functions.php:6880
+msgid "twitter"
+msgstr ""
+
+#: functions.php:6880
+msgid "instagram"
+msgstr ""
+
+#: functions.php:6884
+msgid "Membership"
+msgstr ""
+
+#: functions.php:6891
+msgid "About"
+msgstr ""
+
+#: functions.php:7848
+msgid "Booking ID"
+msgstr ""
+
+#: functions.php:7994
+msgid "All "
+msgstr ""
+
+#: includes/acf-location-field/location-v3.php:36
+msgid "Location"
+msgstr ""
+
+#: includes/acf-location-field/location-v3.php:138
+msgid "Map address"
+msgstr ""
+
+#: includes/acf-location-field/location-v3.php:139
+msgid "Return the address along with the coordinates."
+msgstr ""
+
+#: includes/acf-location-field/location-v3.php:149
+#: includes/acf-location-field/location-v3.php:199
+#: includes/acf-location-field/location-v4.php:210
+#: includes/acf-location-field/location-v4.php:230
+#: includes/acf-location-field/location-v4.php:250
+#: includes/acf-location-field/location-v4.php:270
+msgid "Yes"
+msgstr ""
+
+#: includes/acf-location-field/location-v3.php:150
+#: includes/acf-location-field/location-v3.php:200
+#: includes/acf-location-field/location-v4.php:211
+#: includes/acf-location-field/location-v4.php:231
+#: includes/acf-location-field/location-v4.php:251
+#: includes/acf-location-field/location-v4.php:271
+msgid "No"
+msgstr ""
+
+#: includes/acf-location-field/location-v3.php:158
+#: includes/acf-location-field/location-v4.php:169
+msgid "Map center"
+msgstr ""
+
+#: includes/acf-location-field/location-v3.php:159
+msgid "Latitude and longitude to center the initial map."
+msgstr ""
+
+#: includes/acf-location-field/location-v3.php:173
+#: includes/acf-location-field/location-v4.php:184
+msgid "Map zoom"
+msgstr ""
+
+#: includes/acf-location-field/location-v3.php:188
+#: includes/acf-location-field/location-v4.php:199
+msgid "Map Scrollwheel"
+msgstr ""
+
+#: includes/acf-location-field/location-v3.php:189
+#: includes/acf-location-field/location-v4.php:200
+msgid "Allows scrollwheel zooming on the map field"
+msgstr ""
+
+#: includes/acf-location-field/location-v3.php:274
+#: includes/acf-location-field/location-v4.php:335
+msgid "This address could not be found: "
+msgstr ""
+
+#: includes/acf-location-field/location-v3.php:289
+#: includes/acf-location-field/location-v4.php:350
+msgid "This place could not be found: "
+msgstr ""
+
+#: includes/acf-location-field/location-v3.php:369
+#: includes/acf-location-field/location-v4.php:445
+msgid "Search for a location"
+msgstr ""
+
+#: includes/acf-location-field/location-v3.php:371
+#: includes/acf-location-field/location-v4.php:447
+msgid "Find the complete address"
+msgstr ""
+
+#: includes/acf-location-field/location-v3.php:371
+#: includes/acf-location-field/location-v4.php:447
+msgid "Address: "
+msgstr ""
+
+#: includes/acf-location-field/location-v3.php:373
+#: includes/acf-location-field/location-v4.php:449
+msgid "Coordinates: "
+msgstr ""
+
+#: includes/acf-location-field/location-v4.php:23
+msgid "Location Map"
+msgstr ""
+
+#: includes/acf-location-field/location-v4.php:24
+msgid "Content"
+msgstr ""
+
+#: includes/acf-location-field/location-v4.php:129
+msgid "Return Value"
+msgstr ""
+
+#: includes/acf-location-field/location-v4.php:139
+msgid "Coordinates & Address"
+msgstr ""
+
+#: includes/acf-location-field/location-v4.php:140
+msgid "Coordinates"
+msgstr ""
+
+#: includes/acf-location-field/location-v4.php:149
+msgid "Map height"
+msgstr ""
+
+#: includes/acf-location-field/location-v4.php:150
+msgid "Height of the map. Minimum height is 150px"
+msgstr ""
+
+#: includes/acf-location-field/location-v4.php:170
+msgid "Latitude and longitude to center the initial map"
+msgstr ""
+
+#: includes/acf-location-field/location-v4.php:219
+msgid "Map Type Control"
+msgstr ""
+
+#: includes/acf-location-field/location-v4.php:220
+msgid "Show controls for Map Type (Satellite, Hybrid)"
+msgstr ""
+
+#: includes/acf-location-field/location-v4.php:239
+msgid "Street View Control"
+msgstr ""
+
+#: includes/acf-location-field/location-v4.php:240
+msgid "Show controls for Street View"
+msgstr ""
+
+#: includes/acf-location-field/location-v4.php:259
+msgid "Point Of Interest"
+msgstr ""
+
+#: includes/acf-location-field/location-v4.php:260
+msgid "Show places on the map"
+msgstr ""
+
+#: includes/comments-filters.php:23
+msgid "Your comment is awaiting moderation"
+msgstr ""
+
+#: includes/comments-filters.php:67
+#, php-format
+msgid "%s <span class=\"meta-sep\">|</span> %s"
+msgstr ""
+
+#: includes/comments-filters.php:74
+msgid "Edit comment"
+msgstr ""
+
+#: includes/comments-filters.php:75
+msgid "Edit"
+msgstr ""
+
+#: includes/last_viewed_posts.php:170
+msgid "Title:"
+msgstr ""
+
+#: page.php:61 template-page-404.php:50
+#: template-page-about-contributors.php:50 template-page-about-founder.php:50
+#: template-page-about-mission.php:50 template-page-about-team.php:50
+#: template-page-account-edit.php:55 template-page-account-wish-list.php:50
+#: template-page-book.php:50 template-page-contact.php:50
+#: template-page-external-login.php:50 template-page-how-to-book.php:50
+#: template-page-how-we-work.php:50 template-page-intro.php:50
+#: template-page-map.php:50 template-page-new.php:50
+#: template-page-password-reset.php:50
+#: template-page-user-signup-step-two.php:58 template-page-user-signup.php:50
+#: template-page-welcome.php:50 template-page-why-join.php:50
+msgid "Pages: "
+msgstr ""
+
+#: search.php:57
+msgid "Nothing Found"
+msgstr ""
+
+#: search.php:61
+msgid ""
+"Sorry, but nothing matched your search criteria. Please try again with some "
+"different keywords."
+msgstr ""

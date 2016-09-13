@@ -27,7 +27,7 @@ function ind_olduser_cap_filter( $allcaps, $cap, $args ) {
 		return $allcaps;
 
 	// Get the Member role.
-	$role = get_role( 'member' );
+	$role = get_role( 'basic' );
 
 	// Fail back to subscriber if the Member role is not defined
 	if ( is_null( $role ) )
@@ -47,5 +47,23 @@ function ind_logged_in() {
 		return true;
 	}
 
-	return \indagare\users\User::hasUserSession();
+	return false;
 }
+
+if( !current_user_can('edit_posts') ) {
+	function mytheme_admin_bar_render() {
+		global $wp_admin_bar;
+		$wp_admin_bar->remove_menu('edit-profile', 'user-actions');
+	}
+	add_action( 'wp_before_admin_bar_render', 'mytheme_admin_bar_render' );
+
+	function stop_access_profile() {
+		if(IS_PROFILE_PAGE === true) {
+			wp_redirect('/account/');
+		}
+		remove_menu_page( 'profile.php' );
+		remove_submenu_page( 'users.php', 'profile.php' );
+	}
+	add_action( 'admin_init', 'stop_access_profile' );
+}
+

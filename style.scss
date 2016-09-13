@@ -5,7 +5,7 @@ Description: Use this theme to start your Thematic Child Theme development.
 Author: Sceptre Hospitality
 Author URI: 
 Template: thematic
-Version: 1.2.11
+Version: 1.3.7
 Tags: white, three-columns, two-columns, fixed-width, theme-options, left-sidebar, right-sidebar, threaded-comments, sticky-post, microformats
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -24,6 +24,7 @@ This work, like WordPress, is released under GNU General Public License, version
 @import 'scss/fonts';
 
 @import 'scss/libraries/magnific-popup';
+@import 'scss/libraries/jquery-confirm';
 
 @import 'scss/style';
 @import 'scss/destinations';

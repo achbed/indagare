@@ -5,7 +5,7 @@ Description: Use this theme to start your Thematic Child Theme development.
 Author: Sceptre Hospitality
 Author URI: 
 Template: thematic
-Version: 1.2.11
+Version: 1.3.7
 Tags: white, three-columns, two-columns, fixed-width, theme-options, left-sidebar, right-sidebar, threaded-comments, sticky-post, microformats
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -19,7 +19,7 @@ This work, like WordPress, is released under GNU General Public License, version
 /* ========================================================================= */
 /* reset CSS */
 /* ------------------------------------------------------------------------- */
-@import url("http://fast.fonts.net/t/1.css?apiType=css&projectid=4134e0b5-372e-4f2a-8a8d-7f0754e7e6e4");
+@import url("https://fast.fonts.net/t/1.css?apiType=css&projectid=4134e0b5-372e-4f2a-8a8d-7f0754e7e6e4");
 * { margin: 0; padding: 0; }
 
 *, *:before, *:after { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; }
@@ -31,6 +31,10 @@ a img { border: none; }
 a { outline: none; }
 
 textarea, input, select { outline: none; }
+
+.clearfix::after { content: ""; display: block; clear: both; }
+
+.hide-until-load, .hidden { display: none !important; }
 
 /* ========================================================================= */
 /* fonts */
@@ -190,9 +194,189 @@ img.mfp-img { width: auto; max-width: 100%; height: auto; display: block; line-h
 
 .mfp-ie7 .mfp-close { top: 0; right: 0; padding-top: 0; }
 
-/* ========================================================================= */
-/* general styles */
-/* ------------------------------------------------------------------------- */
+/*!
+ * jquery-confirm v2.5.1 (http://craftpip.github.io/jquery-confirm/)
+ * Author: boniface pereira
+ * Website: www.craftpip.com
+ * Contact: hey@craftpip.com
+ *
+ * Copyright 2013-2016 jquery-confirm
+ * Licensed under MIT (https://github.com/craftpip/jquery-confirm/blob/master/LICENSE)
+ */
+@-webkit-keyframes jconfirm-rotate { from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); } }
+@keyframes jconfirm-rotate { from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); } }
+.jconfirm { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 99999999; font-family: inherit; overflow: hidden; }
+
+.jconfirm .jconfirm-bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; -webkit-transition: all .4s; transition: all .4s; }
+
+.jconfirm .jconfirm-bg.seen { opacity: 1; }
+
+.jconfirm .jconfirm-scrollpane { position: fixed; top: 0; left: 0; right: 0; bottom: 0; overflow-y: auto; -webkit-perspective: 500px; perspective: 500px; -webkit-perspective-origin: center; perspective-origin: center; }
+
+.jconfirm .jconfirm-box { background: #fff; border-radius: 4px; position: relative; outline: none; padding: 15px 15px 0; }
+
+.jconfirm .jconfirm-box div.closeIcon { height: 20px; width: 20px; position: absolute; top: 5px; right: 5px; cursor: pointer; opacity: .6; text-align: center; -webkit-transition: opacity .1s ease-in; transition: opacity .1s ease-in; display: none; font-size: 27px; line-height: 14px; }
+
+.jconfirm .jconfirm-box div.closeIcon .fa { font-size: 16px; }
+
+.jconfirm .jconfirm-box div.closeIcon .glyphicon { font-size: 16px; }
+
+.jconfirm .jconfirm-box div.closeIcon .zmdi { font-size: 16px; }
+
+.jconfirm .jconfirm-box div.closeIcon:hover { opacity: 1; }
+
+.jconfirm .jconfirm-box div.title-c { display: block; font-size: 22px; line-height: 20px; }
+
+.jconfirm .jconfirm-box div.title-c .icon-c { font-size: inherit; padding-bottom: 15px; display: inline-block; margin-right: 8px; vertical-align: middle; }
+
+.jconfirm .jconfirm-box div.title-c .icon-c i { vertical-align: middle; }
+
+.jconfirm .jconfirm-box div.title-c .icon-c:empty { display: none; }
+
+.jconfirm .jconfirm-box div.title-c .title { font-size: inherit; font-family: inherit; display: inline-block; vertical-align: middle; padding-bottom: 15px; }
+
+.jconfirm .jconfirm-box div.title-c .title:empty { display: none; }
+
+.jconfirm .jconfirm-box div.content-pane { margin-bottom: 15px; height: auto; -webkit-transition: height .4s ease-in; transition: height .4s ease-in; display: inline-block; width: 100%; position: relative; }
+
+.jconfirm .jconfirm-box div.content-pane .content { position: absolute; top: 0; left: 0; -webkit-transition: all .2s ease-in; transition: all .2s ease-in; right: 0; }
+
+.jconfirm .jconfirm-box div.content-pane .content img { width: 100%; height: auto; }
+
+.jconfirm .jconfirm-box div.content-pane .content:empty { display: none; }
+
+.jconfirm .jconfirm-box div.content-pane .content:empty.loading { height: 40px; position: relative; opacity: .6; display: block; }
+
+.jconfirm .jconfirm-box div.content-pane .content:empty.loading:before { content: ''; height: 20px; width: 20px; border: solid 2px transparent; position: absolute; left: 50%; margin-left: -10px; border-radius: 50%; -webkit-animation: jconfirm-rotate 1s infinite linear; animation: jconfirm-rotate 1s infinite linear; border-bottom-color: #aaa; top: 50%; margin-top: -10px; }
+
+.jconfirm .jconfirm-box div.content-pane .content:empty.loading:after { content: ''; position: absolute; left: 50%; margin-left: -15px; }
+
+.jconfirm .jconfirm-box .buttons { padding-bottom: 15px; }
+
+.jconfirm .jconfirm-box .buttons button + button { margin-left: 5px; }
+
+.jconfirm .jquery-clear { clear: both; }
+
+.jconfirm.rtl { direction: rtl; }
+
+.jconfirm.rtl div.closeIcon { left: 12px; right: auto; }
+
+.jconfirm.jconfirm-white .jconfirm-bg { background-color: rgba(0, 0, 0, 0.2); }
+
+.jconfirm.jconfirm-white .jconfirm-box { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); border-radius: 5px; }
+
+.jconfirm.jconfirm-white .jconfirm-box .buttons { float: right; }
+
+.jconfirm.jconfirm-white .jconfirm-box .buttons button { border: none; background-image: none; text-transform: uppercase; font-size: 14px; font-weight: bold; text-shadow: none; -webkit-transition: background .1s; transition: background .1s; color: #fff; }
+
+.jconfirm.jconfirm-white .jconfirm-box .buttons button.btn-default { box-shadow: none; color: #333; }
+
+.jconfirm.jconfirm-white .jconfirm-box .buttons button.btn-default:hover { background: #ddd; }
+
+.jconfirm.jconfirm-black .jconfirm-bg { background-color: rgba(0, 0, 0, 0.5); }
+
+.jconfirm.jconfirm-black .jconfirm-box { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); background: #444; border-radius: 5px; color: #fff; }
+
+.jconfirm.jconfirm-black .jconfirm-box .buttons { float: right; }
+
+.jconfirm.jconfirm-black .jconfirm-box .buttons button { border: none; background-image: none; text-transform: uppercase; font-size: 14px; font-weight: bold; text-shadow: none; -webkit-transition: background .1s; transition: background .1s; color: #fff; }
+
+.jconfirm.jconfirm-black .jconfirm-box .buttons button.btn-default { box-shadow: none; color: #fff; background: none; }
+
+.jconfirm.jconfirm-black .jconfirm-box .buttons button.btn-default:hover { background: #666; }
+
+.jconfirm .jconfirm-box.hilight { -webkit-animation: hilight 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; animation: hilight 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
+
+@-webkit-keyframes hilight { 10%,90% { -webkit-transform: translate3d(-2px, 0, 0); transform: translate3d(-2px, 0, 0); }
+  20%,80% { -webkit-transform: translate3d(4px, 0, 0); transform: translate3d(4px, 0, 0); }
+  30%,50%,70% { -webkit-transform: translate3d(-8px, 0, 0); transform: translate3d(-8px, 0, 0); }
+  40%,60% { -webkit-transform: translate3d(8px, 0, 0); transform: translate3d(8px, 0, 0); } }
+@keyframes hilight { 10%,90% { -webkit-transform: translate3d(-2px, 0, 0); transform: translate3d(-2px, 0, 0); }
+  20%,80% { -webkit-transform: translate3d(4px, 0, 0); transform: translate3d(4px, 0, 0); }
+  30%,50%,70% { -webkit-transform: translate3d(-8px, 0, 0); transform: translate3d(-8px, 0, 0); }
+  40%,60% { -webkit-transform: translate3d(8px, 0, 0); transform: translate3d(8px, 0, 0); } }
+.jconfirm { -webkit-perspective: 400px; perspective: 400px; }
+
+.jconfirm .jconfirm-box { opacity: 1; -webkit-transition-property: -webkit-transform,opacity,box-shadow; transition-property: transform,opacity,box-shadow; }
+
+.jconfirm .jconfirm-box.anim-top, .jconfirm .jconfirm-box.anim-left, .jconfirm .jconfirm-box.anim-right, .jconfirm .jconfirm-box.anim-bottom, .jconfirm .jconfirm-box.anim-opacity, .jconfirm .jconfirm-box.anim-zoom, .jconfirm .jconfirm-box.anim-scale, .jconfirm .jconfirm-box.anim-none, .jconfirm .jconfirm-box.anim-rotate, .jconfirm .jconfirm-box.anim-rotatex, .jconfirm .jconfirm-box.anim-rotatey, .jconfirm .jconfirm-box.anim-scaley, .jconfirm .jconfirm-box.anim-scalex { opacity: 0; }
+
+.jconfirm .jconfirm-box.anim-rotate { -webkit-transform: rotate(90deg); -ms-transform: rotate(90deg); transform: rotate(90deg); }
+
+.jconfirm .jconfirm-box.anim-rotatex { -webkit-transform: rotateX(90deg); transform: rotateX(90deg); -webkit-transform-origin: center; -ms-transform-origin: center; transform-origin: center; }
+
+.jconfirm .jconfirm-box.anim-rotatexr { -webkit-transform: rotateX(-90deg); transform: rotateX(-90deg); -webkit-transform-origin: center; -ms-transform-origin: center; transform-origin: center; }
+
+.jconfirm .jconfirm-box.anim-rotatey { -webkit-transform: rotatey(90deg); -ms-transform: rotatey(90deg); transform: rotatey(90deg); -webkit-transform-origin: center; -ms-transform-origin: center; transform-origin: center; }
+
+.jconfirm .jconfirm-box.anim-rotateyr { -webkit-transform: rotatey(-90deg); -ms-transform: rotatey(-90deg); transform: rotatey(-90deg); -webkit-transform-origin: center; -ms-transform-origin: center; transform-origin: center; }
+
+.jconfirm .jconfirm-box.anim-scaley { -webkit-transform: scaley(1.5); -ms-transform: scaley(1.5); transform: scaley(1.5); -webkit-transform-origin: center; -ms-transform-origin: center; transform-origin: center; }
+
+.jconfirm .jconfirm-box.anim-scalex { -webkit-transform: scalex(1.5); -ms-transform: scalex(1.5); transform: scalex(1.5); -webkit-transform-origin: center; -ms-transform-origin: center; transform-origin: center; }
+
+.jconfirm .jconfirm-box.anim-top { -webkit-transform: translate(0, -100px); -ms-transform: translate(0, -100px); transform: translate(0, -100px); }
+
+.jconfirm .jconfirm-box.anim-left { -webkit-transform: translate(-100px, 0); -ms-transform: translate(-100px, 0); transform: translate(-100px, 0); }
+
+.jconfirm .jconfirm-box.anim-right { -webkit-transform: translate(100px, 0); -ms-transform: translate(100px, 0); transform: translate(100px, 0); }
+
+.jconfirm .jconfirm-box.anim-bottom { -webkit-transform: translate(0, 100px); -ms-transform: translate(0, 100px); transform: translate(0, 100px); }
+
+.jconfirm .jconfirm-box.anim-zoom { -webkit-transform: scale(1.2); -ms-transform: scale(1.2); transform: scale(1.2); }
+
+.jconfirm .jconfirm-box.anim-scale { -webkit-transform: scale(0.5); -ms-transform: scale(0.5); transform: scale(0.5); }
+
+.jconfirm .jconfirm-box.anim-none { display: none; }
+
+.jconfirm.jconfirm-supervan .jconfirm-bg { background-color: rgba(54, 70, 93, 0.95); }
+
+.jconfirm.jconfirm-supervan .jconfirm-box { background-color: transparent; }
+
+.jconfirm.jconfirm-supervan .jconfirm-box div.closeIcon { color: #fff; }
+
+.jconfirm.jconfirm-supervan .jconfirm-box div.title-c { text-align: center; color: #fff; font-size: 28px; font-weight: normal; }
+
+.jconfirm.jconfirm-supervan .jconfirm-box div.title-c > * { padding-bottom: 25px; }
+
+.jconfirm.jconfirm-supervan .jconfirm-box div.content-pane { margin-bottom: 25px; }
+
+.jconfirm.jconfirm-supervan .jconfirm-box div.content { text-align: center; color: #fff; }
+
+.jconfirm.jconfirm-supervan .jconfirm-box .buttons { text-align: center; }
+
+.jconfirm.jconfirm-supervan .jconfirm-box .buttons button { font-size: 16px; border-radius: 2px; background: #303f53; text-shadow: none; border: none; color: #fff; padding: 10px; min-width: 100px; }
+
+.jconfirm.jconfirm-material .jconfirm-bg { background-color: rgba(0, 0, 0, 0.67); }
+
+.jconfirm.jconfirm-material .jconfirm-box { background-color: #fff; box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 13px 19px 2px rgba(0, 0, 0, 0.14), 0 5px 24px 4px rgba(0, 0, 0, 0.12); padding: 30px 25px 10px 25px; }
+
+.jconfirm.jconfirm-material .jconfirm-box div.closeIcon { color: rgba(0, 0, 0, 0.87); }
+
+.jconfirm.jconfirm-material .jconfirm-box div.title-c { color: rgba(0, 0, 0, 0.87); font-size: 22px; font-weight: bold; }
+
+.jconfirm.jconfirm-material .jconfirm-box div.content { text-align: left; color: rgba(0, 0, 0, 0.87); }
+
+.jconfirm.jconfirm-material .jconfirm-box .buttons { text-align: right; }
+
+.jconfirm.jconfirm-material .jconfirm-box .buttons button { text-transform: uppercase; font-weight: 500; }
+
+.jconfirm.jconfirm-bootstrap .jconfirm-bg { background-color: rgba(0, 0, 0, 0.21); }
+
+.jconfirm.jconfirm-bootstrap .jconfirm-box { background-color: #fff; box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2); border: solid 1px rgba(0, 0, 0, 0.4); padding: 15px 0 0; }
+
+.jconfirm.jconfirm-bootstrap .jconfirm-box div.closeIcon { color: rgba(0, 0, 0, 0.87); }
+
+.jconfirm.jconfirm-bootstrap .jconfirm-box div.title-c { color: rgba(0, 0, 0, 0.87); font-size: 22px; font-weight: bold; padding-left: 15px; padding-right: 15px; }
+
+.jconfirm.jconfirm-bootstrap .jconfirm-box div.content { text-align: left; color: rgba(0, 0, 0, 0.87); padding: 0 15px; }
+
+.jconfirm.jconfirm-bootstrap .jconfirm-box .buttons { text-align: right; padding: 0 0 0; margin: -5px 0 0; border-top: solid 1px #ddd; overflow: hidden; border-radius: 0 0 4px 4px; }
+
+.jconfirm.jconfirm-bootstrap .jconfirm-box .buttons button { font-weight: 500; border-radius: 0; margin: 0; border-left: solid 1px #ddd; }
+
 html { font-size: 87.5%; min-height: 100%; }
 
 body { font-size: 1em; font-family: 'Helvetica Neue',Arial,sans-serif; line-height: 1.4286; color: #333; min-height: 100%; position: relative; }
@@ -225,23 +409,20 @@ blockquote { font-size: 1.715em; font-family: Georgia, Times, sans-serif; line-h
 
 cite { font-size: 1.14em; font-family: Georgia, Times, sans-serif; line-height: 1.25; font-style: normal; }
 
-/* general styles - links */
-/* ------------------------------------------------------------------------- */
 a:link, a:visited { color: #336699; text-decoration: none; }
 
 a:hover, a:active { color: #fd252a; }
 
 h2 a, h3 a, h4 a, h5 a, a h1, a h2, a p { text-decoration: none; }
 
-/* general styles - form elements */
-/* ------------------------------------------------------------------------- */
 label, .label { display: inline-block; }
 
 input, select, textarea, .button { font-size: 1em; display: inline-block; border: 0 none; padding-left: .715em; padding-right: .715em; position: relative; }
 
 input, select, textarea, button, .button { font-family: Arial,sans-serif; border: 0 none; }
 
-select { -webkit-appearance: none; }
+select { -webkit-appearance: none; -moz-appearance: none; }
+select::-ms-expand { display: none; }
 
 .element { /*35px height and line-height mtatch*/ height: 2.5em; line-height: 1; /**/ overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 
@@ -261,11 +442,10 @@ select { -webkit-appearance: none; }
 
 .floatright { float: right; margin: 0 0 .719em .719em; }
 
-/* focus */
 input.element:focus { outline: none; }
 
-/* general styles - icons */
-/* ------------------------------------------------------------------------- */
+.loading { text-indent: -9999em; min-height: 32px; min-width: 32px; background: transparent 50% 50% no-repeat url("images/preloader.gif"); }
+
 b.icon { font-size: 1.429em; height: 1em; display: inline-block; }
 
 .form-item b.icon { font-size: 1.072em; }
@@ -331,9 +511,6 @@ b.box { display: inline-block; height: 1.5em; width: 1.5em; line-height: 1.5em; 
 
 .active-box b { color: #fff; background-color: #ff9200; border-color: #ff9200; }
 
-/* ========================================================================= */
-/* layout */
-/* ------------------------------------------------------------------------- */
 .candy-wrapper { max-width: 960px; margin: 0 auto; position: relative; }
 
 #main { min-height: 40em; padding: 2.858em 10px 1.429em; }
@@ -346,9 +523,16 @@ b.box { display: inline-block; height: 1.5em; width: 1.5em; line-height: 1.5em; 
 
 #secondary { margin-bottom: 1.429em; clear: right; }
 
-/* ========================================================================= */
-/* header */
-/* ------------------------------------------------------------------------- */
+.jconfirm .jconfirm-box { max-width: 90%; width: 25em; margin: 0 auto; }
+
+button.btn { padding: 1em; margin: 0 1em; cursor: pointer; border-radius: 0em; text-transform: none !important; }
+button.btn.btn-info { background: #55ab3f; color: #ffffff !important; }
+button.btn.btn-info:hover, button.btn.btn-info:active { background: #55ab3f; }
+button.btn.btn-warning { background: #abe1fa; color: #000000 !important; }
+button.btn.btn-warning:hover, button.btn.btn-warning:active { background: #abe1fa; }
+button.btn.btn-danger { background: #da420b; color: #ffffff !important; }
+button.btn.btn-danger:hover, button.btn.btn-danger:active { background: #da420b; }
+
 header { background-color: #000; color: #fff; padding-left: 10px; padding-right: 10px; }
 
 header a:link, header a:visited { color: #fff; }
@@ -606,12 +790,6 @@ p.view-more a.map { margin-right: 2em; }
 /* AKB */
 .new .hero { margin-bottom: 2.714em; border-bottom: none; }
 
-/*	DA .widget-wrapper.home {
-		float: left;  AKB  AKB
-		width: 32%;
-		padding: 0px;
-		
-	}*/
 .widget-wrapper.book { /* AKB */ float: none; width: 100%; }
 
 .hero img { max-width: 100%; display: block; margin-bottom: .719em; }
@@ -940,11 +1118,13 @@ ul.footer-nav { list-style: none; margin: 0; }
 
 ul.footer-nav li { list-style: none; margin: 0; }
 
-#subsidiary .form-combo { margin-bottom: 0; -webkit-box-shadow: inset 0px 0px 0px transparent; -moz-box-shadow: inset 0px 0px 0px transparent; -ms-box-shadow: inset 0px 0px 0px transparent; box-shadow: inset 0px 0px 0px transparent; margin-bottom: 1em; max-width: 220px; }
+#subsidiary .form-combo { margin-bottom: 0; -webkit-box-shadow: inset 1px 1px 3px #666; -moz-box-shadow: inset 1px 1px 3px #666; -ms-box-shadow: inset 1px 1px 3px #666; box-shadow: inset 1px 1px 3px #666; margin-bottom: 1em; /*max-width:220px;*/ }
 
-#subsidiary .element { /*23px height*/ height: 1.79em; line-height: 1; /**/ }
+#subsidiary .element { /*23px height*/ /*height:1.79em;*/ line-height: 1; /**/ }
 
-#subsidiary button { height: 1.79em; line-height: 1.79; background-color: #2460a2; }
+#subsidiary .buttons { text-align: left; }
+
+#subsidiary button { margin-left: 0; height: 1.79em; line-height: 1.79; background-color: #2460a2; }
 
 #subsidiary button:hover { background-color: #fd262a; }
 
@@ -1403,6 +1583,8 @@ article.magazine .photo-gallery .caption { border-bottom: 1px solid #ccc; paddin
 
 .lightbox.detailed .one-third { display: inline-block; margin: 0; }
 
+#lightbox-join footer .one-third, #lightbox-email-signup footer .one-third { margin-bottom: 15px; }
+
 .lightbox .one-half { margin: 0; padding: 0 10px; width: 50%; }
 
 /* AKB */
@@ -1441,6 +1623,8 @@ article.magazine .photo-gallery .caption { border-bottom: 1px solid #ccc; paddin
 .lightbox footer p { display: inline; /*			margin: 0px 30px 0px 0px; */ margin: 0px 10px 0px 0px; }
 
 /*		#lightbox-email-signup footer #emailsignup p {*/
+#lightbox-join footer p { display: block; margin: 0 0 10px 0; }
+
 #lightbox-email-signup footer p { display: inline-block; margin: 10px 10px 0px 0px; }
 
 #lightbox-email-signup footer h3 { margin: 10px 10px 0px 0px; }
@@ -1458,7 +1642,17 @@ article.magazine .photo-gallery .caption { border-bottom: 1px solid #ccc; paddin
 /* AKB */
 .lightbox footer form { display: inline; }
 
-.lightbox footer .field { display: inline; }
+.lightbox footer form .mc4wp-form-fields { display: inline-block; }
+
+.lightbox footer .field, .lightbox footer .form-item { display: inline; }
+
+#lightbox-join footer .field, #lightbox-email-signup footer .field { display: block; margin: 0 -10px 0 -10px; }
+
+.lightbox footer .form-combo { display: inline-block; margin-bottom: 0; -webkit-border-radius: 0; border-radius: 0; -webkit-box-shadow: none; -moz-box-shadow: none; -ms-box-shadow: none; box-shadow: none; }
+
+.lightbox footer .form-combo .element { width: auto; border: 2px solid #E7E7E7; padding: 3px 10px; -webkit-border-radius: 5px; border-radius: 5px; }
+
+.lightbox footer .buttons { float: right; }
 
 /* contact form - AKB */
 .wpcf7 .button, .styledform .button { color: #fff; background: #3172B2; font-weight: bold; }
@@ -1613,13 +1807,15 @@ span.customselectdyn:after { content: '\f0d7'; font-family: 'icomoon'; position:
 
 .tab input[type="radio"] { width: auto; margin-right: 5px; }
 
-.validate { /* AKB */ padding: 3px 10px; color: #fd252a; }
+.validate { /* AKB */ padding: 3px 10px; /*color: #fd252a;*/ }
 
-.validated { /* AKB */ color: #2ab91b; }
+.validated { /* AKB */ /*color: #2ab91b;*/ }
 
 div.validate { padding-top: 0; padding-left: 0; margin-bottom: 10px; }
 
 #terms { margin-left: 150px; }
+
+body.page-template-template-page-account-edit .tab .field textarea, body.page-template-template-page-account-edit .tab .field input[type="text"] { width: 300px; }
 
 /*Masonry*/
 #masonry { clear: both; max-width: 940px; margin: 0px 10px; }
@@ -1981,6 +2177,7 @@ ul.children div.comment-reply-link { margin: 0 -20px; padding: 0 20px .643em; bo
   /* 		.lightbox .column.last { 			border: none; 			padding: 0px; 			margin: 0px; 		} */
   .lightbox .column.last { border: none; }
   .lightbox .one-third { width: 100%; margin: 0; padding: 0 10px 15px; }
+  #lightbox-join footer .one-third, #lightbox-email-signup footer .one-third { margin-bottom: 0; }
   .lightbox .one-half { width: 100%; margin: 0; padding: 0 10px 15px; }
   .lightbox .one-third h3 { padding-top: 10px; border-top: 1px solid #ccc; }
   .lightbox .first h3 { padding-top: 0; border: none; }
@@ -2107,18 +2304,21 @@ body.modalmap #map-buttons-container { position: fixed; right: 1px; /*  bottom: 
 
 #tab-container .inputgrouptitle.trial { margin-top: 1.5em; }
 
-.field.validate.validated { color: black; }
-.field.validate.validated:before, .field.validate.validating:before { font-family: fontawesome; display: block; position: relative; width: 0; z-index: 1; height: 0; overflow: visible; left: 30.75em; top: 0.2em; }
-.field.validate.validated.validate-ok:before { content: "\f058"; color: #090; }
-.field.validate.validated.validate-error:before { content: "\f057"; color: #c00; }
-.field.validate span.errmsg, .field.validate span.validate { display: none; }
-.field.validate.validated.validate-error span.errmsg, .field.validate.validated.validate-error span.validate { display: inline-block; margin: 0 0 0 0.75em; padding: 0; color: #c00; }
-.field.validate.validating:before { content: "\f021"; color: #6cc; }
-.field.validate.noicon.validated.validate-ok:before, .field.validate.noicon.validated.validate-error:before, .field.validate.noicon.validated.validating:before { content: " "; }
-.field.validate input { background: transparent; color: black; }
-.field.validate label { color: black; }
-.field.validate.validated.validate-error span.faildetail { display: block; }
-.field.validate.ccv-field.validated.validate-ok:before, .field.validate.ccv-field.validated.validate-error:before { left: 20.125em; }
+.field.validate select, .field.validate option { height: 25px; min-height: 25px; }
+
+.input-field.validated, .field.validate.validated { color: black; }
+.input-field.validated:before, .input-field.validating:before, .field.validate.validated:before, .field.validate.validating:before { font-family: fontawesome; display: block; position: relative; width: 0; z-index: 1; height: 0; overflow: visible; left: 30.75em; top: 0.2em; }
+.input-field.validated.validate-ok:before, .field.validate.validated.validate-ok:before { content: "\f058"; color: #090; }
+.input-field.validated.validate-error, .field.validate.validated.validate-error { background: #fee; }
+.input-field.validated.validate-error:before, .field.validate.validated.validate-error:before { content: "\f057"; color: #c00; }
+.input-field span.errmsg, .input-field span.validate, .field.validate span.errmsg, .field.validate span.validate { display: none; }
+.input-field.validated.validate-error span.errmsg, .input-field.validated.validate-error span.validate, .field.validate.validated.validate-error span.errmsg, .field.validate.validated.validate-error span.validate { display: inline-block; margin: 0 0 0 0.75em; padding: 0; color: #c00; }
+.input-field.validating:before, .field.validate.validating:before { content: "\f021"; color: #6cc; }
+.input-field.noicon.validated.validate-ok:before, .input-field.noicon.validated.validate-error:before, .input-field.noicon.validated.validating:before, .field.validate.noicon.validated.validate-ok:before, .field.validate.noicon.validated.validate-error:before, .field.validate.noicon.validated.validating:before { content: " "; }
+.input-field input, .field.validate input { background: transparent; color: black; }
+.input-field label, .field.validate label { color: black; }
+.input-field.validated.validate-error span.faildetail, .field.validate.validated.validate-error span.faildetail { display: block; }
+.input-field.ccv-field.validated.validate-ok:before, .input-field.ccv-field.validated.validate-error:before, .field.validate.ccv-field.validated.validate-ok:before, .field.validate.ccv-field.validated.validate-error:before { left: 20.125em; }
 
 .is-trial .field .membership-level .customSelectInner, .is-trial .field .membership-years .customSelectInner, .field input[readonly] { background: #e7e7e7; color: #555; }
 
@@ -2128,9 +2328,11 @@ body.modalmap #map-buttons-container { position: fixed; right: 1px; /*  bottom: 
 
 .faildetail li { color: #090; list-style-type: none; }
 
-.faildetail.passmatch-fail li#passmatch, .faildetail.passlen-fail li#passlen, .faildetail.passcase-fail li#passcase, .faildetail.passnum-fail li#passnum, .faildetail.passchar-fail li#passchar { color: #c00; }
+.passmatch-hide li#passmatch, .passlen-hide li#passlen, .passcase-hide li#passcase, .passnum-hide li#passnum, .passchar-hide li#passchar, .passmatch-hide .passmatch-msg, .passlen-hide .passlen-msg, .passcase-hide .passcase-msg, .passnum-hide .passnum-msg, .passchar-hide .passchar-msg { display: none; }
 
-.faildetail.passmatch-fail li#passmatch:before, .faildetail.passlen-fail li#passlen:before, .faildetail.passcase-fail li#passcase:before, .faildetail.passnum-fail li#passnum:before, .faildetail.passchar-fail li#passchar:before { content: "\f057"; }
+.faildetail.passmatch-fail li#passmatch, .faildetail.passlen-fail li#passlen, .faildetail.passcase-fail li#passcase, .faildetail.passnum-fail li#passnum, .faildetail.passchar-fail li#passchar, .faildetail.passmatch-fail .passmatch-msg, .faildetail.passlen-fail .passlen-msg, .faildetail.passcase-fail .passcase-msg, .faildetail.passnum-fail .passnum-msg, .faildetail.passchar-fail .passchar-msg { color: #c00; }
+
+.faildetail.passmatch-fail li#passmatch:before, .faildetail.passlen-fail li#passlen:before, .faildetail.passcase-fail li#passcase:before, .faildetail.passnum-fail li#passnum:before, .faildetail.passchar-fail li#passchar:before, .faildetail.passmatch-fail .passmatch-msg:before, .faildetail.passlen-fail .passlen-msg:before, .faildetail.passcase-fail .passcase-msg:before, .faildetail.passnum-fail .passnum-msg:before, .faildetail.passchar-fail .passchar-msg:before { content: "\f057"; }
 
 .tab .field #cc-year-input.form-item, .tab .field #cc-month-input.form-item, .tab .field #cc-year-input.form-item select, .tab .field #cc-month-input.form-item select { width: 10em; /* display: inline-block; */ }
 
@@ -2150,6 +2352,193 @@ body.modalmap #map-buttons-container { position: fixed; right: 1px; /*  bottom: 
 
 .tab.is-trial .trial { display: block !important; }
 
+/* Account Bar stylings */
+/*
+
+.expand-button { a.button-item .button-icon::after { content: '\f0d7'; display: inline-block; height: 1em; width: 1em; text-align: center; font-family: "icomoon"; font-weight: 800; font-size:1.375em; padding:0; margin:0; line-height: 1em; color:#333; }  .collapsed & { a.button-item .button-icon::after { content: '\f0da'; } }  padding-right: 0.5em; display: inline-block; line-height:1em;
+}
+
+.collapsed { height: 0px; overflow:hidden;  &.bar-element{ height:auto; }  &.detail-element { padding:0; }
+}
+
+.detail-element { padding:1em; border: 1px solid #ccc; border-top: none;  label { display: block; position: absolute; top: 0; font-size: 75%; padding-top: 0.625em; padding-left:1.5em; color: #888; z-index:2; width:100%;  &.checkbox { position: relative; font-size: 100%; margin: 0; width: auto; display: block; padding-top:0.5em; padding-bottom:0.5em; }   }  div.checkboxes, select, textarea, input { width: 100%; border: 2px solid #ccc; padding: 1.5em 1em 0.5em; -webkit-border-radius: 0.25em; border-radius: 0.25em; display: block; position: relative; background: transparent; z-index:1; }  select+label:after { content: '\f0d7'; display: block; position: absolute; font-size: 1.5em; font-family: icomoon; top: 0; right: 0; padding-top: 1em; padding-right: 0.5em; }
+ div.checkboxes { input[type="checkbox"] { width: 1em; height: 1em; display: inline-block; margin: 0.5em 1em 0.5em 0; position: relative; top: 0.125em; }  .checkbox-label { display: inline-block; position: relative; }  .checkbox-item { width:90%; max-width:20em; float:left; display:block; padding:0; margin:0.125em; text-align:left; }  text-align:center; }
+ textarea {resize: vertical;}
+ >form>*, .input-field { width: 100%; position: relative; padding: .125em 0; display: block; float: left; }  #contact .input-field { max-width:100%; width:auto; }
+}
+
+textarea[readonly] { background: #e7e7e7; color: #555;
+}
+
+.bar-element { background: #f1f1f1; padding: 0.5em 1em; cursor: pointer; border: 1px solid #ccc; border-top: none; border-bottom: none;  &#status-bar { background: #1471c0; color: white; border: 1px solid #1471c0; border-top: none; border-bottom: none; cursor:auto;  .expand-button{ &,a,a:link,a:hover,a:active,a:visited{ color: white; } } }  >* { float:left; }  .bar-item { margin: 0 2em 0 0; label { padding-right:0.5em; } }  .bar-item-right { float:right; }
+}
+
+.jconfirm-box .detail-element { border: none;
+}
+
+
+#profile-detail { padding: 0;
+}
+
+.card-list { width: 100%; padding:0; margin:0; text-align: center; position: relative;
+}
+
+.card-item { max-width: 20em; width: 90%; border: 0.5em solid #eee; background: #fff; padding: 0.5em; margin: 1em; display:inline-block; float:left; text-align: center; border-radius: 0.5em; position: relative; &.card-item-button { background: #eee; }
+}
+
+a.card-button-large { &:link, &:hover, &:active, &:visited { width: 100%; text-align:center; padding:.5em 0; background:green; border-radius: 0.25em; color: white; display:inline-block; position: relative; margin-top: 1em; }
+ &.card-delete-button { background: #aa0000; } &.processing { background: #888 url('images/preloader.gif') no-repeat center; text-indent: -999em; }
+}
+
+.card-list .card-item-button a.card-button-large { width: 90%; margin-top:0;
+}
+
+
+$formwidth:65em;
+// Account Field widths
+#contact  { #field-contact-Birthdate, #field-contact-HomePhone, #field-contact-AssistantName, #field-contact-MailingStreet, #field-contact-OtherStreet { clear:both; }  #field-contact-Salutation { width: 7em; }  #field-contact-Title { width: 12em; }  #field-contact-FirstName, #field-contact-LastName { width: floor( ( $formwidth - 7 - 12 ) / 2 * 100 ) / 100; }  #field-contact-AssistantName, #field-contact-Birthdate, #field-contact-Anniversary_Date__c, #field-contact-Assistant_Email__c { width: floor( $formwidth / 2 * 100 ) / 100; }  #field-contact-MailingCity, #field-contact-MailingState, #field-contact-MailingPostalCode, #field-contact-MailingCountry, #field-contact-OtherCity, #field-contact-OtherState, #field-contact-OtherPostalCode, #field-contact-OtherCountry { width: floor( $formwidth / 4 * 100 ) / 100; }  #field-contact-MobilePhone, #field-contact-Phone, #field-contact-HomePhone { width: floor( $formwidth / 3 * 100 ) / 100; }  #field-contact-Email, #field-contact-MailingStreet, #field-contact-OtherStreet { width:$formwidth; }
+}
+*/
+#account-tab-container, #signup-form-container { background: #ffffff; -webkit-transition-duration: 1s; -moz-transition-duration: 1s; -o-transition-duration: 1s; transition-duration: 1s; }
+#account-tab-container .tab label, #signup-form-container .tab label { display: block; margin: 0; min-width: 0; float: none; padding: 0 0.075em; }
+#account-tab-container h2, #signup-form-container h2 { font-size: 2em; margin: 1em 0 0.5em; width: 100%; display: block; border-bottom: 1px solid #000000; padding: 0 0 0.25em; font-weight: 200; clear: both; }
+#account-tab-container #account-tab-container-nav ul, #signup-form-container #account-tab-container-nav ul { font-size: 0.875em; display: block; width: 100%; border-bottom: 1px solid #000000; margin: 0; padding: 0; color: #808080; }
+#account-tab-container #account-tab-container-nav ul a, #account-tab-container #account-tab-container-nav ul a:link, #account-tab-container #account-tab-container-nav ul a:visited, #signup-form-container #account-tab-container-nav ul a, #signup-form-container #account-tab-container-nav ul a:link, #signup-form-container #account-tab-container-nav ul a:visited { color: #808080; }
+#account-tab-container #account-tab-container-nav ul > li, #signup-form-container #account-tab-container-nav ul > li { float: left; margin: 0 2em 0 0; padding: 0 0 0.25em; list-style: none; }
+#account-tab-container #account-tab-container-nav ul > li.activeli, #signup-form-container #account-tab-container-nav ul > li.activeli { border-bottom: 3px solid #000000; margin-bottom: -2px; }
+#account-tab-container #account-tab-container-nav ul > li.activeli a, #account-tab-container #account-tab-container-nav ul > li.activeli a:link, #account-tab-container #account-tab-container-nav ul > li.activeli a:visited, #signup-form-container #account-tab-container-nav ul > li.activeli a, #signup-form-container #account-tab-container-nav ul > li.activeli a:link, #signup-form-container #account-tab-container-nav ul > li.activeli a:visited { color: #000000; }
+#account-tab-container #account-header-display, #signup-form-container #account-header-display { margin: 2em 0 1em; }
+#account-tab-container #account-header-display label, #signup-form-container #account-header-display label { margin: 0 0.5em 0 0; font-weight: 400; }
+#account-tab-container #account-header-display [data-display-field], #signup-form-container #account-header-display [data-display-field] { font-weight: 600; }
+#account-tab-container #account-header-display #account-display-membership-level, #account-tab-container #account-header-display .valid-through, #signup-form-container #account-header-display #account-display-membership-level, #signup-form-container #account-header-display .valid-through { margin-top: 0.5em; }
+#account-tab-container #account-header-display #new-contact-link, #signup-form-container #account-header-display #new-contact-link { color: #00aeef; font-size: 0.875em; }
+#account-tab-container #account-header-display .renew-wrapper a, #signup-form-container #account-header-display .renew-wrapper a { color: #da420b; font-size: 0.875em; }
+
+.jconfirm-box form a.form-edit-link, .jconfirm-box form a.form-save-button, .jconfirm-box form a.form-cancel-button, #account-tab-container form a.form-edit-link, #account-tab-container form a.form-save-button, #account-tab-container form a.form-cancel-button, #signup-form-container form a.form-edit-link, #signup-form-container form a.form-save-button, #signup-form-container form a.form-cancel-button { color: #00aeef; font-size: 0.875em; clear: both; }
+.jconfirm-box form a.form-edit-link, #account-tab-container form a.form-edit-link, #signup-form-container form a.form-edit-link { display: block; }
+.jconfirm-box form a.form-save-button, .jconfirm-box form a.form-cancel-button, #account-tab-container form a.form-save-button, #account-tab-container form a.form-cancel-button, #signup-form-container form a.form-save-button, #signup-form-container form a.form-cancel-button { display: none; }
+.jconfirm-box form label, #account-tab-container form label, #signup-form-container form label { display: block; position: absolute; top: 0; padding-top: 0em; padding-left: 0em; color: #000000; font-weight: bold; font-size: 0.875em; z-index: 1; width: 100%; }
+.jconfirm-box form label:after, #account-tab-container form label:after, #signup-form-container form label:after { content: ':'; }
+.jconfirm-box form div.checkboxes, .jconfirm-box form select, .jconfirm-box form textarea, .jconfirm-box form input, #account-tab-container form div.checkboxes, #account-tab-container form select, #account-tab-container form textarea, #account-tab-container form input, #signup-form-container form div.checkboxes, #signup-form-container form select, #signup-form-container form textarea, #signup-form-container form input { width: 100%; border: 1px solid #ffffff; padding: 1em 0 0.5em; -webkit-border-radius: 0; border-radius: 0; display: block; position: relative; background: transparent; z-index: 2; color: #000000; }
+.jconfirm-box form div.checkboxes, #account-tab-container form div.checkboxes, #signup-form-container form div.checkboxes { text-align: center; }
+.jconfirm-box form div.checkboxes input[type="checkbox"], #account-tab-container form div.checkboxes input[type="checkbox"], #signup-form-container form div.checkboxes input[type="checkbox"] { width: 1em; height: 1em; display: inline-block; margin: 0.5em 1em 0.5em 0; position: relative; top: 0.125em; }
+.jconfirm-box form div.checkboxes .checkbox-label, #account-tab-container form div.checkboxes .checkbox-label, #signup-form-container form div.checkboxes .checkbox-label { display: inline-block; position: relative; }
+.jconfirm-box form div.checkboxes .checkbox-item, #account-tab-container form div.checkboxes .checkbox-item, #signup-form-container form div.checkboxes .checkbox-item { width: 90%; max-width: 20em; float: left; display: block; padding: 0; margin: 0.125em; text-align: left; }
+.jconfirm-box form div.checkboxes .checkbox-item label, #account-tab-container form div.checkboxes .checkbox-item label, #signup-form-container form div.checkboxes .checkbox-item label { position: relative; font-weight: 400; font-size: 1em; }
+.jconfirm-box form div.checkboxes .checkbox-item label:after, #account-tab-container form div.checkboxes .checkbox-item label:after, #signup-form-container form div.checkboxes .checkbox-item label:after { content: ''; }
+.jconfirm-box form textarea, #account-tab-container form textarea, #signup-form-container form textarea { resize: vertical; }
+.jconfirm-box form > form > *, .jconfirm-box form .input-field, #account-tab-container form > form > *, #account-tab-container form .input-field, #signup-form-container form > form > *, #signup-form-container form .input-field { width: 100%; position: relative; padding: 0; display: block; float: left; }
+.jconfirm-box form.editing a.form-edit-link, #account-tab-container form.editing a.form-edit-link, #signup-form-container form.editing a.form-edit-link { display: none; }
+.jconfirm-box form.editing a.form-cancel-button, #account-tab-container form.editing a.form-cancel-button, #signup-form-container form.editing a.form-cancel-button { display: inline-block; padding: 1em 3em; background: #ffffff; color: #00aeef; text-align: center; float: right; clear: none; }
+.jconfirm-box form.editing a.form-save-button, #account-tab-container form.editing a.form-save-button, #signup-form-container form.editing a.form-save-button { display: inline-block; padding: 1em 0; background: #55ab3f; color: #ffffff; text-align: center; float: left; }
+.jconfirm-box form.editing a.form-save-button.processing, #account-tab-container form.editing a.form-save-button.processing, #signup-form-container form.editing a.form-save-button.processing { color: #808080; background: transparent 50% 50% no-repeat url("images/preloader.gif"); text-indent: -9999em; }
+.jconfirm-box form.editing label, #account-tab-container form.editing label, #signup-form-container form.editing label { /*        font-size: 100%;*/ padding-top: 0.625em; padding-left: 1.125em; color: #808080; }
+.jconfirm-box form.editing div.checkboxes, .jconfirm-box form.editing select, .jconfirm-box form.editing textarea, .jconfirm-box form.editing input, #account-tab-container form.editing div.checkboxes, #account-tab-container form.editing select, #account-tab-container form.editing textarea, #account-tab-container form.editing input, #signup-form-container form.editing div.checkboxes, #signup-form-container form.editing select, #signup-form-container form.editing textarea, #signup-form-container form.editing input { border: 1px solid #808080; padding: 1.5em 1em 0.5em; color: #000000; min-height: 3.75em; }
+.jconfirm-box form.editing select + label:after, #account-tab-container form.editing select + label:after, #signup-form-container form.editing select + label:after { content: '\f0d7'; display: block; position: absolute; font-size: 1.5em; font-family: icomoon; top: 0; right: 0; padding-top: 1em; padding-right: 0.5em; }
+.jconfirm-box .card-list, #account-tab-container .card-list, #signup-form-container .card-list { text-align: left; position: relative; width: 100%; }
+.jconfirm-box .card-list .card-item, #account-tab-container .card-list .card-item, #signup-form-container .card-list .card-item { width: 100%; display: inline-block; margin: .25em 0; position: relative; }
+.jconfirm-box .card-list .card-item form, #account-tab-container .card-list .card-item form, #signup-form-container .card-list .card-item form { padding: 0; position: relative; }
+.jconfirm-box .card-list .card-item form label, #account-tab-container .card-list .card-item form label, #signup-form-container .card-list .card-item form label { text-align: left; }
+.jconfirm-box .card-list .card-item form a.form-edit-link, #account-tab-container .card-list .card-item form a.form-edit-link, #signup-form-container .card-list .card-item form a.form-edit-link { text-align: left; }
+.jconfirm-box .card-list .card-item form a.card-save-button, #account-tab-container .card-list .card-item form a.card-save-button, #signup-form-container .card-list .card-item form a.card-save-button { margin: 0.5em 0; padding: 0.5em 0; width: 7%; display: none; background: #55ab3f; color: #ffffff; text-align: center; float: right; }
+.jconfirm-box .card-list .card-item form a.card-delete-button, #account-tab-container .card-list .card-item form a.card-delete-button, #signup-form-container .card-list .card-item form a.card-delete-button { font-size: 0.875em; margin: 0.5em 0 0; padding: 0.5em 0; width: 7%; display: none; background: #da420b; color: #ffffff; font-size: 0.875em; text-align: center; float: left; }
+.jconfirm-box .card-list .card-item form select, .jconfirm-box .card-list .card-item form input, #account-tab-container .card-list .card-item form select, #account-tab-container .card-list .card-item form input, #signup-form-container .card-list .card-item form select, #signup-form-container .card-list .card-item form input { padding: 0; }
+.jconfirm-box .card-list .card-item form .field-carditem-Name, .jconfirm-box .card-list .card-item form .field-carditem-Frequent_Traveler_Program__c, .jconfirm-box .card-list .card-item form .field-carditem-Legal_Name__c, .jconfirm-box .card-list .card-item form .field-carditem-Number__c, .jconfirm-box .card-list .card-item form .field-carditem-Expiry_Date__c, .jconfirm-box .card-list .card-item form label, #account-tab-container .card-list .card-item form .field-carditem-Name, #account-tab-container .card-list .card-item form .field-carditem-Frequent_Traveler_Program__c, #account-tab-container .card-list .card-item form .field-carditem-Legal_Name__c, #account-tab-container .card-list .card-item form .field-carditem-Number__c, #account-tab-container .card-list .card-item form .field-carditem-Expiry_Date__c, #account-tab-container .card-list .card-item form label, #signup-form-container .card-list .card-item form .field-carditem-Name, #signup-form-container .card-list .card-item form .field-carditem-Frequent_Traveler_Program__c, #signup-form-container .card-list .card-item form .field-carditem-Legal_Name__c, #signup-form-container .card-list .card-item form .field-carditem-Number__c, #signup-form-container .card-list .card-item form .field-carditem-Expiry_Date__c, #signup-form-container .card-list .card-item form label { display: none; }
+.jconfirm-box .card-list .card-item form .field-carditem-RecordTypeId input, .jconfirm-box .card-list .card-item form .field-carditem-RecordTypeId select, .jconfirm-box .card-list .card-item form .field-carditem-Carrier_Hotel_Operator__c input, .jconfirm-box .card-list .card-item form .field-carditem-Carrier_Hotel_Operator__c select, #account-tab-container .card-list .card-item form .field-carditem-RecordTypeId input, #account-tab-container .card-list .card-item form .field-carditem-RecordTypeId select, #account-tab-container .card-list .card-item form .field-carditem-Carrier_Hotel_Operator__c input, #account-tab-container .card-list .card-item form .field-carditem-Carrier_Hotel_Operator__c select, #signup-form-container .card-list .card-item form .field-carditem-RecordTypeId input, #signup-form-container .card-list .card-item form .field-carditem-RecordTypeId select, #signup-form-container .card-list .card-item form .field-carditem-Carrier_Hotel_Operator__c input, #signup-form-container .card-list .card-item form .field-carditem-Carrier_Hotel_Operator__c select { font-weight: 600; }
+.jconfirm-box .card-list .card-item form.editing, #account-tab-container .card-list .card-item form.editing, #signup-form-container .card-list .card-item form.editing { border: 1px solid #808080; padding: 1em; }
+.jconfirm-box .card-list .card-item form.editing a.card-close-button, #account-tab-container .card-list .card-item form.editing a.card-close-button, #signup-form-container .card-list .card-item form.editing a.card-close-button { display: block; }
+.jconfirm-box .card-list .card-item form.editing a.card-delete-button, .jconfirm-box .card-list .card-item form.editing a.card-save-button, #account-tab-container .card-list .card-item form.editing a.card-delete-button, #account-tab-container .card-list .card-item form.editing a.card-save-button, #signup-form-container .card-list .card-item form.editing a.card-delete-button, #signup-form-container .card-list .card-item form.editing a.card-save-button { display: inline-block; }
+.jconfirm-box .card-list .card-item form.editing input, .jconfirm-box .card-list .card-item form.editing select, #account-tab-container .card-list .card-item form.editing input, #account-tab-container .card-list .card-item form.editing select, #signup-form-container .card-list .card-item form.editing input, #signup-form-container .card-list .card-item form.editing select { padding: 1.5em 1em 0.5em; }
+.jconfirm-box .card-list .card-item form.editing .field-carditem-Name, .jconfirm-box .card-list .card-item form.editing .field-carditem-Frequent_Traveler_Program__c, .jconfirm-box .card-list .card-item form.editing .field-carditem-Legal_Name__c, .jconfirm-box .card-list .card-item form.editing .field-carditem-Number__c, .jconfirm-box .card-list .card-item form.editing .field-carditem-Expiry_Date__c, .jconfirm-box .card-list .card-item form.editing label, #account-tab-container .card-list .card-item form.editing .field-carditem-Name, #account-tab-container .card-list .card-item form.editing .field-carditem-Frequent_Traveler_Program__c, #account-tab-container .card-list .card-item form.editing .field-carditem-Legal_Name__c, #account-tab-container .card-list .card-item form.editing .field-carditem-Number__c, #account-tab-container .card-list .card-item form.editing .field-carditem-Expiry_Date__c, #account-tab-container .card-list .card-item form.editing label, #signup-form-container .card-list .card-item form.editing .field-carditem-Name, #signup-form-container .card-list .card-item form.editing .field-carditem-Frequent_Traveler_Program__c, #signup-form-container .card-list .card-item form.editing .field-carditem-Legal_Name__c, #signup-form-container .card-list .card-item form.editing .field-carditem-Number__c, #signup-form-container .card-list .card-item form.editing .field-carditem-Expiry_Date__c, #signup-form-container .card-list .card-item form.editing label { display: block; }
+.jconfirm-box .card-list .card-item form.editing .field-carditem-RecordTypeId input, .jconfirm-box .card-list .card-item form.editing .field-carditem-RecordTypeId select, .jconfirm-box .card-list .card-item form.editing .field-carditem-Carrier_Hotel_Operator__c input, .jconfirm-box .card-list .card-item form.editing .field-carditem-Carrier_Hotel_Operator__c select, #account-tab-container .card-list .card-item form.editing .field-carditem-RecordTypeId input, #account-tab-container .card-list .card-item form.editing .field-carditem-RecordTypeId select, #account-tab-container .card-list .card-item form.editing .field-carditem-Carrier_Hotel_Operator__c input, #account-tab-container .card-list .card-item form.editing .field-carditem-Carrier_Hotel_Operator__c select, #signup-form-container .card-list .card-item form.editing .field-carditem-RecordTypeId input, #signup-form-container .card-list .card-item form.editing .field-carditem-RecordTypeId select, #signup-form-container .card-list .card-item form.editing .field-carditem-Carrier_Hotel_Operator__c input, #signup-form-container .card-list .card-item form.editing .field-carditem-Carrier_Hotel_Operator__c select { font-weight: 400; }
+.jconfirm-box form.editing label:after, #account-tab-container form.editing label:after, #signup-form-container form.editing label:after { content: ''; }
+
+#account-tab-container form.editing div.checkboxes .checkbox-label, #signup-form-container form.editing div.checkboxes .checkbox-label, .jconfirm-box form.editing div.checkboxes .checkbox-label { margin: 0; padding: 1em 0.5em; line-height: 1em; float: left; }
+#account-tab-container form.editing div.checkboxes input, #signup-form-container form.editing div.checkboxes input, .jconfirm-box form.editing div.checkboxes input { float: left; margin: 1em 0; padding: 0; min-height: 0; top: auto; }
+
+.input-field.validated:before, .input-field.validating:before { position: absolute; right: 1.5em; top: 1.125em; left: auto; }
+.input-field.validated.validate-error span.errmsg, .input-field.validating.validate-error span.errmsg { position: absolute; background: #fee; padding: 0.5em 1em; display: none; z-index: 100; left: 0; top: 100%; margin: 0; font-size: 75%; width: 100%; border: 4px solid #c00; }
+.input-field.validated.validate-error span.errmsg ul, .input-field.validating.validate-error span.errmsg ul { margin-bottom: 0; }
+.input-field.validated.validate-error:hover span.errmsg, .input-field.validating.validate-error:hover span.errmsg { display: block; }
+
+#signup-form-container form .input-field { max-width: 100%; margin-right: 0.25em; margin-bottom: 0.25em; }
+#signup-form-container form .input-field.iform-row-clear { clear: both; }
+#signup-form-container form .input-field.iform-row-noclear { clear: none; }
+#signup-form-container form .input-field.iform-row-1col { width: 100%; }
+#signup-form-container form .input-field.iform-row-2col { width: 49.5%; }
+#signup-form-container form .input-field.iform-row-3col { width: 32.8%; }
+#signup-form-container form .input-field.iform-row-4col { width: 24.6%; }
+#signup-form-container form .input-field.iform-row-5col { width: 12.8em; }
+#signup-form-container form .input-field.iform-row-6col { width: 16.3%; }
+#signup-form-container form .input-field.iform-row-7col { width: 9.07em; }
+#signup-form-container form .input-field.iform-row-8col { width: 7.9em; }
+
+#account-tab-container form .input-field, #account-tab-container form .form-save-button { max-width: 100%; margin-right: 0.25em; margin-bottom: 0.25em; }
+#account-tab-container #field-contact-Birthdate, #account-tab-container #field-contact-HomePhone, #account-tab-container #field-contact-AssistantName, #account-tab-container #field-contact-MailingStreet, #account-tab-container #field-contact-OtherStreet { clear: both; }
+#account-tab-container #field-contact-HomePhone.signup-form { clear: none; }
+#account-tab-container #field-contact-Salutation { width: 16%; }
+#account-tab-container #field-contact-Title { width: 16%; }
+#account-tab-container #field-contact-FirstName, #account-tab-container #field-contact-LastName { width: 33%; }
+#account-tab-container #field-account-tgCode, #account-tab-container #field-account-Membership_Level__c, #account-tab-container #field-contact-AssistantName, #account-tab-container #field-contact-Birthdate, #account-tab-container #field-contact-Anniversary_Date__c, #account-tab-container #field-contact-Assistant_Email__c { width: 49.5%; }
+#account-tab-container #field-payment-detail-form-Credit_Card_Type__c { display: none; }
+#account-tab-container .form-save-button, #account-tab-container #field-payment-detail-form-Credit_Card_Number__c, #account-tab-container #field-payment-detail-form-Credit_Card_Year__c, #account-tab-container #field-payment-detail-form-Credit_Card_Month__c, #account-tab-container #field-payment-detail-form-Card_CVV_Number__c, #account-tab-container #field-billing-detail-form-BillingCity, #account-tab-container #field-billing-detail-form-BillingState, #account-tab-container #field-billing-detail-form-BillingPostalCode, #account-tab-container #field-billing-detail-form-BillingCountry, #account-tab-container #field-contact-MailingCity, #account-tab-container #field-contact-MailingState, #account-tab-container #field-contact-MailingPostalCode, #account-tab-container #field-contact-MailingCountry, #account-tab-container #field-contact-OtherCity, #account-tab-container #field-contact-OtherState, #account-tab-container #field-contact-OtherPostalCode, #account-tab-container #field-contact-OtherCountry { width: 24.4%; }
+#account-tab-container #field-contact-MobilePhone, #account-tab-container #field-contact-Phone, #account-tab-container #field-contact-HomePhone { width: 32.7%; }
+#account-tab-container #field-account-membership-upgrade-select, #account-tab-container #field-payment-detail-form-Name, #account-tab-container #field-contact-Email, #account-tab-container #field-contact-MailingStreet, #account-tab-container #field-billing-detail-form-BillingStreet, #account-tab-container #field-contact-OtherStreet { width: 100%; }
+
+#account-tab-container .card-list .card-item form { width: 100%; }
+#account-tab-container .card-list .card-item form.editing { padding: 0; border: none; }
+#account-tab-container .card-list .card-item form .input-field { width: 20.4%; }
+#account-tab-container .card-list .card-item form a.card-edit-link, #account-tab-container .card-list .card-item form a.card-delete-button, #account-tab-container .card-list .card-item form a.card-save-button { clear: none; width: auto; padding: 1.375em .5em; margin: 0; margin-right: .25em; }
+#account-tab-container .card-list .card-item form a.card-save-button { float: left; display: none; min-width: 8%; }
+#account-tab-container .card-list .card-item form.editing a.card-save-button { display: inline-block; }
+#account-tab-container .card-list .card-item form a.card-edit-link { float: left; display: inline-block; padding: 0em 1%; }
+#account-tab-container .card-list .card-item form.editing a.card-edit-link { display: none; }
+#account-tab-container .card-list .card-item form a.card-delete-button { float: left; display: none; background: #ffffff; color: #da420b; }
+#account-tab-container .card-list .card-item form.editing a.card-delete-button { display: inline-block; }
+
+#account-tab-container .card-list .card-item-passport form .input-field { width: 16.7%; }
+
+#account-display-contact-wrapper { position: relative; }
+#account-display-contact-wrapper select { font-size: 2em; font-weight: 200; font-family: 'Helvetica Neue',Arial,sans-serif; padding: 0 1.375em 0 0; margin: 0; display: inline-block; z-index: 2; position: relative; background: transparent; }
+#account-display-contact-wrapper:after { content: '\f0d7'; font-size: 2em; color: #00aeef; display: inline-block; font-family: icomoon; z-index: 1; margin: 0 0 0 -1em; line-height: 1em; position: relative; }
+
+.card-button-list .card-item-button { display: inline-block; padding: 0; width: 100%; border: 1px solid #808080; position: relative; z-index: 0; }
+.card-button-list .card-item-button a { padding: 1em 1em 1em 4em; width: 100%; display: inline-block; text-align: center; z-index: 1; background: transparent; color: #00aeef; }
+.card-button-list .card-item-button:before { content: '+'; display: block; position: absolute; top: 50%; margin-top: -0.875em; font-size: 2em; color: #00aeef; left: 1em; z-index: -1; }
+
+#signup-form-container #field-s_state:before, #signup-form-container #field-s_country:before, #signup-form-container #field-account-Membership_Level__c:before, #signup-form-container #field-cc_month:before { display: none; }
+
+.help-box-wrapper { background: #abe1fa; width: 100%; margin: 3em 0 0; color: #000000; }
+
+.help-box { padding: 2em; }
+.help-box a, .help-box a:link, .help-box a:visited { color: #000000; text-decoration: none; font-weight: 800; }
+
+h2.help-box-title { font-size: 2.5em; font-weight: 200; }
+
+.help-box-content { font-size: 1.5em; font-weight: 200; }
+
+span.keep-together { display: inline-block; }
+
+#account-tab-container > div.tab { display: none; }
+
+#account-header-display .renewal-text { font-size: 0.875em; color: #000000; font-style: italic; }
+
+form.processing .button { background: gray; color: #bbb; cursor: progress; }
+
+#account-tab-nav-menu, .mobile { display: none; }
+
+@media (max-width: 767px) { #account-tab-container #account-tab-nav-menu { display: inline-block; cursor: pointer; }
+  #account-tab-container #account-tab-nav-menu:after { content: "\f0c9"; font-size: 1.75em; font-family: icomoon; padding: 0; }
+  #account-tab-container #account-tab-container-nav ul { position: relative; }
+  #account-tab-container #account-tab-container-nav ul li { display: none; float: none; }
+  #account-tab-container #account-tab-container-nav ul li.mobile { display: block; }
+  #account-tab-container #account-tab-container-nav ul li.activeli { display: block; z-index: 0; margin: 0 2em; border-bottom: none; font-size: 2em; text-align: center; }
+  #account-tab-container #account-tab-container-nav ul li.prevbutton, #account-tab-container #account-tab-container-nav ul li.nextbutton { font-family: icomoon; font-size: 2em; top: 0; position: absolute; margin: 0; }
+  #account-tab-container #account-tab-container-nav ul li.nextbutton { right: 0; }
+  #account-tab-container #account-tab-container-nav ul li.nextbutton div:after { content: "\F0DA"; padding: 0 0.5em; cursor: pointer; }
+  #account-tab-container #account-tab-container-nav ul li.prevbutton { left: 0; }
+  #account-tab-container #account-tab-container-nav ul li.prevbutton div:after { content: "\F0D9"; padding: 0 0.5em; cursor: pointer; }
+  #account-tab-container #account-tab-container-nav ul li.activeli { display: block; } }
 .destinationlist-wrapper { display: block; min-height: 270px; }
 
 #destinationlist img { height: 200px; width: 300px; }

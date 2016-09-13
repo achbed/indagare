@@ -1,10 +1,10 @@
 // clear booking widgets on page unload
-window.onunload = function() { document.getElementById("book-hotels").reset(); };
+window.onunload = function() { var e=document.getElementById("book-hotels"); if(e) e.reset(); };
 
 jQuery().ready(function($) {
 	// Menu behavior
 	adjustMenu();
-  
+
 	// Magnific Popup
 	$('.lightbox-inline').magnificPopup({
 		type:'inline',
@@ -17,104 +17,105 @@ jQuery().ready(function($) {
 	});
 	
 	//Mobile navigation
-    $('#menu-show-hide a').click(function() {
-      $('.collapsible').toggleClass('show-this');
-      $(this).toggleClass('close');
-      return false;
-    });
+	$('#menu-show-hide a').click(function() {
+		$('.collapsible').toggleClass('show-this');
+		$(this).toggleClass('close');
+		return false;
+	});
 	//Primary navigation
 	/*
-    $("#nav > li > a").click(function (e) { // binding onclick
-        if ($(this).parent().hasClass('open')) {
-            $("#nav .open .subnav").removeClass('show-this'); // hiding popups 
-            $("#nav .open").removeClass("open");
-        } else {
-            $("#nav .open .subnav").removeClass('show-this'); // hiding popups
-            $("#nav .open").removeClass("open");
-            if ($(this).next(".subnav").length) {
-                $(this).parent().addClass("open"); // display popup
-                $(this).next(".subnav").addClass('show-this');
-            }
-        }
-        e.stopPropagation();
-    });
-    */
-    
+	$("#nav > li > a").click(function (e) { // binding onclick
+		if ($(this).parent().hasClass('open')) {
+			$("#nav .open .subnav").removeClass('show-this'); // hiding popups 
+			$("#nav .open").removeClass("open");
+		} else {
+			$("#nav .open .subnav").removeClass('show-this'); // hiding popups
+			$("#nav .open").removeClass("open");
+			if ($(this).next(".subnav").length) {
+				$(this).parent().addClass("open"); // display popup
+				$(this).next(".subnav").addClass('show-this');
+			}
+		}
+		e.stopPropagation();
+	});
+	*/
+
 	//Magazine navigation
 	$("#subnav-magazine > li > a").click(function (e) { // binding onclick
-        if ($(this).parent().hasClass('open')) {
-            $("#subnav-magazine .open .subnav").removeClass('show-this'); // hiding popups 
-            $("#subnav-magazine .open").removeClass("open");
-        } else {
-            $("#subnav-magazine .open .subnav").removeClass('show-this'); // hiding popups
-            $("#subnav-magazine .open").removeClass("open");
-            if ($(this).next(".subnav").length) {
-                $(this).parent().addClass("open"); // display popup
-                $(this).next(".subnav").addClass('show-this');
-            }
-        }
-        e.stopPropagation();
-    });
+		if ($(this).parent().hasClass('open')) {
+			$("#subnav-magazine .open .subnav").removeClass('show-this'); // hiding popups 
+			$("#subnav-magazine .open").removeClass("open");
+		} else {
+			$("#subnav-magazine .open .subnav").removeClass('show-this'); // hiding popups
+			$("#subnav-magazine .open").removeClass("open");
+			if ($(this).next(".subnav").length) {
+				$(this).parent().addClass("open"); // display popup
+				$(this).next(".subnav").addClass('show-this');
+			}
+		}
+		e.stopPropagation();
+	});
+
 	//Magazine filter
 	$(".button.filters").click(function (e) { // binding onclick
-        if ($(this).parent().hasClass('open')) {
-            $("#magazine-filters").removeClass('show-this'); // hiding popups 
-            $(".header.filter").removeClass("open");
-        } else {
-            $("#subnav-magazine .open .subnav").removeClass('show-this'); // hiding popups 
-            $("#subnav-magazine .open").removeClass("open");
-            if ($(this).next("#magazine-filters").length) {
-                $(this).parent().addClass("open"); // display popup
-                $(this).next("#magazine-filters").addClass('show-this');
-            }
-        }
-        e.stopPropagation();
-    });
+		if ($(this).parent().hasClass('open')) {
+			$("#magazine-filters").removeClass('show-this'); // hiding popups 
+			$(".header.filter").removeClass("open");
+		} else {
+			$("#subnav-magazine .open .subnav").removeClass('show-this'); // hiding popups 
+			$("#subnav-magazine .open").removeClass("open");
+			if ($(this).next("#magazine-filters").length) {
+				$(this).parent().addClass("open"); // display popup
+				$(this).next("#magazine-filters").addClass('show-this');
+			}
+		}
+		e.stopPropagation();
+	});
 	
 	//show map
-    $('p.view-more a.map').click(function() {
-      $('#mapcanvas').toggleClass('show-this');
-      if ( $('#mapcanvas').hasClass('show-this') ) {
+	$('p.view-more a.map').click(function() {
+		$('#mapcanvas').toggleClass('show-this');
+		if ( $('#mapcanvas').hasClass('show-this') ) {
 			$('.showmap').val('show');
 			$('#gallery-header').hide();
 			$('.detail .view-more a.map').text('Show Images');
 			$('.archive .view-more a.map').text('Hide Map');
 			$('#mapcanvas').parent().addClass('show-map');
 			gmap_loadmarkers();
-      } else {
+		} else {
 			$('.showmap').val('');
 			$('#gallery-header').show();
 			$('.detail .view-more a.map').text('Show Map');
 			$('.archive .view-more a.map').text('Show Map');
 			$('#mapcanvas').parent().removeClass('show-map');
-      }
-      return false;
-    });
-    
-    // review overview page loads with map open | check to make sure there are items to draw on the map
+		}
+		return false;
+	});
+
+	// review overview page loads with map open | check to make sure there are items to draw on the map
 	
-   	if ( $('.showmap').val() && itemcount > 0 ) {
+	if ( $('.showmap').val() && itemcount > 0 ) {
 		$('#mapcanvas').addClass('show-this');
 		$('.detail .view-more a.map').text('Show Images');
 		$('.archive .view-more a.map').text('Hide Map');
 		$('#mapcanvas').parent().addClass('show-map');
 		gmap_loadmarkers();
 	}
-   	
-   	$('#map-modal-toggle').click(function(event) {
-   		event.preventDefault();
-   		$('body').toggleClass('modalmap');
-   		$('body #map-modal-toggle').attr('title','Full Screen').html('Full Screen');
-   		$('body.modalmap #map-modal-toggle').attr('title','Close Map').html('Close Map');
-   		google.maps.event.trigger(map, 'resize');
-   		goZoom();
-   	});
+	
+	$('#map-modal-toggle').click(function(event) {
+		event.preventDefault();
+		$('body').toggleClass('modalmap');
+		$('body #map-modal-toggle').attr('title','Full Screen').html('Full Screen');
+		$('body.modalmap #map-modal-toggle').attr('title','Close Map').html('Close Map');
+		google.maps.event.trigger(map, 'resize');
+		goZoom();
+	});
 
-    $('#filters p.open-close a').click(function(event) { event.preventDefault(); $('#filters').toggleClass('show-this'); });
+	$('#filters p.open-close a').click(function(event) { event.preventDefault(); $('#filters').toggleClass('show-this'); });
 
-    $('.filters p.open-close a:first-child').click(function(event) { event.preventDefault(); $(this).parent().parent().toggleClass('show-this'); });
+	$('.filters p.open-close a:first-child').click(function(event) { event.preventDefault(); $(this).parent().parent().toggleClass('show-this'); });
 
-    $('#comments p.open-close a').click(function(event) { event.preventDefault(); $('#comments').toggleClass('show-this'); });
+	$('#comments p.open-close a').click(function(event) { event.preventDefault(); $('#comments').toggleClass('show-this'); });
 
 	$('#comments p.form-submit').addClass('buttons');
 	$('#comments #submit').addClass('button primary');
@@ -130,6 +131,8 @@ jQuery().ready(function($) {
 	
 
 	$('.newsletter-signup-form').submit(function(event) {
+
+		event.preventDefault();
 	
 		var wrapper = $(this).closest(".newsletter-signup-wrapper");
 		var wrapperID = wrapper.attr('id');
@@ -141,6 +144,7 @@ jQuery().ready(function($) {
 			return false;
 		}
 	
+/*
 		var xmlhttp = new XMLHttpRequest();
 		
 		xmlhttp.onreadystatechange=function(){
@@ -166,38 +170,50 @@ jQuery().ready(function($) {
 		var posts = "email=" + encodeURI(wrapper.find('.newsletter-signup-input').val());
 		xmlhttp.send(posts);
 
-		event.preventDefault();
+*/
+
+		//grab attributes and values out of the form
+		var data = {email: $(this).find('.newsletter-signup-input').val(), fname: $(this).find('.newsletter-signup-fname').val(), lname: $(this).find('.newsletter-signup-lname').val()};
+		var endpoint = $(this).attr('action');
+		
+		//make the ajax request
+		$.ajax({
+		  method: 'POST',
+		  dataType: "json",
+		  url: endpoint,
+		  data: data
+		}).success(function(data){
+		  if(data.id){
+			//successful adds will have an id attribute on the object
+//			alert('thanks for signing up');
+				wrapper.find('h2').fadeOut().fadeIn().text('Thank you');
+				if ( wrapperID == 'first' || wrapperID == 'emailsignup' ) {
+					wrapper.find('p').fadeOut().fadeIn().text('Thank you for signing up.');
+					setTimeout(function() {
+						$.magnificPopup.close();
+					}, 3500);
+				} else if ( wrapperID == 'form-buzz' ) {
+					wrapper.find('p').fadeOut().fadeIn().text('Indagare\'s e-Newsletter, full of travel buzz, is sent out every other week.');
+					$('#'+wrapperID).delay(1500).slideUp();
+				}
+		  } else if (data.title == 'Member Exists') {
+			//MC wil send back an error object with "Member Exists" as the title
+//			alert('thanks, but you are alredy signed up');
+			wrapper.find('p').fadeOut().fadeIn().text('You are alredy signed up.');
+		  } else {
+			//something went wrong with the API call
+//			alert('oh no, there has been a problem');
+		  }
+		}).error(function(){
+		  //the AJAX function returned a non-200, probably a server problem
+//		  alert('oh no, there has been a problem');
+		});
 		
 	});
 	
 	// login form for top nav and lockout modal
-	$("#form-login").submit(function(event) {
-
-//		var url = new String(theme_path);
-//		url = url.replace('http:','https:') + '/process_login_ajax.php';
-
-		$.ajax({
-			   type: "POST",
-			   url: ajax_login_object.ajaxurl,
-			   data: {
-				   'action': 'ajaxlogin',
-				   'username': $("#form-login #field1").val(),
-				   'password': $("#form-login #field2").val(),
-				   'security': $("#form-login #security").val()
-			   },
-			   success: function(data) {
-				   var json = $.parseJSON(data);
-			   
-				   if ( json.login == true ) {
-						window.location.href = login_redirect;
-				   } else {
-						$('#form-login .message').html('<p>Incorrect login - please try again</p>').fadeIn(1500).fadeOut(1500);
-				   }
-			   }
-			 });
-
-		event.preventDefault();
-
+	jQuery("#form-login").submit(function(e) {
+		return process_login(e,'#form-login');
 	});	// end login form
 });
 
@@ -207,43 +223,92 @@ jQuery(window).bind('resize orientationchange', function() {
 });
 
 var adjustMenu = function() {
-  if (jQuery(".show-subnav").css("display") == "block" ) {
-    jQuery("#nav li").unbind('mouseenter mouseleave');
-    //jQuery("#nav li a.parent").unbind('click');
-    jQuery("#nav li .show-subnav").unbind('click').bind('click', function (e) {
-      if (jQuery(this).parent().hasClass('open')) {
-          jQuery("#nav .open").removeClass("open");
-      } else {
-          jQuery("#nav .open").removeClass("open");
-          if (jQuery(this).next(".subnav").length) {
-              jQuery(this).parent().addClass("open"); // display popup
-          }
-      }
-      e.stopPropagation();
-    });
-  } 
-  else if (jQuery(".show-subnav").css("display") == "none" ) {
-    jQuery("#nav .open .subnav").removeClass('show-this');
-    jQuery("#nav li").removeClass("open");
-    //jQuery("#nav li a").unbind('click');
-    jQuery("#nav li").unbind('mouseenter mouseleave').bind('mouseenter mouseleave', function() {
-      // must be attached to li so that mouseleave is not triggered when hover over submenu
-      jQuery(this).toggleClass('open');
-    });
-  }
+	if (jQuery(".show-subnav").css("display") == "block" ) {
+		jQuery("#nav li").unbind('mouseenter mouseleave');
+		//jQuery("#nav li a.parent").unbind('click');
+		jQuery("#nav li .show-subnav").unbind('click').bind('click', function (e) {
+			if (jQuery(this).parent().hasClass('open')) {
+				jQuery("#nav .open").removeClass("open");
+			} else {
+				jQuery("#nav .open").removeClass("open");
+				if (jQuery(this).next(".subnav").length) {
+					jQuery(this).parent().addClass("open"); // display popup
+				}
+			}
+			e.stopPropagation();
+		});
+	} else if (jQuery(".show-subnav").css("display") == "none" ) {
+		jQuery("#nav .open .subnav").removeClass('show-this');
+		jQuery("#nav li").removeClass("open");
+		//jQuery("#nav li a").unbind('click');
+		jQuery("#nav li").unbind('mouseenter mouseleave').bind('mouseenter mouseleave', function() {
+			// must be attached to li so that mouseleave is not triggered when hover over submenu
+			jQuery(this).toggleClass('open');
+		});
+	}
 };
 
-function show_map_buttons() {
-}
+function show_map_buttons() {}
 
-function hide_map_buttons() {
-	
-}
+function hide_map_buttons() {}
 
-function fullscreen_map() {
-	
-}
+function fullscreen_map() {}
 
-function collapse_map() {
-	
+function collapse_map() {}
+
+jQuery(document).on('click','form.processing .button',function(e){e.preventDefault;return false;});
+
+function process_login(e,t){
+	e.preventDefault();
+	var f = jQuery(t);
+	if(!f.is('form')) {
+		f = f.find('form');
+	}
+	if(f.hasClass('processing')) {
+		return;
+	}
+	f.addClass('processing');
+	var r = jQuery(t).attr('data-successurl');
+	if(!r || r == '') {
+		r = login_redirect;
+	}
+	if(!r || r == '') {
+		r = '/';
+	}
+	jQuery.ajax({
+		type: "POST",
+		url: ajax_login_object.ajaxurl,
+		async: false,
+		data: {
+			'action': 'ajaxlogin',
+			'username': jQuery(t+" #field1").val(),
+			'password': jQuery(t+" #field2").val(),
+			'security': jQuery(t+" #security").val()
+		}
+	}).done(function(data){
+		if ( data.login ) {
+			if ( data.ssotoken && data.ssotoken != '' ) {
+				if(r.indexOf("?") > -1) {
+					r += "&";
+				} else {
+					r += "?";
+				}
+				r += 'ssoToken='+data.ssotoken;
+			}
+			if(r.indexOf('/') === 0 || r.indexOf('.indagare.com/') > -1 ) {
+				window.location.href = r;
+			} else {
+				window.open(r);
+				window.location.reload(); 
+			}
+		} else {
+			if ( ! data ) { 
+				window.location.reload(); 
+			} else {
+				f.find('.message').html('<p>'+data.message+'</p>').fadeIn(1500).fadeOut(1500);
+				f.removeClass('processing');
+			}
+		}
+	});
+	return false;
 }

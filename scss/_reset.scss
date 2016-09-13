@@ -7,3 +7,5 @@ html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acron
 a img{border:none;}
 a{outline:none;}
 textarea, input, select {outline: none;}
+.clearfix::after {content:"";display:block;clear:both;}
+.hide-until-load,.hidden{display:none !important;}
