@@ -212,8 +212,8 @@ jQuery().ready(function($) {
 	});
 	
 	// login form for top nav and lockout modal
-	jQuery("#form-login").submit(function(e) {
-		return process_login(e,'#form-login');
+	jQuery("body").on("submit","form.ajax-login",function(e) {
+		return process_login(e);
 	});	// end login form
 });
 
@@ -260,6 +260,7 @@ jQuery(document).on('click','form.processing .button',function(e){e.preventDefau
 
 function process_login(e,t){
 	e.preventDefault();
+	if(!t) { t = e.target; }
 	var f = jQuery(t);
 	if(!f.is('form')) {
 		f = f.find('form');
@@ -269,11 +270,11 @@ function process_login(e,t){
 	}
 	f.addClass('processing');
 	var r = jQuery(t).attr('data-successurl');
-	if(!r || r == '') {
+	if( !r ) {
 		r = login_redirect;
 	}
-	if(!r || r == '') {
-		r = '/';
+	if( !r ) {
+		r = window.location.href;
 	}
 	jQuery.ajax({
 		type: "POST",
@@ -281,9 +282,9 @@ function process_login(e,t){
 		async: false,
 		data: {
 			'action': 'ajaxlogin',
-			'username': jQuery(t+" #field1").val(),
-			'password': jQuery(t+" #field2").val(),
-			'security': jQuery(t+" #security").val()
+			'username': f.find("#field1").val(),
+			'password': f.find("#field2").val(),
+			'security': f.find("#security").val()
 		}
 	}).done(function(data){
 		if ( data.login ) {
