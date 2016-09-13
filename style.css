@@ -1517,7 +1517,7 @@ button.filters .toggle { font-size: 150%; vertical-align: middle; line-height: 6
 
 .join .quotewrapper { position: relative; max-width: 1020px; margin: 0 auto; z-index: 10; text-align: center; }
 
-.join .quoteinner { position: absolute; max-width: 480px; right: 0; top: 2em; text-align: center; color: #fff; font-family: Georgia, Times New Roman, Times, serif; /*    text-shadow: 1px 1px 2px #000; */ }
+.join .quoteinner { position: absolute; max-width: 480px; right: 20px; top: 2em; text-align: center; color: #fff; font-family: Georgia, Times New Roman, Times, serif; /*    text-shadow: 1px 1px 2px #000; */ }
 
 .join #main .quoteinner p { font-size: 2em; font-style: italic; font-weight: 700; }
 
