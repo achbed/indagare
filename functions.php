@@ -842,6 +842,7 @@ function register_scripts() {
 //    wp_register_script('responsivemap', $f.'/js/jquery.rwdImageMaps.min.js', array('jquery'), '', true);
     wp_register_script('customselect', $f.'/js/jquery.customSelect.min.js', array('jquery'), '', true);
     wp_register_script('lazyload', $f.'/js/jquery.lazyload.min.js', array('jquery'), '', true);
+    wp_register_script('equalheight', $f.'/js/jquery.matchHeight.js', array('jquery'), '', true);
 
     wp_register_script('indagare.maps-locations.google', '//maps.googleapis.com/maps/api/js?v=3?key=AIzaSyAkv3l4uMtV3heGoszUd_LR-Xy7Qxeecmw&sensor=false', array('jquery'), '', false);
 
@@ -942,8 +943,14 @@ function enqueue_scripts() {
 	    wp_enqueue_script('rslidesalt');
     }
 
-	// join page - responsive slides
+	// join page - responsive slides and equal height
 	if (is_page_template ( 'template-page-user-signup.php' ) ) {
+	    wp_enqueue_script('rslidesalt');
+	    wp_enqueue_script('equalheight');
+    }
+
+	// why join page - responsive slides
+	if (is_page_template ( 'template-page-why-join.php' ) ) {
 	    wp_enqueue_script('rslidesalt');
     }
 
@@ -1052,6 +1059,10 @@ function enqueue_scripts_here() {
 		is_singular( 'hotel' ) || is_singular( 'restaurant' ) || is_singular( 'shop' ) || is_singular( 'activity' ) || is_singular( 'article' ) || is_singular( 'offer' ) || is_singular( 'insidertrip' )
 		// itinerary archive
 		|| (is_archive() && get_query_var('post_type') == 'itinerary')
+/*
+		// why join page
+		|| ( is_page_template ( 'template-page-why-join.php' ) )
+*/
 	) {
 
 		// queue up if there are gallery header images
@@ -1066,6 +1077,14 @@ function enqueue_scripts_here() {
 		if ( gallery_shortcode($post->ID) ){
 			register_new_royalslider_files(1);
 		}
+
+/*
+		// why join page
+		$rows = get_field('gallery');
+		if($rows && is_page_template ( 'template-page-why-join.php' ) ) {
+			register_new_royalslider_files(1);
+		}
+*/
 
 	}
 
@@ -1321,10 +1340,8 @@ global $post;
 	    }
 
 	// archive itinerary - lock out unless visitor is logged-in user
-	} else if ( is_posttype( 'itinerary', POSTTYPE_ARCHIVEONLY ) ) {
-		if( !current_user_can( 'ind_read_itinerary' ) ) {
-			wp_enqueue_script('show.join.popup');
-	    }
+	} else if ( ! user_has_permission() ) {
+		wp_enqueue_script('show.join.popup');
 	}
 
 }
@@ -2390,6 +2407,7 @@ jQuery().ready(function($) {
 	// sign up step one page
 	} else if (is_page_template ( 'template-page-user-signup.php' ) ) {
 
+/*
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
 		$image = $imageobj[0];
 		$overview = $post->post_content;
@@ -2408,12 +2426,14 @@ jQuery().ready(function($) {
 			}
 			echo '</div>'."\n";
 		}
+*/
 
 	// end sign up step one page
 
 	// how to book page
 	} else if (is_page_template ( 'template-page-how-to-book.php' ) ) {
 
+/*
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
 		$image = $imageobj[0];
 		$overview = $post->post_content;
@@ -2432,6 +2452,8 @@ jQuery().ready(function($) {
 			}
 			echo '</div>'."\n";
 		}
+*/
+
 	// end how to book page
 
 	// contact page
@@ -2460,6 +2482,7 @@ jQuery().ready(function($) {
 	// why join page
 	} else if (is_page_template ( 'template-page-why-join.php' ) ) {
 
+/*
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
 		$image = $imageobj[0];
 		$overview = $post->post_content;
@@ -2481,6 +2504,8 @@ jQuery().ready(function($) {
 			}
 			echo '</div>'."\n";
 		}
+*/
+
 	// end why join page
 
 	// how we work page
@@ -5223,45 +5248,90 @@ function child_singlepost($content) {
 
 		$content = '';
 
-/*
-		$promocode_value = '';
+		$content .= '<h1>'.get_the_title().'</h1>'."\n";
+		$content .= $basecontent;
 
-		$my_query = indmem_getquery_membership();
-		if ( $my_query->have_posts() ) {
-			while ( $my_query->have_posts() ) {
-				$my_query->the_post();
-				include 'render-memberlevel.tpl.php';
+		$array = \WPSF\Membership::query_sellable();
+		if ( ! is_wp_error( $array ) ) {
+			$content .= '<section class="all-destinations memberlevels contain">'."\n";
+			$sorted = array();
+			foreach ( $array as $m ) {
+				$m->load_post();
+				$kamt = 0;
+				if ( ! empty( $m->Amount__c ) ) {
+					$kamt = $m->Amount__c;
+				}
+				if(empty($m->post) ) {
+					$k = 10000 + $kamt;
+				} else {
+					$k = get_field( 'sort', $m->post->ID );
+					if ( empty( $k ) ) {
+						$k = 10000 + $kamt;
+					}
+				}
+				$k = intval( $k );
+				while ( array_key_exists( $k, $sorted ) ) {
+					$k++;
+				}
+				$sorted[$k] = $m;
 			}
+			ksort( $sorted );
+			foreach ( $sorted as $m ) {
+				$content .= $m->render();
+			}
+			$content .= '</section>'."\n";
 		}
-		wp_reset_postdata();
-*/
 
-		$rows = get_field('membership-level');
+		$rows = get_field('gallery');
 
-		if($rows) {
-			foreach($rows as $row) {
+		if ( $rows ) {
 
-				$name = $row['membership-name'];
-				$rate = $row['membership-rate'];
-				$link = $row['membership-link'];
+			$content .= '</div></div></div></div></div></div>'."\n";
 
-				if (isset($_GET["referralcode"])) {
-					$link .= '&referralcode='.$_GET["referralcode"];
+			$content .= '<div class="image-wrapper">'."\n";
+
+			$content .= '<ul class="rslides">'."\n";
+
+				foreach($rows as $row) {
+
+					$quote = $row['gallery-quote'];
+					$citation = $row['gallery-citation'];
+					$imageobj = $row['gallery-image'];
+					$image = $imageobj['url'];
+
+					$content .= '<li>'."\n";
+						$content .= '<img src="'.$image.'" alt="" />'."\n";
+						if ( $quote ) {
+							$content .= '<div class="quotewrapper">'."\n";
+								$content .= '<div class="quoteinner">'."\n";
+									$content .= '<p>&ldquo;'.$quote.'&rdquo;';
+									if ( $citation ) {
+										$content .= '<br /><em>'.$citation.'</em>';
+									}
+									$content .= '</p>';
+								$content .= '</div>'."\n";
+							$content .= '</div>'."\n";
+						}
+					$content .= '</li>'."\n";
+
 				}
 
-				$details = $row['membership-details'];
+			$content .= '</ul><!--.hero.rslides-->'."\n";
 
-				$content .= '<div class="filters filtersflip show-this">'."\n";
-					$content .= '<p class="open-close"><span class="title membertitle">'.$name.'</span><span class="rate">From $'.$rate.'</span><a class="button primary" href="/signup/?mb='.$link.'">Join</a></p>'."\n";
-					$content .= '<div class="collapse">'."\n";
-						$content .= '<div class="collapsegroup">'."\n";
-						$content .= $details;
-						$content .= '</div>'."\n";
-					$content .= '</div>'."\n";
-				$content .= '</div>'."\n";
-			}
+			$content .= '<div class="rslides_tabs_wrapper"></div>'."\n";
+
+			$content .= '</div>'."\n";
+
+			$content .= '<div class="candy-wrapper contain"><div class="candy-inner"><div class="container standard"><div class="content"><div class="hentry"><div class="entry-content">'."\n";
+
 		}
 
+		$content .= '<div class="join-contact">'."\n";
+		$content .= '<div class="left"><h4>Question about Indagare? </h4></div>';
+		$content .= '<div class="right"><span>Contact Us:</span> <a href="tel:+12129882611">212-988-2611</a>&nbsp;|&nbsp;<a href="mailto:membership@indagare.com">membership@indagare.com</a></div>';
+		$content .= '</div>'."\n";
+
+/*
 		$rows = get_field('join-quote');
 		if ( $rows ) {
 
@@ -5291,6 +5361,7 @@ function child_singlepost($content) {
 			$content .= '</div>'."\n";
 
 		}
+*/
 
 	// end sign up step one page
 
@@ -5316,7 +5387,28 @@ function child_singlepost($content) {
 
 		$content = '';
 
+		$content .= '<h1>'.get_the_title().'</h1>'."\n";
+
 		$rows = get_field('faq');
+
+		$i = 1;
+
+		if($rows) {
+			foreach($rows as $row) {
+
+				$q = $row['faq-question'];
+
+				$content .= '<div>'."\n";
+					$content .= '<h2><a href="#faq'.$i.'">'.$q.'</a></h2>'."\n";
+				$content .= '</div>'."\n";
+
+				$i++;
+			}
+		}
+
+		$content .= '<div class="join-cta"><a href="/join/">Join</a></div>'."\n";
+
+		$i = 1;
 
 		if($rows) {
 			foreach($rows as $row) {
@@ -5324,16 +5416,20 @@ function child_singlepost($content) {
 				$q = $row['faq-question'];
 				$a = $row['faq-answer'];
 
-				$content .= '<div class="filters filtersflip filtersfullwidth">'."\n";
-					$content .= '<p class="open-close"><a href="#"><b class="icon open-this" data-icon="&#xf0da;"><span>Open</span></b><b class="icon close-this" data-icon="&#xf0d7;"><span>Close</span></b> <span class="title">'.$q.'</span></a></p>'."\n";
-					$content .= '<div class="collapse">'."\n";
-						$content .= '<div class="collapsegroup">'."\n";
-						$content .= $a;
-						$content .= '</div>'."\n";
-					$content .= '</div>'."\n";
+				$content .= '<div id="faq'.$i.'">'."\n";
+					$content .= '<h2>'.$q.'</h2>'."\n";
+					$content .= $a;
 				$content .= '</div>'."\n";
+
+				$i++;
 			}
 		}
+
+		$content .= '<div class="join-contact">'."\n";
+		$content .= '<div class="left"><h4>Question about Indagare? </h4></div>';
+		$content .= '<div class="right"><span>Contact Us:</span> <a href="tel:+12129882611">212-988-2611</a>&nbsp;|&nbsp;<a href="mailto:membership@indagare.com">membership@indagare.com</a></div>';
+		$content .= '</div>'."\n";
+
 	// end how to book page
 
 	// 	how we work page
@@ -5346,11 +5442,11 @@ function child_singlepost($content) {
 		$content .= '<h1>'.get_the_title().'</h1>'."\n";
 
 		$content .= $basecontent;
-		
+
 		$i = 1;
-		
+
 		if ( $rows ) {
-		
+
 			foreach($rows as $row) {
 
 				$steptitle = $row['step-title'];
@@ -5369,48 +5465,153 @@ function child_singlepost($content) {
 				$content .= '<h2>'.$steptitle.'</h2>'."\n";
 				$content .= $stepcontent;
 				$content .= '</div>'."\n";
-				
+
+				$content .= '<div class="join-cta"><a href="/join/">Join</a></div>'."\n";
+
 				$i++;
-				
+
 			}
-		
+
 		}
+
+		$content .= '<div class="join-contact">'."\n";
+		$content .= '<div class="left"><h4>Question about Indagare? </h4></div>';
+		$content .= '<div class="right"><span>Contact Us:</span> <a href="tel:+12129882611">212-988-2611</a>&nbsp;|&nbsp;<a href="mailto:membership@indagare.com">membership@indagare.com</a></div>';
+		$content .= '</div>'."\n";
 
 	// end how we work page
 
 	// why join page
 	} else if (is_page_template ( 'template-page-why-join.php' ) ) {
 
+		$imgsrc = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' );
+
 		$content = '';
 
-		$content .= '<div class="header"><h2>Benefits</h2></div>'."\n";
+		if ( $imgsrc ) {
+
+			$content .= '<div class="contain">'."\n";
+
+			$content .= '<div class="believeright"><img src="'.$imgsrc[0].'" /></div>'."\n";
+			$content .= '<div class="believeleft">'."\n";
+
+		}
+
+		$content .= '<h1>'.get_the_title().'</h1>'."\n";
+
+		$content .= $basecontent;
+
+		if ( $imgsrc ) {
+
+			$content .= '</div>'."\n";
+
+			$content .= '</div>'."\n";
+		}
+
+		$content .= '<div class="join-cta"><a href="/join/">Join</a></div>'."\n";
+
+		$content .= '<div class="header"><h2>What We Do Best</h2></div>'."\n";
 
 		$rows = get_field('benefit');
 
 		if($rows) {
 
-		$content .= '<section class="all-destinations contain" location="CCCC">'."\n";
+			$content .= '<section class="all-destinations contain indbenefit">'."\n";
 
-			foreach($rows as $row) {
+				foreach($rows as $row) {
 
-				$benefittitle = $row['benefit-title'];
-				$benefitcontent = $row['benefit-content'];
-				$imageobj = $row['benefit-image'];
-				$image = $imageobj['sizes']['thumb-large'];
+					$benefittitle = $row['benefit-title'];
+					$benefitcontent = $row['benefit-content'];
+					$imageobj = $row['benefit-image'];
+					$image = $imageobj['url'];
 
-				$content .= '<article>'."\n";
-					if ($imageobj) {
-						$content .= '<img src="'.$image.'" alt="Benefit" />'."\n";
-					}
-					$content .= '<h3>'.$benefittitle.'</h3>'."\n";
-					$content .= $benefitcontent;
-				$content .= '</article>'."\n";
+					$content .= '<article>'."\n";
+						$content .= '<img src="'.$image.'" alt="" />'."\n";
+						$content .= '<h3>'.$benefittitle.'</h3>'."\n";
+						$content .= $benefitcontent;
+					$content .= '</article>'."\n";
 
-			}
+				}
 
-		$content .= '</section>'."\n";
+			$content .= '</section>'."\n";
 
 		}
+
+		$rows = get_field('gallery');
+
+		if ( $rows ) {
+
+			$content .= '</div></div></div></div></div></div>'."\n";
+
+			$content .= '<div class="image-wrapper">'."\n";
+
+			$content .= '<ul class="rslides">'."\n";
+
+				foreach($rows as $row) {
+
+					$quote = $row['gallery-quote'];
+					$citation = $row['gallery-citation'];
+					$imageobj = $row['gallery-image'];
+					$image = $imageobj['url'];
+
+					$content .= '<li>'."\n";
+						$content .= '<img src="'.$image.'" alt="" />'."\n";
+						if ( $quote ) {
+							$content .= '<div class="quotewrapper">'."\n";
+								$content .= '<div class="quoteinner">'."\n";
+									$content .= '<p>&ldquo;'.$quote.'&rdquo;';
+									if ( $citation ) {
+										$content .= '<br /><em>'.$citation.'</em>';
+									}
+									$content .= '</p>';
+								$content .= '</div>'."\n";
+							$content .= '</div>'."\n";
+						}
+					$content .= '</li>'."\n";
+
+				}
+
+			$content .= '</ul><!--.hero.rslides-->'."\n";
+
+			$content .= '<div class="rslides_tabs_wrapper"></div>'."\n";
+
+			$content .= '</div>'."\n";
+
+			$content .= '<div class="candy-wrapper contain"><div class="candy-inner"><div class="container standard"><div class="content"><div class="hentry"><div class="entry-content">'."\n";
+
+		}
+
+		$content .= '<div class="join-cta"><a href="/join/">Join</a></div>'."\n";
+
+		$content .= '<div class="header"><h2>The Indagare Advantage</h2></div>'."\n";
+
+		$rows = get_field('advantage');
+
+		if($rows) {
+
+			$content .= '<section class="all-destinations contain advantage">'."\n";
+
+				foreach($rows as $row) {
+
+					$advantagetitle = $row['advantage-title'];
+					$advantagecontent = $row['advantage-content'];
+
+					$content .= '<article>'."\n";
+						$content .= '<h3>'.$advantagetitle.'</h3>'."\n";
+						$content .= $advantagecontent;
+					$content .= '</article>'."\n";
+
+				}
+
+			$content .= '</section>'."\n";
+
+		}
+
+		$content .= '<div class="join-contact">'."\n";
+		$content .= '<div class="left"><h4>Question about Indagare? </h4></div>';
+		$content .= '<div class="right"><span>Contact Us:</span> <a href="tel:+12129882611">212-988-2611</a>&nbsp;|&nbsp;<a href="mailto:membership@indagare.com">membership@indagare.com</a></div>';
+		$content .= '</div>'."\n";
+
 	// end why join page
 
 	// welcome page
@@ -5424,7 +5625,7 @@ function child_singlepost($content) {
 
 		if($rows) {
 
-			$content .= '<section class="all-destinations contain" location="DDDD">'."\n";
+			$content .= '<section class="all-destinations contain">'."\n";
 
 				foreach($rows as $row) {
 
@@ -6458,7 +6659,9 @@ jQuery().ready(function($) {
 		if ( $rowsscout ) {
 
 			echo '<section class="recent-articles contain">'."\n";
-				echo '<div class="header divider"><h2>'.$user->first_name.' is Currently Scouting</h2></div>'."\n";
+				echo '<div class="header divider"><h2>';
+				echo sprintf( __( '%s is Currently Scouting', 'indagare'), $user->first_name );
+				echo '</h2></div>'."\n";
 				foreach ( $rowsscout as $row ) {
 					$imageobj = $row['author-currently-scouting-image'];
 					$image = $imageobj['sizes']['thumb-small'];
@@ -6466,9 +6669,9 @@ jQuery().ready(function($) {
 					echo '<article>'."\n";
 						echo '<a href="'.$row['author-currently-scouting-url'].'">'."\n";
 							if ( $image ) {
-								echo '<img src="'.$image.'" alt="Related" />'."\n";
+								echo '<img src="'.$image.'" alt="'.__('Related','indagare').'" />'."\n";
 							} else {
-								echo '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-small-logo.png" alt="Related" />'."\n";
+								echo '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-small-logo.png" alt="'.__('Related','indagare').'" />'."\n";
 							}
 							echo '<h3>'.$row['author-currently-scouting-title'].'</h3>'."\n";
 						echo '</a>'."\n";
@@ -6481,7 +6684,9 @@ jQuery().ready(function($) {
 		if ( $rows ) {
 
 			echo '<section class="recent-articles contain">'."\n";
-				echo '<div class="header divider"><h2>'.$user->first_name.' Recently Visited</h2></div>'."\n";
+				echo '<div class="header divider"><h2>';
+				echo sprintf( __( '%s Recently Visited', 'indagare' ), $user->first_name );
+				echo '</h2></div>'."\n";
 				foreach ( $rows as $row ) {
 					$imageobj = $row['author-recently-visited-image'];
 					$image = $imageobj['sizes']['thumb-small'];
@@ -6489,9 +6694,9 @@ jQuery().ready(function($) {
 					echo '<article>'."\n";
 						echo '<a href="'.$row['author-recently-visited-url'].'">'."\n";
 							if ( $image ) {
-								echo '<img src="'.$image.'" alt="Related" />'."\n";
+								echo '<img src="'.$image.'" alt="'.__('Related','indagare').'" />'."\n";
 							} else {
-								echo '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-small-logo.png" alt="Related" />'."\n";
+								echo '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-small-logo.png" alt="'.__('Related','indagare').'" />'."\n";
 							}
 							echo '<h3>'.$row['author-recently-visited-title'].'</h3>'."\n";
 						echo '</a>'."\n";
@@ -6524,26 +6729,55 @@ jQuery().ready(function($) {
 			echo '</div><!-- #primary -->'."\n";
 		}
 
-		$rows = get_field('recently-visited');
+	    $rowsscout = get_field('currently-scouting');
+	    $rows = get_field('recently-visited');
+	    $foundername = __("Melissa", 'indagare');
 
-			if ( $rows ) {
+	    if ( $rowsscout ) {
 
-			echo '<section class="recent-articles contain">'."\n";
-				echo '<div class="header divider"><h2>Melissa Recently Visited</h2></div>'."\n";
-				foreach ( $rows as $row ) {
-					$imageobj = $row['recently-visited-image'];
-					$image = $imageobj['sizes']['thumb-small'];
+	        echo '<section class="recent-articles contain">'."\n";
+				echo '<div class="header divider"><h2>';
+				echo sprintf( __( '%s is Currently Scouting', 'indagare'), $foundername );
+				echo '</h2></div>'."\n";
+	            foreach ( $rowsscout as $row ) {
+	                $imageobj = $row['currently-scouting-image'];
+	                $image = $imageobj['sizes']['thumb-small'];
 
-					echo '<article>'."\n";
-						echo '<a href="'.$row['recently-visited-url'].'">'."\n";
-							echo '<img src="'.$image.'" alt="Related" />'."\n";
-							echo '<h3>'.$row['recently-visited-title'].'</h3>'."\n";
-						echo '</a>'."\n";
-					echo '</article>'."\n";
-				}
-			echo '</section><!-- .recent-articles -->'."\n";
+	                echo '<article>'."\n";
+	                    echo '<a href="'.$row['currently-scouting-url'].'">'."\n";
+	                        if ( $image ) {
+	                            echo '<img src="'.$image.'" alt="'.__('Related','indagare').'" />'."\n";
+	                        } else {
+	                            echo '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-small-logo.png" alt="'.__('Related','indagare').'" />'."\n";
+	                        }
+	                        echo '<h3>'.$row['currently-scouting-title'].'</h3>'."\n";
+	                    echo '</a>'."\n";
+	                echo '</article>'."\n";
+	            }
+	        echo '</section><!-- .recent-articles -->'."\n";
 
-		}
+	    }
+
+	    if ( $rows ) {
+
+	        echo '<section class="recent-articles contain">'."\n";
+				echo '<div class="header divider"><h2>';
+				echo sprintf( __( '%s Recently Visited', 'indagare'), $foundername );
+				echo '</h2></div>'."\n";
+	            foreach ( $rows as $row ) {
+	                $imageobj = $row['recently-visited-image'];
+	                $image = $imageobj['sizes']['thumb-small'];
+
+	                echo '<article>'."\n";
+	                    echo '<a href="'.$row['recently-visited-url'].'">'."\n";
+	                        echo '<img src="'.$image.'" alt="'.__('Related','indagare').'" />'."\n";
+	                        echo '<h3>'.$row['recently-visited-title'].'</h3>'."\n";
+	                    echo '</a>'."\n";
+	                echo '</article>'."\n";
+	            }
+	        echo '</section><!-- .recent-articles -->'."\n";
+
+	    }
 
 	} // end sidebar for founder page
 
@@ -6900,8 +7134,9 @@ jQuery().ready(function($) {
 	}
 	// end join for region | destination archive | post or archive for hotel restaurant shop activity itinerary library
 
-	// home page | why join page
-	if (is_home() || is_front_page() || is_page_template ( 'template-page-why-join.php' ) ) {
+	// home page | !why join page
+//	if (is_home() || is_front_page() || is_page_template ( 'template-page-why-join.php' ) ) {
+	if (is_home() || is_front_page() ) {
 		echo '<span class="dictionary">Indagare <span class="gray">(in&bull;da&bull;ga&bull;re) <em>verb (latin).</span> To discover, explore, seek, scout.</em></span>'."\n";
 	} // end why join page
 
@@ -7018,7 +7253,7 @@ global $count;
 	} // end first visit modal - intro page
 
 	// email signup modal
-    if ( ( indagare\cookies\PageCountAll::getPageCountAll() == 5 || $_GET['modalemail'] ) && ! ind_logged_in() ) {
+    if ( ind_show_email_popup() ) {
 ?>
 <div id="lightbox-email-signup" class="lightbox lightbox-two-col lightbox-no-borders white-popup mfp-hide">
 	<header>
@@ -7074,7 +7309,7 @@ jQuery(document).ready(function($) {
 		<h2>Member Login</h2>
 	</header>
 
-	<form id="form-login" class="login" method="post" novalidate<?php
+	<form id="form-login" class="login ajax-login" method="post" novalidate<?php
 	if (is_page_template ( 'template-page-intro.php' ) ) {
 		print ' data-successurl="/"';
 	}
@@ -7142,7 +7377,7 @@ jQuery(document).ready(function($) {
 		<h3>Already a Member?</h3>
 		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/join-3.jpg" alt="" />
 
-		<form id="form-login" class="login" method="post" novalidate>
+		<form id="form-login" class="login ajax-login" method="post" novalidate>
 			<div id="field1-container" class="field">
 			   <label for="field1">
 					Username or Email
@@ -7186,7 +7421,39 @@ jQuery(document).ready(function($) {
 	</footer>
 </div><!-- #lightbox-join -->
 <?php
-	} // end content lockout modal
+	} else if ( ! user_has_permission() ) {
+		// User is logged in but still has no permission. This dialog should prompt them to upgrade or renew their membership
+?>
+<div id="lightbox-join" class="lightbox white-popup mfp-hide">
+	<header>
+		<h2>Sorry!</h2>
+		<p>You've exceeded the amount of content available to non-paying members. We would love to have you as part of our community.
+		If you're not ready to renew your membership, <a href="/">return to our hotel reviews</a> &#8212; these are available to everyone.</p>
+	</header>
+	<div class="column one-half first">
+		<h3>Why Renew?</h3>
+		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/join-1.jpg" alt="" />
+		<ul>
+			<li>To enjoy unlimited access to the online content and our Black Book magazines.</li>
+			<li>To receive special rates &amp; amenities at hundreds of hotels and resorts worldwide.</li>
+			<li>To benefit from customized trip planning from our expert team.</li>
+			<li>To gain access to Insider Trips, events and more.</li>
+		</ul>
+		<a href="/why-join/" class="button">Learn More</a>
+	</div><!-- .column -->
+
+	<div class="column one-half">
+		<h3>Renew or Upgrade Now</h3>
+		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/join-2.jpg" alt="" />
+		<ul>
+			<li>Four levels of membership designed for everyone from the leisure traveler to the corporate client.</li>
+			<li>Savings on just one hotel booking usually surpass the cost of a basic membership thanks to special rates.</li>
+		</ul>
+		<a href="/account" class="button">Renew Now</a>
+	</div><!-- .column -->
+</div><!-- #lightbox-join -->
+<?php
+	}// end content lockout modal
 
 	// lightbox interstitial modals for booking and flights
 	if ( ! ind_logged_in() ) {
@@ -7609,8 +7876,8 @@ jQuery().ready(function($) {
 
  	// join page
  	if ( is_page_template('template-page-user-signup.php') ) {
-?>
 
+/*
   $(function() {
     $(".rslides").responsiveSlides({
 		auto: true,             // Boolean: Animate automatically, true or false
@@ -7623,6 +7890,12 @@ jQuery().ready(function($) {
 
 	$('.rslides_tabs').insertAfter('#rslideswrapper');
   });
+*/
+
+?>
+
+    $('.memberlevelitems').matchHeight();
+    $('.memberlevelrecap').matchHeight();
 
 <?php
 	} // end join page
@@ -7775,11 +8048,27 @@ jQuery().ready(function($) {
 				}
 			}
 		}
+	// sign up step one page
+	} else if ( is_page_template ( 'template-page-user-signup.php' ) ) {
+		$gallery = get_field('gallery');
+		if ( $gallery ) {
+			$gallerycount = count($gallery);
+		}
+
+	// why join page
+	} else if ( is_page_template ( 'template-page-why-join.php' ) ) {
+		$gallery = get_field('gallery');
+		if ( $gallery ) {
+			$gallerycount = count($gallery);
+		}
 	}
 
 	echo '<!-- gallerycount '.$gallerycount.' -->'."\n";
 
-	if ( $gallerycount > 1 && !is_singular( 'hotel' ) && !is_singular( 'restaurant' ) && !is_singular( 'shop' ) && !is_singular( 'activity' ) && !is_singular('article') && !is_singular('offer') && !is_singular( 'insidertrip' ) && !is_post_type_archive('itinerary') ) {
+	if (
+		$gallerycount > 1 && !is_singular( 'hotel' ) && !is_singular( 'restaurant' ) && !is_singular( 'shop' ) && !is_singular( 'activity' ) && !is_singular('article') && !is_singular('offer') && !is_singular( 'insidertrip' ) && !is_post_type_archive('itinerary')
+		&& !is_page_template ( 'template-page-user-signup.php' ) && !is_page_template ( 'template-page-why-join.php' )
+	) {
 ?>
 <script>
 jQuery(document).ready(function($) {
@@ -7839,6 +8128,42 @@ jQuery(document).ready(function($) {
 	$('.rslides_tabs').each(function() {
 		$(this).insertAfter($(this).parent());
 	})
+
+});
+</script>
+<?php
+	} else if ( $gallerycount > 1 && is_page_template ( 'template-page-user-signup.php' ) ) {
+?>
+<script>
+jQuery(document).ready(function($) {
+    $(".rslides").responsiveSlides({
+		auto: true,             // Boolean: Animate automatically, true or false
+		speed: 500,            // Integer: Speed of the transition, in milliseconds
+		timeout: 4000,          // Integer: Time between slide transitions, in milliseconds
+		pager: true,           // Boolean: Show pager, true or false
+		nav: false,             // Boolean: Show navigation, true or false
+		pause: true
+	});
+
+	$('.rslides_tabs_wrapper').append( $('.rslides_tabs') );
+
+});
+</script>
+<?php
+	} else if ( $gallerycount > 1 && is_page_template ( 'template-page-why-join.php' ) ) {
+?>
+<script>
+jQuery(document).ready(function($) {
+    $(".rslides").responsiveSlides({
+		auto: true,             // Boolean: Animate automatically, true or false
+		speed: 500,            // Integer: Speed of the transition, in milliseconds
+		timeout: 4000,          // Integer: Time between slide transitions, in milliseconds
+		pager: true,           // Boolean: Show pager, true or false
+		nav: false,             // Boolean: Show navigation, true or false
+		pause: true
+	});
+
+	$('.rslides_tabs_wrapper').append( $('.rslides_tabs') );
 
 });
 </script>
@@ -8536,4 +8861,67 @@ function reset_user_password( $login ) {
 		wp_die( __('The email could not be sent.') . "<br />\n" . __('Possible reason: your host may have disabled the mail() function.') );
 
 	return true;
+}
+
+/**
+ * Checks to see if the current logged in user has permission to view this page/item/something.
+ *
+ * @return boolean True if they have permission, False if not.
+ */
+function user_has_permission() {
+	global $wp_query;
+
+	if ( is_posttype( 'itinerary', POSTTYPE_ARCHIVEORSINGLE ) ) {
+		return current_user_can( 'ind_read_itinerary' );
+	}
+
+	if ( is_posttype( 'magazine', POSTTYPE_SINGLEONLY ) ) {
+		// Check if this is the most recent post somehow
+	}
+
+	if ( is_posttype( 'magazine', POSTTYPE_ARCHIVEONLY ) ) {
+		return true;
+		$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+		$current = ( $paged == 1 && $wp_query->current_post == 0 );
+		return ( current_user_can( 'ind_read_magazine_archive' ) ||
+			( $current /* && current_user_can( 'ind_read_magazine' ) */ ) );
+	}
+
+	return true;
+}
+
+function ind_show_email_popup() {
+	if ( isset( $_GET['modalemail'] ) ) {
+		return true;
+	}
+
+	if ( ind_logged_in() ) {
+		// We're logged in.  Never show this thing.
+		return false;
+	}
+
+	// Don't count these page templates towards the email signup
+	$templates = array(
+		'template-page-user-signup.php',
+		'template-page-why-join.php',
+		'template-page-intro.php',
+		'template-page-about-mission.php',
+		'template-page-user-signup-step-two.php',
+		'template-page-account-edit.php',
+		'template-page-how-we-work.php',
+		'template-page-how-to-book.php',
+	);
+
+	$this_template = basename( get_page_template() );
+	foreach( $templates as $t ) {
+		if ( $t == $this_template ) {
+			return false;
+		}
+	}
+
+	if ( \indagare\cookies\PageCountAll::getPageCountAll() == 5 ) {
+		return true;
+	}
+
+	return false;
 }
