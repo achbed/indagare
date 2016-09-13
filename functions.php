@@ -6714,26 +6714,50 @@ jQuery().ready(function($) {
 			echo '</div><!-- #primary -->'."\n";
 		}
 
-		$rows = get_field('recently-visited');
+	    $rowsscout = get_field('currently-scouting');
+	    $rows = get_field('recently-visited');
 
-			if ( $rows ) {
+	    if ( $rowsscout ) {
 
-			echo '<section class="recent-articles contain">'."\n";
-				echo '<div class="header divider"><h2>Melissa Recently Visited</h2></div>'."\n";
-				foreach ( $rows as $row ) {
-					$imageobj = $row['recently-visited-image'];
-					$image = $imageobj['sizes']['thumb-small'];
+	        echo '<section class="recent-articles contain">'."\n";
+	            echo '<div class="header divider"><h2>'.$user->first_name.' is Currently Scouting</h2></div>'."\n";
+	            foreach ( $rowsscout as $row ) {
+	                $imageobj = $row['currently-scouting-image'];
+	                $image = $imageobj['sizes']['thumb-small'];
 
-					echo '<article>'."\n";
-						echo '<a href="'.$row['recently-visited-url'].'">'."\n";
-							echo '<img src="'.$image.'" alt="Related" />'."\n";
-							echo '<h3>'.$row['recently-visited-title'].'</h3>'."\n";
-						echo '</a>'."\n";
-					echo '</article>'."\n";
-				}
-			echo '</section><!-- .recent-articles -->'."\n";
+	                echo '<article>'."\n";
+	                    echo '<a href="'.$row['currently-scouting-url'].'">'."\n";
+	                        if ( $image ) {
+	                            echo '<img src="'.$image.'" alt="Related" />'."\n";
+	                        } else {
+	                            echo '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-small-logo.png" alt="Related" />'."\n";
+	                        }
+	                        echo '<h3>'.$row['currently-scouting-title'].'</h3>'."\n";
+	                    echo '</a>'."\n";
+	                echo '</article>'."\n";
+	            }
+	        echo '</section><!-- .recent-articles -->'."\n";
 
-		}
+	    }
+
+	    if ( $rows ) {
+
+	        echo '<section class="recent-articles contain">'."\n";
+	            echo '<div class="header divider"><h2>Melissa Recently Visited</h2></div>'."\n";
+	            foreach ( $rows as $row ) {
+	                $imageobj = $row['recently-visited-image'];
+	                $image = $imageobj['sizes']['thumb-small'];
+
+	                echo '<article>'."\n";
+	                    echo '<a href="'.$row['recently-visited-url'].'">'."\n";
+	                        echo '<img src="'.$image.'" alt="Related" />'."\n";
+	                        echo '<h3>'.$row['recently-visited-title'].'</h3>'."\n";
+	                    echo '</a>'."\n";
+	                echo '</article>'."\n";
+	            }
+	        echo '</section><!-- .recent-articles -->'."\n";
+
+	    }
 
 	} // end sidebar for founder page
 
