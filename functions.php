@@ -6649,7 +6649,7 @@ jQuery().ready(function($) {
 
 			echo '<section class="recent-articles contain">'."\n";
 				echo '<div class="header divider"><h2>';
-				sprintf( __( '%s is Currently Scouting', 'indagare'), $user->first_name );
+				echo sprintf( __( '%s is Currently Scouting', 'indagare'), $user->first_name );
 				echo '</h2></div>'."\n";
 				foreach ( $rowsscout as $row ) {
 					$imageobj = $row['author-currently-scouting-image'];
@@ -6674,7 +6674,7 @@ jQuery().ready(function($) {
 
 			echo '<section class="recent-articles contain">'."\n";
 				echo '<div class="header divider"><h2>';
-				sprintf( __( '%s Recently Visited', 'indagare' ), $user->first_name );
+				echo sprintf( __( '%s Recently Visited', 'indagare' ), $user->first_name );
 				echo '</h2></div>'."\n";
 				foreach ( $rows as $row ) {
 					$imageobj = $row['author-recently-visited-image'];
@@ -6720,12 +6720,13 @@ jQuery().ready(function($) {
 
 	    $rowsscout = get_field('currently-scouting');
 	    $rows = get_field('recently-visited');
+	    $foundername = __("Melissa", 'indagare');
 
 	    if ( $rowsscout ) {
 
 	        echo '<section class="recent-articles contain">'."\n";
 				echo '<div class="header divider"><h2>';
-				sprintf( __( '%s is Currently Scouting', 'indagare'), $user->first_name );
+				echo sprintf( __( '%s is Currently Scouting', 'indagare'), $foundername );
 				echo '</h2></div>'."\n";
 	            foreach ( $rowsscout as $row ) {
 	                $imageobj = $row['currently-scouting-image'];
@@ -6750,7 +6751,7 @@ jQuery().ready(function($) {
 
 	        echo '<section class="recent-articles contain">'."\n";
 				echo '<div class="header divider"><h2>';
-				sprintf( __( 'Melissa Recently Visited', 'indagare'), $user->first_name );
+				echo sprintf( __( '%s Recently Visited', 'indagare'), $foundername );
 				echo '</h2></div>'."\n";
 	            foreach ( $rows as $row ) {
 	                $imageobj = $row['recently-visited-image'];
