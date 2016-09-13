@@ -6648,7 +6648,9 @@ jQuery().ready(function($) {
 		if ( $rowsscout ) {
 
 			echo '<section class="recent-articles contain">'."\n";
-				echo '<div class="header divider"><h2>'.$user->first_name.' is Currently Scouting</h2></div>'."\n";
+				echo '<div class="header divider"><h2>';
+				sprintf( __( '%s is Currently Scouting', 'indagare'), $user->first_name );
+				echo '</h2></div>'."\n";
 				foreach ( $rowsscout as $row ) {
 					$imageobj = $row['author-currently-scouting-image'];
 					$image = $imageobj['sizes']['thumb-small'];
@@ -6656,9 +6658,9 @@ jQuery().ready(function($) {
 					echo '<article>'."\n";
 						echo '<a href="'.$row['author-currently-scouting-url'].'">'."\n";
 							if ( $image ) {
-								echo '<img src="'.$image.'" alt="Related" />'."\n";
+								echo '<img src="'.$image.'" alt="'.__('Related','indagare').'" />'."\n";
 							} else {
-								echo '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-small-logo.png" alt="Related" />'."\n";
+								echo '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-small-logo.png" alt="'.__('Related','indagare').'" />'."\n";
 							}
 							echo '<h3>'.$row['author-currently-scouting-title'].'</h3>'."\n";
 						echo '</a>'."\n";
@@ -6671,7 +6673,9 @@ jQuery().ready(function($) {
 		if ( $rows ) {
 
 			echo '<section class="recent-articles contain">'."\n";
-				echo '<div class="header divider"><h2>'.$user->first_name.' Recently Visited</h2></div>'."\n";
+				echo '<div class="header divider"><h2>';
+				sprintf( __( '%s Recently Visited', 'indagare' ), $user->first_name );
+				echo '</h2></div>'."\n";
 				foreach ( $rows as $row ) {
 					$imageobj = $row['author-recently-visited-image'];
 					$image = $imageobj['sizes']['thumb-small'];
@@ -6679,9 +6683,9 @@ jQuery().ready(function($) {
 					echo '<article>'."\n";
 						echo '<a href="'.$row['author-recently-visited-url'].'">'."\n";
 							if ( $image ) {
-								echo '<img src="'.$image.'" alt="Related" />'."\n";
+								echo '<img src="'.$image.'" alt="'.__('Related','indagare').'" />'."\n";
 							} else {
-								echo '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-small-logo.png" alt="Related" />'."\n";
+								echo '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-small-logo.png" alt="'.__('Related','indagare').'" />'."\n";
 							}
 							echo '<h3>'.$row['author-recently-visited-title'].'</h3>'."\n";
 						echo '</a>'."\n";
