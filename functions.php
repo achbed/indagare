@@ -132,6 +132,23 @@ function ind_validate_password_reset( $errors, $user ) {
 add_action( 'validate_password_reset', 'ind_validate_password_reset', 10, 2 );
 
 
+function ind_add_theme_caps(){
+	global $pagenow;
+
+	// gets the author role
+	$admin = get_role( 'administrator' );
+
+	if ( 'themes.php' == $pagenow && isset( $_GET['activated'] ) ){ // Test if theme is activated
+		// Theme is activated
+
+		// This only works, because it accesses the class instance.
+		// would allow the author to edit others' posts for current theme only
+		$admin->add_cap( 'admin_toolbar', true );
+		$admin->add_cap( 'admin_backend', true );
+	}
+}
+add_action( 'load-themes.php', 'ind_add_theme_caps' );
+
 /**
  * Hide the admin bar for non-admin users
  */
@@ -144,14 +161,23 @@ function ind_after_setup_theme() {
 add_action( 'after_setup_theme', 'ind_after_setup_theme');
 
 
-function restrict_admin_with_redirect() {
-	if ( ! current_user_can( 'manage_options' ) && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
-		// Revoke access to the admin pages
+function ind_restrict_admin_with_redirect() {
+	if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
+		// Ajax Request.  Don't deny this.  Ever.
+		return;
+	}
+
+	if ( ! current_user_can( 'admin_backend' ) ) {
+		// The user doesnt have access to the back end.
+		if ( current_user_can( 'manage_options' ) ) {
+			// ... BUT they have manage_options permission.  Allow anyway.
+			return;
+		}
 		wp_redirect( site_url() );
 		exit;
 	}
 }
-add_action( 'admin_init', 'restrict_admin_with_redirect', 1 );
+add_action( 'admin_init', 'ind_restrict_admin_with_redirect', 1 );
 
 
 add_action('wp','indagare_wp_handle');
