@@ -7944,12 +7944,14 @@ jQuery().ready(function($) {
         arrows: false,
         appendArrows: $('.memberlevelsnav'),
 		slidesToShow: 3,
+		infinite: false,
 		responsive: [
 		{
 			breakpoint: 730,
 			settings: {
 				slidesToShow: 2,
-				slidesToScroll: 1
+				slidesToScroll: 1,
+				infinite: false
 			}
 		},
 		{
@@ -7964,10 +7966,12 @@ jQuery().ready(function($) {
 	});
 
 	$('.memberlevelsnav .next').on('click', function(){
+		event.preventDefault();
 		$('.memberlevels').slick('slickNext');
 	});
 
 	$('.memberlevelsnav .prev').on('click', function(){
+		event.preventDefault();
 		$('.memberlevels').slick('slickPrev');
 	});
 
