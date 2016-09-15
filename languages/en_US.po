@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-16 15:47-0500\n"
-"PO-Revision-Date: 2016-08-16 15:48-0600\n"
+"POT-Creation-Date: 2016-09-15 13:32-0500\n"
+"PO-Revision-Date: 2016-09-15 13:33-0600\n"
 "Last-Translator: Dennis Wallace <dwallace@shr.global>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -107,76 +107,119 @@ msgstr "Recent Posts"
 msgid "Review Image"
 msgstr "Review Image"
 
-#: functions.php:850
+#: functions.php:851
 msgid "Logging in..."
 msgstr "Logging in..."
 
-#: functions.php:883
+#: functions.php:852
+msgid "Thank you"
+msgstr "Thank you"
+
+#: functions.php:853
+msgid "Thank you for signing up."
+msgstr "Thank you for signing up."
+
+#: functions.php:854
+msgid ""
+"Indagare's e-Newsletter, full of travel buzz, is sent out every other week."
+msgstr ""
+"Indagare's e-Newsletter, full of travel buzz, is sent out every other week."
+
+#: functions.php:855
+msgid "Please enter a valid email address to sign up for our email newsletter."
+msgstr ""
+"Please enter a valid email address to sign up for our email newsletter."
+
+#: functions.php:856
+msgid "You are already signed up."
+msgstr "You are already signed up."
+
+#: functions.php:857
+msgid "Show Images"
+msgstr "Show Images"
+
+#: functions.php:858
+msgid "Show Map"
+msgstr "Show Map"
+
+#: functions.php:859
+msgid "Hide Map"
+msgstr "Hide Map"
+
+#: functions.php:860
+msgid "Close Map"
+msgstr "Close Map"
+
+#: functions.php:861
+msgid "Full Screen"
+msgstr "Full Screen"
+
+#: functions.php:895
 msgid "Login successful, redirecting..."
 msgstr "Login successful, redirecting..."
 
-#: functions.php:891
+#: functions.php:903
 msgid "Incorrect login - please try again"
 msgstr "Incorrect login - please try again"
 
-#: functions.php:6854
+#: functions.php:6890
 msgid "Newsletter"
 msgstr "Newsletter"
 
-#: functions.php:6855
+#: functions.php:6891
 msgid "Receive our free email newsletter full of travel news, tips and advice."
 msgstr ""
 "Receive our free email newsletter full of travel news, tips and advice."
 
-#: functions.php:6858
+#: functions.php:6894
 msgid "Your email address"
 msgstr "Your email address"
 
-#: functions.php:6861
+#: functions.php:6897
 msgid "First name (optional)"
 msgstr "First name (optional)"
 
-#: functions.php:6862
+#: functions.php:6898
 msgid "Last name (optional)"
 msgstr "Last name (optional)"
 
-#: functions.php:6865
+#: functions.php:6901
 msgid "Submit"
 msgstr "Submit"
 
-#: functions.php:6870
+#: functions.php:6906
 msgid "Connect"
 msgstr "Connect"
 
-#: functions.php:6877
+#: functions.php:6913
 msgid "Email Us"
 msgstr "Email Us"
 
-#: functions.php:6880
+#: functions.php:6916
 msgid "facebook"
 msgstr "facebook"
 
-#: functions.php:6880
+#: functions.php:6916
 msgid "twitter"
 msgstr "twitter"
 
-#: functions.php:6880
+#: functions.php:6916
 msgid "instagram"
 msgstr "instagram"
 
-#: functions.php:6884
+#: functions.php:6920
 msgid "Membership"
 msgstr "Membership"
 
-#: functions.php:6891
+#: functions.php:6927
 msgid "About"
 msgstr "About"
 
-#: functions.php:7848
+#: functions.php:7884
 msgid "Booking ID"
 msgstr "Booking ID"
 
-#: functions.php:7994
+#: functions.php:8030
 msgid "All "
 msgstr "All "
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-16 15:47-0500\n"
+"POT-Creation-Date: 2016-09-15 13:32-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,75 +93,116 @@ msgstr ""
 msgid "Review Image"
 msgstr ""
 
-#: functions.php:850
+#: functions.php:851
 msgid "Logging in..."
 msgstr ""
 
-#: functions.php:883
+#: functions.php:852
+msgid "Thank you"
+msgstr ""
+
+#: functions.php:853
+msgid "Thank you for signing up."
+msgstr ""
+
+#: functions.php:854
+msgid ""
+"Indagare's e-Newsletter, full of travel buzz, is sent out every other week."
+msgstr ""
+
+#: functions.php:855
+msgid "Please enter a valid email address to sign up for our email newsletter."
+msgstr ""
+
+#: functions.php:856
+msgid "You are already signed up."
+msgstr ""
+
+#: functions.php:857
+msgid "Show Images"
+msgstr ""
+
+#: functions.php:858
+msgid "Show Map"
+msgstr ""
+
+#: functions.php:859
+msgid "Hide Map"
+msgstr ""
+
+#: functions.php:860
+msgid "Close Map"
+msgstr ""
+
+#: functions.php:861
+msgid "Full Screen"
+msgstr ""
+
+#: functions.php:895
 msgid "Login successful, redirecting..."
 msgstr ""
 
-#: functions.php:891
+#: functions.php:903
 msgid "Incorrect login - please try again"
 msgstr ""
 
-#: functions.php:6854
+#: functions.php:6890
 msgid "Newsletter"
 msgstr ""
 
-#: functions.php:6855
+#: functions.php:6891
 msgid "Receive our free email newsletter full of travel news, tips and advice."
 msgstr ""
 
-#: functions.php:6858
+#: functions.php:6894
 msgid "Your email address"
 msgstr ""
 
-#: functions.php:6861
+#: functions.php:6897
 msgid "First name (optional)"
 msgstr ""
 
-#: functions.php:6862
+#: functions.php:6898
 msgid "Last name (optional)"
 msgstr ""
 
-#: functions.php:6865
+#: functions.php:6901
 msgid "Submit"
 msgstr ""
 
-#: functions.php:6870
+#: functions.php:6906
 msgid "Connect"
 msgstr ""
 
-#: functions.php:6877
+#: functions.php:6913
 msgid "Email Us"
 msgstr ""
 
-#: functions.php:6880
+#: functions.php:6916
 msgid "facebook"
 msgstr ""
 
-#: functions.php:6880
+#: functions.php:6916
 msgid "twitter"
 msgstr ""
 
-#: functions.php:6880
+#: functions.php:6916
 msgid "instagram"
 msgstr ""
 
-#: functions.php:6884
+#: functions.php:6920
 msgid "Membership"
 msgstr ""
 
-#: functions.php:6891
+#: functions.php:6927
 msgid "About"
 msgstr ""
 
-#: functions.php:7848
+#: functions.php:7884
 msgid "Booking ID"
 msgstr ""
 
-#: functions.php:7994
+#: functions.php:8030
 msgid "All "
 msgstr ""
 
