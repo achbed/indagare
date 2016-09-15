@@ -78,15 +78,15 @@ jQuery().ready(function($) {
 		if ( $('#mapcanvas').hasClass('show-this') ) {
 			$('.showmap').val('show');
 			$('#gallery-header').hide();
-			$('.detail .view-more a.map').text('Show Images');
-			$('.archive .view-more a.map').text('Hide Map');
+			$('.detail .view-more a.map').html(ajax_login_object.messages.showimages);
+			$('.archive .view-more a.map').html(ajax_login_object.messages.hidemap);
 			$('#mapcanvas').parent().addClass('show-map');
 			gmap_loadmarkers();
 		} else {
 			$('.showmap').val('');
 			$('#gallery-header').show();
-			$('.detail .view-more a.map').text('Show Map');
-			$('.archive .view-more a.map').text('Show Map');
+			$('.detail .view-more a.map').html(ajax_login_object.messages.showmap);
+			$('.archive .view-more a.map').html(ajax_login_object.messages.showmap);
 			$('#mapcanvas').parent().removeClass('show-map');
 		}
 		return false;
@@ -96,8 +96,8 @@ jQuery().ready(function($) {
 	
 	if ( $('.showmap').val() && itemcount > 0 ) {
 		$('#mapcanvas').addClass('show-this');
-		$('.detail .view-more a.map').text('Show Images');
-		$('.archive .view-more a.map').text('Hide Map');
+		$('.detail .view-more a.map').html(ajax_login_object.messages.showimages);
+		$('.archive .view-more a.map').html(ajax_login_object.messages.hidemap);
 		$('#mapcanvas').parent().addClass('show-map');
 		gmap_loadmarkers();
 	}
@@ -105,8 +105,8 @@ jQuery().ready(function($) {
 	$('#map-modal-toggle').click(function(event) {
 		event.preventDefault();
 		$('body').toggleClass('modalmap');
-		$('body #map-modal-toggle').attr('title','Full Screen').html('Full Screen');
-		$('body.modalmap #map-modal-toggle').attr('title','Close Map').html('Close Map');
+		$('body #map-modal-toggle').attr('title',ajax_login_object.messages.fullscreen).html(ajax_login_object.messages.fullscreen);
+		$('body.modalmap #map-modal-toggle').attr('title',ajax_login_object.messages.closemap).html(ajax_login_object.messages.closemap);
 		google.maps.event.trigger(map, 'resize');
 		goZoom();
 	});
@@ -140,7 +140,7 @@ jQuery().ready(function($) {
 //		console.log ( wrapperID );
 		
 		if (!wrapper.find('.newsletter-signup-input').val().match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/)) {
-			wrapper.find('p').fadeOut().fadeIn().text('Please enter a valid email address to sign up for our email newsletter.');
+			wrapper.find('p').fadeOut().fadeIn().html(ajax_login_object.messages.newsletteremailerr);
 			return false;
 		}
 	
@@ -151,14 +151,14 @@ jQuery().ready(function($) {
 //			console.log(xmlhttp.responseText);
 
 			if (xmlhttp.readyState==4 && xmlhttp.status==200 && xmlhttp.responseText == 'true'){
-				wrapper.find('h2').fadeOut().fadeIn().text('Thank you');
+				wrapper.find('h2').fadeOut().fadeIn().html('Thank you');
 				if ( wrapperID == 'first' || wrapperID == 'emailsignup' ) {
-					wrapper.find('p').fadeOut().fadeIn().text('Thank you for signing up.');
+					wrapper.find('p').fadeOut().fadeIn().html('Thank you for signing up.');
 					setTimeout(function() {
 						$.magnificPopup.close();
 					}, 3500);
 				} else if ( wrapperID == 'form-buzz' ) {
-					wrapper.find('p').fadeOut().fadeIn().text('Indagare\'s e-Newsletter, full of travel buzz, is sent out every other week.');
+					wrapper.find('p').fadeOut().fadeIn().html('Indagare\'s e-Newsletter, full of travel buzz, is sent out every other week.');
 					$('#'+wrapperID).delay(1500).slideUp();
 				}
 			}
@@ -186,20 +186,20 @@ jQuery().ready(function($) {
 		  if(data.id){
 			//successful adds will have an id attribute on the object
 //			alert('thanks for signing up');
-				wrapper.find('h2').fadeOut().fadeIn().text('Thank you');
+				wrapper.find('h2').fadeOut().fadeIn().html(ajax_login_object.messages.thankyou);
 				if ( wrapperID == 'first' || wrapperID == 'emailsignup' ) {
-					wrapper.find('p').fadeOut().fadeIn().text('Thank you for signing up.');
+					wrapper.find('p').fadeOut().fadeIn().html(ajax_login_object.messages.thankyousignup);
 					setTimeout(function() {
 						$.magnificPopup.close();
 					}, 3500);
 				} else if ( wrapperID == 'form-buzz' ) {
-					wrapper.find('p').fadeOut().fadeIn().text('Indagare\'s e-Newsletter, full of travel buzz, is sent out every other week.');
+					wrapper.find('p').fadeOut().fadeIn().html(ajax_login_object.messages.newsletter);
 					$('#'+wrapperID).delay(1500).slideUp();
 				}
 		  } else if (data.title == 'Member Exists') {
 			//MC wil send back an error object with "Member Exists" as the title
 //			alert('thanks, but you are alredy signed up');
-			wrapper.find('p').fadeOut().fadeIn().text('You are alredy signed up.');
+			wrapper.find('p').fadeOut().fadeIn().html(ajax_login_object.messages.alreadysignedup);
 		  } else {
 			//something went wrong with the API call
 //			alert('oh no, there has been a problem');
