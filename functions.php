@@ -7928,7 +7928,7 @@ jQuery().ready(function($) {
 		}
 	    ]
 	});
-	
+
 	$('.memberlevelsnav .next').on('click', function(){
 		$('.memberlevels').slick('slickNext');
 	});
@@ -8039,7 +8039,7 @@ jQuery().ready(function($) {
 
 	$('a.more').click(function() {
 		event.preventDefault();
-		var txt = $(this).parent().next("div.more").is(':visible') ? 'Read More' : 'Read Less';
+		var txt = $(this).parent().next("div.more").is(':visible') ? <?php echo __('Read More','indagare');?> : <?php echo __('Read Less','indagare');?>;
 		$(this).text(txt);
 		$(this).parent().next("div.more").slideToggle(500);
 	});
