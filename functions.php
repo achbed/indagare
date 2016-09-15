@@ -845,6 +845,8 @@ function register_scripts() {
     wp_register_script('velocity', $f.'/js/velocity.min.js', array('jquery'), '', false);
     wp_register_script('show.join.popup', $f.'/js/joinpopup.js', array('jquery'), '', true);
 
+    wp_register_script('slick', $f.'/js/slick.min.js', array('jquery'), '', true);
+
     wp_localize_script( 'template-page_footer', 'ajax_login_object', array(
     	'ajaxurl' => admin_url( 'admin-ajax.php' ),
     	'redirecturl' => home_url(),
@@ -909,6 +911,7 @@ add_action( 'wp_ajax_ajaxlogin', 'ajax_login' );
 add_action( 'wp_ajax_nopriv_ajaxlogin', 'ajax_login' );
 
 function enqueue_scripts() {
+	$f = get_bloginfo('stylesheet_directory');
 
     wp_enqueue_style('fontawesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', array(), null);
 
@@ -948,6 +951,9 @@ function enqueue_scripts() {
 	if (is_page_template ( 'template-page-user-signup.php' ) ) {
 	    wp_enqueue_script('rslidesalt');
 	    wp_enqueue_script('equalheight');
+	    wp_enqueue_style('slickcss', $f.'/css/slick.css');
+	    wp_enqueue_style('slicktheme', $f.'/css/slick-theme.css');
+	    wp_enqueue_script('slick');
     }
 
 	// why join page - responsive slides
@@ -5254,6 +5260,11 @@ function child_singlepost($content) {
 
 		$array = \WPSF\Membership::query_sellable();
 		if ( ! is_wp_error( $array ) ) {
+
+			$content .= '<div class="memberlevelsnav">'."\n";
+			$content .= '<a href="#" class="rslides_nav prev">Previous</a>'."\n";
+			$content .= '<a href="#" class="rslides_nav next">Next</a>'."\n";
+			$content .= '</div>'."\n";
 			$content .= '<section class="all-destinations memberlevels contain">'."\n";
 			$sorted = array();
 			foreach ( $array as $m ) {
@@ -7894,6 +7905,37 @@ jQuery().ready(function($) {
 */
 
 ?>
+
+	$('.memberlevels').slick({
+        arrows: false,
+        appendArrows: $('.memberlevelsnav'),
+		slidesToShow: 3,
+		responsive: [
+		{
+			breakpoint: 730,
+			settings: {
+				slidesToShow: 2,
+				slidesToScroll: 1
+			}
+		},
+		{
+			breakpoint: 480,
+			settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1,
+				infinite: true
+			}
+		}
+	    ]
+	});
+	
+	$('.memberlevelsnav .next').on('click', function(){
+		$('.memberlevels').slick('slickNext');
+	});
+
+	$('.memberlevelsnav .prev').on('click', function(){
+		$('.memberlevels').slick('slickPrev');
+	});
 
     $('.memberlevelitems').matchHeight();
     $('.memberlevelrecap').matchHeight();

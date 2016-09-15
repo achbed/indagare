@@ -17,7 +17,7 @@ echo '<article class="memberlevel">'."\n";
 
   echo '</ul>'."\n";
 	
-	echo '<h3>$'.$post->membership->Amount__c.' <span>annually</span></h3>'."\n";
+	echo '<h3><a href="/signup?mb='.$post->membership->Id.'">$'.$post->membership->Amount__c.' <span>annually</span></a></h3>'."\n";
 	
 	echo '<div class="memberlevelrecap">'."\n";
 		echo wpautop("<strong>Best For:</strong> " . $post->post_content);
