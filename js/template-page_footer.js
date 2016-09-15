@@ -198,8 +198,8 @@ jQuery().ready(function($) {
 				}
 		  } else if (data.title == 'Member Exists') {
 			//MC wil send back an error object with "Member Exists" as the title
-//			alert('thanks, but you are alredy signed up');
-			wrapper.find('p').fadeOut().fadeIn().text('You are alredy signed up.');
+//			alert('thanks, but you are already signed up');
+			wrapper.find('p').fadeOut().fadeIn().text('You are already signed up.');
 		  } else {
 			//something went wrong with the API call
 //			alert('oh no, there has been a problem');
