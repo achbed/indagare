@@ -7942,7 +7942,7 @@ jQuery().ready(function($) {
 
 	$('.memberlevels').slick({
         arrows: false,
-        appendArrows: $('.memberlevelsnav'),
+//        appendArrows: $('.memberlevelsnav'),
 		slidesToShow: 3,
 		infinite: false,
 		responsive: [
