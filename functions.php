@@ -135,14 +135,11 @@ add_action( 'validate_password_reset', 'ind_validate_password_reset', 10, 2 );
 function ind_add_theme_caps(){
 	global $pagenow;
 
-	// gets the author role
+	// gets the administrator role
 	$admin = get_role( 'administrator' );
 
 	if ( 'themes.php' == $pagenow && isset( $_GET['activated'] ) ){ // Test if theme is activated
 		// Theme is activated
-
-		// This only works, because it accesses the class instance.
-		// would allow the author to edit others' posts for current theme only
 		$admin->add_cap( 'admin_toolbar', true );
 		$admin->add_cap( 'admin_backend', true );
 	}
