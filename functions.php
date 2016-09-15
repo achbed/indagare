@@ -848,7 +848,19 @@ function register_scripts() {
     wp_localize_script( 'template-page_footer', 'ajax_login_object', array(
     	'ajaxurl' => admin_url( 'admin-ajax.php' ),
     	'redirecturl' => home_url(),
-    	'loadingmessage' => __('Logging in...')
+    	'messages' => array(
+    		'loading' => __('Logging in...'),
+    		'thankyou' => __('Thank you','indagare'),
+    		'thankyousignup' => __('Thank you for signing up.','indagare'),
+    		'newsletter' => __("Indagare's e-Newsletter, full of travel buzz, is sent out every other week.",'indagare'),
+    		'newsletteremailerr' => __('Please enter a valid email address to sign up for our email newsletter.','indagare'),
+    		'alreadysignedup' => __('You are already signed up.','indagare'),
+    		'showimages' => __('Show Images','indagare'),
+    		'showmap' => __('Show Map','indagare'),
+    		'hidemap' => __('Hide Map','indagare'),
+    		'closemap' => __('Close Map','indagare'),
+    		'fullscreen' => __('Full Screen','indagare'),
+    	)
     ));
 }
 add_action('init', 'register_scripts');

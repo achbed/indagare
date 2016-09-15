@@ -111,11 +111,54 @@ msgstr "Review Image"
 msgid "Logging in..."
 msgstr "Logging in..."
 
-#: functions.php:884
+#: functions.php:852
+msgid "Thank you"
+msgstr "Thank you"
+
+#: functions.php:853
+msgid "Thank you for signing up."
+msgstr "Thank you for signing up."
+
+#: functions.php:854
+msgid ""
+"Indagare's e-Newsletter, full of travel buzz, is sent out every other week."
+msgstr ""
+"Indagare's e-Newsletter, full of travel buzz, is sent out every other week."
+
+#: functions.php:855
+msgid "Please enter a valid email address to sign up for our email newsletter."
+msgstr ""
+"Please enter a valid email address to sign up for our email newsletter."
+
+#: functions.php:856
+msgid "You are already signed up."
+msgstr "You are already signed up."
+
+#: functions.php:857
+msgid "Show Images"
+msgstr "Show Images"
+
+#: functions.php:858
+msgid "Show Map"
+msgstr "Show Map"
+
+#: functions.php:859
+msgid "Hide Map"
+msgstr "Hide Map"
+
+#: functions.php:860
+msgid "Close Map"
+msgstr "Close Map"
+
+#: functions.php:861
+msgid "Full Screen"
+msgstr "Full Screen"
+
+#: functions.php:895
 msgid "Login successful, redirecting..."
 msgstr "Login successful, redirecting..."
 
-#: functions.php:892
+#: functions.php:903
 msgid "Incorrect login - please try again"
 msgstr "Incorrect login - please try again"
 
