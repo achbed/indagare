@@ -981,18 +981,23 @@ function enqueue_scripts() {
 	    wp_enqueue_script('rslidesalt');
     }
 
-	// join page - responsive slides and equal height
+	// join page - responsive slides
 	if (is_page_template ( 'template-page-user-signup.php' ) ) {
+	    wp_enqueue_script('rslidesalt');
+    }
+
+	// why join page - responsive slides
+	if (is_page_template ( 'template-page-join-why-indagare.php' ) ) {
+	    wp_enqueue_script('rslidesalt');
+    }
+
+	// new join page - responsive slides and equal height
+	if ( is_page_template( 'template-page-join-signup.php' ) ) {
 	    wp_enqueue_script('rslidesalt');
 	    wp_enqueue_script('equalheight');
 	    wp_enqueue_style('slickcss', $f.'/css/slick.css');
 	    wp_enqueue_style('slicktheme', $f.'/css/slick-theme.css');
 	    wp_enqueue_script('slick');
-    }
-
-	// why join page - responsive slides
-	if (is_page_template ( 'template-page-why-join.php' ) ) {
-	    wp_enqueue_script('rslidesalt');
     }
 
 	// welcome page - responsive slides
@@ -1100,10 +1105,6 @@ function enqueue_scripts_here() {
 		is_singular( 'hotel' ) || is_singular( 'restaurant' ) || is_singular( 'shop' ) || is_singular( 'activity' ) || is_singular( 'article' ) || is_singular( 'offer' ) || is_singular( 'insidertrip' )
 		// itinerary archive
 		|| (is_archive() && get_query_var('post_type') == 'itinerary')
-/*
-		// why join page
-		|| ( is_page_template ( 'template-page-why-join.php' ) )
-*/
 	) {
 
 		// queue up if there are gallery header images
@@ -1118,14 +1119,6 @@ function enqueue_scripts_here() {
 		if ( gallery_shortcode($post->ID) ){
 			register_new_royalslider_files(1);
 		}
-
-/*
-		// why join page
-		$rows = get_field('gallery');
-		if($rows && is_page_template ( 'template-page-why-join.php' ) ) {
-			register_new_royalslider_files(1);
-		}
-*/
 
 	}
 
@@ -1240,7 +1233,8 @@ global $post;
 		$classes[] = 'about join';
 	}
 
-	if ( is_page_template ( 'template-page-how-we-work.php' ) ) {
+	if ( is_page_template ( 'template-page-how-we-work.php' ) ||
+		 is_page_template ( 'template-page-join-how-we-work.php' ) ) {
 		$classes[] = 'ourprocess';
 	}
 
@@ -2448,7 +2442,6 @@ jQuery().ready(function($) {
 	// sign up step one page
 	} else if (is_page_template ( 'template-page-user-signup.php' ) ) {
 
-/*
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
 		$image = $imageobj[0];
 		$overview = $post->post_content;
@@ -2467,14 +2460,12 @@ jQuery().ready(function($) {
 			}
 			echo '</div>'."\n";
 		}
-*/
 
 	// end sign up step one page
 
 	// how to book page
 	} else if (is_page_template ( 'template-page-how-to-book.php' ) ) {
 
-/*
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
 		$image = $imageobj[0];
 		$overview = $post->post_content;
@@ -2493,8 +2484,6 @@ jQuery().ready(function($) {
 			}
 			echo '</div>'."\n";
 		}
-*/
-
 	// end how to book page
 
 	// contact page
@@ -2523,7 +2512,6 @@ jQuery().ready(function($) {
 	// why join page
 	} else if (is_page_template ( 'template-page-why-join.php' ) ) {
 
-/*
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
 		$image = $imageobj[0];
 		$overview = $post->post_content;
@@ -2545,14 +2533,11 @@ jQuery().ready(function($) {
 			}
 			echo '</div>'."\n";
 		}
-*/
-
 	// end why join page
 
 	// how we work page
 	} else if (is_page_template ( 'template-page-how-we-work.php' ) ) {
 
-/*
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
 		$image = $imageobj[0];
 
@@ -2563,8 +2548,6 @@ jQuery().ready(function($) {
 			}
 			echo '</div>'."\n";
 		}
-*/
-
 	// end how we work page
 
 	// welcome page
@@ -5289,6 +5272,82 @@ function child_singlepost($content) {
 
 		$content = '';
 
+/*
+		$promocode_value = '';
+
+		$my_query = indmem_getquery_membership();
+		if ( $my_query->have_posts() ) {
+			while ( $my_query->have_posts() ) {
+				$my_query->the_post();
+				include 'render-memberlevel.tpl.php';
+			}
+		}
+		wp_reset_postdata();
+*/
+
+		$rows = get_field('membership-level');
+
+		if($rows) {
+			foreach($rows as $row) {
+
+				$name = $row['membership-name'];
+				$rate = $row['membership-rate'];
+				$link = $row['membership-link'];
+
+				if (isset($_GET["referralcode"])) {
+					$link .= '&referralcode='.$_GET["referralcode"];
+				}
+
+				$details = $row['membership-details'];
+
+				$content .= '<div class="filters filtersflip show-this">'."\n";
+					$content .= '<p class="open-close"><span class="title membertitle">'.$name.'</span><span class="rate">From $'.$rate.'</span><a class="button primary" href="/signup/?mb='.$link.'">Join</a></p>'."\n";
+					$content .= '<div class="collapse">'."\n";
+						$content .= '<div class="collapsegroup">'."\n";
+						$content .= $details;
+						$content .= '</div>'."\n";
+					$content .= '</div>'."\n";
+				$content .= '</div>'."\n";
+			}
+		}
+
+		$rows = get_field('join-quote');
+		if ( $rows ) {
+
+			$i = 0;
+
+			shuffle($rows);
+
+			$content .= '<div id="rslideswrapper">'."\n";
+
+			$content .= '<ul class="hero rslides">'."\n";
+
+			foreach($rows as $row) {
+
+					$quotecontent = $row['join-quote-content'];
+					$quotecitation = $row['join-quote-citation'];
+
+					$content .= '<li>'."\n";
+						$content .= '<blockquote><span class="openclose">&#8220;</span>'.$quotecontent.'<span class="openclose">&#8221;</span></blockquote>'."\n";
+						$content .= '<cite> ~ '.$quotecitation.'</cite>'."\n";
+					$content .= '</li>'."\n";
+
+
+			}
+
+			$content .= '</ul><!--.hero.rslides-->'."\n";
+
+			$content .= '</div>'."\n";
+
+		}
+
+	// end sign up step one page
+
+	// new sign up step one page
+	} else if (is_page_template ( 'template-page-join-signup.php' ) ) {
+
+		$content = '';
+
 		$content .= '<h1>'.get_the_title().'</h1>'."\n";
 		$content .= $basecontent;
 
@@ -5296,8 +5355,8 @@ function child_singlepost($content) {
 		if ( ! is_wp_error( $array ) ) {
 
 			$content .= '<div class="memberlevelsnav">'."\n";
-			$content .= '<a href="#" class="rslides_nav prev">Previous</a>'."\n";
-			$content .= '<a href="#" class="rslides_nav next">Next</a>'."\n";
+//			$content .= '<a href="#" class="rslides_nav prev">Previous</a>'."\n";
+//			$content .= '<a href="#" class="rslides_nav next">Next</a>'."\n";
 			$content .= '</div>'."\n";
 			$content .= '<section class="all-destinations memberlevels contain">'."\n";
 			$sorted = array();
@@ -5377,39 +5436,7 @@ function child_singlepost($content) {
 		$content .= '<div class="right"><span>Contact Us:</span> <a href="tel:+12129882611">212-988-2611</a>&nbsp;|&nbsp;<a href="mailto:membership@indagare.com">membership@indagare.com</a></div>';
 		$content .= '</div>'."\n";
 
-/*
-		$rows = get_field('join-quote');
-		if ( $rows ) {
-
-			$i = 0;
-
-			shuffle($rows);
-
-			$content .= '<div id="rslideswrapper">'."\n";
-
-			$content .= '<ul class="hero rslides">'."\n";
-
-			foreach($rows as $row) {
-
-					$quotecontent = $row['join-quote-content'];
-					$quotecitation = $row['join-quote-citation'];
-
-					$content .= '<li>'."\n";
-						$content .= '<blockquote><span class="openclose">&#8220;</span>'.$quotecontent.'<span class="openclose">&#8221;</span></blockquote>'."\n";
-						$content .= '<cite> ~ '.$quotecitation.'</cite>'."\n";
-					$content .= '</li>'."\n";
-
-
-			}
-
-			$content .= '</ul><!--.hero.rslides-->'."\n";
-
-			$content .= '</div>'."\n";
-
-		}
-*/
-
-	// end sign up step one page
+	// end new sign up step one page
 
 	// sign up step two page
 	} else if (is_page_template ( 'template-page-user-signup-step-two.php' ) ) {
@@ -5430,6 +5457,31 @@ function child_singlepost($content) {
 
 	// how to book page
 	} else if (is_page_template ( 'template-page-how-to-book.php' ) ) {
+
+		$content = '';
+
+		$rows = get_field('faq');
+
+		if($rows) {
+			foreach($rows as $row) {
+
+				$q = $row['faq-question'];
+				$a = $row['faq-answer'];
+
+				$content .= '<div class="filters filtersflip filtersfullwidth">'."\n";
+					$content .= '<p class="open-close"><a href="#"><b class="icon open-this" data-icon="&#xf0da;"><span>Open</span></b><b class="icon close-this" data-icon="&#xf0d7;"><span>Close</span></b> <span class="title">'.$q.'</span></a></p>'."\n";
+					$content .= '<div class="collapse">'."\n";
+						$content .= '<div class="collapsegroup">'."\n";
+						$content .= $a;
+						$content .= '</div>'."\n";
+					$content .= '</div>'."\n";
+				$content .= '</div>'."\n";
+			}
+		}
+	// end how to book page
+
+	// new how to book page
+	} else if (is_page_template ( 'template-page-join-faq.php' ) ) {
 
 		$content = '';
 
@@ -5476,10 +5528,21 @@ function child_singlepost($content) {
 		$content .= '<div class="right"><span>Contact Us:</span> <a href="tel:+12129882611">212-988-2611</a>&nbsp;|&nbsp;<a href="mailto:membership@indagare.com">membership@indagare.com</a></div>';
 		$content .= '</div>'."\n";
 
-	// end how to book page
+	// end new how to book page
 
 	// 	how we work page
 	} else if (is_page_template ( 'template-page-how-we-work.php' ) ) {
+
+		$content = '';
+
+		$content .= '<h1>'.get_the_title().'</h1>'."\n";
+
+		$content .= $basecontent;
+
+	// end how we work page
+
+	// 	how we work page
+	} else if (is_page_template ( 'template-page-join-how-we-work.php' ) ) {
 
 		$rows = get_field('steps');
 
@@ -5529,6 +5592,41 @@ function child_singlepost($content) {
 
 	// why join page
 	} else if (is_page_template ( 'template-page-why-join.php' ) ) {
+
+		$content = '';
+
+		$content .= '<div class="header"><h2>Benefits</h2></div>'."\n";
+
+		$rows = get_field('benefit');
+
+		if($rows) {
+
+		$content .= '<section class="all-destinations contain" location="CCCC">'."\n";
+
+			foreach($rows as $row) {
+
+				$benefittitle = $row['benefit-title'];
+				$benefitcontent = $row['benefit-content'];
+				$imageobj = $row['benefit-image'];
+				$image = $imageobj['sizes']['thumb-large'];
+
+				$content .= '<article>'."\n";
+					if ($imageobj) {
+						$content .= '<img src="'.$image.'" alt="Benefit" />'."\n";
+					}
+					$content .= '<h3>'.$benefittitle.'</h3>'."\n";
+					$content .= $benefitcontent;
+				$content .= '</article>'."\n";
+
+			}
+
+		$content .= '</section>'."\n";
+
+		}
+	// end why join page
+
+	// new why join page
+	} else if (is_page_template ( 'template-page-join-why-indagare.php' ) ) {
 
 		$imgsrc = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' );
 
@@ -5658,7 +5756,7 @@ function child_singlepost($content) {
 		$content .= '<div class="right"><span>Contact Us:</span> <a href="tel:+12129882611">212-988-2611</a>&nbsp;|&nbsp;<a href="mailto:membership@indagare.com">membership@indagare.com</a></div>';
 		$content .= '</div>'."\n";
 
-	// end why join page
+	// end new why join page
 
 	// welcome page
 	} else if (is_page_template ( 'template-page-welcome.php' ) ) {
@@ -6830,7 +6928,6 @@ jQuery().ready(function($) {
 	// sidebar for how we work page
 	if ( is_page_template('template-page-how-we-work.php') ) {
 
-/*
 		echo '<div id="primary">'."\n";
 
 			echo '<a class="contact" href="/why-join/"><img src="'.get_bloginfo('stylesheet_directory').'/images/contact-how-we-work.png"></a>'."\n";
@@ -6865,7 +6962,6 @@ jQuery().ready(function($) {
 
 		echo '</div><!-- #primary -->'."\n";
 
-*/
 
 	} // end sidebar for how we work page
 
@@ -7922,8 +8018,8 @@ jQuery().ready(function($) {
 
  	// join page
  	if ( is_page_template('template-page-user-signup.php') ) {
+?>
 
-/*
   $(function() {
     $(".rslides").responsiveSlides({
 		auto: true,             // Boolean: Animate automatically, true or false
@@ -7936,13 +8032,17 @@ jQuery().ready(function($) {
 
 	$('.rslides_tabs').insertAfter('#rslideswrapper');
   });
-*/
 
+<?php
+	} // end join page
+
+ 	// new join page
+ 	if ( is_page_template('template-page-join-signup.php') ) {
 ?>
 
 	$('.memberlevels').slick({
-        arrows: false,
-//        appendArrows: $('.memberlevelsnav'),
+        arrows: true,
+        appendArrows: $('.memberlevelsnav'),
 		slidesToShow: 3,
 		infinite: false,
 		responsive: [
@@ -7962,9 +8062,12 @@ jQuery().ready(function($) {
 				infinite: true
 			}
 		}
-	    ]
+	    ],
+	    prevArrow: '<a href="#" class="rslides_nav prev">Previous</a>',
+	    nextArrow: '<a href="#" class="rslides_nav next">Next</a>',
 	});
 
+/*
 	$('.memberlevelsnav .next').on('click', function(){
 		event.preventDefault();
 		$('.memberlevels').slick('slickNext');
@@ -7974,12 +8077,13 @@ jQuery().ready(function($) {
 		event.preventDefault();
 		$('.memberlevels').slick('slickPrev');
 	});
+*/
 
     $('.memberlevelitems').matchHeight();
     $('.memberlevelrecap').matchHeight();
 
 <?php
-	} // end join page
+	} // end new join page
 
  	// welcome page
  	if ( is_page_template('template-page-welcome.php') ) {
@@ -8130,14 +8234,14 @@ jQuery().ready(function($) {
 			}
 		}
 	// sign up step one page
-	} else if ( is_page_template ( 'template-page-user-signup.php' ) ) {
+	} else if ( is_page_template ( 'template-page-join-signup.php' ) ) {
 		$gallery = get_field('gallery');
 		if ( $gallery ) {
 			$gallerycount = count($gallery);
 		}
 
 	// why join page
-	} else if ( is_page_template ( 'template-page-why-join.php' ) ) {
+	} else if ( is_page_template ( 'template-page-join-why-indagare.php' ) ) {
 		$gallery = get_field('gallery');
 		if ( $gallery ) {
 			$gallerycount = count($gallery);
@@ -8148,7 +8252,7 @@ jQuery().ready(function($) {
 
 	if (
 		$gallerycount > 1 && !is_singular( 'hotel' ) && !is_singular( 'restaurant' ) && !is_singular( 'shop' ) && !is_singular( 'activity' ) && !is_singular('article') && !is_singular('offer') && !is_singular( 'insidertrip' ) && !is_post_type_archive('itinerary')
-		&& !is_page_template ( 'template-page-user-signup.php' ) && !is_page_template ( 'template-page-why-join.php' )
+		&& !is_page_template ( 'template-page-join-signup.php' ) && !is_page_template ( 'template-page-join-why-indagare.php' )
 	) {
 ?>
 <script>
@@ -8213,7 +8317,7 @@ jQuery(document).ready(function($) {
 });
 </script>
 <?php
-	} else if ( $gallerycount > 1 && is_page_template ( 'template-page-user-signup.php' ) ) {
+	} else if ( $gallerycount > 1 && is_page_template ( 'template-page-join-signup.php' ) ) {
 ?>
 <script>
 jQuery(document).ready(function($) {
@@ -8231,7 +8335,7 @@ jQuery(document).ready(function($) {
 });
 </script>
 <?php
-	} else if ( $gallerycount > 1 && is_page_template ( 'template-page-why-join.php' ) ) {
+	} else if ( $gallerycount > 1 && is_page_template ( 'template-page-join-why-indagare.php' ) ) {
 ?>
 <script>
 jQuery(document).ready(function($) {
@@ -8983,14 +9087,19 @@ function ind_show_email_popup() {
 
 	// Don't count these page templates towards the email signup
 	$templates = array(
-		'template-page-user-signup.php',
 		'template-page-why-join.php',
 		'template-page-intro.php',
 		'template-page-about-mission.php',
+		'template-page-user-signup.php',
 		'template-page-user-signup-step-two.php',
+		'template-page-user-site-invite.php',
 		'template-page-account-edit.php',
 		'template-page-how-we-work.php',
 		'template-page-how-to-book.php',
+		'template-page-join-faq.php',
+		'template-page-join-how-we-work.php',
+		'template-page-join-why-indagare.php',
+		'template-page-join-signup.php',
 	);
 
 	$this_template = basename( get_page_template() );

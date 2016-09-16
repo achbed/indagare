@@ -1,11 +1,7 @@
 <?php
 /**
- * Template Name: How to Book
+ * Template Name: Join: FAQ
  *
- * …
- * REVERT THIS
- * @package Thematic
- * @subpackage Templates
  */
  
     // calling the header.php
