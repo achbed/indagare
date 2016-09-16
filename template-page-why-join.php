@@ -3,7 +3,7 @@
  * Template Name: Why Join
  *
  * …
- * 
+ * REVERT THIS
  * @package Thematic
  * @subpackage Templates
  */

@@ -1,11 +1,6 @@
 <?php
 /**
- * Template Name: How to Book
- *
- * …
- * REVERT THIS
- * @package Thematic
- * @subpackage Templates
+ * Template Name: Join: Why Indagare
  */
  
     // calling the header.php
