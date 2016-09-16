@@ -3,7 +3,7 @@
  * Template Name: User Signup
  *
  * …
- * 
+ * REVERT THIS
  * @package Thematic
  * @subpackage Templates
  */

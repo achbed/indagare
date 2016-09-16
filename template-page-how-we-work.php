@@ -3,7 +3,7 @@
  * Template Name: How We Work
  *
  * …
- * 
+ * REVERT THIS
  * @package Thematic
  * @subpackage Templates
  */
