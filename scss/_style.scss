@@ -4595,6 +4595,14 @@ form.processing .button {
     cursor: progress;
 }
 
+.page-template-template-page-user-signup-step-two .input-field {
+    background: white !important;
+}
+
+.page-template-template-page-user-signup-step-two #signup-form-container {
+    background:transparent;
+}
+
 // Tabbed nav bar mobile implementation
 #account-tab-nav-menu, .mobile {
     display:none;

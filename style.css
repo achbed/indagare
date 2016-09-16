@@ -2678,6 +2678,10 @@ span.keep-together { display: inline-block; }
 
 form.processing .button { background: gray; color: #bbb; cursor: progress; }
 
+.page-template-template-page-user-signup-step-two .input-field { background: white !important; }
+
+.page-template-template-page-user-signup-step-two #signup-form-container { background: transparent; }
+
 #account-tab-nav-menu, .mobile { display: none; }
 
 @media (max-width: 767px) { #account-tab-container #account-tab-nav-menu { display: inline-block; cursor: pointer; }
