@@ -8263,11 +8263,11 @@ function article_meta($postID) {
 
 		$articlemeta .= '<p class="user-meta">';
 
-		if ( indagare\users\User::hasFavorite($postID) ) {
-			$articlemeta .= '<a href="'.get_bloginfo('stylesheet_directory').'/favorite.php?action=remove&postid='.$postID.'"><b class="icon" data-icon="&#xf097;"></b> Remove from Wish List</a>';
-		} else {
-			$articlemeta .= '<a href="'.get_bloginfo('stylesheet_directory').'/favorite.php?action=add&postid='.$postID.'"><b class="icon" data-icon="&#xf097;"></b> Add to Wish List</a>';
-		}
+		// if ( indagare\users\User::hasFavorite($postID) ) {
+		// 	$articlemeta .= '<a href="'.get_bloginfo('stylesheet_directory').'/favorite.php?action=remove&postid='.$postID.'"><b class="icon" data-icon="&#xf097;"></b> Remove from Wish List</a>';
+		// } else {
+		// 	$articlemeta .= '<a href="'.get_bloginfo('stylesheet_directory').'/favorite.php?action=add&postid='.$postID.'"><b class="icon" data-icon="&#xf097;"></b> Add to Wish List</a>';
+		// }
 
 //		$articlemeta .= ' <a href="#"><b class="icon" data-icon="&#xf08a;"></b> Like</a> (19 likes)';
 
