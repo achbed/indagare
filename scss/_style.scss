@@ -568,6 +568,10 @@ article.custom h2 {border-top:1px solid #ccc;padding-top:.95em;}
 	opacity: 1;
 }
 
+.join #main .memberlevelsnav .rslides_nav.slick-disabled, .join #main .memberlevelsnav .rslides_nav.slick-disabled:hover, .join #main .memberlevelsnav .rslides_nav.slick-disabled:active { 
+	pointer-events: none; opacity: 0; 
+}
+
 .join #main .memberlevelsnav .rslides_nav:after { position: absolute; content:'';background:transparent url('images/rs-arrows-small-blue.png') no-repeat;width: 24px;height: 48px;bottom: 0; left: 0; margin-top: -24px; margin-left: 0; background-size: cover; }
 
 .join #main .memberlevelsnav .rslides_nav.prev {
