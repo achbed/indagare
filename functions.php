@@ -5296,8 +5296,8 @@ function child_singlepost($content) {
 		if ( ! is_wp_error( $array ) ) {
 
 			$content .= '<div class="memberlevelsnav">'."\n";
-			$content .= '<a href="#" class="rslides_nav prev">Previous</a>'."\n";
-			$content .= '<a href="#" class="rslides_nav next">Next</a>'."\n";
+//			$content .= '<a href="#" class="rslides_nav prev">Previous</a>'."\n";
+//			$content .= '<a href="#" class="rslides_nav next">Next</a>'."\n";
 			$content .= '</div>'."\n";
 			$content .= '<section class="all-destinations memberlevels contain">'."\n";
 			$sorted = array();
@@ -7941,8 +7941,8 @@ jQuery().ready(function($) {
 ?>
 
 	$('.memberlevels').slick({
-        arrows: false,
-//        appendArrows: $('.memberlevelsnav'),
+        arrows: true,
+        appendArrows: $('.memberlevelsnav'),
 		slidesToShow: 3,
 		infinite: false,
 		responsive: [
@@ -7962,9 +7962,12 @@ jQuery().ready(function($) {
 				infinite: true
 			}
 		}
-	    ]
+	    ],
+	    prevArrow: '<a href="#" class="rslides_nav prev">Previous</a>',
+	    nextArrow: '<a href="#" class="rslides_nav next">Next</a>',
 	});
 
+/*
 	$('.memberlevelsnav .next').on('click', function(){
 		event.preventDefault();
 		$('.memberlevels').slick('slickNext');
@@ -7974,6 +7977,7 @@ jQuery().ready(function($) {
 		event.preventDefault();
 		$('.memberlevels').slick('slickPrev');
 	});
+*/
 
     $('.memberlevelitems').matchHeight();
     $('.memberlevelrecap').matchHeight();
