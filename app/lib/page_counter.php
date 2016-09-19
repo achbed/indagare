@@ -1,14 +1,18 @@
 <?php namespace indagare\cookies;
 
 class PageCountAll {
-    static function getPageCountAll() {
-            if (isset($_COOKIE["pagecountall"])){
-	            $c = $_COOKIE["pagecountall"];
-	            $c++;
-            } else {
-            	$c = 0;
-            }
-            
+	static $counted = false;
+
+	static function getPageCountAll() {
+		if ( isset( $_COOKIE["pagecountall"] ) ){
+			$c = $_COOKIE["pagecountall"];
+			if ( ! self::$counted )
+				$c++;
+		} else {
+			$c = 0;
+		}
+
+		if ( ! self::$counted ) {
 			$zg_blog_url_array = parse_url(get_bloginfo('url')); // Get URL of blog
 			$zg_blog_url = $zg_blog_url_array['host']; // Get domain
 			$zg_blog_url = str_replace('www.', '', $zg_blog_url);
@@ -18,13 +22,10 @@ class PageCountAll {
 			$zg_path_url_slash = '/';
 			$zg_path_url .= $zg_path_url_slash;
 			$zg_cookie_expire = 1;
-
-// set cookie for one week
-//			setrawcookie("pagecountall", $c, (time()+($zg_cookie_expire*86400)), $zg_path_url, $zg_blog_url_dot, 0);
 			setrawcookie("pagecountall", $c, (time()+($zg_cookie_expire*604800)), $zg_path_url, $zg_blog_url_dot, 0);
-			
-			return $c;
+			self::$counted = true;
+		}
 
+		return $c;
 	}
 }
-

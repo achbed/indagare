@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-15 13:32-0500\n"
+"POT-Creation-Date: 2016-09-15 13:58-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,117 +93,178 @@ msgstr ""
 msgid "Review Image"
 msgstr ""
 
-#: functions.php:851
+#: functions.php:854
 msgid "Logging in..."
 msgstr ""
 
-#: functions.php:852
+#: functions.php:855
 msgid "Thank you"
 msgstr ""
 
-#: functions.php:853
+#: functions.php:856
 msgid "Thank you for signing up."
 msgstr ""
 
-#: functions.php:854
+#: functions.php:857
 msgid ""
 "Indagare's e-Newsletter, full of travel buzz, is sent out every other week."
 msgstr ""
 
-#: functions.php:855
+#: functions.php:858
 msgid "Please enter a valid email address to sign up for our email newsletter."
 msgstr ""
 
-#: functions.php:856
+#: functions.php:859
 msgid "You are already signed up."
 msgstr ""
 
-#: functions.php:857
+#: functions.php:860
 msgid "Show Images"
 msgstr ""
 
-#: functions.php:858
+#: functions.php:861
 msgid "Show Map"
 msgstr ""
 
-#: functions.php:859
+#: functions.php:862
 msgid "Hide Map"
 msgstr ""
 
-#: functions.php:860
+#: functions.php:863
 msgid "Close Map"
 msgstr ""
 
-#: functions.php:861
+#: functions.php:864
 msgid "Full Screen"
 msgstr ""
 
-#: functions.php:895
+#: functions.php:898
 msgid "Login successful, redirecting..."
 msgstr ""
 
-#: functions.php:903
+#: functions.php:906
 msgid "Incorrect login - please try again"
 msgstr ""
 
-#: functions.php:6890
+#: functions.php:6675 functions.php:6752
+#, php-format
+msgid "%s is Currently Scouting"
+msgstr ""
+
+#: functions.php:6684 functions.php:6686 functions.php:6709 functions.php:6711
+#: functions.php:6761 functions.php:6763 functions.php:6785
+msgid "Related"
+msgstr ""
+
+#: functions.php:6700 functions.php:6777
+#, php-format
+msgid "%s Recently Visited"
+msgstr ""
+
+#: functions.php:6746
+msgid "Melissa"
+msgstr ""
+
+#: functions.php:7177
 msgid "Newsletter"
 msgstr ""
 
-#: functions.php:6891
+#: functions.php:7178
 msgid "Receive our free email newsletter full of travel news, tips and advice."
 msgstr ""
 
-#: functions.php:6894
+#: functions.php:7181
 msgid "Your email address"
 msgstr ""
 
-#: functions.php:6897
+#: functions.php:7184
 msgid "First name (optional)"
 msgstr ""
 
-#: functions.php:6898
+#: functions.php:7185
 msgid "Last name (optional)"
 msgstr ""
 
-#: functions.php:6901
+#: functions.php:7188
 msgid "Submit"
 msgstr ""
 
-#: functions.php:6906
+#: functions.php:7193
 msgid "Connect"
 msgstr ""
 
-#: functions.php:6913
+#: functions.php:7200
 msgid "Email Us"
 msgstr ""
 
-#: functions.php:6916
+#: functions.php:7203
 msgid "facebook"
 msgstr ""
 
-#: functions.php:6916
+#: functions.php:7203
 msgid "twitter"
 msgstr ""
 
-#: functions.php:6916
+#: functions.php:7203
 msgid "instagram"
 msgstr ""
 
-#: functions.php:6920
+#: functions.php:7207
 msgid "Membership"
 msgstr ""
 
-#: functions.php:6927
+#: functions.php:7214
 msgid "About"
 msgstr ""
 
-#: functions.php:7884
+#: functions.php:8042
+msgid "Read More"
+msgstr ""
+
+#: functions.php:8042
+msgid "Read Less"
+msgstr ""
+
+#: functions.php:8265
 msgid "Booking ID"
 msgstr ""
 
-#: functions.php:8030
+#: functions.php:8411
 msgid "All "
+msgstr ""
+
+#: functions.php:8846
+msgid "<strong>ERROR</strong>: Invalid username or email."
+msgstr ""
+
+#: functions.php:8859
+msgid "Someone has requested a password reset for the following account:"
+msgstr ""
+
+#: functions.php:8861
+#, php-format
+msgid "Username: %s"
+msgstr ""
+
+#: functions.php:8862
+msgid "If this was a mistake, just ignore this email and nothing will happen."
+msgstr ""
+
+#: functions.php:8863
+msgid "To reset your password, visit the following address:"
+msgstr ""
+
+#: functions.php:8876
+#, php-format
+msgid "[%s] Password Reset"
+msgstr ""
+
+#: functions.php:8904
+msgid "The email could not be sent."
+msgstr ""
+
+#: functions.php:8904
+msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
 
 #: includes/acf-location-field/location-v3.php:36
@@ -389,4 +450,22 @@ msgstr ""
 msgid ""
 "Sorry, but nothing matched your search criteria. Please try again with some "
 "different keywords."
+msgstr ""
+
+#: template-page-user-site-invite.php:48
+msgid "<strong>ERROR</strong>: Multiple Logins tied to this Contact."
+msgstr ""
+
+#: template-page-user-site-invite.php:57
+msgid "The email address on your account has been updated."
+msgstr ""
+
+#: template-page-user-site-invite.php:61 template-page-user-site-invite.php:81
+msgid ""
+"You should receive an email shortly that will contain a link to update your "
+"login information."
+msgstr ""
+
+#: template-page-user-site-invite.php:75
+msgid "<strong>ERROR</strong>: Multiple Logins tied to this Contact Email."
 msgstr ""

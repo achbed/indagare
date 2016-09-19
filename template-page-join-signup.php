@@ -1,11 +1,6 @@
 <?php
 /**
- * Template Name: How to Book
- *
- * …
- * REVERT THIS
- * @package Thematic
- * @subpackage Templates
+ * Template Name: Join: Membership Options
  */
  
     // calling the header.php

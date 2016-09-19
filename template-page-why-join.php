@@ -3,7 +3,7 @@
  * Template Name: Why Join
  *
  * …
- * 
+ * REVERT THIS
  * @package Thematic
  * @subpackage Templates
  */
@@ -15,7 +15,7 @@
     thematic_abovecontainer();
 ?>
 
-		<div id="container">
+		<div id="container" class="standard">
 		
 			<?php
 				// action hook for placing content above #content
