@@ -7,7 +7,7 @@ require_once 'wpdef.php';
 include_once 'user.php';
 include_once 'db.php';
 include_once 'mail.php';
-include_once 'Mail.php';
+//include_once 'Mail.php';
 include_once 'lphp.php';
 include_once dirname(dirname(__FILE__)).'/resources/emails/thank_you.php';
 include_once dirname(dirname(__FILE__)).'/resources/emails/apply.php';

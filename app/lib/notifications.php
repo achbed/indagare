@@ -1,8 +1,8 @@
 <?php namespace indagare\notify;
 
 require_once 'wpdef.php';
-include_once 'mail.php';
-    include_once 'Mail.php';
+//include_once 'mail.php';
+//    include_once 'Mail.php';
 
 class EmailNotification {
     public static function sendResetPWD($key, $email, $user) {
