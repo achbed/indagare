@@ -8777,40 +8777,42 @@ function export_hotels( $flush = true ) {
 		$file_urls = fopen($_SERVER['DOCUMENT_ROOT'].'/export/datahotelsurls.txt', 'w');
 		$file_ids = fopen($_SERVER['DOCUMENT_ROOT'].'/export/datahotelstaxids.txt', 'w');
 
-		$headers = array('sabre_code','hotel_url','hotel_name');
-		fputcsv($file_urls, $headers);
+		if ( ( $file_urls !== false ) && ( $file_ids !== false ) ) {
+			$headers = array('sabre_code','hotel_url','hotel_name');
+			fputcsv($file_urls, $headers);
 
-		$headers = array('region_id','destination_id','sabre_code','hotel_name');
-		fputcsv($file_ids, $headers);
+			$headers = array('region_id','destination_id','sabre_code','hotel_name');
+			fputcsv($file_ids, $headers);
 
-		foreach( $hotels as $hotel ) {
-			$booking = get_field( 'booking', $hotel, false );
+			foreach( $hotels as $hotel ) {
+				$booking = get_field( 'booking', $hotel, false );
 
-			if ( $booking ) {
-				if ( strlen($booking) < 7 ) {
-					$booking = str_pad($booking, 7, "0", STR_PAD_LEFT);
-				} else if ( strlen($booking) > 7 ) {
-					$booking = substr($booking,-7);
+				if ( $booking ) {
+					if ( strlen($booking) < 7 ) {
+						$booking = str_pad($booking, 7, "0", STR_PAD_LEFT);
+					} else if ( strlen($booking) > 7 ) {
+						$booking = substr($booking,-7);
+					}
+
+					$destinationstree = destinationstree($hotel);
+					$dest = $destinationstree['dest'];
+					$reg = $destinationstree['reg'];
+					$title = get_the_title($hotel);
+					$link = get_permalink($hotel);
+
+					$urls = array( $booking, $link, $title );
+
+					$datahotels[] = array( $hotel, $title, $booking );
+					$datahotelsurls[] = $urls;
+
+					fputcsv( $file_urls, $urls );
+					fputcsv( $file_ids, array( $reg->term_id, $dest->term_id, $booking, $title ) );
 				}
-
-				$destinationstree = destinationstree($hotel);
-				$dest = $destinationstree['dest'];
-				$reg = $destinationstree['reg'];
-				$title = get_the_title($hotel);
-				$link = get_permalink($hotel);
-
-				$urls = array( $booking, $link, $title );
-
-				$datahotels[] = array( $hotel, $title, $booking );
-				$datahotelsurls[] = $urls;
-
-				fputcsv( $file_urls, $urls );
-				fputcsv( $file_ids, array( $reg->term_id, $dest->term_id, $booking, $title ) );
 			}
-		}
 
-		fclose($file_urls);
-		fclose($file_ids);
+			fclose($file_urls);
+			fclose($file_ids);
+		}
 
 		$jsonhotels = json_encode($datahotels);
 		file_put_contents( $_SERVER['DOCUMENT_ROOT'].'/export/datahotels.json', $jsonhotels);
