@@ -1,7 +1,7 @@
 <?php namespace indagare\util;
 
-include_once('Mail.php');
-include_once('Mail/mime.php');
+//include_once('Mail.php');
+//include_once('Mail/mime.php');
 //include_once('Mail/mime.php');
 
 class IndagareMailer { 
