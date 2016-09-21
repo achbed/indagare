@@ -13,6 +13,11 @@
  * @subpackage Templates
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	header("Location: https://www.indagare.com/");
+	exit;
+}
+
 	// calling the header.php
 	get_header();
 

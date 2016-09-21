@@ -20,7 +20,7 @@ function map_canvas($controls = false, $mapclass = '') {
 function map() {
 	global $post;
 	global $wp_query;
-	
+
 	$markers = array();
 
 	// singular review page || archive review page
@@ -28,7 +28,7 @@ function map() {
 		|| ( is_archive() && get_query_var('post_type') == 'hotel' )
 		|| ( is_archive() && get_query_var('post_type') == 'restaurant' )
 		|| ( is_archive() && get_query_var('post_type') == 'shop' )
-		|| ( is_archive() && get_query_var('post_type') == 'activity' ) 
+		|| ( is_archive() && get_query_var('post_type') == 'activity' )
 	) {
 		$page_is_singular = is_singular();
 		// parse filters to use for permalinks
@@ -40,11 +40,11 @@ function map() {
 		$dest = $destinationstree['dest'];
 		$reg = $destinationstree['reg'];
 		$depth = $destinationstree['depth'];
-		
-		$neighborhoodschecked = $_GET['destinations'];
-		$benefitschecked = $_GET['benefit'];
-		$editorschecked = $_GET['editorspick'];
-		$mealschecked = $_GET['mealtype'];
+
+		$neighborhoodschecked = empty($_GET['destinations'])?'':$_GET['destinations'];
+		$benefitschecked = empty($_GET['benefit'])?'':$_GET['benefit'];
+		$editorschecked = empty($_GET['editorspick'])?'':$_GET['editorspick'];
+		$mealschecked = empty($_GET['mealtype'])?'':$_GET['mealtype'];
 
 		if ( get_query_var('post_type') == 'hotel' ) {
 			$filtertype = 'hoteltype';
@@ -55,11 +55,11 @@ function map() {
 		} else if ( get_query_var('post_type') == 'activity' ) {
 			$filtertype = 'activitytype';
 		}
-		$filterschecked = $_GET[$filtertype];
+		$filterschecked = empty($_GET[$filtertype])?'':$_GET[$filtertype];
 
 		// single post - parse name
 		$args = $wp_query->query;
-		$args['posts_per_page'] = -1; 
+		$args['posts_per_page'] = -1;
 		/*
 		if ( $page_is_singular ) {
 			$slug = $post->post_name;
@@ -95,12 +95,12 @@ function map() {
 			}
 		}
 		*/
-	
+
 		$i = 0;
-		
+
 		$postlist = new WP_Query( $args );
 		$rendered_postids = array();
-		
+
 		// create markers for initial post type
 		while( $postlist->have_posts() ) {
 			$postlist->the_post();
@@ -109,7 +109,7 @@ function map() {
 			$mapaddress = get_field('address-display');
 			$mapaddress2 = get_field('address-display-2');
 			$location = get_field('address');
-			
+
 			// is there an address field with coordinates in its array - if not, skip it
 			if ( !empty( $location['coordinates'] ) ) {
 				$maptitle = get_the_title();
@@ -117,7 +117,7 @@ function map() {
 				if( !empty( $urlvars ) ) {
 					$posturl .= '?'.$urlvars;
 				}
-		
+
 				$c_string = '<div class="markercontent" id="markercontent-'.$post->ID.'">';
 				$c_string .= '<h3>';
 				if ( !$page_is_singular ) {
@@ -133,7 +133,7 @@ function map() {
 					$c_string .= ', '.$mapaddress2;
 				}
 				$c_string .= '</div></div>';
-				
+
 				$markeritem = array(
 					'id' => $post->ID,
 					'title' => addcslashes($maptitle,"'"),
@@ -142,35 +142,35 @@ function map() {
 					'type' => 'current',
 					'show' => 1
 				);
-							
+
 				$markers[] = $markeritem;
 			}
 		} // end create markers for initial post type
-		
+
 		wp_reset_postdata();
-		
-		
+
+
 		// marker lists for other post types
 		if ( $page_is_singular ) {
-		
+
 			$destinationstree = destinationstree();
 			$dest = $destinationstree['dest'];
 			$reg = $destinationstree['reg'];
 			$top = $destinationstree['top'];
-			
+
 			$posttypes = array( 'hotel', 'restaurant', 'shop', 'activity' );
-			
-			$args = array ( 
-				'post_type' => $posttypes, 
+
+			$args = array (
+				'post_type' => $posttypes,
 				'posts_per_page' => -1,
 				'destinations' => $dest->slug,
 				'post_status' => 'publish',
 				'post__not_in' => $rendered_postids,
 				'orderby' => array( 'type' => 'DESC', 'name' => 'ASC' )
 			);
-			
+
 			$postlist = new WP_Query( $args );
-			
+
 			// additional marker loop
 			while( $postlist->have_posts() ) {
 				$postlist->the_post();
@@ -178,11 +178,11 @@ function map() {
 				$mapaddress = get_field('address-display');
 				$mapaddress2 = get_field('address-display-2');
 				$location = get_field('address');
-				
+
 				// is there an address field - if not, skip it
 				if ( !empty( $location['coordinates'] ) ) {
 					$maptitle = get_the_title();
-					
+
 					$contentstring = '<div class="markercontent" id="markercontent-'.$post->ID.'">';
 					$contentstring .= '<h3><a class="more" target="_blank" href="'.get_permalink().'">'.$maptitle.'</a></h3>';
 					$contentstring .= '<div class="popup-address">'.$mapaddress;
@@ -190,7 +190,7 @@ function map() {
 						$contentstring .= ', '.$mapaddress2;
 					}
 					$contentstring .= '</div></div>';
-					
+
 					$markeritem = array(
 						'id' => $post->ID,
 						'title' => $maptitle,
@@ -199,13 +199,13 @@ function map() {
 						'type' => $markertype,
 						'show' => 0
 					);
-								
+
 					$markers[] = $markeritem;
 				}
 			}
 			wp_reset_postdata();
 		}
-		
+
 		$json = json_encode($markers);
 		$json = str_replace('<','&lt;', $json);
 		?><div id="mapmarkerjson" style="display:none !important;"><?php print $json; ?></div><?php
