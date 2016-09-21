@@ -93,6 +93,9 @@ if (! isset($_COOKIE["WP-LastViewedPosts"])) {
 		array_pop($zg_cookiearray);
 	}
 	$zg_blog_url_array = parse_url(get_bloginfo('url')); // Get URL of blog
+	if(empty($zg_blog_url_array['path'])) {
+		$zg_blog_url_array['path'] = '/';
+	}
 	$zg_blog_url = $zg_blog_url_array['host']; // Get domain
 	$zg_blog_url = str_replace('www.', '', $zg_blog_url);
 	$zg_blog_url_dot = '.';
