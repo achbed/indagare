@@ -159,7 +159,7 @@ add_action( 'after_setup_theme', 'ind_after_setup_theme');
 
 
 function ind_restrict_admin_with_redirect() {
-	if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
+	if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX || ( stripos( $_SERVER['REQUEST_URI'], '/wp-admin/admin-ajax.php' ) !== false ) ) {
 		// Ajax Request.  Don't deny this.  Ever.
 		return;
 	}
@@ -901,13 +901,8 @@ function register_scripts() {
 }
 add_action('init', 'register_scripts');
 
-global $ajaxlogin_processing;
-$ajaxlogin_processing = false;
-
-function ajax_login(){
-	global $ajaxlogin_processing;
-	$ajaxlogin_processing = true;
-	header('Content-Type: application/json');
+function indagare_ajax_login(){
+	header( 'Content-Type: application/json' );
 
 	// First check the nonce, if it fails the function will break
 	check_ajax_referer( 'ajax-login-nonce', 'security' );
@@ -917,32 +912,35 @@ function ajax_login(){
 	$info['user_login'] = $_POST['username'];
 	$info['user_password'] = $_POST['password'];
 	$info['remember'] = true;
+	$token = '';
 
 	$user_signon = wp_signon( $info, false );
-	if ( ! is_wp_error($user_signon) ) {
-		wp_set_current_user($user_signon->ID);
-		$account = \WPSF\Contact::get_account_wp();
-		$token = '';
-		if( method_exists( $account, 'get_ssotoken' ) ) {
-			$token = $account->get_ssotoken();
+	if ( ! is_wp_error( $user_signon ) ) {
+		wp_set_current_user( $user_signon->ID );
+		$sfid = \WPSF\Contact::get_wp_contactid();
+		if ( ! empty( $sfid ) ) {
+			$contact = new \WPSF\Contact( $sfid );
+			if ( method_exists( $account, 'get_ssotoken' ) ) {
+				$token = $contact->get_ssotoken();
+			}
 		}
 		echo json_encode( array(
 			'login' => true,
 			'ssotoken' => $token,
-			'message' => __( 'Login successful, redirecting...' )
+			'message' => __( 'Login successful, please wait...', 'indagare' )
 		) );
-		die();
+		exit();
 	}
 
 	echo json_encode( array(
 		'login' => false,
 		'ssotoken' => '',
-		'message' => __( 'Incorrect login - please try again' )
+		'message' => __( 'Login or password incorrect. Please try again.', 'indagare' )
 	) );
-	die();
+	exit();
 }
-add_action( 'wp_ajax_ajaxlogin', 'ajax_login' );
-add_action( 'wp_ajax_nopriv_ajaxlogin', 'ajax_login' );
+add_action( 'wp_ajax_indlogin', 'indagare_ajax_login' );
+add_action( 'wp_ajax_nopriv_indlogin', 'indagare_ajax_login' );
 
 function enqueue_scripts() {
 	$f = get_bloginfo('stylesheet_directory');
@@ -1134,13 +1132,6 @@ function enqueue_scripts_here() {
 }
 
 add_action( 'wp_enqueue_scripts', 'enqueue_scripts_here' );
-
-// load https
-function loadhttp() {
-	chkhttps();
-}
-add_action('get_header', 'loadhttp');
-
 
 function childtheme_override_content_init() {
 		global $thematic_content_length;
@@ -8777,40 +8768,42 @@ function export_hotels( $flush = true ) {
 		$file_urls = fopen($_SERVER['DOCUMENT_ROOT'].'/export/datahotelsurls.txt', 'w');
 		$file_ids = fopen($_SERVER['DOCUMENT_ROOT'].'/export/datahotelstaxids.txt', 'w');
 
-		$headers = array('sabre_code','hotel_url','hotel_name');
-		fputcsv($file_urls, $headers);
+		if ( ( $file_urls !== false ) && ( $file_ids !== false ) ) {
+			$headers = array('sabre_code','hotel_url','hotel_name');
+			fputcsv($file_urls, $headers);
 
-		$headers = array('region_id','destination_id','sabre_code','hotel_name');
-		fputcsv($file_ids, $headers);
+			$headers = array('region_id','destination_id','sabre_code','hotel_name');
+			fputcsv($file_ids, $headers);
 
-		foreach( $hotels as $hotel ) {
-			$booking = get_field( 'booking', $hotel, false );
+			foreach( $hotels as $hotel ) {
+				$booking = get_field( 'booking', $hotel, false );
 
-			if ( $booking ) {
-				if ( strlen($booking) < 7 ) {
-					$booking = str_pad($booking, 7, "0", STR_PAD_LEFT);
-				} else if ( strlen($booking) > 7 ) {
-					$booking = substr($booking,-7);
+				if ( $booking ) {
+					if ( strlen($booking) < 7 ) {
+						$booking = str_pad($booking, 7, "0", STR_PAD_LEFT);
+					} else if ( strlen($booking) > 7 ) {
+						$booking = substr($booking,-7);
+					}
+
+					$destinationstree = destinationstree($hotel);
+					$dest = $destinationstree['dest'];
+					$reg = $destinationstree['reg'];
+					$title = get_the_title($hotel);
+					$link = get_permalink($hotel);
+
+					$urls = array( $booking, $link, $title );
+
+					$datahotels[] = array( $hotel, $title, $booking );
+					$datahotelsurls[] = $urls;
+
+					fputcsv( $file_urls, $urls );
+					fputcsv( $file_ids, array( $reg->term_id, $dest->term_id, $booking, $title ) );
 				}
-
-				$destinationstree = destinationstree($hotel);
-				$dest = $destinationstree['dest'];
-				$reg = $destinationstree['reg'];
-				$title = get_the_title($hotel);
-				$link = get_permalink($hotel);
-
-				$urls = array( $booking, $link, $title );
-
-				$datahotels[] = array( $hotel, $title, $booking );
-				$datahotelsurls[] = $urls;
-
-				fputcsv( $file_urls, $urls );
-				fputcsv( $file_ids, array( $reg->term_id, $dest->term_id, $booking, $title ) );
 			}
-		}
 
-		fclose($file_urls);
-		fclose($file_ids);
+			fclose($file_urls);
+			fclose($file_ids);
+		}
 
 		$jsonhotels = json_encode($datahotels);
 		file_put_contents( $_SERVER['DOCUMENT_ROOT'].'/export/datahotels.json', $jsonhotels);
@@ -8889,22 +8882,6 @@ if (defined('WPSEO_VERSION')) {
 	function custom_wpseo_canonical() {}
 	function custom_wpseo_adjacent_rel_links() {}
 
-}
-
-// https redirect
-function chkhttps(){
-    if(!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == ""){
-        $redirect = "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-        header("Location: $redirect");
-    }
-}
-
-function chkhttp() {
-	if ( isset($_SERVER['HTTPS']) ) {
-		unset($_SERVER['HTTPS']);
-        $redirect = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-        header("Location: $redirect");
-	}
 }
 
 function indg_decode_string( $string ) {

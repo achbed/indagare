@@ -276,17 +276,27 @@ function process_login(e,t){
 	if( !r ) {
 		r = window.location.href;
 	}
+	f.find('.message').fadeOut(150);
+	var postdata = {
+		'action': 'indlogin',
+		'username': f.find("#field1").val(),
+		'password': f.find("#field2").val(),
+		'security': f.find("#security").val()
+	};
 	jQuery.ajax({
 		type: "POST",
 		url: ajax_login_object.ajaxurl,
 		async: false,
-		data: {
-			'action': 'ajaxlogin',
-			'username': f.find("#field1").val(),
-			'password': f.find("#field2").val(),
-			'security': f.find("#security").val()
-		}
+		dataType: "json",
+		data: postdata
 	}).done(function(data){
+		f.find('.message').html('');
+		if ( ! data ) { 
+			window.location.reload(); 
+		}
+		if(!!data.message) {
+			f.find('.message').html('<p>'+data.message+'</p>');
+		}
 		if ( data.login ) {
 			if ( data.ssotoken && data.ssotoken != '' ) {
 				if(r.indexOf("?") > -1) {
@@ -298,18 +308,21 @@ function process_login(e,t){
 			}
 			if(r.indexOf('/') === 0 || r.indexOf('.indagare.com/') > -1 ) {
 				window.location.href = r;
-			} else {
-				window.open(r);
-				window.location.reload(); 
+				return;
 			}
-		} else {
-			if ( ! data ) { 
-				window.location.reload(); 
-			} else {
-				f.find('.message').html('<p>'+data.message+'</p>').fadeIn(1500).fadeOut(1500);
-				f.removeClass('processing');
-			}
+			
+			window.open(r);
+			window.location.reload(); 
+			return;
 		}
+		if ( f.find('.message').html() == '' ) {
+			f.find('.message').html('<p>Server error. Please try again momentarily.</p>');
+		}
+	}).fail(function(){
+		f.find('.message').html('<p>Communication Error.</p>');
+	}).always(function(){
+		f.removeClass('processing');
+		f.find('.message').fadeIn(1500);
 	});
 	return false;
 }
