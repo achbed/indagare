@@ -597,32 +597,37 @@ function destterms($term_id) {
 
 // destinations tree
 function destinationstree($post_id=false) {
-global $post;
+	global $post;
+	$neigh = '';
+	$dest = '';
+	$reg = '';
+	$top = '';
+	$destdepth = 0;
 
-		if ( !$post_id ) {
-			$terms = get_the_terms( $post->ID , 'destinations' );
-		} else {
-			$terms = get_the_terms( $post_id , 'destinations' );
+	if ( !$post_id ) {
+		$terms = get_the_terms( $post->ID , 'destinations' );
+	} else {
+		$terms = get_the_terms( $post_id , 'destinations' );
+	}
+	if($terms) {
+		foreach( $terms as $term ) {
+			$destinationid = $term->term_id;
+			$destinationstree = get_ancestors( $destinationid, 'destinations' );
+			$destinationstree = array_reverse($destinationstree);
+			$destdepth =  count($destinationstree);
 		}
-		if($terms) {
-			foreach( $terms as $term ) {
-				$destinationid = $term->term_id;
-				$destinationstree = get_ancestors( $destinationid, 'destinations' );
-				$destinationstree = array_reverse($destinationstree);
-				$destdepth =  count($destinationstree);
-			}
-		}
+	}
 
-		if ( $destdepth == 3 ) {
-			$neigh = destterms($destinationid);
-			$dest = destterms($destinationstree[2]);
-			$reg = destterms($destinationstree[1]);
-			$top = destterms($destinationstree[0]);
-		} else if ( $destdepth == 2 ) {
-			$dest = destterms($destinationid);
-			$reg = destterms($destinationstree[1]);
-			$top = destterms($destinationstree[0]);
-		}
+	if ( $destdepth == 3 ) {
+		$neigh = destterms($destinationid);
+		$dest = destterms($destinationstree[2]);
+		$reg = destterms($destinationstree[1]);
+		$top = destterms($destinationstree[0]);
+	} else if ( $destdepth == 2 ) {
+		$dest = destterms($destinationid);
+		$reg = destterms($destinationstree[1]);
+		$top = destterms($destinationstree[0]);
+	}
 
 	return array(
 		'neigh'=>$neigh,
@@ -638,6 +643,14 @@ function destinationstaxtree($term_id=false) {
  	global $wp_query;
 
 	if ( !$term_id ) {
+		if(empty($wp_query->query_vars['destinations'])) {
+			return array(
+				'dest'=>'',
+				'reg'=>'',
+				'top'=>'',
+				'depth'=>''
+			);
+		}
 		if (strpos($wp_query->query_vars['destinations'], ',') !== false) {
 			$destinationcurrent = explode(',', $wp_query->query_vars['destinations']);
 			$destinationcurrent = get_term_by( 'slug', $destinationcurrent[0], 'destinations' );
@@ -659,6 +672,9 @@ function destinationstaxtree($term_id=false) {
 	$destinationstree = get_ancestors( $destinationid, 'destinations' );
 	$destinationstree = array_reverse($destinationstree);
 	$destdepth = count($destinationstree);
+	$dest = '';
+	$reg = '';
+	$top = '';
 
 	if ( $destdepth == 3 ) {
 		$dest = destterms($destinationstree[2]);
@@ -742,27 +758,59 @@ if ( is_admin() ) {
     include_once 'includes/map-locations.php';
 }
 
+/**
+ * Utility function to append a unique string to the end of theme file
+ * URLs to help prevent caching issues when individual files change
+ * @param string $f File path relative to the theme folder
+ * @return string The final URL
+ */
+function _wsjs( $f ) {
+	$theme_dir = get_bloginfo('stylesheet_directory');
+	$f = ltrim( $f, '/' );
+	$u = $theme_dir . '/' . $f;
+	$p = dirname( __FILE__ ) . '/' . $f;
+	if ( file_exists( $p ) ) {
+		return $u . '?' . filemtime( $p );
+	}
+	return '';
+}
+
+add_filter( 'style_loader_src', 'remove_src_version' );
+/**
+ * Handles style_loader_src filter and removes any version tag
+ * @param unknown $src
+ * @return string
+ */
+function remove_src_version ( $src ) {
+	global $wp_version;
+	$version_str = '?ver='.$wp_version;
+	$version_str_offset = strlen( $src ) - strlen( $version_str );
+	if( substr( $src, $version_str_offset ) == $version_str )
+	$src = substr( $src, 0, $version_str_offset ) . '?' . filemtime( __FILE__ );
+	return $src;
+}
+
 function admin_styles() {
-    wp_enqueue_style('admin-style', get_bloginfo('stylesheet_directory') . '/css/admin.css');
-    wp_enqueue_style('qtip-style', get_bloginfo('stylesheet_directory') . '/css/jquery.qtip.css');
+    wp_enqueue_style('admin-style', _wsjs('/css/admin.css') );
+    wp_enqueue_style('qtip-style', _wsjs('/css/jquery.qtip.css'));
     wp_enqueue_style('fontawesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', array(), null);
 
-    wp_register_script('admin-js', get_bloginfo('stylesheet_directory').'/js/admin.js', array('jquery'), '', true);
-    wp_register_script('tinysort', get_bloginfo('stylesheet_directory').'/js/jquery.tinysort.min.js', array('jquery'), '', true);
-    wp_register_script('qtip', get_bloginfo('stylesheet_directory').'/js/jquery.qtip.min.js', array('jquery'), '', true);
-    wp_register_script('hammer', get_bloginfo('stylesheet_directory').'/js/hammer.min.js', array(), '', false);
+    wp_register_script('admin-js', _wsjs('/js/admin.js'), array('jquery'), '', true);
+    wp_register_script('tinysort', _wsjs('/js/jquery.tinysort.min.js'), array('jquery'), '', true);
+    wp_register_script('qtip', _wsjs('/js/jquery.qtip.min.js'), array('jquery'), '', true);
+    wp_register_script('hammer', _wsjs('/js/hammer.min.js'), array(), '', false);
 
     wp_enqueue_script('tinysort');
     wp_enqueue_script('qtip');
     wp_enqueue_script('hammer');
     wp_enqueue_script('admin-js');
 
-    wp_register_script('velocity', get_bloginfo('stylesheet_directory').'/js/velocity.min.js', array(), '', false);
+    wp_register_script('velocity', _wsjs('/js/velocity.min.js'), array(), '', false);
     wp_enqueue_script('velocity');
 
 	// hide sidebar "add new" if not administrator
 	if ( !current_user_can( 'administrator' ) ) {
-	    wp_enqueue_style('admin-style-hide', get_bloginfo('stylesheet_directory') . '/css/admin-hide.css');
+	    wp_enqueue_style('admin-style-hide', _wsjs('/css/admin-hide.css'));
 	}
 }
 add_action('admin_enqueue_scripts', 'admin_styles');
@@ -853,33 +901,33 @@ add_action('thematic_child_init','childtheme_no_superfish');
 function register_scripts() {
 	$f = get_bloginfo('stylesheet_directory');
 
-    wp_register_script('hammer', $f.'/js/hammer.min.js', array(), '', false);
-	wp_register_script('tabs', $f.'/js/yetii-min.js', array('jquery','hammer'), '', false);
-    wp_register_script('autocomplete', $f.'/js/jquery.autocomplete.mod.js', array('jquery'), '', true);
-    wp_register_script('magnificpopup', $f.'/js/jquery.magnific-popup.min.js', array('jquery'), '', true);
-    wp_register_script('rslidesalt', $f.'/js/responsiveslides.min.js', array('jquery'), '', true);
-    wp_register_script('imagesloaded', $f.'/js/imagesloaded.pkgd.min.js', array('jquery'), '', true);
-    wp_register_script('masonry', $f.'/js/masonry.pkgd.min.js', array('jquery'), '', true);
-    wp_register_script('datepicker', $f.'/js/jquery-ui-1.10.3.custom.min.js', array('jquery'), '', false);
-//    wp_register_script('qtip', $f.'/js/jquery.qtip.min.js', array('jquery'), '', true);
-//    wp_register_script('responsivemap', $f.'/js/jquery.rwdImageMaps.min.js', array('jquery'), '', true);
-    wp_register_script('customselect', $f.'/js/jquery.customSelect.min.js', array('jquery'), '', true);
-    wp_register_script('lazyload', $f.'/js/jquery.lazyload.min.js', array('jquery'), '', true);
-    wp_register_script('equalheight', $f.'/js/jquery.matchHeight.js', array('jquery'), '', true);
+    wp_register_script('hammer', _wsjs('/js/hammer.min.js'), array(), '', false);
+	wp_register_script('tabs', _wsjs('/js/yetii-min.js'), array('jquery','hammer'), '', false);
+    wp_register_script('autocomplete', _wsjs('/js/jquery.autocomplete.mod.js'), array('jquery'), '', false);
+    wp_register_script('magnificpopup', _wsjs('/js/jquery.magnific-popup.min.js'), array('jquery'), '', true);
+    wp_register_script('rslidesalt', _wsjs('/js/responsiveslides.min.js'), array('jquery'), '', true);
+    wp_register_script('imagesloaded', _wsjs('/js/imagesloaded.pkgd.min.js'), array('jquery'), '', true);
+    wp_register_script('masonry', _wsjs('/js/masonry.pkgd.min.js'), array('jquery'), '', true);
+    wp_register_script('datepicker',_wsjs('/js/jquery-ui-1.10.3.custom.min.js'), array('jquery'), '', false);
+//    wp_register_script('qtip', _wsjs('js/jquery.qtip.min.js'), array('jquery'), '', true);
+//    wp_register_script('responsivemap', _wsjs('js/jquery.rwdImageMaps.min.js'), array('jquery'), '', true);
+    wp_register_script('customselect', _wsjs('/js/jquery.customSelect.min.js'), array('jquery'), '', true);
+    wp_register_script('lazyload', _wsjs('/js/jquery.lazyload.min.js'), array('jquery'), '', true);
+    wp_register_script('equalheight', _wsjs('/js/jquery.matchHeight.js'), array('jquery'), '', true);
 
     wp_register_script('indagare.maps-locations.google', '//maps.googleapis.com/maps/api/js?v=3?key=AIzaSyAkv3l4uMtV3heGoszUd_LR-Xy7Qxeecmw&sensor=false', array('jquery'), '', false);
 
-    wp_register_script('indagare.maps', $f.'/js/maps.js', array('jquery', 'indagare.maps-locations.google'), '', true);
-    wp_register_script('indagare.maps.init', $f.'/js/maps.init.js', array('jquery'), '', false);
-    wp_register_script('indagare.maps.destinations', $f.'/js/maps.destinations.js', array('jquery', 'indagare.maps-locations.google'), '', true);
+    wp_register_script('indagare.maps',_wsjs('/js/maps.js'), array('jquery', 'indagare.maps-locations.google'), '', true);
+    wp_register_script('indagare.maps.init', _wsjs('/js/maps.init.js'), array('jquery'), '', false);
+    wp_register_script('indagare.maps.destinations', _wsjs('/js/maps.destinations.js'), array('jquery', 'indagare.maps-locations.google'), '', true);
 
-    wp_register_script('template-page_footer', $f.'/js/template-page_footer.js', array('jquery'), '', true);
-    wp_register_script('template-page-map_footer', $f.'/js/template-page-map_footer.js', array('jquery'), '', true);
+    wp_register_script('template-page_footer', _wsjs('/js/template-page_footer.js'), array('jquery'), '', true);
+    wp_register_script('template-page-map_footer', _wsjs('/js/template-page-map_footer.js'), array('jquery'), '', true);
 
-    wp_register_script('velocity', $f.'/js/velocity.min.js', array('jquery'), '', false);
-    wp_register_script('show.join.popup', $f.'/js/joinpopup.js', array('jquery'), '', true);
+    wp_register_script('velocity', _wsjs('/js/velocity.min.js'), array('jquery'), '', false);
+    wp_register_script('show.join.popup', _wsjs('/js/joinpopup.js'), array('jquery'), '', true);
 
-    wp_register_script('slick', $f.'/js/slick.min.js', array('jquery'), '', true);
+    wp_register_script('slick', _wsjs('/js/slick.min.js'), array('jquery'), '', true);
 
     wp_localize_script( 'template-page_footer', 'ajax_login_object', array(
     	'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -949,6 +997,7 @@ function enqueue_scripts() {
 
     wp_enqueue_script('hammer');
     wp_enqueue_script('velocity');
+	wp_enqueue_script('autocomplete');
 	wp_enqueue_script('template-page_footer');
 	wp_enqueue_style('datepicker-css', get_bloginfo('stylesheet_directory') . '/css/jquery-ui-1.10.3.custom.css');
 	wp_enqueue_script('datepicker');
@@ -1525,7 +1574,11 @@ echo $tophotels;
 
 // above container
 function child_abovecontainer() {
-global $post;
+	global $post;
+	$reg = false;
+	$dest = false;
+	$top = false;
+	$depth = 0;
 
 	// start child_abovecontainer conditional
 	if ( is_singular() ) {
@@ -1544,8 +1597,14 @@ global $post;
 
 	}
 
-	$destinationname = $dest->name;
-	$destinationslug = $dest->slug;
+	$destinationname = '';
+	$destinationslug = '';
+
+	if(!empty($dest)) {
+		$destinationname = $dest->name;
+		$destinationslug = $dest->slug;
+	}
+
 
 	$hotel = new WP_Query(array('post_type' => 'hotel', 'destinations' => $destinationslug));
 	$hotelcount  = $hotel->found_posts;
@@ -1607,7 +1666,7 @@ global $post;
 			echo '<h2>Search</h2>'."\n";
 			$searchvalue = urldecode( $_GET['s'] );
 			$searchvalue = sanitize_text_field( $searchvalue );
-			if ( $_GET['filter'] ) {
+			if ( ! empty( $_GET['filter'] ) ) {
 				echo '<span class="results"><a href="/?s='.urlencode($searchvalue).'">Results for "'.$searchvalue.'"</a></span>'."\n";
 			} else {
 				echo '<span class="results">Results for "'.$searchvalue.'"</span>'."\n";
@@ -1883,7 +1942,7 @@ global $post;
 				} else {
 					echo '<li><a href="/destinations/articles/features/">Features</a></li>'."\n";
 				}
-				if ( $_GET['column'] ) {
+				if ( ! empty( $_GET['column'] ) ) {
 					echo '<li class="parent current"><a href="#">Columns</a>'."\n";
 				} else {
 					echo '<li class="parent"><a href="#">Columns</a>'."\n";
@@ -2328,7 +2387,7 @@ jQuery().ready(function($) {
 			echo '</div>'."\n";
 
 			$imageobj = get_field('header-image', 'destinations' . '_' . $dest->term_id);
-			$image = $imageobj[sizes]['hero-full'];
+			$image = $imageobj['sizes']['hero-full'];
 			$caption = get_field('header-image-caption', 'destinations' . '_' . $dest->term_id);
 			$overview = get_field('destination-overview', 'destinations' . '_' . $dest->term_id);
 			$weather = get_field('weather-code', 'destinations' . '_' . $dest->term_id);
@@ -2732,10 +2791,19 @@ function childtheme_override_archive_loop() {
 //	print_r ( 'destination ' .$wp_query->query_vars['destinations'] );
 //	print_r ( 'destinationstree ' . $destinationstree );
 
-	$regionid = $reg->term_id;
+	$regionid = '';
+	if(!empty($reg)) {
+		$regionid = $reg->term_id;
+	}
 
-	$destinationid = $dest->term_id;
-	$destinationname = $dest->name;
+
+	$destinationid = '';
+	$destinationname = '';
+
+	if(!empty($dest)) {
+		$destinationid = $dest->term_id;
+		$destinationname = $dest->name;
+	}
 
 	$itinerary = new WP_Query(array('post_type' => 'itinerary', 'destinations' => $destinationname));
 	$itinerarycount  = $itinerary->found_posts;
@@ -2941,7 +3009,7 @@ function childtheme_override_archive_loop() {
 				echo '<a id="applyfilters" class="button primary" href="#">Apply</a>'."\n";
 				echo '</div>'."\n";
 
-				if ( $_GET['map'] ) {
+				if ( ! empty( $_GET['map'] ) ) {
 					echo '<input class="showmap" type="hidden" value="show" />'."\n";
 				} else {
 					echo '<input class="showmap" type="hidden" />'."\n";
@@ -3716,12 +3784,13 @@ function childtheme_override_author_loop() {
 function childtheme_override_search_loop() {
 	global $post;
 	global $wp_query;
+	$post_type = false;
 
 	$rendered_terms = array();
 	$search = urldecode( $_GET['s'] );
 	$search = sanitize_text_field( $search );
 
-	if ( $_GET['filter'] ) {
+	if ( ! empty( $_GET['filter'] ) ) {
 		$post_type = urldecode( $_GET['filter'] );
 		$post_type = sanitize_key( $post_type );
 	}
@@ -3831,7 +3900,7 @@ function childtheme_override_search_loop() {
 		$destskip = 0;
 
 		foreach ($searchresults[$group] as $post) {
-			if ( $group == 'destinations' && !$_GET['filter'] ) {
+			if ( $group == 'destinations' && empty( $_GET['filter'] ) ) {
 
 				$destination = get_term_by( 'name', $post->post_title, 'destinations' );
 				$destinationid = $destination->term_id;
@@ -4281,7 +4350,7 @@ function child_singlepost($content) {
 					$imgsrc = $imageobj[0];
 					$caption = get_post($imageid)->post_excerpt;
 
-					$image = $imageobj[sizes]['hero-review'];
+					//$image = $imageobj['sizes']['hero-review'];
 
 					$content .= '<li>'."\n";
 						$content .= '<img class="rsImg" alt="'.$caption.'" src="'.$imgsrc.'">'."\n";
@@ -4593,7 +4662,7 @@ function child_singlepost($content) {
 						$imgsrc = $imageobj[0];
 						$caption = get_post($imageid)->post_excerpt;
 
-						$image = $imageobj[sizes]['hero-review'];
+						//$image = $imageobj[sizes]['hero-review'];
 
 						$content .= '<li>'."\n";
 							$content .= '<img class="rsImg" alt="'.$caption.'" src="'.$imgsrc.'">'."\n";
@@ -4700,7 +4769,7 @@ function child_singlepost($content) {
 			$imgsize = 'hero-review';
 		}
 
-		$imgsrc = _get_firstimage( 'gallery-header', $imgsize, SHR_FIRSTIMAGE_ALL, false, $value );
+		$imgsrc = _get_firstimage( 'gallery-header', $imgsize, SHR_FIRSTIMAGE_ALL, false );
 		$imgsrc = $imgsrc['src'];
 		if ( $imgsize != 'hero-review' ) {
 			$imgsrc = str_replace( '620x413', '300x200', $imgsrc );
@@ -6377,7 +6446,11 @@ function childtheme_override_postfooter() {}
 
 // below container
 function child_belowcontainer() {
-global $post;
+	global $post;
+	$depth = 0;
+	$dest = false;
+	$top = false;
+	$reg = false;
 
 	if ( is_archive() ) {
 		$destinationstree = destinationstaxtree();
@@ -7114,11 +7187,12 @@ jQuery().ready(function($) {
 	) {
 
 		// recent or related articles
+		$args = array('numberposts' => 1, 'post_type' => 'notvalid-dontgetany', 'orderby' => 'date', 'order' => 'DESC');
 		if ( is_page_template ( 'template-page-welcome.php' ) ) {
 			$args = array('numberposts' => -1, 'post_type' => 'article', 'orderby' => 'date', 'order' => 'DESC');
 		} else if ( $reg && $depth == 1 ) {
 			$args = array('numberposts' => -1, 'post_type' => 'article', 'destinations' => $reg->slug, 'meta_key' => 'related-article', 'meta_value' => 'yes', 'orderby' => 'rand');
-		} else {
+		} else if ($dest) {
 			$args = array('numberposts' => -1, 'post_type' => 'article', 'destinations' => $dest->slug, 'meta_key' => 'related-article', 'meta_value' => 'yes', 'orderby' => 'rand');
 		}
 
@@ -7875,7 +7949,7 @@ echo do_shortcode('[contact-form-7 id="32337" title="Contact Insider Trips"]');
 	<?php } else { ?>
 		var itemcount = 0;
 	<?php } ?>
-	var login_redirect = '<?php $_SERVER["HTTP_REFERER"] ?>';
+	var login_redirect = '<?php echo (empty($_SERVER["HTTP_REFERER"])?"/":$_SERVER["HTTP_REFERER"]); ?>';
 	var swifttripurl = '<?php global $swifttripurl; echo $swifttripurl; ?>';
 
 	jQuery().ready(function($) {
@@ -7914,8 +7988,8 @@ echo do_shortcode('[contact-form-7 id="32337" title="Contact Insider Trips"]');
 			|| is_home() || is_front_page()
 			|| is_page_template ( 'template-page-book.php' ) ) : ?>
 
-		var ssotokenvalue_default = 'x4T306PLm1KWuXktHqtGzw%3D%3D';
-		var ssotokenvalue = ssotokenvalue_default;
+		var ssotokenvalue_default = 'x4T306PLm1KWuXktHqtGzw%3D%3D',
+		    ssotokenvalue = ssotokenvalue_default;
 		<?php if ( ind_logged_in() ) {
 			$account = \WPSF\Contact::get_account_wp();
 			if ( method_exists( $account, 'get_ssotoken' ) ) {
@@ -8434,7 +8508,7 @@ function sort_by_name(&$query) {
 
 	if ( !$query->is_main_query() ) return;
 
-	if ($query->query['post_type'] == 'memberlevel' ) return;
+	if (!empty($query->query['post_type']) && ($query->query['post_type'] == 'memberlevel' ) ) return;
 
 	if ( $query->is_search ) {
 		$query->set( 'posts_per_page', -1);
@@ -8446,7 +8520,7 @@ function sort_by_name(&$query) {
 	}
 
 	if ( is_archive() ) {
-		if (	in_array($query->query['post_type'], array(
+		if ( !empty($query->query['post_type']) && in_array($query->query['post_type'], array(
 						'hotel',
 						'restaurant',
 						'shop',
@@ -8457,7 +8531,7 @@ function sort_by_name(&$query) {
 			) {
 			$query->set('orderby', array( 'post_title' => 'ASC' ) );
 
-	  } else if ( $query->query['post_type'] == 'article' && getLastPathSegment($_SERVER['REQUEST_URI']) !== 'features' ) {
+	  } else if ( !empty($query->query['post_type']) && $query->query['post_type'] == 'article' && getLastPathSegment($_SERVER['REQUEST_URI']) !== 'features' ) {
 		  // order articles by reverse date except features page
 	    $query->set( 'orderby', array( 'date' => 'DESC' ) );
 	  }
@@ -8502,11 +8576,12 @@ function my_order_cats($args,$taxonomies){
     if(is_admin() && function_exists('get_current_screen')){
         $taxonomy = $taxonomies[0];
         $screen = get_current_screen();
-
-        //Check screen ID and taxonomy and changes $args where appropriate.
-        if( $screen->id=='edit-destinations' && $taxonomy=='destinations'){
-            $args['orderby']='name'; //preserves order of subcategories.
-            $args['order']='asc'; //or desc
+        if(!empty($screen)){
+        	//Check screen ID and taxonomy and changes $args where appropriate.
+	        if( $screen->id=='edit-destinations' && $taxonomy=='destinations'){
+	            $args['orderby']='name'; //preserves order of subcategories.
+	            $args['order']='asc'; //or desc
+	        }
         }
     }
     return $args;
