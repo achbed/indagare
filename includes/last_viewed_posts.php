@@ -59,13 +59,26 @@ global $post;
 	}
 }
 
-function zg_lw_setcookie() { // Do the stuff and set cookie
-	global $wp_query;
-	$zg_post_ID = $wp_query->post->ID; // Read post-ID
-	if (! isset($_COOKIE["WP-LastViewedPosts"])) {
+function zg_pregrepl_callback( $m ) {
+	return 's:' . strlen( $m[2] ) . ':"' . $m[2] . '";';
+}
+
+function zg_lw_setcookie($post_id=false) { // Do the stuff and set cookie
+global $wp_query;
+
+	if ( $post_id ) {
+		$zg_post_ID = $post_id; // Read post-ID
+	} else {
+		$zg_post_ID = $wp_query->post->ID; // Read post-ID
+	}
+	
+if (! isset($_COOKIE["WP-LastViewedPosts"])) {
 		$zg_cookiearray = array($zg_post_ID); // If there's no cookie set, set up a new array
 	} else {
-		$zg_cookiearray = unserialize(preg_replace('!s:(\d+):"(.*?)";!e', "'s:'.strlen('$2').':\"$2\";'", stripslashes($_COOKIE["WP-LastViewedPosts"]))); // Read serialized array from cooke and unserialize it
+		$zg_cookiedata = stripslashes(  $_COOKIE["WP-LastViewedPosts"] );
+		$zg_cookiedata = preg_replace_callback( '!s:(\d+):"(.*?)";!', "zg_pregrepl_callback", $zg_cookiedata );
+//		$zg_cookiedata = preg_replace( '!s:(\d+):"(.*?)";!e', "'s:'.strlen('$2').':\"$2\";'", $zg_cookiedata );
+		$zg_cookiearray = unserialize( $zg_cookiedata ); // Read serialized array from cooke and unserialize it
 		if (! is_array($zg_cookiearray)) {
 			$zg_cookiearray = array($zg_post_ID); // If array is fucked up...just build a new one.
 		}
@@ -87,46 +100,67 @@ function zg_lw_setcookie() { // Do the stuff and set cookie
 	$zg_blog_url = str_replace('www.', '', $zg_blog_url);
 	$zg_blog_url_dot = '.';
 	$zg_blog_url_dot .= $zg_blog_url;
-	$zg_path_url = $zg_blog_url_array['path']; // Get path
+	$zg_path_url = (empty($zg_blog_url_array['path']) ? '' : $zg_blog_url_array['path']); // Get path
 	$zg_path_url_slash = '/';
 	$zg_path_url .= $zg_path_url_slash;
 	global $zg_cookie_expire;
 	setcookie("WP-LastViewedPosts", serialize($zg_cookiearray), (time()+($zg_cookie_expire*86400)), $zg_path_url, $zg_blog_url_dot, 0);
 }
 
+function zg_recently_viewed_array() { // Output post array for one element
+	if (isset($_COOKIE["WP-LastViewedPosts"])) {
+		$zg_cookiedata = stripslashes(  $_COOKIE["WP-LastViewedPosts"] );
+		$zg_cookiedata = preg_replace_callback( '!s:(\d+):"(.*?)";!', "zg_pregrepl_callback", $zg_cookiedata );
+//		$zg_cookiedata = preg_replace( '!s:(\d+):"(.*?)";!e', "'s:'.strlen('$2').':\"$2\";'", $zg_cookiedata );
+		$zg_post_IDs = unserialize( $zg_cookiedata ); // Read serialized array from cooke and unserialize it
+		if(is_array($zg_post_IDs)) {
+			foreach ($zg_post_IDs as $value) {
+				$args = array ( 'post_type' => 'property', 'post__in' => array($value) );
+				$postlist = get_posts($args);
+				wp_reset_postdata();
+				return $postlist;
+			}
+		}
+	}
+
+	// Return an empty array if we didn't get any posts due to cookie issues
+	return array();
+}
+
 function zg_recently_viewed() { // Output
 	if (isset($_COOKIE["WP-LastViewedPosts"])) {
 		//echo "Cookie was set.<br/>";  // For bugfixing - uncomment to see if cookie was set
 		//echo $_COOKIE["WP-LastViewedPosts"]; // For bugfixing (cookie content)
-		$zg_post_IDs = unserialize(preg_replace('!s:(\d+):"(.*?)";!e', "'s:'.strlen('$2').':\"$2\";'", stripslashes($_COOKIE["WP-LastViewedPosts"]))); // Read serialized array from cooke and unserialize it
+		$zg_cookiedata = stripslashes(  $_COOKIE["WP-LastViewedPosts"] );
+		$zg_cookiedata = preg_replace_callback( '!s:(\d+):"(.*?)";!', "zg_pregrepl_callback", $zg_cookiedata );
+		//$zg_cookiedata = preg_replace( '!s:(\d+):"(.*?)";!e', "'s:'.strlen('$2').':\"$2\";'", $zg_cookiedata );
+		$zg_post_IDs = unserialize( $zg_cookiedata ); // Read serialized array from cooke and unserialize it
+		
+		if(is_array($zg_post_IDs)) {
+			foreach ($zg_post_IDs as $value) { // Do output as long there are posts
+				global $wpdb;
+				$zg_get_title = $wpdb->get_results("SELECT post_title FROM $wpdb->posts WHERE ID = '$value+0' LIMIT 1");
 
-		foreach ($zg_post_IDs as $value) { // Do output as long there are posts
-			global $wpdb;
-			$zg_get_title = $wpdb->get_results("SELECT post_title FROM $wpdb->posts WHERE ID = '$value+0' LIMIT 1");
+				foreach($zg_get_title as $zg_title_out) {
 
-			foreach($zg_get_title as $zg_title_out) {
+	//				echo "<li><a href=\"". get_permalink($value+0) . "\" title=\"". $zg_title_out->post_title . "\">". $zg_title_out->post_title . "</a></li>\n"; // Output link and title
 
-//				echo "<li><a href=\"". get_permalink($value+0) . "\" title=\"". $zg_title_out->post_title . "\">". $zg_title_out->post_title . "</a></li>\n"; // Output link and title
-
-				echo '<article>'."\n";
+					echo '<article>'."\n";
 					echo '<a href="'. get_permalink($value+0) .'">'."\n";
 /*
 						// generate thumbnail from gallery header, if not, use featured image
-//						$rows = get_field('gallery-header',$value);
-						$rowsraw = get_field('gallery-header',$value,false);
+					$rows = get_field('gallery-header',$value);
 
-						if ( $rowsraw ) {
-							$imageid = $rowsraw[0];
-							$imageobj = wp_get_attachment_image_src( $imageid, 'thumb-small' );
-							$imgsrc = $imageobj[0];
-						} else {
-							$imgsrc = _get_firstcontentimage( $value );
-							$imgsrc = str_replace('620x413', '140x95', $imgsrc);
-							if(empty($imgsrc)) {
-								$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($value), 'thumb-small' );
-								$imgsrc = $imageobj[0];
-							}
-						}
+					if ( $rows ) {
+						$imageobj = $rows[0];
+						$imgsrc = $imageobj['sizes']['thumb-small'];
+					} else if ( catch_that_image($value) ) {
+						$imgsrc = catch_that_image($value);
+						$imgsrc = str_replace('620x413', '140x95', $imgsrc);
+					} else {
+						$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($value), 'thumb-small' );
+						$imgsrc = $imageobj[0];
+					}
 */
 						$imgsrc = _get_firstimage( 'gallery-header', 'thumb-small', SHR_FIRSTIMAGE_ALL, false, $value );
 						$imgsrc = str_replace( '620x413', '140x95', $imgsrc['src'] );
@@ -137,9 +171,11 @@ function zg_recently_viewed() { // Output
 						echo '<img src="'.$imgsrc.'" alt="Related" />'."\n";
 						echo '<h3>'.$zg_title_out->post_title.'</h3>'."\n";
 					echo '</a>'."\n";
-				echo '</article>'."\n";
-
+					echo '</article>'."\n";
+				}
 			}
+		} else {
+			// echo "Invalid cookie found.";  // For bugfixing - uncomment to see if cookie didn't contain an array of posts
 		}
 	} else {
 		//echo "No cookie found.";  // For bugfixing - uncomment to see if cookie was not set
