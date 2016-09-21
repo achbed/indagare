@@ -21,18 +21,8 @@ function ind_olduser_cap_filter( $allcaps, $cap, $args ) {
 	if ( is_user_logged_in() )
 		return $allcaps;
 
-
-	// If we don't have an old-style user session, use what we have.
-	if ( ! \indagare\users\User::hasUserSession() )
-		return $allcaps;
-
-	// Get the Member role.
-	$role = get_role( 'basic' );
-
-	// Fail back to subscriber if the Member role is not defined
-	if ( is_null( $role ) )
-		$role = get_role( 'subscriber' );
-
+	// Get the subscriber role.
+	$role = get_role( 'subscriber' );
 	return $role->capabilities;
 }
 
@@ -43,23 +33,19 @@ add_filter( 'user_has_cap', 'ind_olduser_cap_filter', 1, 3 );
  * @return boolean
  */
 function ind_logged_in() {
-	if ( is_user_logged_in() ) {
-		return true;
-	}
-
-	return false;
+	return is_user_logged_in();
 }
 
 if( !current_user_can('edit_posts') ) {
 	function mytheme_admin_bar_render() {
 		global $wp_admin_bar;
-		$wp_admin_bar->remove_menu('edit-profile', 'user-actions');
+		$wp_admin_bar->remove_menu( 'edit-profile', 'user-actions' );
 	}
 	add_action( 'wp_before_admin_bar_render', 'mytheme_admin_bar_render' );
 
 	function stop_access_profile() {
-		if(IS_PROFILE_PAGE === true) {
-			wp_redirect('/account/');
+		if ( defined( 'IS_PROFILE_PAGE' ) && ( IS_PROFILE_PAGE === true ) ) {
+			wp_redirect( '/account/' );
 		}
 		remove_menu_page( 'profile.php' );
 		remove_submenu_page( 'users.php', 'profile.php' );

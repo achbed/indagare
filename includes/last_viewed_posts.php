@@ -80,6 +80,9 @@ function zg_lw_setcookie() { // Do the stuff and set cookie
 		array_pop($zg_cookiearray);
 	}
 	$zg_blog_url_array = parse_url(get_bloginfo('url')); // Get URL of blog
+	if(empty($zg_blog_url_array['path'])) {
+		$zg_blog_url_array['path'] = '/';
+	}
 	$zg_blog_url = $zg_blog_url_array['host']; // Get domain
 	$zg_blog_url = str_replace('www.', '', $zg_blog_url);
 	$zg_blog_url_dot = '.';
@@ -107,7 +110,7 @@ function zg_recently_viewed() { // Output
 
 				echo '<article>'."\n";
 					echo '<a href="'. get_permalink($value+0) .'">'."\n";
-/*					
+/*
 						// generate thumbnail from gallery header, if not, use featured image
 //						$rows = get_field('gallery-header',$value);
 						$rowsraw = get_field('gallery-header',$value,false);

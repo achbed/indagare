@@ -1,5 +1,5 @@
 <?php namespace indagare\cookies;
-    class Counter {   
+    class Counter {
         static function updateCounter() {
             //echo setcookie("pagecount", '1');
             //print "cookie counter <br>";
@@ -10,7 +10,7 @@
             else {
                 $c = 0;
             }
-            
+
             if ($c > 10) {
                 return false;
             }
@@ -18,6 +18,9 @@
                 $c++;
 
 				$zg_blog_url_array = parse_url(get_bloginfo('url')); // Get URL of blog
+            	if(empty($zg_blog_url_array['path'])) {
+					$zg_blog_url_array['path'] = '/';
+				}
 				$zg_blog_url = $zg_blog_url_array['host']; // Get domain
 				$zg_blog_url = str_replace('www.', '', $zg_blog_url);
 				$zg_blog_url_dot = '.';
