@@ -71,7 +71,7 @@ global $wp_query;
 	} else {
 		$zg_post_ID = $wp_query->post->ID; // Read post-ID
 	}
-	
+
 if (! isset($_COOKIE["WP-LastViewedPosts"])) {
 		$zg_cookiearray = array($zg_post_ID); // If there's no cookie set, set up a new array
 	} else {
@@ -94,7 +94,7 @@ if (! isset($_COOKIE["WP-LastViewedPosts"])) {
 	}
 	$zg_blog_url_array = parse_url(get_bloginfo('url')); // Get URL of blog
 	if(empty($zg_blog_url_array['path'])) {
-		$zg_blog_url_array['path'] = '/';
+		$zg_blog_url_array['path'] = '';
 	}
 	$zg_blog_url = $zg_blog_url_array['host']; // Get domain
 	$zg_blog_url = str_replace('www.', '', $zg_blog_url);
@@ -135,7 +135,7 @@ function zg_recently_viewed() { // Output
 		$zg_cookiedata = preg_replace_callback( '!s:(\d+):"(.*?)";!', "zg_pregrepl_callback", $zg_cookiedata );
 		//$zg_cookiedata = preg_replace( '!s:(\d+):"(.*?)";!e', "'s:'.strlen('$2').':\"$2\";'", $zg_cookiedata );
 		$zg_post_IDs = unserialize( $zg_cookiedata ); // Read serialized array from cooke and unserialize it
-		
+
 		if(is_array($zg_post_IDs)) {
 			foreach ($zg_post_IDs as $value) { // Do output as long there are posts
 				global $wpdb;
