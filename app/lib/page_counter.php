@@ -1,34 +1,29 @@
-<?php namespace indagare\cookies;
+<?php
 
-class PageCountAll {
-	static $counted = false;
+namespace indagare\cookies;
 
-	static function getPageCountAll() {
-		if ( isset( $_COOKIE["pagecountall"] ) ){
-			$c = $_COOKIE["pagecountall"];
-			if ( ! self::$counted )
-				$c++;
-		} else {
-			$c = 0;
-		}
+if ( ! class_exists( 'indagare\cookies\PageCountAll' ) ) {
+	class PageCountAll {
+		static public $instance = null;
 
-		if ( ! self::$counted ) {
-			$zg_blog_url_array = parse_url(get_bloginfo('url')); // Get URL of blog
-			if(empty($zg_blog_url_array['path'])) {
-				$zg_blog_url_array['path'] = '';
+		static public $counted = false;
+
+		static function getPageCountAll() {
+			if ( empty( self::$instance ) ) {
+				self::$instance = new \indagare\cookies\CookieDough( 'pagecountall' );
 			}
-			$zg_blog_url = $zg_blog_url_array['host']; // Get domain
-			$zg_blog_url = str_replace('www.', '', $zg_blog_url);
-			$zg_blog_url_dot = '.';
-			$zg_blog_url_dot .= $zg_blog_url;
-			$zg_path_url = $zg_blog_url_array['path']; // Get path
-			$zg_path_url_slash = '/';
-			$zg_path_url .= $zg_path_url_slash;
-			$zg_cookie_expire = 1;
-			setrawcookie("pagecountall", $c, (time()+($zg_cookie_expire*604800)), $zg_path_url, $zg_blog_url_dot, 0);
-			self::$counted = true;
-		}
 
-		return $c;
+			$c = self::$instance->get();
+			if ( empty( $c ) ) {
+				$c = -1;
+			}
+
+			if ( ! self::$counted ) {
+				self::$instance->set( $c++, time()+604800, '/' );
+				self::$counted = true;
+			}
+
+			return $c;
+		}
 	}
 }
