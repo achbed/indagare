@@ -18,6 +18,7 @@
 
 require_once 'app/lib/wpdef.php';
 require_once 'app/lib/wp_content.php';
+include_once 'includes/cookiedough.php';
 
 // Theme updates
 require 'theme-updates/theme-update-checker.php';
@@ -7446,17 +7447,9 @@ global $count;
 
 	// first visit modal - intro page on home page only
 	if ( indagare\cookies\FirstVisit::isFirstVisit() ) {
-
-//		include_once 'includes/first-visit.php';
-
-//		first_visit();
-
 		if ( is_home() || is_front_page() ) {
-
 			header('Location: /intro/');
-
 		}
-
 	} // end first visit modal - intro page
 
 	// email signup modal
@@ -7953,16 +7946,6 @@ echo do_shortcode('[contact-form-7 id="32337" title="Contact Insider Trips"]');
 	var swifttripurl = '<?php global $swifttripurl; echo $swifttripurl; ?>';
 
 	jQuery().ready(function($) {
-		<?php if ( indagare\cookies\FirstVisit::isFirstVisit() ) : 	// first visit modal   ?>
-			$.magnificPopup.open({
-			  items: {
-				type: 'inline',
-				src: '#lightbox-first', // can be a HTML string, jQuery object, or CSS selector
-				midClick: true
-			  },
-			});
-		<?php endif; // end first visit modal ?>
-
 		<?php	if ( is_archive() && get_query_var('post_type') == 'insidertrip' ) : 	// insider trip archive ?>
 			$("#faq p").hide();
 		  $("#faq h3").click(function () {
