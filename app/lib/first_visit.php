@@ -4,19 +4,16 @@ namespace indagare\cookies;
 
 if ( ! class_exists( 'indagare\cookies\FirstVisit' ) ) {
 	class FirstVisit {
-		static public $instance = null;
-
+    static public $value = null;
+    
 		static function isFirstVisit() {
-			if ( empty( self::$instance ) ) {
-				self::$instance = new \indagare\cookies\CookieDough( 'first_visit' );
-			}
+      if( is_null( self::$value ) ) {
+				$c = new \indagare\cookies\CookieDough( 'first_visit' );
+        self::$value = $c->is_set();
+        $c->set( "1", time() + 60*60*24*365*10, '/' );
+      }
 
-			if ( self::$instance->is_set() ) {
-				return false;
-			}
-
-			self::$instance->set( "1", time() + 60*60*24*365*10, '/' );
-			return true;
+			return self::$value;
 		}
 	}
 }

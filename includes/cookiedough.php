@@ -24,36 +24,37 @@ if ( ! class_exists( '\indagare\cookies\CookieDough' ) ) {
 
 		public function __construct( $key ) {
 			$this->key = $key;
-		}
-
-		private function load() {
-			if ( ! $this->loaded && ! empty( $this->key ) ) {
-				if ( isset( $_COOKIE[$this->key] ) ) {
-					$this->value = $_COOKIE[$this->key];
-				}
-				$this->loaded = true;
+			if ( ! empty( $key ) ) {
+				//if ( class_exists( '\Pantheon_Sessions' ) ) {
+				//	if ( isset( $_SESSION['ind_cookies'][$this->key] ) ) {
+				//		$this->value = $_SESSION['ind_cookies'][$this->key];
+        //    $this->loaded = true;
+				//	}
+				//} else {
+					if ( isset( $_COOKIE[$key] ) ) {
+						$this->value = $_COOKIE[$key];
+            $this->loaded = true;
+					}
+				//}
 			}
 		}
 
 		public function is_set() {
-			$this->load();
-			return ( ! empty( $this->value ) );
+			return $this->loaded;
 		}
 
 		public function get() {
-			$this->load();
 			return $this->value;
 		}
 
 		public function set( $value, $expires = 0, $path ) {
-			$domain = $_SERVER['SERVER_NAME'];
-			if(function_exists('get_blog_details')) {
-				$blog = get_blog_details();
-				$domain = $blog->domain;
-			}
-
 			$this->value = $value;
-			setcookie( $this->key, $this->value, $expires, $path, $domain );
+      $this->loaded = true;
+			//if ( class_exists( '\Pantheon_Sessions' ) ) {
+			//	$_SESSION['ind_cookies'][$this->key] = $this->value;
+			//} else {
+				setcookie( $this->key, $this->value, $expires, $path, $_SERVER['HTTP_HOST'] );
+			//}
 		}
 	}
 }

@@ -36,7 +36,6 @@ class WPContent {
 	 * @return string The HTML content.
 	 */
 	public static function getContent($page) {
-		print '<!-- '.__FUNCTION__.' called -->';
 		switch ($page) {
 			case "signup" :
 				return WPContent::getSignup();
@@ -79,13 +78,13 @@ class WPContent {
 	}
 
 	private static function getAccount() {
-		print '<!-- '.__FUNCTION__.' called -->';
 		$json_mode = 0;//JSON_PRETTY_PRINT;
 		$content = "<script>\n";
 
 		$a = \WPSF\Contact::get_account_wp();
-		if(empty($a)) {
-			$a = array('Membership__x'=>array(),'Contacts__x'=>array());
+		if(empty($a) || is_wp_error($a)) {
+			$a = new \WPSF\Account();
+			$a = $a->toArray(false);
 		} else {
 			$a->filter_contacts();
 			$a = $a->toArray(false);
@@ -99,7 +98,9 @@ class WPContent {
 		$content .= "SFData.initLoad = true;\n";
 
 		$a = \WPSF\Membership::get_sellable();
-		usort( $a, function($a,$b) { return \WPSF\Membership::cmp_list($a,$b); } );
+		if(is_array($a)) {
+			usort( $a, function($a,$b) { return \WPSF\Membership::cmp_list($a,$b); } );
+		}
 
 		$content .= "SFData.MembershipList = " . json_encode( $a, $json_mode ) . ";\n";
 

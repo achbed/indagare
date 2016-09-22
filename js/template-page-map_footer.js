@@ -1,6 +1,6 @@
 jQuery().ready(function($) {
 	jQuery.ajax({
-		url: "/export/datacities_ac.json"
+		url: ajax_login_object.uploadurl+"/datacities_ac.json"
 	}).done(function(d) {
 		$("input#inputdestination").autocomplete({
 			resultsContainer: '.autocomplete',

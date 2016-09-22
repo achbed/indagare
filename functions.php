@@ -20,6 +20,11 @@ require_once 'app/lib/wpdef.php';
 require_once 'app/lib/wp_content.php';
 include_once 'includes/cookiedough.php';
 
+global $uploadpath;
+$uploadpath = wp_upload_dir();
+$uploadpath = $uploadpath['path'];
+
+
 // Theme updates
 require 'theme-updates/theme-update-checker.php';
 $Indagare_ThemeUpdateChecker = new ThemeUpdateChecker(
@@ -930,8 +935,11 @@ function register_scripts() {
 
     wp_register_script('slick', _wsjs('/js/slick.min.js'), array('jquery'), '', true);
 
+    $upload_url = wp_upload_dir();
+    $upload_url = $upload_url['url'];
     wp_localize_script( 'template-page_footer', 'ajax_login_object', array(
     	'ajaxurl' => admin_url( 'admin-ajax.php' ),
+    	'uploadurl' => $upload_url,
     	'redirecturl' => home_url(),
     	'messages' => array(
     		'loading' => __('Logging in...'),
@@ -2067,7 +2075,7 @@ if (typeof String.prototype.endsWith !== 'function') {
 }
 jQuery().ready(function($) {
 	jQuery.ajax({
-		url: "/export/datadestinations_ac.json"
+		url: ajax_login_object.uploadurl+"/datadestinations_ac.json"
 	}).done(function(d) {
 		$(".filter-destination input#inputdestination").autocomplete({
 			resultsContainer: '.autocomplete',
@@ -3636,6 +3644,7 @@ function childtheme_override_archive_loop() {
 		echo '</div>'."\n";
 		// end region widget
 
+
 ?>
 
 <script>
@@ -3651,7 +3660,8 @@ jQuery().ready(function($) {
 	},
 	data: [
 <?php
-	$datadestinations = file_get_contents($path = $_SERVER['DOCUMENT_ROOT'].'/export/datadestinations.json');
+	global $uploadpath;
+	$datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.json');
 	$filtersbooking = json_decode($datadestinations);
 
 	foreach($filtersbooking as $row) {
@@ -3663,7 +3673,7 @@ jQuery().ready(function($) {
 		}
 	}
 
-	$datahotels = file_get_contents($path = $_SERVER['DOCUMENT_ROOT'].'/export/datahotels.json');
+	$datahotels = file_get_contents($path = $uploadpath.'/datahotels.json');
 	$filtersbooking = json_decode($datahotels);
 
 	foreach($filtersbooking as $row) {
@@ -4147,7 +4157,8 @@ function child_singlepost($content) {
 				$content .= '}, '."\n";
 				$content .= 'data: ['."\n";
 
-				$datadestinations = file_get_contents($path = $_SERVER['DOCUMENT_ROOT'].'/export/datadestinations.json');
+	global $uploadpath;
+				$datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.json');
 				$filtersbooking = json_decode($datadestinations);
 
 				foreach($filtersbooking as $row) {
@@ -4159,7 +4170,7 @@ function child_singlepost($content) {
 					}
 				}
 
-				$datahotels = file_get_contents($path = $_SERVER['DOCUMENT_ROOT'].'/export/datahotels.json');
+				$datahotels = file_get_contents($path = $uploadpath.'/datahotels.json');
 				$filtersbooking = json_decode($datahotels);
 
 				foreach($filtersbooking as $row) {
@@ -5224,7 +5235,8 @@ function child_singlepost($content) {
 			$content .= '}, '."\n";
 			$content .= 'data: ['."\n";
 
-			$datadestinations = file_get_contents($path = $_SERVER['DOCUMENT_ROOT'].'/export/datadestinations.json');
+	global $uploadpath;
+			$datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.json');
 			$filtersbooking = json_decode($datadestinations);
 
 			foreach($filtersbooking as $row) {
@@ -5236,7 +5248,7 @@ function child_singlepost($content) {
 				}
 			}
 
-			$datahotels = file_get_contents($path = $_SERVER['DOCUMENT_ROOT'].'/export/datahotels.json');
+			$datahotels = file_get_contents($path = $uploadpath.'/datahotels.json');
 			$filtersbooking = json_decode($datahotels);
 
 			foreach($filtersbooking as $row) {
@@ -6524,7 +6536,8 @@ jQuery().ready(function($) {
 	},
 	data: [
 <?php
-	$datadestinations = file_get_contents($path = $_SERVER['DOCUMENT_ROOT'].'/export/datadestinations.json');
+	global $uploadpath;
+$datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.json');
 	$filtersbooking = json_decode($datadestinations);
 
 	foreach($filtersbooking as $row) {
@@ -6536,7 +6549,7 @@ jQuery().ready(function($) {
 		}
 	}
 
-	$datahotels = file_get_contents($path = $_SERVER['DOCUMENT_ROOT'].'/export/datahotels.json');
+	$datahotels = file_get_contents($path = $uploadpath.'/datahotels.json');
 	$filtersbooking = json_decode($datahotels);
 
 	foreach($filtersbooking as $row) {
@@ -8648,14 +8661,15 @@ function getLastPathSegment($url) {
 
 // export functions on updates
 function export_destinations( $flush = true ) {
+	global $uploadpath;
 	if( !$flush ) {
 		$files = array(
-			$_SERVER['DOCUMENT_ROOT'].'/export/datadestinations.json',
-			$_SERVER['DOCUMENT_ROOT'].'/export/datadestinations_ac.json',
-			$_SERVER['DOCUMENT_ROOT'].'/export/dataregions.json',
-			$_SERVER['DOCUMENT_ROOT'].'/export/dataregions_ac.json',
-			$_SERVER['DOCUMENT_ROOT'].'/export/datacities.json',
-			$_SERVER['DOCUMENT_ROOT'].'/export/datacities_ac.json');
+			$uploadpath.'/datadestinations.json',
+			$uploadpath.'/datadestinations_ac.json',
+			$uploadpath.'/dataregions.json',
+			$uploadpath.'/dataregions_ac.json',
+			$uploadpath.'/datacities.json',
+			$uploadpath.'/datacities_ac.json');
 		foreach ( $files as $f ) {
 			if( !file_exists( $f ) ) {
 				$flush = true;
@@ -8731,7 +8745,7 @@ function export_destinations( $flush = true ) {
 		$i++;
 	}
 
-	$file = fopen($_SERVER['DOCUMENT_ROOT'].'/export/datadestinations.txt', 'w');
+	$file = fopen($uploadpath.'/datadestinations.txt', 'w');
 	$headers = array('destination_id','slug','name');
 	fputcsv($file, $headers);
 		foreach ($datadestinations as $fields) {
@@ -8740,22 +8754,22 @@ function export_destinations( $flush = true ) {
 	fclose($file);
 
 	$jsondestinations = json_encode($datadestinations);
-	file_put_contents( $_SERVER['DOCUMENT_ROOT'].'/export/datadestinations.json', $jsondestinations);
+	file_put_contents( $uploadpath.'/datadestinations.json', $jsondestinations);
 
 	$jsondestinations = json_encode($datadestac);
-	file_put_contents( $_SERVER['DOCUMENT_ROOT'].'/export/datadestinations_ac.json', $jsondestinations);
+	file_put_contents( $uploadpath.'/datadestinations_ac.json', $jsondestinations);
 
 	$jsonregions = json_encode($dataregions);
-	file_put_contents( $_SERVER['DOCUMENT_ROOT'].'/export/dataregions.json', $jsonregions);
+	file_put_contents( $uploadpath.'/dataregions.json', $jsonregions);
 
 	$jsonregions = json_encode($dataregionsac);
-	file_put_contents( $_SERVER['DOCUMENT_ROOT'].'/export/dataregions_ac.json', $jsonregions);
+	file_put_contents( $uploadpath.'/dataregions_ac.json', $jsonregions);
 
 	$jsoncities = json_encode($datacities);
-	file_put_contents( $_SERVER['DOCUMENT_ROOT'].'/export/datacities.json', $jsoncities);
+	file_put_contents( $uploadpath.'/datacities.json', $jsoncities);
 
 	$jsoncities = json_encode($datacitiesac);
-	file_put_contents( $_SERVER['DOCUMENT_ROOT'].'/export/datacities_ac.json', $jsoncities);
+	file_put_contents( $uploadpath.'/datacities_ac.json', $jsoncities);
 	export_bookingwidget();
 }
 add_action('edited_destinations', 'export_destinations', 10, 1);
@@ -8763,7 +8777,8 @@ add_action('created_destinations', 'export_destinations', 10, 1);
 add_action('delete_destinations', 'export_destinations', 10, 1);
 
 function export_bookingwidget() {
-	$datadestinations = file_get_contents($path = $_SERVER['DOCUMENT_ROOT'].'/export/datadestinations.json');
+	global $uploadpath;
+	$datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.json');
 	$filtersbooking = json_decode($datadestinations);
 
 	$data = array();
@@ -8777,7 +8792,7 @@ function export_bookingwidget() {
 		}
 	}
 
-	$datahotels = file_get_contents($path = $_SERVER['DOCUMENT_ROOT'].'/export/datahotels.json');
+	$datahotels = file_get_contents($path = $uploadpath.'/datahotels.json');
 	$filtersbooking = json_decode($datahotels);
 
 	foreach($filtersbooking as $row) {
@@ -8790,16 +8805,17 @@ function export_bookingwidget() {
 	}
 
 	$json = json_encode($data);
-	file_put_contents( $_SERVER['DOCUMENT_ROOT'].'/export/bookingwidget.json', $json);
+	file_put_contents( $uploadpath.'/bookingwidget.json', $json);
 }
 
 function export_hotels( $flush = true ) {
+	global $uploadpath;
 	if( !$flush ) {
 		$files = array(
-			$_SERVER['DOCUMENT_ROOT'].'/export/datahotels.json',
-			$_SERVER['DOCUMENT_ROOT'].'/export/datahotelsurls.json',
-			$_SERVER['DOCUMENT_ROOT'].'/export/datahotelsurls.txt',
-			$_SERVER['DOCUMENT_ROOT'].'/export/datahotelstaxids.txt');
+			$uploadpath.'/datahotels.json',
+			$uploadpath.'/datahotelsurls.json',
+			$uploadpath.'/datahotelsurls.txt',
+			$uploadpath.'/datahotelstaxids.txt');
 		foreach ( $files as $f ) {
 			if( !file_exists( $f ) ) {
 				$flush = true;
@@ -8823,8 +8839,8 @@ function export_hotels( $flush = true ) {
 		$datahotelstaxids = array();
 		$i = 0;
 
-		$file_urls = fopen($_SERVER['DOCUMENT_ROOT'].'/export/datahotelsurls.txt', 'w');
-		$file_ids = fopen($_SERVER['DOCUMENT_ROOT'].'/export/datahotelstaxids.txt', 'w');
+		$file_urls = fopen($uploadpath.'/datahotelsurls.txt', 'w');
+		$file_ids = fopen($uploadpath.'/datahotelstaxids.txt', 'w');
 
 		if ( ( $file_urls !== false ) && ( $file_ids !== false ) ) {
 			$headers = array('sabre_code','hotel_url','hotel_name');
@@ -8864,10 +8880,10 @@ function export_hotels( $flush = true ) {
 		}
 
 		$jsonhotels = json_encode($datahotels);
-		file_put_contents( $_SERVER['DOCUMENT_ROOT'].'/export/datahotels.json', $jsonhotels);
+		file_put_contents( $uploadpath.'/datahotels.json', $jsonhotels);
 
 		$jsonhotelsurls = json_encode($datahotelsurls);
-		file_put_contents( $_SERVER['DOCUMENT_ROOT'].'/export/datahotelsurls.json', $jsonhotelsurls);
+		file_put_contents( $uploadpath.'/datahotelsurls.json', $jsonhotelsurls);
 	//}
 
 	export_bookingwidget();
