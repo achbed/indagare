@@ -3,105 +3,12 @@ namespace indagare\iajax;
 
 use WPSF\Contact;
 
-require_once 'wpdef.php';
-include_once 'user.php';
-include_once 'db.php';
-include_once 'mail.php';
-//include_once 'Mail.php';
-include_once 'lphp.php';
-include_once dirname(dirname(__FILE__)).'/resources/emails/thank_you.php';
-include_once dirname(dirname(__FILE__)).'/resources/emails/apply.php';
-//require_once('iajax_handler.php');
-
 class AjaxHandler {
-	/**
-	 * A comma-separated list of email addresses to send an error email to.
-	 * @var string
-	 */
-	private static $error_mail = 'dwallace@shr.global';
-
-	/**
-	 * A string to prepend to the email subject for error emails
-	 * @var string
-	 */
-	private static $error_mail_prefix = 'ERROR: ';
-
-	/**
-	 * A comma-separated list of email addresses to send a debug email to.
-	 * @var string
-	 */
-	private static $debug_mail = '';
-
-	/**
-	 * A string to prepend to the email subject for debug emails
-	 * @var string
-	 */
-	private static $debug_mail_prefix = 'DEBUG: ';
-
-	/**
-	 * A comma-separated list of email addresses to send a debug email to.
-	 * @var string
-	 */
-	private static $admin_mail = 'admin@indagare.com';
-
-	/**
-	 * A string to prepend to the email subject for debug emails
-	 * @var string
-	 */
-	private static $admin_mail_prefix = 'NOTICE: ';
-
 	/**
 	 * Holds the instance of this plugin (once initialized)
 	 * @var \indagare\iajax\AjaxHandler
 	 */
 	private static $instance = null;
-
-	/**
-	 * Sends an HTML email using the \indagare\util\IndagareMailer class.
-	 *
-	 * @param string $subject
-	 * @param string $body
-	 * @param string $recipients
-	 */
-	protected static function _email( $subject, $body, $recipients ) {
-		if ( ! empty( $recipients ) ) {
-			$m = new \indagare\util\IndagareMailer();
-			return $m->sendHtml( $subject, $body, $recipients );
-		}
-	}
-
-	/**
-	 * Sends out an email to the admin list (if it exists).  Also
-	 * prepends the admin mail prefix to the subject line.
-	 *
-	 * @param string $subject
-	 * @param string $body
-	 */
-	protected static function _email_admin( $subject, $body) {
-		return self::_email( self::$admin_mail_prefix . $subject, $body, self::$admin_mail );
-	}
-
-	/**
-	 * Sends out an email to the debug list (if it exists).  Also
-	 * prepends the debug mail prefix to the subject line.
-	 *
-	 * @param string $subject
-	 * @param string $body
-	 */
-	protected static function _email_debug( $subject, $body) {
-		return self::_email( self::$debug_mail_prefix . $subject, $body, self::$debug_mail );
-	}
-
-	/**
-	 * Sends out an email to the error list (if it exists).  Also
-	 * prepends the error mail prefix to the subject line.
-	 *
-	 * @param string $subject
-	 * @param string $body
-	 */
-	protected static function _email_error( $subject, $body) {
-		return self::_email( self::$error_mail_prefix . $subject, $body, self::$error_mail );
-	}
 
 	/**
 	 * Returns the main instance of the class, creating it if needed.
@@ -171,12 +78,6 @@ class AjaxHandler {
 			$response = array(
 				'err' => $e->getMessage(),
 			);
-
-			$msg = "Response:\r\n" . print_r( $response, true ) . "\r\n\r\n";
-			self::_email_debug(__FUNCTION__.': Processing Error', $msg );
-			if ( $e->getCode() != 0 ) {
-				self::_email_error(__FUNCTION__.': Processing Error', $msg );
-			}
 		}
 
 		print json_encode( $response );
@@ -200,12 +101,6 @@ class AjaxHandler {
 			$response = array(
 				'err' => $e->getMessage(),
 			);
-
-			$msg = "Response:\r\n" . print_r( $response, true ) . "\r\n\r\n";
-			self::_email_debug(__FUNCTION__.': Processing Error', $msg );
-			if ( $e->getCode() != 0 ) {
-				self::_email_error(__FUNCTION__.': Processing Error', $msg );
-			}
 		}
 
 		print json_encode( $response );
@@ -253,12 +148,6 @@ class AjaxHandler {
 				'length' => $e->getMessage(),
 				'err' => $e->getMessage(),
 			);
-
-			$msg = "Response:\r\n" . print_r( $response, true ) . "\r\n\r\n";
-			self::_email_debug( __FUNCTION__ . ': Processing Error', $msg );
-			if ( $e->getCode() != 0 ) {
-				self::_email_error( __FUNCTION__ . ': Processing Error', $msg );
-			}
 		}
 
 		print json_encode( $response );
