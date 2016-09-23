@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-	if(jQuery('#lightbox-join').length) {
+	if(jQuery('#lightbox-join').length && jQuery('#lightbox-join').html() != '' ) {
 		$.magnificPopup.open({
 		  items: {
 			type: 'inline',

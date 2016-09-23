@@ -3,27 +3,29 @@
 namespace indagare\cookies;
 
 if ( ! class_exists( 'indagare\cookies\PageCountAll' ) ) {
-	class PageCountAll {
-		static public $instance = null;
 
-		static public $counted = false;
+	class PageCountAll {
+
+		public static $value = null;
+
+		public static $ttl = 604800; // 1 week
+
+		public static $path = '/';
 
 		static function getPageCountAll() {
-			if ( empty( self::$instance ) ) {
-				self::$instance = new \indagare\cookies\CookieDough( 'pagecountall' );
+			if ( is_null( self::$value ) ) {
+				$c = new \indagare\cookies\CookieDough( 'pagecountall' );
+
+				self::$value = $c->get();
+				if ( empty( self::$value ) ) {
+					self::$value = -1;
+				}
+
+				self::$value++;
+				$c->set( self::$value, time() + self::$ttl, self::$path );
 			}
 
-			$c = self::$instance->get();
-			if ( empty( $c ) ) {
-				$c = -1;
-			}
-
-			if ( ! self::$counted ) {
-				self::$instance->set( $c++, time()+604800, '/' );
-				self::$counted = true;
-			}
-
-			return $c;
+			return self::$value;
 		}
 	}
 }

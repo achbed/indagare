@@ -3,15 +3,22 @@
 namespace indagare\cookies;
 
 if ( ! class_exists( 'indagare\cookies\FirstVisit' ) ) {
+
 	class FirstVisit {
-    static public $value = null;
-    
+
+		public static $value = null;
+
+		public static $ttl = 315360000; // Ten years (about)
+
+		public static $path = '/';
+
 		static function isFirstVisit() {
-      if( is_null( self::$value ) ) {
+			if ( is_null( self::$value ) ) {
 				$c = new \indagare\cookies\CookieDough( 'first_visit' );
-        self::$value = $c->is_set();
-        $c->set( "1", time() + 60*60*24*365*10, '/' );
-      }
+				$v = $c->get();
+				self::$value = ( intval( $v ) == 1 );
+				$c->set( "1", time() + self::$ttl, self::$path );
+			}
 
 			return self::$value;
 		}

@@ -1,24 +1,34 @@
-<?php namespace indagare\cookies;
+<?php
+
+namespace indagare\cookies;
 
 if ( ! class_exists( 'indagare\cookies\Counter' ) ) {
+
 	class Counter {
-		static public $instance = null;
+
+		public static $value = null;
+
+		public static $ttl = 86400;  // 24 hours
+
+		public static $path = '/';
 
 		static function updateCounter() {
-			if ( empty( self::$instance ) ) {
-				self::$instance = new \indagare\cookies\CookieDough( 'pagecount' );
+			if ( is_null( self::$value ) ) {
+				$c = new \indagare\cookies\CookieDough( 'pagecount' );
+
+				self::$value = $c->get();
+				if ( empty( self::$value ) ) {
+					self::$value = 0;
+				}
+
+				if ( self::$value > 10 ) {
+					return false;
+				}
+
+				self::$value++;
+				$c->set( self::$value, time() + self::$ttl, self::$path );
 			}
 
-			$c = self::$instance->get();
-			if ( empty( $c ) ) {
-				$c = 0;
-			}
-
-			if ($c > 10) {
-				return false;
-			}
-
-			self::$instance->set( $c++, time()+86400, '/' );
 			return true;
 		}
 	}

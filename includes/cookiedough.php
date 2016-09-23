@@ -1,7 +1,9 @@
 <?php
+
 namespace indagare\cookies;
 
 if ( ! class_exists( '\indagare\cookies\CookieDough' ) ) {
+
 	class CookieDough {
 
 		/**
@@ -24,18 +26,11 @@ if ( ! class_exists( '\indagare\cookies\CookieDough' ) ) {
 
 		public function __construct( $key ) {
 			$this->key = $key;
-			if ( ! empty( $key ) ) {
-				//if ( class_exists( '\Pantheon_Sessions' ) ) {
-				//	if ( isset( $_SESSION['ind_cookies'][$this->key] ) ) {
-				//		$this->value = $_SESSION['ind_cookies'][$this->key];
-        //    $this->loaded = true;
-				//	}
-				//} else {
-					if ( isset( $_COOKIE[$key] ) ) {
-						$this->value = $_COOKIE[$key];
-            $this->loaded = true;
-					}
-				//}
+			if ( ! empty( $this->key ) ) {
+				if ( array_key_exists( $this->key, $_COOKIE ) ) {
+					$this->value = $_COOKIE[$this->key];
+					$this->loaded = true;
+				}
 			}
 		}
 
@@ -49,13 +44,8 @@ if ( ! class_exists( '\indagare\cookies\CookieDough' ) ) {
 
 		public function set( $value, $expires = 0, $path ) {
 			$this->value = $value;
-      $this->loaded = true;
-			//if ( class_exists( '\Pantheon_Sessions' ) ) {
-			//	$_SESSION['ind_cookies'][$this->key] = $this->value;
-			//} else {
-				setcookie( $this->key, $this->value, $expires, $path, $_SERVER['HTTP_HOST'] );
-			//}
+			$this->loaded = true;
+			setcookie( $this->key, $this->value, $expires, $path, urlencode( $_SERVER['HTTP_HOST'] ) );
 		}
 	}
 }
-

@@ -138,6 +138,43 @@ function ind_validate_password_reset( $errors, $user ) {
 add_action( 'validate_password_reset', 'ind_validate_password_reset', 10, 2 );
 
 
+/**
+ * Filters the contents of the email sent when the user's email is changed.
+ *
+ * @since 4.3.0
+ *
+ * @param array $email_change_email {
+ *            Used to build wp_mail().
+ *            @type string $to      The intended recipients.
+ *            @type string $subject The subject of the email.
+ *            @type string $message The content of the email.
+ *                The following strings have a special meaning and will get replaced dynamically:
+ *                - ###USERNAME###    The current user's username.
+ *                - ###ADMIN_EMAIL### The admin email in case this was unexpected.
+ *                - ###EMAIL###       The old email.
+ *                - ###SITENAME###    The name of the site.
+ *                - ###SITEURL###     The URL to the site.
+ *            @type string $headers Headers.
+ *        }
+ * @param array $user The original user array.
+ * @param array $userdata The updated user array.
+ */
+add_filter( 'email_change_email', 'ind_email_change_email', 10, 3 );
+function ind_email_change_email( $email_change_email, $user, $userdata ) {
+	$email_change_email['subject'] = __( 'Notice of Password Change @ Indagare', 'indagare' );
+	$msg = __( 'PasswordNotificationMessage', 'indagare' );
+	if ( $msg != 'PasswordNotificationMessage' ) {
+		$email_change_email['message'] = $msg;
+		$email_change_email['headers'][] = 'Content-Type: text/html';
+	} else {
+		$email_change_email['to'] = '';
+	}
+
+	return $email_change_email;
+}
+
+
+
 function ind_add_theme_caps(){
 	global $pagenow;
 
@@ -185,6 +222,17 @@ add_action( 'admin_init', 'ind_restrict_admin_with_redirect', 1 );
 
 add_action('wp','indagare_wp_handle');
 function indagare_wp_handle() {
+	// first visit - intro page on home page only
+	if( ! isset( $_COOKIE['STYXKEY_firstview'] ) ) {
+		setcookie( 'STYXKEY_firstview', '1', time() + 315360000, '/', $_SERVER['HTTP_HOST'] );
+		if ( is_home() || is_front_page() ) {
+			if ( ! is_user_logged_in() ) {
+				header('Location: /intro/');
+				exit;
+			}
+		}
+	} // end first visit - intro page
+
 	if(function_exists('acf_add_options_page'))
 	acf_add_options_page(array(
 		'page_title' 	=> 'Indagare Settings',
@@ -962,12 +1010,20 @@ function indagare_ajax_login(){
 	header( 'Content-Type: application/json' );
 
 	// First check the nonce, if it fails the function will break
-	check_ajax_referer( 'ajax-login-nonce', 'security' );
+	$security = ( empty( $_POST['security'] ) ? '' : $_POST['security'] );
+	if ( wp_verify_nonce( $security, 'ajax-login-nonce' ) !== false ) {
+		echo json_encode( array(
+			'login' => false,
+			'ssotoken' => '',
+			'message' => __( 'Cannot process. Please reload the page and try again.', 'indagare' )
+		) );
+		exit();
+	}
 
 	// Nonce is checked, get the POST data and sign user on
 	$info = array();
-	$info['user_login'] = $_POST['username'];
-	$info['user_password'] = $_POST['password'];
+	$info['user_login'] = ( empty( $_POST['username'] ) ? '' : $_POST['username'] );
+	$info['user_password'] = ( empty( $_POST['password'] ) ? '' : $_POST['password'] );
 	$info['remember'] = true;
 	$token = '';
 
@@ -975,7 +1031,7 @@ function indagare_ajax_login(){
 	if ( ! is_wp_error( $user_signon ) ) {
 		wp_set_current_user( $user_signon->ID );
 		$sfid = \WPSF\Contact::get_wp_contactid();
-		if ( ! empty( $sfid ) ) {
+		if ( ! empty( $sfid ) && ! is_wp_error( $sfid ) ) {
 			$contact = new \WPSF\Contact( $sfid );
 			if ( method_exists( $account, 'get_ssotoken' ) ) {
 				$token = $contact->get_ssotoken();
@@ -992,7 +1048,8 @@ function indagare_ajax_login(){
 	echo json_encode( array(
 		'login' => false,
 		'ssotoken' => '',
-		'message' => __( 'Login or password incorrect. Please try again.', 'indagare' )
+		'message' => __( 'Login or password incorrect. Please try again.', 'indagare' ),
+		//'errormsg' => ( is_wp_error( $user_signon ) ? $user_signon->get_error_code() : '' ),
 	) );
 	exit();
 }
@@ -1959,7 +2016,7 @@ function child_abovecontainer() {
 
 				$columns = get_terms( 'column', array( 'orderby' => 'name', 'order' => 'ASC', 'hide_empty' => true) );
 
-				if ( $columns ) {
+				if ( ! empty( $columns ) ) {
 					echo '<ul class="subnav">'."\n";
 						foreach ( $columns as $term ) {
 							echo '<li><a href="/destinations/articles/?column='.$term->slug.'">'.$term->name.'</a></li>'."\n";
@@ -2998,7 +3055,7 @@ function childtheme_override_archive_loop() {
 					$editors = get_terms( 'editorspick', array( 'orderby' => 'name', 'order' => 'ASC', 'hide_empty' => true) );
 					}
 
-					if ( $editors ) {
+					if ( ! empty( $editors ) ) {
 						echo '<h4>Editor\'s Picks</h4>'."\n";
 						echo '<ul id="editors" class="filter">'."\n";
 
@@ -3031,10 +3088,15 @@ function childtheme_override_archive_loop() {
 		'shop' => 'shops',
 		'activity' => 'activities'
 	);
+	$posturl = '/destinations/';
+	if(!empty($top)&&!empty($reg)&&!empty($dest)) {
+	} else {
+		$posturl = '/destinations/'.$top->slug.'/'.$reg->slug.'/'.$dest->slug.'/';
+	}
 ?>
 <script>
 	var posttype = '';
-	var posturl = '/destinations/<?php print $top->slug; ?>/<?php print $reg->slug; ?>/<?php print $dest->slug; ?>/';
+	var posturl = '<?php print $posturl; ?>';
 	<?php if( array_key_exists( $queryposttype, $queryposttype_info ) ) : ?>
 		posttype = '<?php print $queryposttype; ?>type';
 		posturl += '<?php print $queryposttype_info[$queryposttype]; ?>/';
@@ -6632,7 +6694,7 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 		|| ( is_archive() && get_query_var('post_type') == 'activity' )
 		|| ( is_archive() && get_query_var('post_type') == 'itinerary' )
 		|| ( is_archive() && get_query_var('post_type') == 'library' )
-		|| ( is_archive() && $dest && $depth == 2 && !get_query_var('post_type') )
+		|| ( is_archive() && !empty($dest) && $depth == 2 && !get_query_var('post_type') )
 	) {
 
 		$imageobj = get_field('banner-image', 'destinations' . '_' . $dest->term_id);
@@ -7458,13 +7520,6 @@ global $count;
 		$top = $destinationstree['top'];
 	}
 
-	// first visit modal - intro page on home page only
-	if ( indagare\cookies\FirstVisit::isFirstVisit() ) {
-		if ( is_home() || is_front_page() ) {
-			header('Location: /intro/');
-		}
-	} // end first visit modal - intro page
-
 	// email signup modal
     if ( ind_show_email_popup() ) {
 ?>
@@ -7499,15 +7554,16 @@ global $count;
 </div><!-- #lightbox-email-signup -->
 <script>
 jQuery(document).ready(function($) {
-
-	$.magnificPopup.open({
-	  items: {
-		type: 'inline',
-		src: '#lightbox-email-signup', // can be a HTML string, jQuery object, or CSS selector
-		midClick: true
-	  },
-//	  modal: true
-	});
+	if(jQuery('#lightbox-email-signup').length && jQuery('#lightbox-email-signup').html() != '' ) {
+		$.magnificPopup.open({
+		  items: {
+			type: 'inline',
+			src: '#lightbox-email-signup', // can be a HTML string, jQuery object, or CSS selector
+			midClick: true
+		  },
+	//	  modal: true
+		});
+	}
 
 });
 </script>
