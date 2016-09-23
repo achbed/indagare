@@ -1586,7 +1586,33 @@ echo $tophotels;
               </div>
             </div>
           </li>
-          <li id="nav-shop"><a href="http://www.shoplatitude.com/collections/indagare" target="_blank">Shop</a></li>
+          <!-- ELENA CHANGES-->
+
+            <li id="nav-book"><a href="/offers/">Offers</a><span class="show-subnav"><a href="#"></a></span>
+            <div class="subnav">
+              <div class="main-nav-item"><a href="/destinations/">View All Destinations</a></div>
+              <div class="nav-item">
+                <h3>Seasonal Partners</h3>
+                <div class="subnav-related"><a href="/destinations/">See All</a></div>
+<?php
+$booktopdest = wp_nav_menu( array('menu' => 'book-top-destinations','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => false ));
+echo $booktopdest;
+?>
+              </div>
+              <div class="nav-item">
+                <h3>Destination Partners</h3>
+                <div class="subnav-related"><a href="/destinations/">See All</a></div>
+
+<?php
+$tophotels = wp_nav_menu( array('menu' => 'book-top-hotels','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => false ));
+echo $tophotels;
+?>
+              </div>
+            </div>
+          </li>
+
+
+          <!--ELENA CHANGE <li id="nav-shop"><a href="http://www.shoplatitude.com/collections/indagare" target="_blank">Shop</a></li>-->
 <?php
 	if ( ind_logged_in() ) {
 ?>
@@ -1988,7 +2014,7 @@ function child_abovecontainer() {
 	} else if ( is_archive() && get_query_var('post_type') == 'offer' ) {
 
 		echo '<div class="header top">'."\n";
-			echo '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> <h1>Indagare Partner Promotions</h1>'."\n";
+			echo '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> <h1>Seasonal Partners</h1>'."\n"; //ELENA
 		echo '</div><!-- .header -->'."\n";
 
 	// end archive for offer
@@ -4599,7 +4625,7 @@ function child_singlepost($content) {
 		$content = '';
 
 		$content .= '<div class="header">'."\n";
-			$content .= '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> <h1>Indagare Partner Promotions<span class="return"><a href="/destinations/offers/"><b class="icon petite" data-icon="&#xf0d9;"></b> Back to Partner Promotions</a></span></h1>'."\n";
+			$content .= '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> <h1>Seasonal Partners<span class="return"><a href="/destinations/offers/"><b class="icon petite" data-icon="&#xf0d9;"></b> Back to Seasonal Partners</a></span></h1>'."\n"; //ELENA
 		$content .= '</div>'."\n";
 		$content .= '<article class="detail">'."\n";
 			$content .= '<div class="vcard">'."\n";
