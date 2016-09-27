@@ -1011,7 +1011,7 @@ function indagare_ajax_login(){
 
 	// First check the nonce, if it fails the function will break
 	$security = ( empty( $_POST['security'] ) ? '' : $_POST['security'] );
-	if ( wp_verify_nonce( $security, 'ajax-login-nonce' ) !== false ) {
+	if ( wp_verify_nonce( $security, 'ajax-login-nonce' ) === false ) {
 		echo json_encode( array(
 			'login' => false,
 			'ssotoken' => '',
