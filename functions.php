@@ -451,19 +451,28 @@ function mmp_rewrite_rules($rules) {
 
     $newRules['destinations/?$'] = 'index.php?pagename=map';
     $newRules['destinations/articles/features?$'] = 'index.php?post_type=article&filter=features';
-    $newRules['destinations/(article|offer|insidertrip)s+/?$'] = 'index.php?post_type=$matches[1]';
+    $newRules['destinations/(article|insidertrip)s+/?$'] = 'index.php?post_type=$matches[1]';
     $newRules['destinations/(hotel|shop|restaurant)s+/?$'] = 'index.php';
     $newRules['destinations/(activit|itinerar|librar)(y|ies)/?$'] = 'index.php';
 
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|offer|insidertrip)s?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]&paged=$matches[4]';
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|offer|insidertrip)s?/(.+)/?$'] = 'index.php?$matches[3]=$matches[4]';
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|offer|insidertrip)s?/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]';
+    $newRules['destinations/(offers?|seaonal)/?$'] = 'index.php?post_type=offer&offer_type=season';
+    $newRules['destinations/destination/?$'] = 'index.php?post_type=offer&offer_type=dest';
+
+    $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|insidertrip)s?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]&paged=$matches[4]';
+    $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|insidertrip)s?/(.+)/?$'] = 'index.php?$matches[3]=$matches[4]';
+    $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|insidertrip)s?/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]';
+
+    $newRules['destinations/([^/]*/){0,3}([^/]+)/(offers?|seaonal)/?$'] = 'index.php?post_type=offer&destinations=$matches[2]&offer_type=season';
+    $newRules['destinations/([^/]*/){0,3}([^/]+)/destination/?$'] = 'index.php?post_type=offer&destinations=$matches[2]&offer_type=dest';
 
     $newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]y&destinations=$matches[2]&paged=$matches[5]';
     $newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/(.+)/?$'] = 'index.php?$matches[3]y=$matches[5]';
     $newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/?$'] = 'index.php?post_type=$matches[3]y&destinations=$matches[2]';
 
-    $newRules['destinations/(hotel|shop|restaurant|article|offer|insidertrip)s?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[1]&paged=$matches[2]';
+    $newRules['destinations/(hotel|shop|restaurant|article|insidertrip)s?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[1]&paged=$matches[2]';
+
+    $newRules['destinations/(offers?|seaonal)/page/?([0-9]{1,})/?$'] = 'index.php?post_type=offer&paged=$matches[2]&offer_type=season';
+    $newRules['destinations/destination/page/?([0-9]{1,})/?$'] = 'index.php?post_type=offer&paged=$matches[1]&offer_type=dest';
 
     $newRules['destinations/(activit|itinerar|librar)(y|ies)?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[1]y&paged=$matches[3]';
     $newRules['destinations/(activit|itinerar|librar)(y|ies)?/?$'] = 'index.php';
