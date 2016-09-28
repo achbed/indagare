@@ -8599,15 +8599,37 @@ function admindestinationsperpage(){
 }
 add_filter('edit_destinations_per_page', 'admindestinationsperpage');
 
+/**
+ * Return the URL that we should go to on an offer of a destination type
+ * @param WP_Query $query The query
+ * @return string The URL to go to.  Will be passed to wp_redirect.
+ */
+function get_offer_dest_target( $query ) {
+	return site_url();
+}
 
-// sort by name for review listings of hotel | restaurant | shop | activity || sort by reverse date for articles
+/**
+ * Fix various query things, including sort by name for review listings of hotel | restaurant | shop | activity || sort by reverse date for articles
+ *
+ * @param WP_Query $query The original query
+ * @return WP_Query The filtered query
+ */
 function ind_pre_get_posts(&$query) {
 	if ( ! empty( $query->query_vars['offer_type'] ) ) {
-		$query->query['meta_query'][] = array(
+		if ( empty( $query->is_archive ) ) {
+			// Single item.
+			if ( $query->query_vars['offer_type'] == 'dest' ) {
+				// Get the destination and redirect here
+				$path = get_offer_dest_target( $query );
+				wp_redirect( $path );
+				exit();
+			}
+		}
+		$query->set('meta_query',  array(array(
 			'key'     => 'offer_type',
 			'value'   => $query->query_vars['offer_type'],
-		);
-		unset( $query->query['offer_type'] );
+		) ) );
+		unset( $query->query_vars['offer_type'] );
 	}
 
 	if (
@@ -8618,21 +8640,21 @@ function ind_pre_get_posts(&$query) {
 		&& isset( $query->query_vars['orderby'] ) && $query->query_vars['orderby'] == 'modified'
 		&& isset( $query->query_vars['order'] ) && $query->query_vars['order'] == 'DESC'
 		) {
-			// show all post types
-			$query->query_vars['post_type'] = 'any';
-			// show 10 drafts
-			$query->query_vars['posts_per_page'] = 10;
-			// if admin or editor, show drafts of all users
-			if ( current_user_can( 'administrator' ) || current_user_can( 'editor' ) ) {
-				unset( $query->query_vars['author'] );
-			}
+		// show all post types
+		$query->query_vars['post_type'] = 'any';
+		// show 10 drafts
+		$query->query_vars['posts_per_page'] = 10;
+		// if admin or editor, show drafts of all users
+		if ( current_user_can( 'administrator' ) || current_user_can( 'editor' ) ) {
+			unset( $query->query_vars['author'] );
 		}
+	}
 
 	if ( $query->is_admin ) return $query;
 
 	if ( !$query->is_main_query() ) return $query;
 
-	if (!empty($query->query['post_type']) && ( $query->query['post_type'] == 'memberlevel' ) ) return;
+	if (!empty($query->query['post_type']) && ( $query->query['post_type'] == 'memberlevel' ) ) return $query;
 
 	if ( $query->is_search ) {
 		$query->set( 'posts_per_page', -1);
