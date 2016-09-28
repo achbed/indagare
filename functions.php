@@ -444,6 +444,11 @@ function childtheme_admin_header_style() {
 	<?php
 }
 
+add_filter('query_vars', 'ind_query_vars');
+function ind_query_vars( $query_vars ) {
+	$query_vars[] = 'offer_type';
+	return $query_vars;
+}
 
 add_filter('rewrite_rules_array', 'mmp_rewrite_rules');
 function mmp_rewrite_rules($rules) {
