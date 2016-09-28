@@ -469,8 +469,12 @@ function mmp_rewrite_rules($rules) {
     $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|insidertrip)s?/(.+)/?$'] = 'index.php?$matches[3]=$matches[4]';
     $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|insidertrip)s?/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]';
 
+    $newRules['destinations/([^/]*/){0,3}([^/]+)/(offers?|seasonal)/page/?([0-9]{1,})/?$'] = 'index.php?post_type=offer&destinations=$matches[2]&paged=$matches[4]&offer_type=season';
+    $newRules['destinations/([^/]*/){0,3}([^/]+)/(offers?|seasonal)/(.+)/?$'] = 'index.php?offer=$matches[4]&offer_type=season';
     $newRules['destinations/([^/]*/){0,3}([^/]+)/(offers?|seasonal)/?$'] = 'index.php?post_type=offer&destinations=$matches[2]&offer_type=season';
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/destination/?$'] = 'index.php?post_type=offer&destinations=$matches[2]&offer_type=dest';
+    $newRules['destinations/([^/]*/){0,3}([^/]+)/(destination)/page/?([0-9]{1,})/?$'] = 'index.php?post_type=offer&destinations=$matches[2]&paged=$matches[4]&offer_type=dest';
+    $newRules['destinations/([^/]*/){0,3}([^/]+)/(destination)/(.+)/?$'] = 'index.php?offer=$matches[4]&offer_type=dest';
+    $newRules['destinations/([^/]*/){0,3}([^/]+)/(destination)/?$'] = 'index.php?post_type=offer&destinations=$matches[2]&offer_type=dest';
 
     $newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]y&destinations=$matches[2]&paged=$matches[5]';
     $newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/(.+)/?$'] = 'index.php?$matches[3]y=$matches[5]';
