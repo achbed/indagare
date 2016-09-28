@@ -447,6 +447,8 @@ function childtheme_admin_header_style() {
 add_filter('query_vars', 'ind_query_vars');
 function ind_query_vars( $query_vars ) {
 	$query_vars[] = 'offer_type';
+	$query_vars[] = 'filter';
+//	$query_vars[] = 'destinations';
 	return $query_vars;
 }
 
@@ -8595,18 +8597,45 @@ add_filter('edit_destinations_per_page', 'admindestinationsperpage');
 
 
 // sort by name for review listings of hotel | restaurant | shop | activity || sort by reverse date for articles
-function sort_by_name(&$query) {
-	if ( $query->is_admin ) return;
+function ind_pre_get_posts(&$query) {
+	if ( ! empty( $query->query_vars['offer_type'] ) ) {
+		$query->query['meta_query'][] = array(
+			'key'     => 'offer_type',
+			'value'   => $query->query_vars['offer_type'],
+		);
+		unset( $query->query['offer_type'] );
+	}
 
-	if ( !$query->is_main_query() ) return;
+	if (
+		isset( $query->query_vars['post_status'] ) && $query->query_vars['post_status'] == 'draft'
+		&& isset( $query->query_vars['post_type'] ) && $query->query_vars['post_type'] == 'post'
+		&& isset( $query->query_vars['author'] ) && $query->query_vars['author'] == $GLOBALS['current_user']->ID
+		&& isset( $query->query_vars['posts_per_page'] ) && $query->query_vars['posts_per_page'] == 5
+		&& isset( $query->query_vars['orderby'] ) && $query->query_vars['orderby'] == 'modified'
+		&& isset( $query->query_vars['order'] ) && $query->query_vars['order'] == 'DESC'
+		) {
+			// show all post types
+			$query->query_vars['post_type'] = 'any';
+			// show 10 drafts
+			$query->query_vars['posts_per_page'] = 10;
+			// if admin or editor, show drafts of all users
+			if ( current_user_can( 'administrator' ) || current_user_can( 'editor' ) ) {
+				unset( $query->query_vars['author'] );
+			}
+		}
 
-	if (!empty($query->query['post_type']) && ($query->query['post_type'] == 'memberlevel' ) ) return;
+	if ( $query->is_admin ) return $query;
+
+	if ( !$query->is_main_query() ) return $query;
+
+	if (!empty($query->query['post_type']) && ( $query->query['post_type'] == 'memberlevel' ) ) return;
 
 	if ( $query->is_search ) {
 		$query->set( 'posts_per_page', -1);
-  	if ( !empty( $_GET['filter'] ) ) {
-			$query->set( 'post_type', $_GET['filter'] );
-		} else {
+	  	if ( ! empty( $query->query_vars['filter'] ) ) {
+	  		$query->set( 'post_type', $query->query_vars['filter'] );
+			unset( $query->query['filter'] );
+	  	} else {
 			$query->set( 'post_type', array( 'hotel', 'restaurant', 'shop', 'activity', 'itinerary', 'library', 'article', 'offer', 'insidertrip' ) );
 		}
 	}
@@ -8628,31 +8657,10 @@ function sort_by_name(&$query) {
 	    $query->set( 'orderby', array( 'date' => 'DESC' ) );
 	  }
 	}
-}
-add_action('pre_get_posts', 'sort_by_name');
-
-// draft display in admin
-function my_custom_recent_drafts( $query ) {
-	if (
-		isset( $query->query_vars['post_status'] ) && $query->query_vars['post_status'] == 'draft'
-		&& isset( $query->query_vars['post_type'] ) && $query->query_vars['post_type'] == 'post'
-		&& isset( $query->query_vars['author'] ) && $query->query_vars['author'] == $GLOBALS['current_user']->ID
-		&& isset( $query->query_vars['posts_per_page'] ) && $query->query_vars['posts_per_page'] == 5
-		&& isset( $query->query_vars['orderby'] ) && $query->query_vars['orderby'] == 'modified'
-		&& isset( $query->query_vars['order'] ) && $query->query_vars['order'] == 'DESC'
-	) {
-		// show all post types
-		$query->query_vars['post_type'] = 'any';
-		// show 10 drafts
-		$query->query_vars['posts_per_page'] = 10;
-		// if admin or editor, show drafts of all users
-		if ( current_user_can( 'administrator' ) || current_user_can( 'editor' ) ) {
-			unset( $query->query_vars['author'] );
-		}
-	}
 	return $query;
 }
-add_action( 'pre_get_posts', 'my_custom_recent_drafts' );
+add_action( 'pre_get_posts', 'ind_pre_get_posts' );
+
 
 add_filter('new_royalslider_skins', 'new_royalslider_add_custom_skin', 10, 2);
 function new_royalslider_add_custom_skin($skins) {
