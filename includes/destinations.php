@@ -25,18 +25,18 @@ function make_destinations_top( $update = false ) {
 	if ( file_exists( $fn ) && ( $update == false ) ) {
 		return;
 	}
-	
+
 	$destinations = get_terms( 'destinations', array( 'hide_empty' => 0 ) );
 
 	$regions = array_filter($destinations, function ($t) {
 		$destinationstree = get_ancestors( $t->term_id, 'destinations' );
 		$destdepth = count($destinationstree);
 		return $destdepth == 0;
-	});		
-	
+	});
+
 	$top_json = array();
 	$top_json['0'] = array("all");
-	
+
 	foreach ( $regions as $region ) {
 		// skip world
 		if ( $region->slug !== 'world' ) {
@@ -55,31 +55,31 @@ function make_destinations_regions( $update = false ) {
 	if ( file_exists( $fn ) && ( $update == false ) ) {
 		return;
 	}
-	
+
 	$destinations = get_terms( 'destinations', array( 'hide_empty' => 0 ) );
 
 	$regions = array_filter($destinations, function ($t) {
 		$destinationstree = get_ancestors( $t->term_id, 'destinations' );
 		$destdepth = count($destinationstree);
 		return $destdepth == 0;
-	});		
-	
+	});
+
 	$regions_json = array();
-	
+
 	foreach ( $regions as $region ) {
 		// skip world
 		if ( $region->slug !== 'world' ) {
-			
+
 			$countries = get_terms( 'destinations', array( 'child_of' => $region->term_id, 'hide_empty' => 0 ) );
 			$countriesf = array_filter($countries, function ($term) {
 				$tree = get_ancestors( $term->term_id, 'destinations' );
 				return count($tree) == 1;
 			});
-			
+
 			foreach ( $countriesf as $country ) {
 				$regions_json[ strval( $region->term_id ) ][] = implode( '|', array( $country->name, $country->slug, $country->term_id ) );
 			}
-		}	
+		}
 	}
 
 	file_put_contents($fn, json_encode($regions_json));
@@ -111,9 +111,9 @@ function make_destinations_details( $update = false ) {
 	if ( file_exists( $fn ) && ( $update == false ) ) {
 		return;
 	}
-	
+
 	$destinations = get_terms( 'destinations', array( 'hide_empty' => 0 ) );
-	
+
 	$destinationsf = array_filter($destinations, function ($t) {
 		$destinationstree = get_ancestors( $t->term_id, 'destinations' );
 		$destdepth = count($destinationstree);
@@ -121,7 +121,7 @@ function make_destinations_details( $update = false ) {
 	});
 
 	$details_json = array();
-	
+
 	foreach ( $destinationsf as $destination ) {
 		$destinationstree = destinationstaxtree($destination->term_id);
 		$reg = $destinationstree['reg'];
@@ -138,12 +138,12 @@ function make_destinations_details( $update = false ) {
 		if(!empty($interests)) {
 			foreach($interests as $i) {
 				$itm = array('name' => $i->name, 'value' => $i->slug, 'term_id' => $i->term_id);
-				
+
 				$icon = get_field( 'icon', 'destinationinterest' . '_' . $i->term_id);
 				if(!empty($icon['sizes']['thumb-small'])) {
 					$itm['icon'] = $icon['sizes']['thumb-small'];
 				}
-				
+
 				$interest[] = $itm;
 			}
 		}
@@ -181,7 +181,7 @@ function get_destinations_list(){
 		// No cache object.  Go direct.
 		return get_destinations_list_direct();
 	}
-	
+
 	$c = new SHRCache('getdestlist2', 0, 'get_destinations_list_direct' );
 	return $c->get();
 }
@@ -191,13 +191,14 @@ function clear_destinations_list(){
 		// No cache object.  Nothing to clear.
 		return;
 	}
-	
+
 	$c = new SHRCache( 'getdestlist2', 0, 'get_destinations_list_direct' );
 	$c->prime();
 }
 
 function get_destinations_list_direct(){
-		
+	$content = '';
+
 	$destinations = get_terms( 'destinations', array( 'hide_empty' => 0 ) );
 	$destinationsf = array_filter($destinations, function ($t) {
 		$destinationstree = get_ancestors( $t->term_id, 'destinations' );
@@ -205,7 +206,7 @@ function get_destinations_list_direct(){
 		$destdepth = count($destinationstree);
 		return $destdepth == 2;
 	});
-	
+
 	$classes = 'article type-article status-publish hentry contain all';
 
 	foreach ( $destinationsf as $destination ) {
@@ -232,7 +233,7 @@ function get_destinations_list_direct(){
 			$content .= '</a>'."\n";
 			$content .= '</article><!-- #post -->'."\n";
 		}
-	}		
+	}
 
 	return $content;
 }

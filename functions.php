@@ -1606,33 +1606,7 @@ echo $tophotels;
               </div>
             </div>
           </li>
-          <!-- ELENA CHANGES-->
-
-            <li id="nav-book"><a href="/offers/">Offers</a><span class="show-subnav"><a href="#"></a></span>
-            <div class="subnav">
-              <div class="main-nav-item"><a href="/destinations/">View All Destinations</a></div>
-              <div class="nav-item">
-                <h3>Seasonal Partners</h3>
-                <div class="subnav-related"><a href="/destinations/">See All</a></div>
-<?php
-$booktopdest = wp_nav_menu( array('menu' => 'book-top-destinations','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => false ));
-echo $booktopdest;
-?>
-              </div>
-              <div class="nav-item">
-                <h3>Destination Partners</h3>
-                <div class="subnav-related"><a href="/destinations/">See All</a></div>
-
-<?php
-$tophotels = wp_nav_menu( array('menu' => 'book-top-hotels','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => false ));
-echo $tophotels;
-?>
-              </div>
-            </div>
-          </li>
-
-
-          <!--ELENA CHANGE <li id="nav-shop"><a href="http://www.shoplatitude.com/collections/indagare" target="_blank">Shop</a></li>-->
+          <li id="nav-shop"><a href="http://www.shoplatitude.com/collections/indagare" target="_blank">Shop</a></li>
 <?php
 	if ( ind_logged_in() ) {
 ?>
@@ -2034,7 +2008,7 @@ function child_abovecontainer() {
 	} else if ( is_archive() && get_query_var('post_type') == 'offer' ) {
 
 		echo '<div class="header top">'."\n";
-			echo '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> <h1>Seasonal Partners</h1>'."\n"; //ELENA
+			echo '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> <h1>Indagare Partner Promotions</h1>'."\n";
 		echo '</div><!-- .header -->'."\n";
 
 	// end archive for offer
@@ -2070,7 +2044,7 @@ function child_abovecontainer() {
 					echo '</ul>'."\n";
 				}
 				echo '</li>'."\n";
-				if ( $filter !== 'features' && !$_GET['column']) {
+				if ( ( $filter !== 'features')  && ! empty( $_GET['column'] ) ) {
 					echo '<li class="current"><a href="/destinations/articles/">All Articles</a></li>'."\n";
 				} else {
 					echo '<li><a href="/destinations/articles/">All Articles</a></li>'."\n";
@@ -2150,7 +2124,7 @@ function child_abovecontainer() {
 						echo '<h4>By Destination</h4>'."\n";
 						echo '<input id="inputdestination" type="text" placeholder="Filter by city or region" />'."\n";
 						echo '<div class="autocomplete"></div>'."\n";
-						if ( $_GET['destinations'] ) {
+						if ( ! empty( $_GET['destinations'] ) ) {
 							echo '<input class="autocompletedestination" type="hidden" value="'.$_GET['destinations'].'" />'."\n";
 						} else {
 							echo '<input class="autocompletedestination" type="hidden" />'."\n";
@@ -2214,9 +2188,13 @@ jQuery().ready(function($) {
 	// set destination filter based on urlvars
 	if ( destinationfilter ) {
 <?php
-		$destination = get_term_by( 'slug', $_GET['destinations'], 'destinations' );
-		$destinationname = $destination->name;
-		echo '$(\'#inputdestination\').val(\''.$destinationname.'\');'."\n";
+		if ( ! empty( $_GET['destinations'] ) ) {
+			$destination = get_term_by( 'slug', $_GET['destinations'], 'destinations' );
+			if( ! empty( $destination ) ) {
+				$destinationname = $destination->name;
+				echo '$(\'#inputdestination\').val(\''.$destinationname.'\');'."\n";
+			}
+		}
 ?>
 	}
 
@@ -4645,7 +4623,7 @@ function child_singlepost($content) {
 		$content = '';
 
 		$content .= '<div class="header">'."\n";
-			$content .= '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> <h1>Seasonal Partners<span class="return"><a href="/destinations/offers/"><b class="icon petite" data-icon="&#xf0d9;"></b> Back to Seasonal Partners</a></span></h1>'."\n"; //ELENA
+			$content .= '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> <h1>Indagare Partner Promotions<span class="return"><a href="/destinations/offers/"><b class="icon petite" data-icon="&#xf0d9;"></b> Back to Partner Promotions</a></span></h1>'."\n";
 		$content .= '</div>'."\n";
 		$content .= '<article class="detail">'."\n";
 			$content .= '<div class="vcard">'."\n";
