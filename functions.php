@@ -458,32 +458,19 @@ function mmp_rewrite_rules($rules) {
 
     $newRules['destinations/?$'] = 'index.php?pagename=map';
     $newRules['destinations/articles/features?$'] = 'index.php?post_type=article&filter=features';
-    $newRules['destinations/(article|insidertrip)s+/?$'] = 'index.php?post_type=$matches[1]';
+    $newRules['destinations/(article|offer|insidertrip)s+/?$'] = 'index.php?post_type=$matches[1]';
     $newRules['destinations/(hotel|shop|restaurant)s+/?$'] = 'index.php';
     $newRules['destinations/(activit|itinerar|librar)(y|ies)/?$'] = 'index.php';
 
-    $newRules['destinations/(offers?|seasonal)/?$'] = 'index.php?post_type=offer&offer_type=season';
-    $newRules['destinations/destination/?$'] = 'index.php?post_type=offer&offer_type=dest';
-
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|insidertrip)s?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]&paged=$matches[4]';
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|insidertrip)s?/(.+)/?$'] = 'index.php?$matches[3]=$matches[4]';
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|insidertrip)s?/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]';
-
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(offers?|seasonal)/page/?([0-9]{1,})/?$'] = 'index.php?post_type=offer&destinations=$matches[2]&paged=$matches[4]&offer_type=season';
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(offers?|seasonal)/(.+)/?$'] = 'index.php?offer=$matches[4]&offer_type=season';
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(offers?|seasonal)/?$'] = 'index.php?post_type=offer&destinations=$matches[2]&offer_type=season';
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(destination)/page/?([0-9]{1,})/?$'] = 'index.php?post_type=offer&destinations=$matches[2]&paged=$matches[4]&offer_type=dest';
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(destination)/(.+)/?$'] = 'index.php?offer=$matches[4]&offer_type=dest';
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(destination)/?$'] = 'index.php?post_type=offer&destinations=$matches[2]&offer_type=dest';
+    $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|offer|insidertrip)s?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]&paged=$matches[4]';
+    $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|offer|insidertrip)s?/(.+)/?$'] = 'index.php?$matches[3]=$matches[4]';
+    $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|offer|insidertrip)s?/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]';
 
     $newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]y&destinations=$matches[2]&paged=$matches[5]';
     $newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/(.+)/?$'] = 'index.php?$matches[3]y=$matches[5]';
     $newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/?$'] = 'index.php?post_type=$matches[3]y&destinations=$matches[2]';
 
-    $newRules['destinations/(hotel|shop|restaurant|article|insidertrip)s?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[1]&paged=$matches[2]';
-
-    $newRules['destinations/(offers?|seasonal)/page/?([0-9]{1,})/?$'] = 'index.php?post_type=offer&paged=$matches[2]&offer_type=season';
-    $newRules['destinations/destination/page/?([0-9]{1,})/?$'] = 'index.php?post_type=offer&paged=$matches[1]&offer_type=dest';
+    $newRules['destinations/(hotel|shop|restaurant|article|offer|insidertrip)s?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[1]&paged=$matches[2]';
 
     $newRules['destinations/(activit|itinerar|librar)(y|ies)?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[1]y&paged=$matches[3]';
     $newRules['destinations/(activit|itinerar|librar)(y|ies)?/?$'] = 'index.php';
@@ -8583,6 +8570,9 @@ add_filter('edit_destinations_per_page', 'admindestinationsperpage');
  * @return string The URL to go to.  Will be passed to wp_redirect.
  */
 function get_offer_dest_target( $query ) {
+	// @TODO: Fix this so it:
+	// (a) executes the query and gets the first result, and
+	// (b) loads the url from the post field
 	return site_url();
 }
 
@@ -8593,21 +8583,16 @@ function get_offer_dest_target( $query ) {
  * @return WP_Query The filtered query
  */
 function ind_pre_get_posts(&$query) {
-	if ( ! empty( $query->query_vars['offer_type'] ) ) {
+	if ( ! empty( $query->query_vars['offertype'] ) ) {
 		if ( empty( $query->is_archive ) ) {
 			// Single item.
-			if ( $query->query_vars['offer_type'] == 'dest' ) {
+			if ( $query->query_vars['offertype'] == 'destination' ) {
 				// Get the destination and redirect here
 				$path = get_offer_dest_target( $query );
 				wp_redirect( $path );
 				exit();
 			}
 		}
-		$query->set('meta_query',  array(array(
-			'key'     => 'offer_type',
-			'value'   => $query->query_vars['offer_type'],
-		) ) );
-		unset( $query->query_vars['offer_type'] );
 	}
 
 	if (
