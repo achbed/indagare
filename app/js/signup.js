@@ -277,14 +277,14 @@ if (!signup) {
 		this.validateUsername = function() {
 			return self.validateField('#wp-username', false, self.usrNameStatus, [
 					"Please enter a username.",
-					"That username is already associated with an account. Please try again, or <a href=\"/wp-login.php\">log in</a>.",
+					"That username is already associated with an account. Please try again, or <a href=\"/login\">log in</a>.",
 					"Error validating user name.  Try again in a moment." ]);
 		};
 
 		this.validateEmail = function() {
 			return self.validateField('#contact-Email', false, self.usrEmailStatus, [
 					"Please enter an email.",
-					"That email is already associated with an account. Please try again, or <a href=\"/wp-login.php\">log in</a>.",
+					"That email is already associated with an account. Please try again, or <a href=\"/login\">log in</a>.",
 					"Error validating email.  Try again in a moment.",
 					"Please enter a valid email address." ]);
 		};

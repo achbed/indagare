@@ -343,7 +343,7 @@ if (!shrValidate) {
 				case 3:
 					return "Error validating email.  Try again in a moment.";
 				case 4:
-					return "That email is already associated with an account. Please try again, or <a href=\"/wp-login.php\">log in</a>.";
+					return "That email is already associated with an account. Please try again, or <a href=\"/login\">log in</a>.";
 			}
 			return "";
 		};
@@ -355,7 +355,7 @@ if (!shrValidate) {
 				case 3:
 					return "Error validating username.  Try again in a moment.";
 				case 4:
-					return "That username is already associated with an account. Please try again, or <a href=\"/wp-login.php\">log in</a>.";
+					return "That username is already associated with an account. Please try again, or <a href=\"/login\">log in</a>.";
 			}
 			return "";
 		};
