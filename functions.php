@@ -2024,7 +2024,7 @@ function child_abovecontainer() {
 					echo '</ul>'."\n";
 				}
 				echo '</li>'."\n";
-				if ( $filter !== 'features' && !$_GET['column']) {
+				if ( ( $filter !== 'features')  && ! empty( $_GET['column'] ) ) {
 					echo '<li class="current"><a href="/destinations/articles/">All Articles</a></li>'."\n";
 				} else {
 					echo '<li><a href="/destinations/articles/">All Articles</a></li>'."\n";
@@ -2104,7 +2104,7 @@ function child_abovecontainer() {
 						echo '<h4>By Destination</h4>'."\n";
 						echo '<input id="inputdestination" type="text" placeholder="Filter by city or region" />'."\n";
 						echo '<div class="autocomplete"></div>'."\n";
-						if ( $_GET['destinations'] ) {
+						if ( ! empty( $_GET['destinations'] ) ) {
 							echo '<input class="autocompletedestination" type="hidden" value="'.$_GET['destinations'].'" />'."\n";
 						} else {
 							echo '<input class="autocompletedestination" type="hidden" />'."\n";
@@ -2168,9 +2168,13 @@ jQuery().ready(function($) {
 	// set destination filter based on urlvars
 	if ( destinationfilter ) {
 <?php
+		if ( ! empty( $_GET['destinations'] ) ) {
 		$destination = get_term_by( 'slug', $_GET['destinations'], 'destinations' );
+			if( ! empty( $destination ) ) {
 		$destinationname = $destination->name;
 		echo '$(\'#inputdestination\').val(\''.$destinationname.'\');'."\n";
+			}
+		}
 ?>
 	}
 
