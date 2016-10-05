@@ -8565,36 +8565,12 @@ function admindestinationsperpage(){
 add_filter('edit_destinations_per_page', 'admindestinationsperpage');
 
 /**
- * Return the URL that we should go to on an offer of a destination type
- * @param WP_Query $query The query
- * @return string The URL to go to.  Will be passed to wp_redirect.
- */
-function get_offer_dest_target( $query ) {
-	// @TODO: Fix this so it:
-	// (a) executes the query and gets the first result, and
-	// (b) loads the url from the post field
-	return site_url();
-}
-
-/**
  * Fix various query things, including sort by name for review listings of hotel | restaurant | shop | activity || sort by reverse date for articles
  *
  * @param WP_Query $query The original query
  * @return WP_Query The filtered query
  */
 function ind_pre_get_posts(&$query) {
-	if ( ! empty( $query->query_vars['offertype'] ) ) {
-		if ( empty( $query->is_archive ) ) {
-			// Single item.
-			if ( $query->query_vars['offertype'] == 'destination' ) {
-				// Get the destination and redirect here
-				$path = get_offer_dest_target( $query );
-				wp_redirect( $path );
-				exit();
-			}
-		}
-	}
-
 	if (
 		isset( $query->query_vars['post_status'] ) && $query->query_vars['post_status'] == 'draft'
 		&& isset( $query->query_vars['post_type'] ) && $query->query_vars['post_type'] == 'post'
