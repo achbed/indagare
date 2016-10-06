@@ -3,6 +3,8 @@ if (!shrValidate) {
 	function shrValidateObj() {
 		var self = this;
 		
+		this.ccYearAllowTwoDigit = false;
+		
 		this.init = function() {
 			jQuery(document)
 				.on('change','[validate-type]',function(e){
@@ -269,9 +271,9 @@ if (!shrValidate) {
 					cm = Number(ccm.val()), 
 					cy = Number(ccy.val()), 
 					m = Number(d.getMonth()), 
-					y = Number(d.getFullYear().toString().substr(2, 2));
-				if(ccy.val().length>2) {
 					y = Number(d.getFullYear().toString());
+				if ( ( ccy.val().length == 2 ) && self.ccYearAllowTwoDigit ) {
+					y = Number(d.getFullYear().toString().substr(2, 2));
 				}
 				if(!cm) { cm=0; }
 				
