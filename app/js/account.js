@@ -1207,7 +1207,7 @@ function makeInput(a,p,l,t,r) {
 				v = '**';
 			}
 			
-			var options = {'January':1,'February':2,'March':3,'April':4,'May':5,'June':6,
+			var options = {'January':'01','February':'02','March':'03','April':'04','May':'05','June':'06',
 					'July':'07','August':'08','September':'09','October':'10','November':'11','December':'12'};
 			for ( i in options ) {
 				jQuery('<option></option>')
