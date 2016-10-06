@@ -142,7 +142,7 @@ if (!signup) {
 			var cc_year = jQuery("#cc_year"), cc_month = jQuery('#cc_month'), y = new Date()
 					.getFullYear(), z = y + 10, i;
 			for (i = y; i <= z; i++) {
-				jQuery('<option></option>').text(i).val(i - 2000).appendTo(
+				jQuery('<option></option>').text(i).val(i).appendTo(
 						cc_year);
 			}
 			cc_year.val(y - 2000).trigger("render");
