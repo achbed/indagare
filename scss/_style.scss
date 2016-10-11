@@ -764,6 +764,66 @@ ul.footer-nav li {list-style:none;margin:0;}
 #siteinfo {clear:both; margin:0 10px;padding:1.2em 0 1.2em;}
 #siteinfo p {margin:0;}
 
+/*elena*/
+
+.hbspt-form{
+	input{
+		line-height:1;   
+		height: 2.5em;
+    	text-overflow: ellipsis;
+    	border-radius: 2px;
+    	width: 100%;
+    	-moz-border-radius: 2px;
+    	-webkit-border-radius: 2px;
+	    border-radius: 5px !important;
+		box-shadow: inset 0px 1px 3px 0px #D9D9F7;
+		-webkit-box-shadow: inset 0px 1px 3px 0px #D9D9F7;
+		-moz-box-shadow: inset 0px 1px 3px 0px #D9D9F7;
+		-o-box-shadow: inset 0px 1px 3px 0px #D9D9F7;
+		margin-bottom: 2px;}
+	input[type="submit"]{
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-o-box-shadow: none;
+		width: auto;
+		margin-top: 1em;
+		cursor: pointer;}
+	ul{margin: 0;}
+	ul.hs-error-msgs li{
+		list-style-type: none;
+		color: #666;
+		label{display: inline-block; margin-bottom: 2px; line-height: 100%;}
+	}
+	div.field label{
+		display: none;}
+}
+#subsidiary{
+	.hs_email{
+		margin-bottom: 10px;}
+}
+#form-buzz{
+	.hs-form fieldset{
+		width: 75%;
+		float: left;}
+	.hs-form fieldset.form-columns-3 .hs-form-field{
+		width: 100%;}
+	.hbspt-form input[type="submit"]{
+		float: right;
+		margin-top: 0;}
+	label{
+		width: 118%;
+	    font-size: 10px;
+	    margin-left: 3px;
+	    position: relative;
+	    top: -5px;}
+}
+@media screen and (max-width: 480px){
+form.hs-form .form-columns-2 .hs-form-field .hs-input, form.hs-form .form-columns-3 .hs-form-field .hs-input {
+    width: 100% !important;
+   }
+ }
+
+
 /* ========================================================================= */
 /* added by Nathan Parikh */
 /* ------------------------------------------------------------------------- */
@@ -1836,7 +1896,40 @@ article.magazine .photo-gallery {
 
 	.lightbox .full { padding: 0 10px; } 
 
-	.lightbox .one-third { padding: 0 10px; width: 33.33%; }
+	.lightbox .form-columns-3{
+		width: 100% !important;
+		max-width: 100% !important;
+
+		.hs-form-field{
+			width: 33.3333% !important;
+			margin-bottom: 0px !important;
+		}
+	}
+
+	.lightbox{
+		input[type="text"],
+		input[type="password"], 
+		input[type="email"]{
+			border: 2px solid #E7E7E7;
+			padding: 3px 10px;
+			-webkit-border-radius: 5px;
+			border-radius: 5px;
+			box-shadow: none;
+			-webkit-box-shadow: none;
+			-moz-box-shadow: none;
+			-o-box-shadow: none;
+		}
+	}
+
+	.lightbox .one-third { padding: 0 10px; width: 33.33%;
+
+			input[type="text"],
+			input[type="password"] {
+				width: 100%;
+
+		}
+
+	}
 		.lightbox.detailed .one-third { display: inline-block; margin: 0; }
 		#lightbox-join footer .one-third, 
 		#lightbox-email-signup footer .one-third { margin-bottom: 15px; }
@@ -1875,23 +1968,18 @@ article.magazine .photo-gallery {
 			min-width: 150px;
 			float: left;
 		}
-	.lightbox input[type="text"],
-	.lightbox input[type="password"]
-	{
-		border: 2px solid #E7E7E7;
-		padding: 3px 10px;
-		-webkit-border-radius: 5px;
-		border-radius: 5px;
-	}
-		.lightbox .column input[type="text"],
-		.lightbox .column input[type="password"] {
-			width: 100%;
-		}
 	.lightbox input[type="password"] {
 	
 	}
 	.lightbox input[type="submit"] {
-	
+		/*elena*/
+		color: #fff;
+	    background: #3172B2;
+	    font-weight: bold;
+	    height:2.143em;
+	    line-height:2.143;
+	    border-radius:3px;
+	    cursor:pointer;
 	}
 	.lightbox select {
 		-webkit-appearance: auto;
@@ -1908,16 +1996,10 @@ article.magazine .photo-gallery {
 		padding: 15px 0 0px 0;
 		margin: 15px 10px 0px 10px;
 	}
-
 	.lightbox-no-borders footer { /* AKB */
 		margin: 0 10px;
 		border-top: none;
 	}
-	
-		.lightbox-no-borders footer .newsletter-signup-wrapper {
-/*			margin-bottom: 10px; */
-		}
-		
 		.lightbox footer h4 {
 			color: #000;
 			text-transform: none;
@@ -1926,11 +2008,9 @@ article.magazine .photo-gallery {
 		}
 		.lightbox footer p {
 			display: inline;
-/*			margin: 0px 30px 0px 0px; */
 			margin: 0px 10px 0px 0px;
 		}
 		
-/*		#lightbox-email-signup footer #emailsignup p {*/
 		#lightbox-join footer p {
 			display: block;
 			margin: 0 0 10px 0;
@@ -1962,11 +2042,6 @@ article.magazine .photo-gallery {
 		.lightbox footer .field, .lightbox footer .form-item {
 			display: inline;
 		}
-		#lightbox-join footer .field, 
-		#lightbox-email-signup footer .field {
-			display: block;
-			margin: 0 -10px 0 -10px;
-		}
 		.lightbox footer .form-combo {
 			display: inline-block;
 			margin-bottom: 0;
@@ -1991,8 +2066,9 @@ article.magazine .photo-gallery {
 		
 		}
 		.lightbox footer input[type="submit"] {
-		
 		}
+
+
 
 /* contact form - AKB */
 .wpcf7 .button, .styledform .button {
