@@ -7578,7 +7578,7 @@ jQuery(document).ready(function($) {
 		<div id="form-submit" class="field clearfix submit">
 			<label for=""></label>
 		   <input type="submit" value="Submit" class="button primary">
-		   <a id="forgot" href="/wp-login.php?action=lostpassword" class="button secondary">Forgot Password</a>
+		   <a id="forgot" href="<?php print wp_lostpassword_url(); ?>" class="button secondary">Forgot Password</a>
 		</div>
 
 		<div class="field message">
@@ -7645,7 +7645,7 @@ jQuery(document).ready(function($) {
 
 			<div id="form-submit" class="field clearfix submit">
 			   <input type="submit" value="Login" class="button">
-			   <a id="forgot" href="/wp-login.php?action=lostpassword" class="button secondary">Forgot Password</a>
+			   <a id="forgot" href="<?php print wp_lostpassword_url(); ?>" class="button secondary">Forgot Password</a>
 			</div>
 
 			<div class="field message">
@@ -7734,7 +7734,7 @@ jQuery(document).ready(function($) {
 
 			<div id="form-submit" class="field clearfix submit">
 			   <input type="submit" value="Sign In" class="button">
-			   <a id="forgot" href="/wp-login.php?action=lostpassword" class="button secondary">Forgot Password</a>
+			   <a id="forgot" href="<?php print wp_lostpassword_url(); ?>" class="button secondary">Forgot Password</a>
 			</div>
 
 			<div class="field message">
@@ -7766,7 +7766,7 @@ jQuery(document).ready(function($) {
 
 			<div id="form-submit" class="field clearfix submit">
 			   <input type="submit" value="Sign In" class="button">
-			   <a id="forgot" href="/wp-login.php?action=lostpassword" class="button secondary">Forgot Password</a>
+			   <a id="forgot" href="<?php print wp_lostpassword_url(); ?>" class="button secondary">Forgot Password</a>
 				<a href="/join/" class="button">Join</a>
 			</div>
 
@@ -8270,7 +8270,7 @@ jQuery().ready(function($) {
 
 	$('a.more').click(function() {
 		event.preventDefault();
-		var txt = $(this).parent().next("div.more").is(':visible') ? <?php echo __('Read More','indagare');?> : <?php echo __('Read Less','indagare');?>;
+		var txt = $(this).parent().next("div.more").is(':visible') ? '<?php echo __('Read More','indagare');?>' : '<?php echo __('Read Less','indagare');?>';
 		$(this).text(txt);
 		$(this).parent().next("div.more").slideToggle(500);
 	});

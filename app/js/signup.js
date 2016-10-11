@@ -142,10 +142,10 @@ if (!signup) {
 			var cc_year = jQuery("#cc_year"), cc_month = jQuery('#cc_month'), y = new Date()
 					.getFullYear(), z = y + 10, i;
 			for (i = y; i <= z; i++) {
-				jQuery('<option></option>').text(i).val(i - 2000).appendTo(
+				jQuery('<option></option>').text(i).val(i).appendTo(
 						cc_year);
 			}
-			cc_year.val(y - 2000).trigger("render");
+			cc_year.val(y).trigger("render");
 			for (i = 1; i <= 12; i++) {
 				z = self.pad(i, 2);
 				jQuery('<option></option>').text(z).val(z).appendTo(cc_month);
@@ -277,14 +277,14 @@ if (!signup) {
 		this.validateUsername = function() {
 			return self.validateField('#wp-username', false, self.usrNameStatus, [
 					"Please enter a username.",
-					"That username is already associated with an account. Please try again, or <a href=\"/wp-login.php\">log in</a>.",
+					"That username is already associated with an account. Please try again, or <a href=\"/login\">log in</a>.",
 					"Error validating user name.  Try again in a moment." ]);
 		};
 
 		this.validateEmail = function() {
 			return self.validateField('#contact-Email', false, self.usrEmailStatus, [
 					"Please enter an email.",
-					"That email is already associated with an account. Please try again, or <a href=\"/wp-login.php\">log in</a>.",
+					"That email is already associated with an account. Please try again, or <a href=\"/login\">log in</a>.",
 					"Error validating email.  Try again in a moment.",
 					"Please enter a valid email address." ]);
 		};
