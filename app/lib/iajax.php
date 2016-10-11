@@ -450,6 +450,8 @@ class AjaxHandler {
 		$account['Membership_Old__c'] = '';
 		$account->update();
 
+		wpsf_wp_login();
+
 		if ( ! $response['success'] ) {
 			return wp_send_json_error( $response );
 		}
