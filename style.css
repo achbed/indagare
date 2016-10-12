@@ -1695,7 +1695,7 @@ article.magazine .photo-gallery .caption { border-bottom: 1px solid #ccc; paddin
 #secondary .aside p { font-size: .875em; font-style: italic; font-family: Georgia, "Times New Roman", serif; }
 
 /*Lightbox - Magnific Popup */
-.white-popup { position: relative; background: #FFF; padding: 20px; width: auto; max-width: 920px; margin: 20px auto; }
+.white-popup { position: relative; background: #FFF; padding: 20px; width: auto; max-width: 920px; margin: 20px auto; overflow: auto; }
 
 .white-popup.login { max-width: 460px; }
 
