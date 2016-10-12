@@ -2169,10 +2169,23 @@ jQuery().ready(function($) {
 	if ( destinationfilter ) {
 <?php
 		if ( ! empty( $_GET['destinations'] ) ) {
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+>>>>>>> Stashed changes
 			$destination = get_term_by( 'slug', $_GET['destinations'], 'destinations' );
 			if( ! empty( $destination ) ) {
 				$destinationname = $destination->name;
 				echo '$(\'#inputdestination\').val(\''.$destinationname.'\');'."\n";
+<<<<<<< Updated upstream
+=======
+=======
+		$destination = get_term_by( 'slug', $_GET['destinations'], 'destinations' );
+			if( ! empty( $destination ) ) {
+		$destinationname = $destination->name;
+		echo '$(\'#inputdestination\').val(\''.$destinationname.'\');'."\n";
+>>>>>>> origin/dev
+>>>>>>> Stashed changes
 			}
 		}
 ?>
