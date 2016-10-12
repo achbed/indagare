@@ -240,6 +240,8 @@ class AjaxHandler {
 		$account = new \WPSF\Account();
 
 		$account['Name'] = $_POST['fn'].' '.$_POST['ln'];
+		$account['Account_Alias__c'] = $_POST['fn'];
+		$account['Self_Signup__c'] = true;
 		$account['Type'] = $account->picklistValue( 'Type', 'Customer' );
 
 //		$account['RecordTypeId'] = '0121a0000001qM1AAI';
@@ -449,6 +451,8 @@ class AjaxHandler {
 		}
 		$account['Membership_Old__c'] = '';
 		$account->update();
+
+		wpsf_wp_login();
 
 		if ( ! $response['success'] ) {
 			return wp_send_json_error( $response );

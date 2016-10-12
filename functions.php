@@ -6751,14 +6751,11 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 			echo '<div id="form-buzz" class="newsletter-signup-wrapper">'."\n";
 				echo '<h2>The Buzz</h2>'."\n";
 				echo '<p>Subscribe to our free e-Newsletter for current travel news and tips.</p>'."\n";
-				echo '<form class="newsletter-signup-form" method="POST" action="'.get_bloginfo('stylesheet_directory').'/includes/email-signup.php">'."\n";
-				  echo '<div class="form-combo">'."\n";
-					echo '<span class="form-item"><input type="text" name="email" id="newsletter-signup-buzz" class="element newsletter-signup-input" placeholder="Your email address" /></span>'."\n";
-				  echo '</div>'."\n";
-				  echo '<div class="buttons">'."\n";
-					echo '<button type="submit" class="primary button">Submit</button>'."\n";
-				  echo '</div>'."\n";
-				echo '</form>'."\n";
+
+				//elena hubspot
+				include_once( 'includes/hubspot.php' );
+				render_hubspot('2459975', 'baef34f1-256a-4bda-9add-686bff25887e');
+
 			echo '</div>'."\n";
 
 
@@ -7458,18 +7455,8 @@ function childtheme_override_siteinfo() {
       <div id="first" class="newsletter-signup-wrapper">
         <h4><?php print __('Newsletter','indagare'); ?></h4>
         <p><?php print __('Receive our free email newsletter full of travel news, tips and advice.','indagare'); ?></p>
-        <form class="newsletter-signup-form" method="POST" action="<?php echo get_bloginfo('stylesheet_directory'); ?>/includes/email-signup.php">
-          <div class="form-combo">
-          	<span class="form-item"><input type="text" name="email" id="newsletter-signup" class="element newsletter-signup-input" placeholder="<?php print __('Your email address','indagare'); ?>" /></span>
-          </div>
-          <div class="form-combo">
-          	<span class="form-item"><input type="text" name="fname" class="element newsletter-signup-fname" placeholder="<?php print __('First name (optional)','indagare'); ?>" /></span>
-          	<span class="form-item"><input type="text" name="lname" class="element newsletter-signup-lname" placeholder="<?php print __('Last name (optional)','indagare'); ?>" /></span>
-          </div>
-          <div class="buttons">
-          	<button type="submit" class="primary button"><?php print __('Submit','indagare'); ?></button>
-          </div>
-        </form>
+		<?php include_once( 'includes/hubspot.php' );
+		render_hubspot('2459975', '87462c47-c6c3-4de1-bba1-d27262e4604d'); ?>
       </div>
       <div id="fourth">
         <h4><a class="colheader" href="/contact/"><?php print __('Connect','indagare'); ?></a></h4>
@@ -7543,18 +7530,9 @@ global $count;
 
 	<footer>
 		<div id="emailsignup" class="newsletter-signup-wrapper">
-		<form class="login newsletter-signup-form" method="POST" action="<?php echo get_bloginfo('stylesheet_directory'); ?>/includes/email-signup.php" novalidate>
-			<div id="field1-container" class="field clearfix">
-			   <div class="column one-third"><input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address"></div>
-			   <div class="column one-third"><input type="text" name="fname" class="newsletter-signup-fname" placeholder="First name (optional)"></div>
-			   <div class="column one-third"><input type="text" name="lname" class="newsletter-signup-lname" placeholder="Last name (optional)"></div>
-			</div>
-
-			<div id="form-submit" class="clearfix submit">
-			   <input type="submit" value="Submit" class="button">
-			</div>
-		</form>
-		<p>You will receive our free e-Newsletter full of travel news and insider recommendations.</p>
+			<?php include_once( 'includes/hubspot.php' );
+			render_hubspot('2459975', 'f415c804-076a-461e-a910-ca3e85268e32'); ?>
+			<p>You will receive our free e-Newsletter full of travel news and insider recommendations.</p>
 		</div>
 		<p>By clicking "Submit," you accept our <a href="/terms-of-use/">Terms of Use</a> and <a href="/privacy-policy/">Privacy Policy</a>.</p>
 
@@ -7607,7 +7585,7 @@ jQuery(document).ready(function($) {
 		<div id="form-submit" class="field clearfix submit">
 			<label for=""></label>
 		   <input type="submit" value="Submit" class="button primary">
-		   <a id="forgot" href="/wp-login.php?action=lostpassword" class="button secondary">Forgot Password</a>
+		   <a id="forgot" href="<?php print wp_lostpassword_url(); ?>" class="button secondary">Forgot Password</a>
 		</div>
 
 		<div class="field message">
@@ -7674,7 +7652,7 @@ jQuery(document).ready(function($) {
 
 			<div id="form-submit" class="field clearfix submit">
 			   <input type="submit" value="Login" class="button">
-			   <a id="forgot" href="/wp-login.php?action=lostpassword" class="button secondary">Forgot Password</a>
+			   <a id="forgot" href="<?php print wp_lostpassword_url(); ?>" class="button secondary">Forgot Password</a>
 			</div>
 
 			<div class="field message">
@@ -7686,18 +7664,8 @@ jQuery(document).ready(function($) {
 	<footer id="emailsignup" class="newsletter-signup-wrapper">
 		<h4>Sign Up: Travel Newsletter</h4>
 		<p>Receive our free, bimonthly e-Newsletter full of travel stories, reviews and insider recommendations.</p>
-		<form class="login newsletter-signup-form" method="POST" action="<?php echo get_bloginfo('stylesheet_directory'); ?>/includes/email-signup.php" novalidate>
-			<div id="field1-container" class="field clearfix">
-			   <div class="column one-third"><input type="text" name="email" id="field1" class="newsletter-signup-input" required="required" placeholder="Your email address"></div>
-			   <div class="column one-third"><input type="text" name="fname" class="newsletter-signup-fname" placeholder="First name (optional)"></div>
-			   <div class="column one-third"><input type="text" name="lname" class="newsletter-signup-lname" placeholder="Last name (optional)"></div>
-			</div>
-
-			<div id="form-submit" class="clearfix submit">
-			   <input type="submit" value="Submit" class="button">
-			</div>
-		</form>
-
+		<?php include_once( 'includes/hubspot.php' );
+		render_hubspot('2459975', '7fdb12e1-4796-440d-b01e-3425cf042b19'); ?>
 	</footer>
 </div><!-- #lightbox-join -->
 <?php
@@ -7773,7 +7741,7 @@ jQuery(document).ready(function($) {
 
 			<div id="form-submit" class="field clearfix submit">
 			   <input type="submit" value="Sign In" class="button">
-			   <a id="forgot" href="/wp-login.php?action=lostpassword" class="button secondary">Forgot Password</a>
+			   <a id="forgot" href="<?php print wp_lostpassword_url(); ?>" class="button secondary">Forgot Password</a>
 			</div>
 
 			<div class="field message">
@@ -7805,7 +7773,7 @@ jQuery(document).ready(function($) {
 
 			<div id="form-submit" class="field clearfix submit">
 			   <input type="submit" value="Sign In" class="button">
-			   <a id="forgot" href="/wp-login.php?action=lostpassword" class="button secondary">Forgot Password</a>
+			   <a id="forgot" href="<?php print wp_lostpassword_url(); ?>" class="button secondary">Forgot Password</a>
 				<a href="/join/" class="button">Join</a>
 			</div>
 

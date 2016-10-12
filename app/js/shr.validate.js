@@ -3,6 +3,8 @@ if (!shrValidate) {
 	function shrValidateObj() {
 		var self = this;
 		
+		this.ccYearAllowTwoDigit = false;
+		
 		this.init = function() {
 			jQuery(document)
 				.on('change','[validate-type]',function(e){
@@ -269,9 +271,9 @@ if (!shrValidate) {
 					cm = Number(ccm.val()), 
 					cy = Number(ccy.val()), 
 					m = Number(d.getMonth()), 
-					y = Number(d.getFullYear().toString().substr(2, 2));
-				if(ccy.val().length>2) {
 					y = Number(d.getFullYear().toString());
+				if ( ( ccy.val().length == 2 ) && self.ccYearAllowTwoDigit ) {
+					y = Number(d.getFullYear().toString().substr(2, 2));
 				}
 				if(!cm) { cm=0; }
 				
@@ -343,7 +345,7 @@ if (!shrValidate) {
 				case 3:
 					return "Error validating email.  Try again in a moment.";
 				case 4:
-					return "That email is already associated with an account. Please try again, or <a href=\"/wp-login.php\">log in</a>.";
+					return "That email is already associated with an account. Please try again, or <a href=\"/login\">log in</a>.";
 			}
 			return "";
 		};
@@ -355,7 +357,7 @@ if (!shrValidate) {
 				case 3:
 					return "Error validating username.  Try again in a moment.";
 				case 4:
-					return "That username is already associated with an account. Please try again, or <a href=\"/wp-login.php\">log in</a>.";
+					return "That username is already associated with an account. Please try again, or <a href=\"/login\">log in</a>.";
 			}
 			return "";
 		};

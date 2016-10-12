@@ -198,7 +198,6 @@ function clear_destinations_list(){
 
 function get_destinations_list_direct(){
 	$content = '';
-
 	$destinations = get_terms( 'destinations', array( 'hide_empty' => 0 ) );
 	$destinationsf = array_filter($destinations, function ($t) {
 		$destinationstree = get_ancestors( $t->term_id, 'destinations' );
