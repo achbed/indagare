@@ -7671,7 +7671,7 @@ jQuery(document).ready(function($) {
 		<h4>Sign Up: Travel Newsletter</h4>
 		<p>Receive our free, bimonthly e-Newsletter full of travel stories, reviews and insider recommendations.</p>
 		<?php include_once( 'includes/hubspot.php' ); // @TODO: ELENA: Replace the parameters below with real values!
-		render_hubspot('2459975', '87462c47-c6c3-4de1-bba1-d27262e4604d'); ?>
+		render_hubspot('2459975', '7fdb12e1-4796-440d-b01e-3425cf042b19'); ?>
 	</footer>
 </div><!-- #lightbox-join -->
 <?php
