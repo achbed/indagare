@@ -7670,7 +7670,7 @@ jQuery(document).ready(function($) {
 	<footer id="emailsignup" class="newsletter-signup-wrapper">
 		<h4>Sign Up: Travel Newsletter</h4>
 		<p>Receive our free, bimonthly e-Newsletter full of travel stories, reviews and insider recommendations.</p>
-		<?php include_once( 'includes/hubspot.php' ); // @TODO: ELENA: Replace the parameters below with real values!
+		<?php include_once( 'includes/hubspot.php' );
 		render_hubspot('2459975', '7fdb12e1-4796-440d-b01e-3425cf042b19'); ?>
 	</footer>
 </div><!-- #lightbox-join -->
