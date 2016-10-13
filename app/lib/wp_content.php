@@ -201,7 +201,7 @@ class WPContent {
 			var showTrial = " . ( $showTrial ? 'true' : 'false' ) . ";
 			var reftype = " . $reftype . ";
 			var y = " . $mb_y . ";
-			var mbs = [];
+			var mbs = " . $mb_js_arr . ";
 			var reg = new RegExp('(^|&)source=([^&]*)(&|$)');
 			var r = window.location.search.substr(1).match(reg);
 			if (r!=null)
