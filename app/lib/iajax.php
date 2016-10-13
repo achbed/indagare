@@ -367,11 +367,12 @@ class AjaxHandler {
 			global $wpsf_acf_fields;
 			update_field( $wpsf_acf_fields['wpsf_contactid'], $cid, 'user_'.$id );
 
-			wp_signon(array(
+			$user_signon = wp_signon(array(
 				'user_login' => $_POST['username'],
 				'user_password' => $_POST['password'],
 				'remember' => true,
 			));
+			wp_set_current_user( $id );
 
 		} else {
 			// We are updating an existing account.
@@ -498,6 +499,7 @@ class AjaxHandler {
 			'user_password' => $_POST['password'],
 			'remember' => true,
 		) );
+		wp_set_current_user( $id );
 
 		$c['WP_Username__c'] = $_POST['username'];
 		$c->update();
