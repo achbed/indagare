@@ -334,6 +334,7 @@ class AjaxHandler {
 					'error' => 'WP user creation failure.',
 					'messages' => $id->get_error_messages(),
 				));
+				self::slack( 'AJAX Create: Error creating WordPress user account.', 'error' );
 				exit();
 			}
 
@@ -345,6 +346,7 @@ class AjaxHandler {
 					'error'=>'Account creation failure.',
 					'messages' => $aid->get_error_messages(),
 				));
+				self::slack( 'AJAX Create: Error creating Salesforce account.', 'error' );
 				exit();
 			}
 			$account = new \WPSF\Account( $aid );
@@ -455,6 +457,7 @@ class AjaxHandler {
 		wpsf_wp_login();
 
 		if ( ! $response['success'] ) {
+			self::slack( 'AJAX Create: '.$response['message'], 'error' );
 			return wp_send_json_error( $response );
 		}
 
@@ -534,17 +537,33 @@ class AjaxHandler {
 			'args' => $args,
 		);
 
+		$account = \WPSF\Contact::get_account_wp();
+		if ( empty( $account ) || is_wp_error( $account ) ) {
+			$response = array_merge( $response, array( 'message' => __( 'Error retrieving account information. Please call for support.', 'indagare' ) ) );
+			self::slack( 'AJAX Renew: Error loading Account object for current user.', 'moneyfail' );
+			return wp_send_json_error( $response );
+		}
+
 		if ( empty( $args['new_level'] ) ) {
-			$response = array_merge( $response, array( 'message' => 'Empty membership level' ) );
+			$args['new_level'] = $account['Membership__c'];
+		}
+
+		if ( empty( $args['new_level'] ) ) {
+			$response = array_merge( $response, array( 'message' => __( 'Unknown membership level. Please choose a different level or call for support.', 'indagare' ) ) );
+			self::slack( 'AJAX Renew: Unknown membership level `' . $args['new_level'] . '`', 'moneyfail' );
+			return wp_send_json_error( $response );
+		}
+
+		$m = new \WPSF\Membership( $args['new_level'] );
+		if ( empty( $m['Listed_for_sale__c'] ) || ( $m['Listed_for_sale__c'] != '1' ) ) {
+			$response = array_merge( $response, array( 'message' => __( 'Your existing Memership level cannot be renewed. Please choose a different level or call for support.', 'indagare' ) ) );
+			self::slack( 'AJAX Renew: Memership renewal denied by sellable flag. MembershipID=`' . $args['new_level'] . '` Sellable=`'.$m['Listed_for_sale__c'].'`', 'moneyfail' );
 			return wp_send_json_error( $response );
 		}
 
 		// We are updating an existing account.
-		$account = \WPSF\Contact::get_account_wp();
 		$aid = $account['Id'];
 		$acct_type = 'Renewal';
-
-		$account = new \WPSF\Account( $aid );
 
 		$response['debug']['pre-setup'] = array(
 			'Membership__c' => $account['Membership__c'],
@@ -639,10 +658,25 @@ class AjaxHandler {
 		);
 
 		if ( empty( $response['success'] ) ) {
+			self::slack( 'AJAX Renew: ' . $response['message'], 'moneyfail' );
 			return wp_send_json_error( $response );
 		}
 
 		return wp_send_json_success( $response );
+	}
+
+	/**
+	 * Send a message via Slack (if possible)
+	 * @param unknown $message
+	 * @param string $type
+	 */
+	private static function slack( $message, $type = 'error' ) {
+		if ( class_exists( 'Slack' ) ) {
+			return Slack::send( $message, $type );
+		}
+		if ( class_exists( '\WPSF\Slack' ) ) {
+			return \WPSF\Slack::send( $message, $type );
+		}
 	}
 
 	/**
