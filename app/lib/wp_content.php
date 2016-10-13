@@ -177,6 +177,7 @@ class WPContent {
 
 		$showTrial = false;
 		$trial = "";
+		$mb_js_arr = array();
 		if (isset($_GET["trial"])) {
 			$showTrial = true;
 			if(!empty($_GET["trial"])) {
@@ -184,7 +185,7 @@ class WPContent {
 				$trial = sanitize_text_field( urldecode( $_GET['trial'] ) );
 				$trial = str_replace('"', '\"', trim( $trial ) );
 			}
-			$mb_js_arr = \WPSF\TrialCode::get_all();
+			//$mb_js_arr = \WPSF\TrialCode::get_all();
 		} else {
 			$mb_js_arr = \WPSF\Membership::get_sellable();
 		}
@@ -200,7 +201,7 @@ class WPContent {
 			var showTrial = " . ( $showTrial ? 'true' : 'false' ) . ";
 			var reftype = " . $reftype . ";
 			var y = " . $mb_y . ";
-			var mbs = " . $mb_js_arr . ";
+			var mbs = [];
 			var reg = new RegExp('(^|&)source=([^&]*)(&|$)');
 			var r = window.location.search.substr(1).match(reg);
 			if (r!=null)
