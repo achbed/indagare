@@ -292,6 +292,7 @@ class AjaxHandler {
 	public static function payment_wp() {
 		header('Content-Type: application/json');
 		global $acc;
+		$user_signon = null;
 
 		$response = array(
 			'success' => false,
@@ -455,7 +456,7 @@ class AjaxHandler {
 		$account['Membership_Old__c'] = '';
 		$account->update();
 
-		wpsf_wp_login();
+		wpsf_apply_roles( $user_signon, $account, true );
 
 		if ( ! $response['success'] ) {
 			self::slack( 'AJAX Create: '.$response['message'], 'error' );

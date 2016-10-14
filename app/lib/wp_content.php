@@ -88,7 +88,7 @@ class WPContent {
 		} else {
 			$a->filter_contacts();
 			$a = $a->toArray(false);
-			wpsf_wp_login();
+			wpsf_apply_roles();
 		}
 
 		$content .= "var SFData = {};\n";
