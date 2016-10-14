@@ -798,6 +798,25 @@ ul.footer-nav li {list-style:none;margin:0;}
 #subsidiary{
 	.hs_email{
 		margin-bottom: 10px;}
+	input{
+		box-shadow: inset 0px 1px 1px 0px #D9D9F7;
+		-webkit-box-shadow: inset 0px 1px 1px 0px #D9D9F7;
+		-moz-box-shadow: inset 0px 1px 1px 0px #D9D9F7;
+		-o-box-shadow: inset 0px 1px 1px 0px #D9D9F7;
+	}
+	.hs_firstname{
+		input{
+			border-bottom-left-radius: 0px !important;
+			border-bottom-right-radius: 0px !important;
+			margin-bottom: 0px;
+		}
+	}
+	.hs_lastname{
+		input{
+			border-top-left-radius: 0px !important;
+			border-top-right-radius: 0px !important;
+		}
+	}
 }
 #form-buzz{
 	.hs-form fieldset{
