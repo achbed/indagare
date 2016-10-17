@@ -456,6 +456,9 @@ class AjaxHandler {
 		$account['Membership_Old__c'] = '';
 		$account->update();
 
+		// Do this so we reduce the log output on initial creation
+		global $WPSF_NewUserProcessing;
+		$WPSF_NewUserProcessing = true;
 		wpsf_apply_roles( $user_signon, $account, true );
 
 		if ( ! $response['success'] ) {
