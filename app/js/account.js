@@ -607,10 +607,11 @@ function applyMembershipUpgradeOptions() {
 	}
 	
 	var i,r=[],n=false,ma=parseFloat( SFData.Membership.Amount__c ),renew=isRenewal();
+	if(isExpired()) ma = 0;
 	for(i in SFData.MembershipList) {
 		if ( SFData.MembershipList[i].Amount > ma ) {
 			SFData.MembershipList[i].upgradeMode = 'upgrade';
-			if(renew) {
+			if(renew||ma==0) {
 				SFData.MembershipList[i].upgradeMode = 'renew';
 			}
 			r.push(SFData.MembershipList[i]);
@@ -912,6 +913,28 @@ function renewMode() {
 	}
 	
 	return false;
+}
+
+function isExpired() {
+	if(!!SFData.Membership.Membership_Type__c) {
+		if ( SFData.Membership.Membership_Type__c == 'Trial' ) {
+			// A trial membership is always "expired"
+			return true;
+		}
+	}
+	
+	var end = new Date(SFData.Account.Membership_End_Date__c);
+	end.setTime( end.getTime() - 8 * 86400000 );
+	// Adjust math for Daylight Savings
+	end.setTime( end.getTime() + 12 * 1000 * 60 * 60 ); 
+	end.setHours(0);
+	
+	if ( end > new Date() ) {
+		// The threshold is in the future.
+		return false;
+	}
+	
+	return true;
 }
 
 function isRenewal() {

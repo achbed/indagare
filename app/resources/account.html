@@ -118,7 +118,7 @@
 	    	
 		    <h2>Personal Details</h2>
 	    	<form class="clearfix" id="contact" data-source-object="Contact"
-				data-edit-field="Id,Salutation,FirstName,LastName,Title,Birthdate,Anniversary_Date__c">
+				data-edit-field="Id,Salutation,FirstName|validate-type=name,LastName|validate-type=name,Title,Birthdate,Anniversary_Date__c">
 				<a class="form-save-button" action="save" href="#">Save</a>
 				<a class="form-cancel-button" href="#">Close</a>
 				<a class="form-edit-link" href="#">Edit Personal Details</a>
@@ -145,7 +145,7 @@
 		    
 		    <h2>Assistant</h2>
 	    	<form class="clearfix" id="contact" data-source-object="Contact"
-				data-edit-field="Id,AssistantName,Assistant_Email__c|validate-type=email">
+				data-edit-field="Id,AssistantName|validate-type=name,Assistant_Email__c|validate-type=email">
 				<a class="form-save-button" action="save" href="#">Save</a>
 				<a class="form-cancel-button" href="#">Close</a>
 				<a class="form-edit-link" href="#">Edit Assistant Information</a>

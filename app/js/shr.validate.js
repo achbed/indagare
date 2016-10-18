@@ -1,3 +1,10 @@
+// Shim .trim() [IE<9]
+if(typeof String.prototype.trim !== 'function') {
+  String.prototype.trim = function() {
+    return this.replace(/^\s+|\s+$/g, ''); 
+  };
+}
+
 var shrValidate;
 if (!shrValidate) {
 	function shrValidateObj() {
@@ -10,7 +17,7 @@ if (!shrValidate) {
 				.on('change','[validate-type]',function(e){
 					self.validateField(e.target);
 				});
-		}
+		};
 
 		this.formatPhone = function(f) {
 			var n = jQuery(f).val(),r = /[^0-9]/gi,c=n.replace(r,'');
@@ -20,7 +27,15 @@ if (!shrValidate) {
 			 }  
 			 n = '('+c.substring(0,3)+') '+c.substring(3,6)+'-'+c.substring(6,10);
 			 jQuery(f).val(n);
-		}
+		};
+		
+		this.formatName = function(f) {
+			var n = jQuery(f).val().trim(),p=n.split(/\s/),i;
+			for(i in p) {
+				p[i] = p[i].substr(0,1).toLocaleUpperCase() + p[i].substr(1);
+			}
+			jQuery(f).val( p.join( ' ' ) );
+		};
 		
 		this.fieldClearValidate = function(f) {
 			jQuery(f).closest('.field').removeClass('validating').removeClass(
@@ -139,6 +154,11 @@ if (!shrValidate) {
 					self.checkUsername(f);
 					return null;
 				
+				case 'name':
+					self.formatName(f);
+					r = ( ( jQuery(f).val() == '' ) ? e : true );
+					break;
+					
 				default:
 					r = true;
 					break;

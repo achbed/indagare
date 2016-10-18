@@ -456,6 +456,9 @@ class AjaxHandler {
 		$account['Membership_Old__c'] = '';
 		$account->update();
 
+		// Do this so we reduce the log output on initial creation
+		global $WPSF_NewUserProcessing;
+		$WPSF_NewUserProcessing = true;
 		wpsf_apply_roles( $user_signon, $account, true );
 
 		if ( ! $response['success'] ) {
@@ -561,6 +564,16 @@ class AjaxHandler {
 		if ( empty( $m['Listed_for_sale__c'] ) || ( $m['Listed_for_sale__c'] != '1' ) ) {
 			$response = array_merge( $response, array( 'message' => __( 'Your existing Memership level cannot be renewed. Please choose a different level or call for support.', 'indagare' ) ) );
 			self::slack( 'AJAX Renew: Memership renewal denied by sellable flag. MembershipID=`' . $args['new_level'] . '` Sellable=`'.$m['Listed_for_sale__c'].'`', 'moneyfail' );
+			return wp_send_json_error( $response );
+		}
+
+		if ( empty( $account['Credit_Card_Number__c'] ) ||
+			empty( $account['Credit_Card_Month__c'] ) ||
+			empty( $account['Credit_Card_Year__c'] ) ||
+			empty( $account['Card_CVV_Number__c'] ) ||
+			empty( $account['Credit_Card_Type__c'] ) ) {
+			$response = array_merge( $response, array( 'message' => __( 'You must update the credit card on file before upgrading or renewing.', 'indagare' ) ) );
+			self::slack( 'AJAX Renew: No CC on File.', 'moneyfail' );
 			return wp_send_json_error( $response );
 		}
 
