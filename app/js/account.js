@@ -337,7 +337,7 @@ function upgradeAccount(e){
 			}
 			jQuery.alert({
 				title:'Account Update Failed',
-				content:'Failed to update the account.  '+result.data.message
+				content:'We could not upgrade your account.  '+result.data.message
 			});
 		} else {
 			location.reload(true);
@@ -349,7 +349,7 @@ function upgradeAccount(e){
 		}
 		jQuery.alert({
 			title:'Account Update Failed',
-			content:'Failed to update the account.'
+			content:'We could not upgrade your account.'
 		});
 	});
 }
