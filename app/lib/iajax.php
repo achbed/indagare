@@ -573,9 +573,14 @@ class AjaxHandler {
 			empty( $account['Credit_Card_Month__c'] ) ||
 			empty( $account['Credit_Card_Year__c'] ) ||
 			empty( $account['Card_CVV_Number__c'] ) ||
-			empty( $account['Credit_Card_Type__c'] ) ) {
-			$response = array_merge( $response, array( 'message' => __( 'You must update the credit card on file before upgrading or renewing.', 'indagare' ) ) );
-			self::slack( 'AJAX Renew: No CC on File.', 'moneyfail' );
+			empty( $account['Credit_Card_Type__c'] ) ||
+			empty( $account['BillingStreet'] ) ||
+			empty( $account['BillingCity'] ) ||
+			empty( $account['BillingState'] ) ||
+			empty( $account['BillingPostalCode'] ) ||
+			empty( $account['BillingCountry'] ) ) {
+				$response = array_merge( $response, array( 'message' => __( 'You must update the credit card on file before upgrading or renewing.', 'indagare' ) ) );
+			self::slack( 'AJAX Renew: No CC or Billing on File.', 'moneyfail' );
 			return wp_send_json_error( $response );
 		}
 
