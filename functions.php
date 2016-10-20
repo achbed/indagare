@@ -1001,6 +1001,13 @@ function register_scripts() {
     		'hidemap' => __('Hide Map','indagare'),
     		'closemap' => __('Close Map','indagare'),
     		'fullscreen' => __('Full Screen','indagare'),
+
+    		'noupgrades' => __('No more upgrade options available','indagare'),
+    		'upgradenow' => __('Upgrade Now','indagare'),
+    		'renewnow' => __('Renew Now','indagare'),
+    		'savefailed' => __('Save failed','indagare'),
+    		'commerror' => __('Communications error.  Please try again in a moment.','indagare'),
+
     	)
     ));
 }
@@ -1472,13 +1479,12 @@ global $post;
 		|| is_posttype( 'insidertrip' )
 	) {
 
-		if ( ! ind_logged_in() ) {
+		if ( ! is_user_logged_in() ) {
 			indagare\cookies\Counter::updateCounter();
+			if( ! indagare\cookies\Counter::updateCounter() ) {
+				wp_enqueue_script('show.join.popup');
+		    }
 		}
-
-		if( ! ind_logged_in() && ! indagare\cookies\Counter::updateCounter() ) {
-			wp_enqueue_script('show.join.popup');
-	    }
 
 	// archive itinerary - lock out unless visitor is logged-in user
 	} else if ( ! user_has_permission() ) {
@@ -1502,132 +1508,97 @@ function childtheme_override_access() {
       <div id="menu-show-hide" class="box"><a href="#"><b class="menu" data-icon="&#xf0c9;"></b><b class="close-menu" data-icon="&#xf057;"></b></a></div>
       <section id="access" class="box collapsible">
         <ul id="nav">
-          <li id="nav-magazine"><a href="/destinations/articles/features/">Dream</a><span class="show-subnav"><a href="#"></a></span>
+          <li id="nav-magazine"><a href="/destinations/articles/features/"><?php echo __('Dream','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
             <div class="subnav">
-              <div class="main-nav-item"><a href="/destinations/articles/features/">Read Featured Articles</a></div>
+              <div class="main-nav-item"><a href="/destinations/articles/features/"><?php echo __('Read Featured Articles','indagare');?></a></div>
               <div class="nav-item">
                 <h3>Newly Added</h3>
-                <div class="subnav-related"><a href="/destinations/articles/">See All</a></div>
+                <div class="subnav-related"><a href="/destinations/articles/"><?php echo __('See All','indagare');?></a></div>
                 <ul>
-<?php
-				$args = array('numberposts' => 11, 'post_type' => 'article', 'orderby' => array ( 'date' => 'DESC' ) );
-//				$recent = new WP_Query($args);
-				$recent = get_posts($args);
-//				if($recent->have_posts() ) {
-//					while ( $recent->have_posts() ) : $recent->the_post();
-					foreach( $recent as $post ) : setup_postdata($post);
-						echo '<li><a href="'.get_permalink($post->ID).'">'.get_the_title($post->ID).'</a></li>'."\n";
-//					endwhile;
-					endforeach;
-//				}
-
-				// wp_reset_postdata();
-?>
+					<?php
+						$args = array('numberposts' => 11, 'post_type' => 'article', 'orderby' => array ( 'date' => 'DESC' ) );
+						$recent = get_posts($args);
+						foreach( $recent as $post ) : setup_postdata($post);
+							echo '<li><a href="'.get_permalink($post->ID).'">'.get_the_title($post->ID).'</a></li>'."\n";
+						endforeach;
+					?>
                 </ul>
-                <div class="subnav-related"><a href="/magazines/">See Digital Magazine</a></div>
+                <div class="subnav-related"><a href="/magazines/"><?php echo __('See Digital Magazine','indagare');?></a></div>
               </div>
               <div class="nav-item">
-<?php
-				$columns = get_terms( 'column', array( 'orderby' => 'name', 'order' => 'ASC', 'hide_empty' => true) );
+				<?php $columns = get_terms( 'column', array( 'orderby' => 'name', 'order' => 'ASC', 'hide_empty' => true) ); ?>
+				<?php if ( $columns ) : ?>
+					<h3><?php echo __('Columns','indagare');?></h3>
+	                	<div class="subnav-related"><a href="/destinations/articles/"><?php echo __('See All','indagare');?></a></div>
+						<ul>
+							<?php foreach ( $columns as $term ) : ?>
+								<li><a href="/destinations/articles/?column=<?php echo $term->slug; ?>"><?php echo $term->name; ?></a></li>
+							<?php endforeach; ?>
+						</ul>
+				  <?php endif; ?>
+              </div>
+            </div>
+          </li>
+          <li id="nav-explore"><a href="/destinations/"><?php echo __('Plan','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
+            <div class="subnav">
+              <div class="main-nav-item"><a href="/destinations/"><?php echo __('Tour Select Destinations','indagare');?></a></div>
+              <div class="nav-item">
+                <h3><?php echo __('Top Destinations','indagare');?></h3>
+                <div class="subnav-related"><a href="/destinations/"><?php echo __('See All','indagare');?></a></div>
+				<?php wp_nav_menu( array('menu' => 'explore-top-destinations','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => true )); ?>
+              </div>
+              <div class="nav-item">
+                <h3><?php echo __('Indagare Spotlight','indagare');?></h3>
+                <div class="subnav-related"><a href="/destinations/"><?php echo __('See All','indagare');?></a></div>
+				<?php wp_nav_menu( array('menu' => 'explore-spotlight','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => true )); ?>
+              </div>
+            </div>
+          </li>
+          <li id="nav-book"><a href="/book/"><?php echo __('Book','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
+            <div class="subnav">
+              <div class="main-nav-item"><a href="/destinations/"><?php echo __('View All Destinations','indagare'); ?></a></div>
+              <div class="nav-item">
+                <h3><?php echo __('Top Destinations','indagare');?></h3>
+                <div class="subnav-related"><a href="/destinations/"><?php echo __('See All','indagare');?></a></div>
+				<?php wp_nav_menu( array('menu' => 'book-top-destinations','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => true )); ?>
+              </div>
+              <div class="nav-item">
+                <h3><?php echo __('Top Hotels','indagare');?></h3>
+				<?php wp_nav_menu( array('menu' => 'book-top-hotels','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => true )); ?>
+                <div class="subnav-related"><a href="/destinations/offers/"><?php echo __('See Partner Promotions','indagare');?></a></div>
+                <div class="subnav-related"><a href="/destinations/insidertrips/"><?php echo __('See Insider Trips','indagare');?></a></div>
+              </div>
+            </div>
+          </li>
+          <li id="nav-shop"><a href="http://www.shoplatitude.com/collections/indagare" target="_blank"><?php echo __('Shop','indagare');?></a></li>
 
-				if ( $columns ) {
-					echo '<h3>Columns</h3>'."\n";
-                	echo '<div class="subnav-related"><a href="/destinations/articles/">See All</a></div>'."\n";
-					echo '<ul>'."\n";
-						foreach ( $columns as $term ) {
-							echo '<li><a href="/destinations/articles/?column='.$term->slug.'">'.$term->name.'</a></li>'."\n";
-						}
-					echo '</ul>'."\n";
-				}
-?>
-              </div>
-            </div>
-          </li>
-          <li id="nav-explore"><a href="/destinations/">Plan</a><span class="show-subnav"><a href="#"></a></span>
-            <div class="subnav">
-              <div class="main-nav-item"><a href="/destinations/">Tour Select Destinations</a></div>
-              <div class="nav-item">
-                <h3>Top Destinations</h3>
-                <div class="subnav-related"><a href="/destinations/">See All</a></div>
-<?php
-$expltopdest = wp_nav_menu( array('menu' => 'explore-top-destinations','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => false ));
-echo $expltopdest;
-?>
-              </div>
-              <div class="nav-item">
-                <h3>Indagare Spotlight</h3>
-                <div class="subnav-related"><a href="/destinations/">See All</a></div>
-<?php
-$spotlight = wp_nav_menu( array('menu' => 'explore-spotlight','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => false ));
-echo $spotlight;
-?>
-              </div>
-            </div>
-          </li>
-          <li id="nav-book"><a href="/book/">Book</a><span class="show-subnav"><a href="#"></a></span>
-            <div class="subnav">
-              <div class="main-nav-item"><a href="/destinations/">View All Destinations</a></div>
-              <div class="nav-item">
-                <h3>Top Destinations</h3>
-                <div class="subnav-related"><a href="/destinations/">See All</a></div>
-<?php
-$booktopdest = wp_nav_menu( array('menu' => 'book-top-destinations','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => false ));
-echo $booktopdest;
-?>
-              </div>
-              <div class="nav-item">
-                <h3>Top Hotels</h3>
-<?php
-$tophotels = wp_nav_menu( array('menu' => 'book-top-hotels','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => false ));
-echo $tophotels;
-?>
-                <div class="subnav-related"><a href="/destinations/offers/">See Partner Promotions</a></div>
-                <div class="subnav-related"><a href="/destinations/insidertrips/">See Insider Trips</a></div>
-              </div>
-            </div>
-          </li>
-          <li id="nav-shop"><a href="http://www.shoplatitude.com/collections/indagare" target="_blank">Shop</a></li>
-<?php
-	if ( ind_logged_in() ) {
-?>
-          <li id="nav-account" class="loggedin single"><a href="#">Account</a><span class="show-subnav"><a href="#"></a></span>
+		  <?php if ( is_user_logged_in() ) : ?>
+          <li id="nav-account" class="loggedin single"><a href="#"><?php echo __('Account','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
             <div class="subnav">
               <div class="nav-item">
-<?php
-	$account = wp_nav_menu( array('menu' => 'account','container' => '','container_id' => '','container_class' => '','echo' => false ));
-	if( is_user_logged_in() ) {
-		$account = str_replace('</ul>', '<li><a href="' . wp_logout_url( get_permalink() ) . '">Log Out</a></li></ul>', $account);
-	} else {
-		$account = str_replace('</ul>', '<li><a href="' . get_bloginfo( 'stylesheet_directory' ) . '/logout.php">Log Out</a></li></ul>', $account);
-	}
-	echo $account;
-?>
+				<?php
+					$account = wp_nav_menu( array('menu' => 'account','container' => '','container_id' => '','container_class' => '','echo' => false ));
+					$account = str_replace('</ul>', '<li><a href="' . wp_logout_url( get_permalink() ) . '">'.__('Log Out','indagare').'</a></li></ul>', $account);
+					echo $account;
+				?>
               </div>
             </div>
           </li>
-<?php
-	} else {
-          echo '<li id="nav-login"><a href="#lightbox-login" class="lightbox-inline">Log In</a></li>'."\n";
-?>
-          <li id="nav-account" class="single"><a href="#">Join</a><span class="show-subnav"><a href="#"></a></span>
+		  <?php else: ?>
+          <li id="nav-login"><a href="#lightbox-login" class="lightbox-inline"><?php echo __('Log In','indagare');?></a></li>
+          <li id="nav-account" class="single"><a href="#"><?php echo __('Join','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
             <div class="subnav">
               <div class="nav-item">
-<?php
-	$footermembership = wp_nav_menu( array('menu' => 'footer-membership','container' => '','container_id' => '','container_class' => '','echo' => false ));
-	echo $footermembership;
-?>
+				<?php wp_nav_menu( array('menu' => 'footer-membership','container' => '','container_id' => '','container_class' => '','echo' => true )); ?>
               </div>
             </div>
           </li>
-<?php
-	}
-
-?>
+		  <?php endif; ?>
         </ul>
       </section>
       <section id="search-indagare" class="box collapsible">
         <form id="searchform" name="searchform" method="get" action="/">
-          <label>Search</label>
+          <label><?php echo __('Search','indagare');?></label>
         	<div class="form-combo">
           	<span class="form-item"><input type="text" id="search-site" name="s" class="element" /><b class="icon" data-icon="&#xf002;"></b></span>
           </div>
@@ -2645,7 +2616,7 @@ jQuery().ready(function($) {
 			if ( $caption ) {
 				echo '<p class="summary">'.$caption.'</p>'."\n";
 			}
-			if ( ! ind_logged_in() ) {
+			if ( ! is_user_logged_in() ) {
 				echo '<a class="button primary floatright" href="/join/">Join</a>'."\n";
 			}
 			if ( $overview ) {
@@ -4954,7 +4925,7 @@ function child_singlepost($content) {
 			$content .= '<h4 class="more">View this issue</h4>'."\n";
 			$content .= '</div><!-- .rollover -->'."\n";
 			$content .= '</a>'."\n";
-		} else if ( ! ind_logged_in() ) {
+		} else if ( ! is_user_logged_in() ) {
 			$content .= '<a href="/join/">'."\n";
 			$content .= '<div class="rollover">'."\n";
 			$content .= '<h4 class="more">Join today to see this issue</h4>'."\n";
@@ -5935,7 +5906,7 @@ function child_singlepost($content) {
 
 		}
 
-		$content .= '<div class="header divider"><h2>Popular Destinations</h2><p class="view-more"><a href="/">View All Destinations</a></p></div>'."\n";
+		$content .= '<div class="header divider"><h2>'.__('Popular Destinations','indagare').'</h2><p class="view-more"><a href="/">'.__('View All Destinations','indagare').'</a></p></div>'."\n";
 
 		$rows = get_field('welcome-destination', 'option');
 		shuffle($rows);
@@ -6125,10 +6096,10 @@ function child_singlepost($content) {
 
 	// my account page
 	} else if ( is_page_template ( 'template-page-account-edit.php' ) ) {
-		if ( ind_logged_in() ) {
+		if ( is_user_logged_in() ) {
 			$content = \indagare\wp\WPContent::getContent("account");
 		} else {
-			$content = '<p>You need to log in to see this page.</p>'."\n";
+			$content = '<p>'.__('You need to log in to see this page.','indagare').'</p>'."\n";
 		}
 
 	// end my account page
@@ -6138,11 +6109,11 @@ function child_singlepost($content) {
 
 		$content = '';
 
-		if ( ! ind_logged_in() ) {
+		if ( ! is_user_logged_in() ) {
 
 //			header('Location: /' );
 
-			$content = '<p>You need to log in to see this page.</p>'."\n";
+			$content = '<p>'.__('You need to log in to see this page.','indagare').'</p>'."\n";
 
 
 		} else {
@@ -6465,7 +6436,7 @@ function childtheme_override_404_content() {
 
 	endwhile;
 
-	echo '<div class="header divider"><h2>Popular Destinations</h2><p class="view-more"><a href="/">View All Destinations</a></p></div>'."\n";
+	echo '<div class="header divider"><h2>'.__('Popular Destinations','indagare').'</h2><p class="view-more"><a href="/">'.__('View All Destinations','indagare').'</a></p></div>'."\n";
 
 	$rows = get_field('welcome-destination', 'option');
 	shuffle($rows);
@@ -7404,7 +7375,7 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 	 ) {
 
 		// is user logged in
-		if ( ! ind_logged_in() ) {
+		if ( ! is_user_logged_in() ) {
 
 			echo '<div id="join-today" class="contain">'."\n";
 				echo '<div class="join-indagare">'."\n";
@@ -7553,7 +7524,7 @@ jQuery(document).ready(function($) {
 	} // endemail signup modal
 
 	// login modal
-	if ( ! ind_logged_in() ) {
+	if ( ! is_user_logged_in() ) {
 ?>
 <div id="lightbox-login" class="lightbox white-popup login mfp-hide">
 	<header>
@@ -7593,7 +7564,7 @@ jQuery(document).ready(function($) {
 	} // end login modal
 
 	// content lockout modal
-	if ( ! ind_logged_in() ) {
+	if ( ! is_user_logged_in() ) {
 ?>
 <div id="lightbox-join" class="lightbox white-popup mfp-hide">
 	<header>
@@ -7697,7 +7668,7 @@ jQuery(document).ready(function($) {
 	}// end content lockout modal
 
 	// lightbox interstitial modals for booking and flights
-	if ( ! ind_logged_in() ) {
+	if ( ! is_user_logged_in() ) {
 ?>
 <div id="lightbox-interstitial" class="lightbox lightbox-two-col white-popup mfp-hide contain">
 	<div class="column one-half">
@@ -8014,7 +7985,7 @@ echo do_shortcode('[contact-form-7 id="32337" title="Contact Insider Trips"]');
 
 		var ssotokenvalue_default = 'x4T306PLm1KWuXktHqtGzw%3D%3D',
 		    ssotokenvalue = ssotokenvalue_default;
-		<?php if ( ind_logged_in() ) {
+		<?php if ( is_user_logged_in() ) {
 			$account = \WPSF\Contact::get_account_wp();
 			if ( method_exists( $account, 'get_ssotoken' ) ) {
 				print 'ssotokenvalue = "' . $account->get_ssotoken() . '";';
@@ -8452,7 +8423,7 @@ function article_meta($postID) {
 	$articlemeta = '<div class="article-meta contain">'."\n";
 
 	// add to favorites
-	if ( ind_logged_in() ) {
+	if ( is_user_logged_in() ) {
 
 		$articlemeta .= '<p class="user-meta">';
 
@@ -8467,8 +8438,13 @@ function article_meta($postID) {
 		$articlemeta .= '</p>'."\n";
 	}
 
-		$articlemeta .= '<p class="social-meta"><span class="icon-label">Share:</span> <span id="social-facebook"><b class="icon custom-icon" data-icon="&#xe003;"><span class="st_facebook"displayText=""></span></b></span> <span id="social-twitter"><b class="icon custom-icon" data-icon="&#xe001;"><span class="st_twitter"></span></b></span> <span id="social-pinterest"><b class="icon custom-icon" data-icon="&#xe007;"><span class="st_pinterest"></span></b></span> <a id="social-email" class="contact lightbox-inline" href="#lightbox-contact-friend"><b class="icon custom-icon" data-icon="&#xe614;"></b></a></p>'."\n";
-//		$articlemeta .= '<p class="social-meta"><span class="icon-label">Share:</span> <span id="social-facebook"><b class="icon custom-icon" data-icon="&#xe003;"><span class="st_facebook"displayText=""></span></b></span> <span id="social-twitter"><b class="icon custom-icon" data-icon="&#xe001;"><span class="st_twitter"></span></b></span> <span id="social-pinterest"><b class="icon custom-icon" data-icon="&#xe007;"><span class="st_pinterest"></span></b></span></p>'."\n";
+	$articlemeta .= '<p class="social-meta">';
+	$articlemeta .= '<span class="icon-label">Share:</span>';
+	$articlemeta .= ' <span id="social-facebook"><b class="icon custom-icon" data-icon="&#xe003;"><span class="st_facebook"displayText=""></span></b></span>';
+	$articlemeta .= ' <span id="social-twitter"><b class="icon custom-icon" data-icon="&#xe001;"><span class="st_twitter"></span></b></span>';
+	$articlemeta .= ' <span id="social-pinterest"><b class="icon custom-icon" data-icon="&#xe007;"><span class="st_pinterest"></span></b></span>';
+	$articlemeta .= ' <a id="social-email" class="contact lightbox-inline" href="#lightbox-contact-friend"><b class="icon custom-icon" data-icon="&#xe614;"></b></a>';
+	$articlemeta .= '</p>'."\n";
 	$articlemeta .= '</div>'."\n";
 
 	return $articlemeta;
@@ -9159,7 +9135,7 @@ function ind_show_email_popup() {
 		return true;
 	}
 
-	if ( ind_logged_in() ) {
+	if ( is_user_logged_in() ) {
 		// We're logged in.  Never show this thing.
 		return false;
 	}
