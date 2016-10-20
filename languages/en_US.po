@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-10-17 14:08-0500\n"
-"PO-Revision-Date: 2016-10-17 14:08-0600\n"
+"PO-Revision-Date: 2016-10-20 16:05-0600\n"
 "Last-Translator: Dennis Wallace <dwallace@shr.global>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,9 @@ msgstr ""
 
 #: app/lib/iajax.php:572
 msgid "You must update the credit card on file before upgrading or renewing."
-msgstr "You must update the credit card on file before upgrading or renewing."
+msgstr ""
+"You must update the credit card and billing address on file before upgrading "
+"or renewing."
 
 #: author.php:67
 msgid "Email "
