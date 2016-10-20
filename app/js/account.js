@@ -68,8 +68,8 @@ jQuery(document)
 			}
 		}).fail(function(){
 			jQuery.alert({
-				title:'Save failed',
-				content:'Communications error.  Please try again in a moment.'
+				title:_x.savefailed,
+				content:_x.commerror
 			});
 		});
 	})
@@ -78,19 +78,19 @@ jQuery(document)
 		var p=jQuery('#account-membership-upgrade-select').find(':selected'),a=p.attr('amount'),n=numeral(p.attr('amount')).format('$0,000.00');
 	
 	    jQuery.confirm({
-	        title: 'Are you sure?',
-	        content: 'We will now charge your credit card on file for '+n,
+	        title: _x.areyousure,
+	        content: _x.nowcharge+' '+n,
 	        keyboardEnabled: true,
 	        confirmKeys:[],
 	        confirmButton: jQuery('#upgrade-button').html(),
 	        confirmButtonClass: 'btn-danger',
-	        cancelButton: 'Cancel',
+	        cancelButton: _x.cancel,
 	
 	    	confirm: function () {
 	    		upgradeAccount(e);
 	    		progressDialog = jQuery.alert({
-	    			title:'Updating account',
-	    			content:'Please wait...',
+	    			title:_x.updating,
+	    			content:_x.pleasewait,
 	    			closeIcon: false,
 	    			confirmButton:'',
 	    			cancelButton:'',
@@ -125,7 +125,7 @@ jQuery(document)
 		}).done(function(result) {
 			if(!result.success) {
 				jQuery.alert({
-					title:'Save failed',
+					title:_x.savefailed,
 					content:result.data[0]
 				});
 			} else {
@@ -220,13 +220,13 @@ jQuery(document).on('click','.card-delete-button',function(e) {
 			postdata['Contact__c'] = f.find('[name=Contact__c]').first().val();
 		}
     jQuery.confirm({
-        title: 'Are you sure?',
-        content: 'This cannot be un-done.',
+        title: _x.areyousure,
+        content: _x.cannotundo,
         keyboardEnabled: true,
         confirmKeys:[],
-        confirmButton: 'Yes, Delete it',
+        confirmButton: _x.yesdelete,
         confirmButtonClass: 'btn-danger',
-        cancelButton: 'Cancel',
+        cancelButton: _x.cancel,
     	confirm: function () {
     		if ( id != '' ) {
     			jQuery(e.target).addClass('processing').prop({disabled:true});
@@ -237,7 +237,7 @@ jQuery(document).on('click','.card-delete-button',function(e) {
     			}).done(function(result) {
     				if(!result.success) {
     					jQuery.alert({
-    						title:'Delete failed',
+    						title:_x.deletefailed,
     						content:result.data
     					});
     				} else {
@@ -263,18 +263,18 @@ jQuery(document).on('click','#new-contact-link',function(e){
 	 	e = c.replace(/(validate-group=)"([^"]*)"/g,'$1"$2-'+dialog_instance+'"');
 	
     jQuery.confirm({
-        title: 'Add Travel Companion',
+        title: _x.addtravelcomp,
         content: e,
         keyboardEnabled: false,
-        confirmButton: 'Create',
+        confirmButton: _x.create,
         confirmButtonClass: 'btn-info',
-        cancelButton: 'Cancel',
+        cancelButton: _x.cancel,
     	confirm: function () {
     		if(shrValidate.validateForm('#'+diagid) !== true) return false;
     		createNewContact(this.$content);
     		progressDialog = jQuery.alert({
-    			title:'Creating contact',
-    			content:'Please wait...',
+    			title:_x.createcontact,
+    			content:_x.pleasewait,
     			closeIcon: false,
     			confirmButton:'',
     			cancelButton:'',
@@ -336,8 +336,8 @@ function upgradeAccount(e){
 				progressDialog.close();
 			}
 			jQuery.alert({
-				title:'Account Update Failed',
-				content:'We could not upgrade your account.  '+result.data.message
+				title:_x.upgradefailedtitle,
+				content:_x.upgradefailed+' '+result.data.message
 			});
 		} else {
 			location.reload(true);
@@ -348,8 +348,8 @@ function upgradeAccount(e){
 			progressDialog.close();
 		}
 		jQuery.alert({
-			title:'Account Update Failed',
-			content:'We could not upgrade your account.'
+			title:_x.upgradefailedtitle,
+			content:_x.upgradefailed
 		});
 	});
 }
@@ -483,7 +483,7 @@ function getAccount() {
 		} 
 	}).done(function(result) {
 		if(!result.success) {
-			alert('Error loading account data!');
+			alert(_x.accountloadfailed);
 			return;
 		}
 		SFData.Account = result.data;
@@ -582,9 +582,9 @@ function newCardItem(y,i) {
 	}
 	f.find('input[name="Contact__c"]').val( jQuery('#contactselect').val() );
 	
-	jQuery('<a></a>').attr('href','#').html('Delete').addClass('card-delete-button card-button-large').prependTo(f);
-	jQuery('<a></a>').attr('href','#').html('Save').attr('action','save').addClass('form-save-button card-save-button card-button-large').appendTo(f);
-	jQuery('<a></a>').attr('href','#').html('Edit').addClass('form-edit-link card-edit-link').appendTo(f);
+	jQuery('<a></a>').attr('href','#').html(_x.del).addClass('card-delete-button card-button-large').prependTo(f);
+	jQuery('<a></a>').attr('href','#').html(_x.save).attr('action','save').addClass('form-save-button card-save-button card-button-large').appendTo(f);
+	jQuery('<a></a>').attr('href','#').html(_x.edit).addClass('form-edit-link card-edit-link').appendTo(f);
 	f.appendTo(c);
 	
 	return c;
@@ -660,7 +660,7 @@ function fixUpgradeButtonText() {
 			b.remove();
 			jQuery('#field-account-membership-upgrade-select label').html('No more upgrade options available');
 		} else {
-			var t=s.val(),x="Upgrade Now",i,tm=false,cm;
+			var t=s.val(),x=_x.upgradenow,i,tm=false,cm;
 			for(i in SFData.MembershipList) {
 				if(SFData.MembershipList[i].Id == t) {
 					tm=SFData.MembershipList[i];
@@ -668,7 +668,7 @@ function fixUpgradeButtonText() {
 				}
 			}
 			if(!!tm && ((SFData.Membership.Id == tm.Id) || (SFData.Membership.Amount__c >= tm.Amount))) {
-				x = "Renew Now";
+				x = _x.renewnow;
 			}
 			b.html(x);
 		}
@@ -706,7 +706,7 @@ function createNewContact(f) {
 		}
 		if(!result.success) {
 			jQuery.alert({
-				title:'Creation failed',
+				title:_x.createfail,
 				content:result.data[0]
 			});
 			return false;
@@ -1133,7 +1133,7 @@ function makeInput(a,p,l,t,r) {
 			}
 			
 			if ( a['nillable'] ) {
-				jQuery('<option></option>').html('Choose an option...').attr('value',' ').appendTo(s);
+				jQuery('<option></option>').html(_x.chooseoption).attr('value',' ').appendTo(s);
 				if(!v || v == 'null' || v == '') v = ' ';
 			}
 			
@@ -1164,7 +1164,7 @@ function makeInput(a,p,l,t,r) {
 				.prop('disabled',( ! a['updateable'] ) );
 			
 			if ( a['nillable'] ) {
-				jQuery('<option></option>').html('Choose an option...').attr('value',' ').appendTo(s);
+				jQuery('<option></option>').html(_x.chooseoption).attr('value',' ').appendTo(s);
 				if(!v || v == 'null' || v == '') v = ' ';
 			}
 			
@@ -1197,7 +1197,7 @@ function makeInput(a,p,l,t,r) {
 				.prop('disabled',( ! a['updateable'] ) );
 			
 			if ( a['nillable'] ) {
-				jQuery('<option></option>').html('Choose an option...').attr('value',' ').appendTo(s);
+				jQuery('<option></option>').html(_x.chooseoption).attr('value',' ').appendTo(s);
 				if(!v || v == 'null' || v == '') v = ' ';
 			}
 			
@@ -1228,11 +1228,11 @@ function makeInput(a,p,l,t,r) {
 				.prop('disabled',( ! a['updateable'] ) );
 			
 			if(!v || v == 'null' || v == '' ) {
-				jQuery('<option></option>').html('Month...').attr('value',' ').appendTo(s);
+				jQuery('<option></option>').html(_x.month_elip).attr('value',' ').appendTo(s);
 				v = ' ';
 			}
 			if(v.substring(0,1) == '*' ) { 
-				jQuery('<option></option>').html('On File').attr('value','**').appendTo(s);
+				jQuery('<option></option>').html(_x.onfile).attr('value','**').appendTo(s);
 				v = '**';
 			}
 			
@@ -1260,11 +1260,11 @@ function makeInput(a,p,l,t,r) {
 				.prop('disabled',( ! a['updateable'] ) );
 			
 			if(!v || v == 'null' || v == '' ) {
-				jQuery('<option></option>').html('Year...').attr('value',' ').appendTo(s);
+				jQuery('<option></option>').html(_x.year_elip).attr('value',' ').appendTo(s);
 				v = ' ';
 			}
 			if(v.substring(0,1) == '*' ) { 
-				jQuery('<option></option>').html('On File').attr('value','**').appendTo(s);
+				jQuery('<option></option>').html(_x.onfile).attr('value','**').appendTo(s);
 				v = '**';
 			}
 			

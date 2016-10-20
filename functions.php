@@ -144,18 +144,18 @@ add_action( 'validate_password_reset', 'ind_validate_password_reset', 10, 2 );
  * @since 4.3.0
  *
  * @param array $email_change_email {
- *            Used to build wp_mail().
- *            @type string $to      The intended recipients.
- *            @type string $subject The subject of the email.
- *            @type string $message The content of the email.
- *                The following strings have a special meaning and will get replaced dynamically:
- *                - ###USERNAME###    The current user's username.
- *                - ###ADMIN_EMAIL### The admin email in case this was unexpected.
- *                - ###EMAIL###       The old email.
- *                - ###SITENAME###    The name of the site.
- *                - ###SITEURL###     The URL to the site.
- *            @type string $headers Headers.
- *        }
+ *			Used to build wp_mail().
+ *			@type string $to	  The intended recipients.
+ *			@type string $subject The subject of the email.
+ *			@type string $message The content of the email.
+ *				The following strings have a special meaning and will get replaced dynamically:
+ *				- ###USERNAME###	The current user's username.
+ *				- ###ADMIN_EMAIL### The admin email in case this was unexpected.
+ *				- ###EMAIL###	   The old email.
+ *				- ###SITENAME###	The name of the site.
+ *				- ###SITEURL###	 The URL to the site.
+ *			@type string $headers Headers.
+ *		}
  * @param array $user The original user array.
  * @param array $userdata The updated user array.
  */
@@ -317,8 +317,8 @@ function childtheme_header_style() {
 		#branding {
 			background:url('<?php header_image(); ?>') no-repeat 0 100%;
 			margin-bottom:28px;
-    		padding:44px 0 <?php echo HEADER_IMAGE_HEIGHT; ?>px 0; /* Bottom padding is the same height as the image */
-    		overflow: visible;
+			padding:44px 0 <?php echo HEADER_IMAGE_HEIGHT; ?>px 0; /* Bottom padding is the same height as the image */
+			overflow: visible;
 }
 		}
 		<?php if ( 'blank' != get_header_textcolor() ) { ?>
@@ -425,10 +425,10 @@ function childtheme_admin_header_style() {
 	}
 
 	#headimg h1 {
-	    font-family:Arial,sans-serif;
-	    font-size:34px;
-	    font-weight:bold;
-	    line-height:40px;
+		font-family:Arial,sans-serif;
+		font-size:34px;
+		font-weight:bold;
+		line-height:40px;
 		margin:0;
 	}
 	#headimg a {
@@ -437,9 +437,9 @@ function childtheme_admin_header_style() {
 	}
 	#desc{
 		font-family: Georgia;
-    	font-size: 13px;
-    	font-style: italic;
-    }
+		font-size: 13px;
+		font-style: italic;
+	}
 	</style>
 	<?php
 }
@@ -447,93 +447,93 @@ function childtheme_admin_header_style() {
 
 add_filter('rewrite_rules_array', 'mmp_rewrite_rules');
 function mmp_rewrite_rules($rules) {
-    $newRules  = array();
+	$newRules  = array();
 
-    $newRules['destinations/?$'] = 'index.php?pagename=map';
-    $newRules['destinations/articles/features?$'] = 'index.php?post_type=article&filter=features';
-    $newRules['destinations/(article|offer|insidertrip)s+/?$'] = 'index.php?post_type=$matches[1]';
-    $newRules['destinations/(hotel|shop|restaurant)s+/?$'] = 'index.php';
-    $newRules['destinations/(activit|itinerar|librar)(y|ies)/?$'] = 'index.php';
+	$newRules['destinations/?$'] = 'index.php?pagename=map';
+	$newRules['destinations/articles/features?$'] = 'index.php?post_type=article&filter=features';
+	$newRules['destinations/(article|offer|insidertrip)s+/?$'] = 'index.php?post_type=$matches[1]';
+	$newRules['destinations/(hotel|shop|restaurant)s+/?$'] = 'index.php';
+	$newRules['destinations/(activit|itinerar|librar)(y|ies)/?$'] = 'index.php';
 
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|offer|insidertrip)s?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]&paged=$matches[4]';
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|offer|insidertrip)s?/(.+)/?$'] = 'index.php?$matches[3]=$matches[4]';
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|offer|insidertrip)s?/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]';
+	$newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|offer|insidertrip)s?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]&paged=$matches[4]';
+	$newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|offer|insidertrip)s?/(.+)/?$'] = 'index.php?$matches[3]=$matches[4]';
+	$newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|offer|insidertrip)s?/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]';
 
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]y&destinations=$matches[2]&paged=$matches[5]';
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/(.+)/?$'] = 'index.php?$matches[3]y=$matches[5]';
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/?$'] = 'index.php?post_type=$matches[3]y&destinations=$matches[2]';
+	$newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]y&destinations=$matches[2]&paged=$matches[5]';
+	$newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/(.+)/?$'] = 'index.php?$matches[3]y=$matches[5]';
+	$newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/?$'] = 'index.php?post_type=$matches[3]y&destinations=$matches[2]';
 
-    $newRules['destinations/(hotel|shop|restaurant|article|offer|insidertrip)s?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[1]&paged=$matches[2]';
+	$newRules['destinations/(hotel|shop|restaurant|article|offer|insidertrip)s?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[1]&paged=$matches[2]';
 
-    $newRules['destinations/(activit|itinerar|librar)(y|ies)?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[1]y&paged=$matches[3]';
-    $newRules['destinations/(activit|itinerar|librar)(y|ies)?/?$'] = 'index.php';
+	$newRules['destinations/(activit|itinerar|librar)(y|ies)?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[1]y&paged=$matches[3]';
+	$newRules['destinations/(activit|itinerar|librar)(y|ies)?/?$'] = 'index.php';
 
-    $newRules['destinations/([^/]*/)*([^/]+)/?$'] = 'index.php?destinations=$matches[2]';
+	$newRules['destinations/([^/]*/)*([^/]+)/?$'] = 'index.php?destinations=$matches[2]';
 
-    return array_merge($newRules, $rules);
+	return array_merge($newRules, $rules);
 }
 
-//    add_action( 'wp_loaded','my_flush_rules' );
+//	add_action( 'wp_loaded','my_flush_rules' );
 add_action( 'after_switch_theme','my_flush_rules' );
 
 // Flush rules for including custom rewrite rules
 
 function my_flush_rules(){
-        $rules = get_option( 'rewrite_rules' );
-        global $wp_rewrite;
-        $wp_rewrite->flush_rules();
-    }
+		$rules = get_option( 'rewrite_rules' );
+		global $wp_rewrite;
+		$wp_rewrite->flush_rules();
+	}
 
 // move destinations to its own menu, remove elsewhere
 function adjust_the_wp_menu() {
-    remove_submenu_page(
-    	'edit.php',
-        'edit-tags.php?taxonomy=destinationinterest'
-    );
-    remove_submenu_page(
-    	'edit.php',
-        'edit-tags.php?taxonomy=destinationseason'
-    );
-    remove_submenu_page(
-    	'edit.php?post_type=hotel',
-        'edit-tags.php?taxonomy=destinations&amp;post_type=hotel'
-    );
-    remove_submenu_page(
-    	'edit.php?post_type=restaurant',
-        'edit-tags.php?taxonomy=destinations&amp;post_type=restaurant'
-    );
-    remove_submenu_page(
-    	'edit.php?post_type=shop',
-        'edit-tags.php?taxonomy=destinations&amp;post_type=shop'
-    );
-    remove_submenu_page(
-    	'edit.php?post_type=activity',
-        'edit-tags.php?taxonomy=destinations&amp;post_type=activity'
-    );
-    remove_submenu_page(
-    	'edit.php?post_type=itinerary',
-        'edit-tags.php?taxonomy=destinations&amp;post_type=itinerary'
-    );
-    remove_submenu_page(
-    	'edit.php?post_type=library',
-        'edit-tags.php?taxonomy=destinations&amp;post_type=library'
-    );
-    remove_submenu_page(
-    	'edit.php?post_type=article',
-        'edit-tags.php?taxonomy=destinations&amp;post_type=article'
-    );
-    remove_submenu_page(
-    	'edit.php?post_type=offer',
-        'edit-tags.php?taxonomy=destinations&amp;post_type=offer'
-    );
-    remove_submenu_page(
-    	'edit.php?post_type=insidertrip',
-        'edit-tags.php?taxonomy=destinations&amp;post_type=insidertrip'
-    );
-    remove_submenu_page(
-    	'upload.php',
-        'edit-tags.php?taxonomy=destinations&amp;post_type=attachment'
-    );
+	remove_submenu_page(
+		'edit.php',
+		'edit-tags.php?taxonomy=destinationinterest'
+	);
+	remove_submenu_page(
+		'edit.php',
+		'edit-tags.php?taxonomy=destinationseason'
+	);
+	remove_submenu_page(
+		'edit.php?post_type=hotel',
+		'edit-tags.php?taxonomy=destinations&amp;post_type=hotel'
+	);
+	remove_submenu_page(
+		'edit.php?post_type=restaurant',
+		'edit-tags.php?taxonomy=destinations&amp;post_type=restaurant'
+	);
+	remove_submenu_page(
+		'edit.php?post_type=shop',
+		'edit-tags.php?taxonomy=destinations&amp;post_type=shop'
+	);
+	remove_submenu_page(
+		'edit.php?post_type=activity',
+		'edit-tags.php?taxonomy=destinations&amp;post_type=activity'
+	);
+	remove_submenu_page(
+		'edit.php?post_type=itinerary',
+		'edit-tags.php?taxonomy=destinations&amp;post_type=itinerary'
+	);
+	remove_submenu_page(
+		'edit.php?post_type=library',
+		'edit-tags.php?taxonomy=destinations&amp;post_type=library'
+	);
+	remove_submenu_page(
+		'edit.php?post_type=article',
+		'edit-tags.php?taxonomy=destinations&amp;post_type=article'
+	);
+	remove_submenu_page(
+		'edit.php?post_type=offer',
+		'edit-tags.php?taxonomy=destinations&amp;post_type=offer'
+	);
+	remove_submenu_page(
+		'edit.php?post_type=insidertrip',
+		'edit-tags.php?taxonomy=destinations&amp;post_type=insidertrip'
+	);
+	remove_submenu_page(
+		'upload.php',
+		'edit-tags.php?taxonomy=destinations&amp;post_type=attachment'
+	);
 	add_menu_page('Destinations', 'Destinations', 'edit_posts', 'edit-tags.php?taxonomy=destinations', '', '', '37.5');
 
 		add_submenu_page( 'edit-tags.php?taxonomy=destinations', 'Destinations', 'Destinations', 'manage_options', 'edit-tags.php?taxonomy=destinations');
@@ -595,49 +595,49 @@ add_action('admin_init','kpl_user_bio_visual_editor_unfiltered');
 // dashboard for recent custom posts
 function wps_recent_posts() {
    echo '<ol>'."\n";
-          global $post;
-          $args = array( 'numberposts' => 50, 'post_type' => array('hotel', 'restaurant', 'shop', 'activity', 'itinerary', 'library', 'article'), 'orderby' => 'date', 'order' => 'DESC' );
-          $myposts = get_posts( $args );
-                foreach( $myposts as $post ) : setup_postdata($post);
+		  global $post;
+		  $args = array( 'numberposts' => 50, 'post_type' => array('hotel', 'restaurant', 'shop', 'activity', 'itinerary', 'library', 'article'), 'orderby' => 'date', 'order' => 'DESC' );
+		  $myposts = get_posts( $args );
+				foreach( $myposts as $post ) : setup_postdata($post);
 					$destinationstree = destinationstree();
 					$dest = $destinationstree['dest'];
 					$posttype =  get_post_type( $post );
 					$postobj = get_post_type_object( $posttype );
 					$postobjname = $postobj->labels->singular_name;
-                    echo '<li><h4>'.get_the_title().' | <span class="details"><a href="/wp-admin/post.php?post='.$post->ID.'&action=edit">E</a> | <a target="_blank" href="'.get_permalink().'">V</a> | '.$dest->name.' | '.$postobjname.' | '.get_the_author_meta( 'display_name', $post->post_author ).' | <abbr>'.get_the_date('n/d/y').'</abbr></span></h4></li>'."\n";
-          		endforeach;
+					echo '<li><h4>'.get_the_title().' | <span class="details"><a href="/wp-admin/post.php?post='.$post->ID.'&action=edit">E</a> | <a target="_blank" href="'.get_permalink().'">V</a> | '.$dest->name.' | '.$postobjname.' | '.get_the_author_meta( 'display_name', $post->post_author ).' | <abbr>'.get_the_date('n/d/y').'</abbr></span></h4></li>'."\n";
+		  		endforeach;
    echo '</ol>'."\n";
 }
 
 function add_wps_recent_hotels() {
-       wp_add_dashboard_widget( 'wps_recent_posts', __( 'Recent Posts' ), 'wps_recent_posts' );
+	   wp_add_dashboard_widget( 'wps_recent_posts', __( 'Recent Posts' ), 'wps_recent_posts' );
 }
 add_action('wp_dashboard_setup', 'add_wps_recent_hotels' );
 
 /**
 * Conditional function to check if post belongs to term in a custom taxonomy.
 *
-* @param    tax        string                taxonomy to which the term belons
-* @param    term    int|string|array    attributes of shortcode
-* @param    _post    int                    post id to be checked
-* @return             BOOL                True if term is matched, false otherwise
+* @param	tax		string				taxonomy to which the term belons
+* @param	term	int|string|array	attributes of shortcode
+* @param	_post	int					post id to be checked
+* @return			 BOOL				True if term is matched, false otherwise
 */
 function pa_in_taxonomy($tax, $term, $_post = NULL) {
-    // if neither tax nor term are specified, return false
-    if ( !$tax || !$term ) { return FALSE; }
-    // if post parameter is given, get it, otherwise use $GLOBALS to get post
-    if ( $_post ) {
-        $_post = get_post( $_post );
-    } else {
-        $_post =& $GLOBALS['post'];
-    }
-    // if no post return false
-    if ( !$_post ) { return FALSE; }
-    // check whether post matches term belongin to tax
-    $return = is_object_in_term( $_post->ID, $tax, $term );
-    // if error returned, then return false
-    if ( is_wp_error( $return ) ) { return FALSE; }
-    return $return;
+	// if neither tax nor term are specified, return false
+	if ( !$tax || !$term ) { return FALSE; }
+	// if post parameter is given, get it, otherwise use $GLOBALS to get post
+	if ( $_post ) {
+		$_post = get_post( $_post );
+	} else {
+		$_post =& $GLOBALS['post'];
+	}
+	// if no post return false
+	if ( !$_post ) { return FALSE; }
+	// check whether post matches term belongin to tax
+	$return = is_object_in_term( $_post->ID, $tax, $term );
+	// if error returned, then return false
+	if ( is_wp_error( $return ) ) { return FALSE; }
+	return $return;
 }
 
 // destination terms array
@@ -808,8 +808,8 @@ include_once('includes/map.php');
 
 // generate destination json
 if ( is_admin() ) {
-    include_once 'includes/destinations.php';
-    include_once 'includes/map-locations.php';
+	include_once 'includes/destinations.php';
+	include_once 'includes/map-locations.php';
 }
 
 /**
@@ -845,33 +845,33 @@ function remove_src_version ( $src ) {
 }
 
 function admin_styles() {
-    wp_enqueue_style('admin-style', _wsjs('/css/admin.css') );
-    wp_enqueue_style('qtip-style', _wsjs('/css/jquery.qtip.css'));
-    wp_enqueue_style('fontawesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', array(), null);
+	wp_enqueue_style('admin-style', _wsjs('/css/admin.css') );
+	wp_enqueue_style('qtip-style', _wsjs('/css/jquery.qtip.css'));
+	wp_enqueue_style('fontawesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', array(), null);
 
-    wp_register_script('admin-js', _wsjs('/js/admin.js'), array('jquery'), '', true);
-    wp_register_script('tinysort', _wsjs('/js/jquery.tinysort.min.js'), array('jquery'), '', true);
-    wp_register_script('qtip', _wsjs('/js/jquery.qtip.min.js'), array('jquery'), '', true);
-    wp_register_script('hammer', _wsjs('/js/hammer.min.js'), array(), '', false);
+	wp_register_script('admin-js', _wsjs('/js/admin.js'), array('jquery'), '', true);
+	wp_register_script('tinysort', _wsjs('/js/jquery.tinysort.min.js'), array('jquery'), '', true);
+	wp_register_script('qtip', _wsjs('/js/jquery.qtip.min.js'), array('jquery'), '', true);
+	wp_register_script('hammer', _wsjs('/js/hammer.min.js'), array(), '', false);
 
-    wp_enqueue_script('tinysort');
-    wp_enqueue_script('qtip');
-    wp_enqueue_script('hammer');
-    wp_enqueue_script('admin-js');
+	wp_enqueue_script('tinysort');
+	wp_enqueue_script('qtip');
+	wp_enqueue_script('hammer');
+	wp_enqueue_script('admin-js');
 
-    wp_register_script('velocity', _wsjs('/js/velocity.min.js'), array(), '', false);
-    wp_enqueue_script('velocity');
+	wp_register_script('velocity', _wsjs('/js/velocity.min.js'), array(), '', false);
+	wp_enqueue_script('velocity');
 
 	// hide sidebar "add new" if not administrator
 	if ( !current_user_can( 'administrator' ) ) {
-	    wp_enqueue_style('admin-style-hide', _wsjs('/css/admin-hide.css'));
+		wp_enqueue_style('admin-style-hide', _wsjs('/css/admin-hide.css'));
 	}
 }
 add_action('admin_enqueue_scripts', 'admin_styles');
 
 function admin_dequeue_scripts() {
 	// remove version from Yoast SEO
-    wp_dequeue_script('jquery-qtip');
+	wp_dequeue_script('jquery-qtip');
 }
 add_action('wp_print_scripts','admin_dequeue_scripts');
 
@@ -893,9 +893,9 @@ function my_register_image_sizes() {
 
 // custom image size in editor insertion
 function my_custom_sizes( $sizes ) {
-    return array_merge( $sizes, array(
-        'hero-review' => __('Review Image'),
-    ) );
+	return array_merge( $sizes, array(
+		'hero-review' => __('Review Image'),
+	) );
 }
 add_filter( 'image_size_names_choose', 'my_custom_sizes' );
 
@@ -925,24 +925,24 @@ function editor_insert_image($html, $id, $caption, $title, $align, $url, $size) 
 	list($imgsrc) = image_downsize($id, 'hero-review');
 //	list($imgsrc) = image_downsize($id, $size);
 
-    $html = "<div class=\"photo-gallery\">";
-    $html .= "<img src=\"$imgsrc\" alt=\"$caption\">";
-    if ($caption) {
-        $html .= "<div class=\"caption\">$caption</div>";
-    }
-    $html .= "</div><!-- photo-gallery -->";
-    return $html;
+	$html = "<div class=\"photo-gallery\">";
+	$html .= "<img src=\"$imgsrc\" alt=\"$caption\">";
+	if ($caption) {
+		$html .= "<div class=\"caption\">$caption</div>";
+	}
+	$html .= "</div><!-- photo-gallery -->";
+	return $html;
 }
 add_filter( 'image_send_to_editor', 'editor_insert_image', 10, 9 );
 
 // grab thumbnail data
 function get_the_post_thumbnail_data($intID = 0) {
-    if($intID == 0) {
-        return $intID;
-    }
-    $objDom = new SimpleXMLElement(get_the_post_thumbnail($intID));
-    $arrDom = (array)$objDom;
-    return (array)$arrDom['@attributes'];
+	if($intID == 0) {
+		return $intID;
+	}
+	$objDom = new SimpleXMLElement(get_the_post_thumbnail($intID));
+	$arrDom = (array)$objDom;
+	return (array)$arrDom['@attributes'];
 }
 
 // remove default hover and dropdown scripts from Thematic
@@ -955,61 +955,86 @@ add_action('thematic_child_init','childtheme_no_superfish');
 function register_scripts() {
 	$f = get_bloginfo('stylesheet_directory');
 
-    wp_register_script('hammer', _wsjs('/js/hammer.min.js'), array(), '', false);
+	wp_register_script('hammer', _wsjs('/js/hammer.min.js'), array(), '', false);
 	wp_register_script('tabs', _wsjs('/js/yetii-min.js'), array('jquery','hammer'), '', false);
-    wp_register_script('autocomplete', _wsjs('/js/jquery.autocomplete.mod.js'), array('jquery'), '', false);
-    wp_register_script('magnificpopup', _wsjs('/js/jquery.magnific-popup.min.js'), array('jquery'), '', true);
-    wp_register_script('rslidesalt', _wsjs('/js/responsiveslides.min.js'), array('jquery'), '', true);
-    wp_register_script('imagesloaded', _wsjs('/js/imagesloaded.pkgd.min.js'), array('jquery'), '', true);
-    wp_register_script('masonry', _wsjs('/js/masonry.pkgd.min.js'), array('jquery'), '', true);
-    wp_register_script('datepicker',_wsjs('/js/jquery-ui-1.10.3.custom.min.js'), array('jquery'), '', false);
-//    wp_register_script('qtip', _wsjs('js/jquery.qtip.min.js'), array('jquery'), '', true);
-//    wp_register_script('responsivemap', _wsjs('js/jquery.rwdImageMaps.min.js'), array('jquery'), '', true);
-    wp_register_script('customselect', _wsjs('/js/jquery.customSelect.min.js'), array('jquery'), '', true);
-    wp_register_script('lazyload', _wsjs('/js/jquery.lazyload.min.js'), array('jquery'), '', true);
-    wp_register_script('equalheight', _wsjs('/js/jquery.matchHeight.js'), array('jquery'), '', true);
+	wp_register_script('autocomplete', _wsjs('/js/jquery.autocomplete.mod.js'), array('jquery'), '', false);
+	wp_register_script('magnificpopup', _wsjs('/js/jquery.magnific-popup.min.js'), array('jquery'), '', true);
+	wp_register_script('rslidesalt', _wsjs('/js/responsiveslides.min.js'), array('jquery'), '', true);
+	wp_register_script('imagesloaded', _wsjs('/js/imagesloaded.pkgd.min.js'), array('jquery'), '', true);
+	wp_register_script('masonry', _wsjs('/js/masonry.pkgd.min.js'), array('jquery'), '', true);
+	wp_register_script('datepicker',_wsjs('/js/jquery-ui-1.10.3.custom.min.js'), array('jquery'), '', false);
+//	wp_register_script('qtip', _wsjs('js/jquery.qtip.min.js'), array('jquery'), '', true);
+//	wp_register_script('responsivemap', _wsjs('js/jquery.rwdImageMaps.min.js'), array('jquery'), '', true);
+	wp_register_script('customselect', _wsjs('/js/jquery.customSelect.min.js'), array('jquery'), '', true);
+	wp_register_script('lazyload', _wsjs('/js/jquery.lazyload.min.js'), array('jquery'), '', true);
+	wp_register_script('equalheight', _wsjs('/js/jquery.matchHeight.js'), array('jquery'), '', true);
 
-    wp_register_script('indagare.maps-locations.google', '//maps.googleapis.com/maps/api/js?v=3?key=AIzaSyAkv3l4uMtV3heGoszUd_LR-Xy7Qxeecmw&sensor=false', array('jquery'), '', false);
+	wp_register_script('indagare.maps-locations.google', '//maps.googleapis.com/maps/api/js?v=3?key=AIzaSyAkv3l4uMtV3heGoszUd_LR-Xy7Qxeecmw&sensor=false', array('jquery'), '', false);
 
-    wp_register_script('indagare.maps',_wsjs('/js/maps.js'), array('jquery', 'indagare.maps-locations.google'), '', true);
-    wp_register_script('indagare.maps.init', _wsjs('/js/maps.init.js'), array('jquery'), '', false);
-    wp_register_script('indagare.maps.destinations', _wsjs('/js/maps.destinations.js'), array('jquery', 'indagare.maps-locations.google'), '', true);
+	wp_register_script('indagare.maps',_wsjs('/js/maps.js'), array('jquery', 'indagare.maps-locations.google'), '', true);
+	wp_register_script('indagare.maps.init', _wsjs('/js/maps.init.js'), array('jquery'), '', false);
+	wp_register_script('indagare.maps.destinations', _wsjs('/js/maps.destinations.js'), array('jquery', 'indagare.maps-locations.google'), '', true);
 
-    wp_register_script('template-page_footer', _wsjs('/js/template-page_footer.js'), array('jquery'), '', true);
-    wp_register_script('template-page-map_footer', _wsjs('/js/template-page-map_footer.js'), array('jquery'), '', true);
+	wp_register_script('template-page_footer', _wsjs('/js/template-page_footer.js'), array('jquery'), '', true);
+	wp_register_script('template-page-map_footer', _wsjs('/js/template-page-map_footer.js'), array('jquery'), '', true);
 
-    wp_register_script('velocity', _wsjs('/js/velocity.min.js'), array('jquery'), '', false);
-    wp_register_script('show.join.popup', _wsjs('/js/joinpopup.js'), array('jquery'), '', true);
+	wp_register_script('velocity', _wsjs('/js/velocity.min.js'), array('jquery'), '', false);
+	wp_register_script('show.join.popup', _wsjs('/js/joinpopup.js'), array('jquery'), '', true);
 
-    wp_register_script('slick', _wsjs('/js/slick.min.js'), array('jquery'), '', true);
+	wp_register_script('slick', _wsjs('/js/slick.min.js'), array('jquery'), '', true);
 
-    $upload_url = wp_upload_dir();
-    $upload_url = $upload_url['url'];
-    wp_localize_script( 'template-page_footer', 'ajax_login_object', array(
-    	'ajaxurl' => admin_url( 'admin-ajax.php' ),
-    	'uploadurl' => $upload_url,
-    	'redirecturl' => home_url(),
-    	'messages' => array(
-    		'loading' => __('Logging in...'),
-    		'thankyou' => __('Thank you','indagare'),
-    		'thankyousignup' => __('Thank you for signing up.','indagare'),
-    		'newsletter' => __("Indagare's e-Newsletter, full of travel buzz, is sent out every other week.",'indagare'),
-    		'newsletteremailerr' => __('Please enter a valid email address to sign up for our email newsletter.','indagare'),
-    		'alreadysignedup' => __('You are already signed up.','indagare'),
-    		'showimages' => __('Show Images','indagare'),
-    		'showmap' => __('Show Map','indagare'),
-    		'hidemap' => __('Hide Map','indagare'),
-    		'closemap' => __('Close Map','indagare'),
-    		'fullscreen' => __('Full Screen','indagare'),
+	$upload_url = wp_upload_dir();
+	$upload_url = $upload_url['url'];
+	wp_localize_script( 'hammer', '_x', array(
+		'loading' => __('Logging in...'),
+		'thankyou' => __('Thank you','indagare'),
+		'thankyousignup' => __('Thank you for signing up.','indagare'),
+		'newsletter' => __("Indagare's e-Newsletter, full of travel buzz, is sent out every other week.",'indagare'),
+		'newsletteremailerr' => __('Please enter a valid email address to sign up for our email newsletter.','indagare'),
+		'alreadysignedup' => __('You are already signed up.','indagare'),
+		'showimages' => __('Show Images','indagare'),
+		'showmap' => __('Show Map','indagare'),
+		'hidemap' => __('Hide Map','indagare'),
+		'closemap' => __('Close Map','indagare'),
+		'fullscreen' => __('Full Screen','indagare'),
 
-    		'noupgrades' => __('No more upgrade options available','indagare'),
-    		'upgradenow' => __('Upgrade Now','indagare'),
-    		'renewnow' => __('Renew Now','indagare'),
-    		'savefailed' => __('Save failed','indagare'),
-    		'commerror' => __('Communications error.  Please try again in a moment.','indagare'),
+		'commerror' => __('Communications error.  Please try again in a moment.','indagare'),
+		'areyousure' => __('Are you sure?','indagare'),
+		'nowcharge' => __('We will now charge your credit card on file for','indagare'),
+		'cancel' => __('Cancel','indagare'),
+		'updating' => __('Updating account','indagare'),
+		'pleasewait' => __('Please wait...','indagare'),
+		'savefailed' => __('Save failed','indagare'),
+		'cannotundo' => __('This cannot be un-done.','indagare'),
+		'yesdelete' => __('Yes, Delete it', 'indagare'),
+		'deletefailed' => __('Delete failed','indagare'),
+		'addtravelcomp' => __('Add Travel Companion','indagare'),
+		'create' => __('Create','indagare'),
+		'createcontact' => __('Create Contact','indagare'),
 
-    	)
-    ));
+		'noupgrades' => __('No more upgrade options available','indagare'),
+		'upgradenow' => __('Upgrade Now','indagare'),
+		'renewnow' => __('Renew Now','indagare'),
+		'upgradefailedtitle' => __('Account Update Failed','indagare'),
+		'upgradefailed' => __('We could not upgrade your account.','indagare'),
+
+		'accountloadfailed' => __('Error loading account data!','indagare'),
+		'del' => __('Delete','indagare'),
+		'save' => __('Save','indagare'),
+		'edit' => __('Edit','indagare'),
+
+		'createfail' => __('Creation failed','indagare'),
+		'chooseoption' => __('Choose an option...','indagare'),
+		'month_elip' => __('Month...','indagare'),
+		'year_elip' => __('Year...','indagare'),
+		'onfile' => __('On File','indagare'),
+	));
+
+	wp_localize_script( 'template-page_footer', 'ajax_login_object', array(
+		'ajaxurl' => admin_url( 'admin-ajax.php' ),
+		'uploadurl' => $upload_url,
+		'redirecturl' => home_url(),
+	));
 }
 add_action('init', 'register_scripts');
 
@@ -1066,10 +1091,10 @@ add_action( 'wp_ajax_nopriv_indlogin', 'indagare_ajax_login' );
 function enqueue_scripts() {
 	$f = get_bloginfo('stylesheet_directory');
 
-    wp_enqueue_style('fontawesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', array(), null);
+	wp_enqueue_style('fontawesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', array(), null);
 
-    wp_enqueue_script('hammer');
-    wp_enqueue_script('velocity');
+	wp_enqueue_script('hammer');
+	wp_enqueue_script('velocity');
 	wp_enqueue_script('autocomplete');
 	wp_enqueue_script('template-page_footer');
 	wp_enqueue_style('datepicker-css', get_bloginfo('stylesheet_directory') . '/css/jquery-ui-1.10.3.custom.css');
@@ -1093,37 +1118,37 @@ function enqueue_scripts() {
 
 	// home page - responsive slides
 	if ( is_home() || is_front_page() ) {
-	    wp_enqueue_script('rslidesalt');
-    }
+		wp_enqueue_script('rslidesalt');
+	}
 
 	// book page - responsive slides
 	if (is_page_template ( 'template-page-book.php' ) ) {
-	    wp_enqueue_script('rslidesalt');
-    }
+		wp_enqueue_script('rslidesalt');
+	}
 
 	// join page - responsive slides
 	if (is_page_template ( 'template-page-user-signup.php' ) ) {
-	    wp_enqueue_script('rslidesalt');
-    }
+		wp_enqueue_script('rslidesalt');
+	}
 
 	// why join page - responsive slides
 	if (is_page_template ( 'template-page-join-why-indagare.php' ) ) {
-	    wp_enqueue_script('rslidesalt');
-    }
+		wp_enqueue_script('rslidesalt');
+	}
 
 	// new join page - responsive slides and equal height
 	if ( is_page_template( 'template-page-join-signup.php' ) ) {
-	    wp_enqueue_script('rslidesalt');
-	    wp_enqueue_script('equalheight');
-	    wp_enqueue_style('slickcss', $f.'/css/slick.css');
-	    wp_enqueue_style('slicktheme', $f.'/css/slick-theme.css');
-	    wp_enqueue_script('slick');
-    }
+		wp_enqueue_script('rslidesalt');
+		wp_enqueue_script('equalheight');
+		wp_enqueue_style('slickcss', $f.'/css/slick.css');
+		wp_enqueue_style('slicktheme', $f.'/css/slick-theme.css');
+		wp_enqueue_script('slick');
+	}
 
 	// welcome page - responsive slides
 	if (is_page_template ( 'template-page-welcome.php' ) ) {
-	    wp_enqueue_script('rslidesalt');
-    }
+		wp_enqueue_script('rslidesalt');
+	}
 
 	// single hotel | restaurant | shop | activity | article | offer | insidertrip | itinerary archive - responsive slides
 	if (
@@ -1136,25 +1161,25 @@ function enqueue_scripts() {
 		|| is_singular( 'insidertrip' )
 		|| is_post_type_archive('itinerary')
 	) {
-	    wp_enqueue_script('rslidesalt');
-    }
+		wp_enqueue_script('rslidesalt');
+	}
 
 	// mission page - imagesloaded and masonry
 	if (is_page_template ( 'template-page-about-mission.php' ) ) {
-	    wp_enqueue_script('imagesloaded');
-	    wp_enqueue_script('masonry');
-    }
+		wp_enqueue_script('imagesloaded');
+		wp_enqueue_script('masonry');
+	}
 
 	// signup page - tabs
 	if (is_page_template ( 'template-page-user-signup-step-two.php' ) ) {
-	    wp_enqueue_script('tabs');
-    }
+		wp_enqueue_script('tabs');
+	}
 
 	// my account page - tabs
 	if (is_page_template ( 'template-page-account-edit.php' ) ) {
-	    wp_enqueue_script('tabs');
-//	    wp_enqueue_script('customselect');
-    }
+		wp_enqueue_script('tabs');
+//		wp_enqueue_script('customselect');
+	}
 
 	// article archive | map page | book page | home page | region level | destination top level | hotel post | restaurant post | shop post | activity post | itinerary | library | offer - autocomplete
 	if ( is_archive() && get_query_var('post_type') == 'article'
@@ -1171,23 +1196,23 @@ function enqueue_scripts() {
 		|| ( is_archive() && $reg && $depth == 1 )
 		|| ( is_home() || is_front_page() )
 	) {
-	    wp_enqueue_style('autocomplete-css', get_bloginfo('stylesheet_directory') . '/css/jquery.autocomplete.css');
-	    wp_enqueue_script('autocomplete');
+		wp_enqueue_style('autocomplete-css', get_bloginfo('stylesheet_directory') . '/css/jquery.autocomplete.css');
+		wp_enqueue_script('autocomplete');
 
-	    wp_enqueue_style('datepicker-css', get_bloginfo('stylesheet_directory') . '/css/jquery-ui-1.10.3.custom.css');
-	    wp_enqueue_script('datepicker');
+		wp_enqueue_style('datepicker-css', get_bloginfo('stylesheet_directory') . '/css/jquery-ui-1.10.3.custom.css');
+		wp_enqueue_script('datepicker');
 	}
 
 	// map page tool tip REMOVED | responsive image map REMOVED | lazy load
 	if (is_page_template ( 'template-page-map.php' ) ) {
 		export_destinations( false );
-	    wp_enqueue_script('lazyload');
-	    wp_enqueue_script('template-page-map_footer');
+		wp_enqueue_script('lazyload');
+		wp_enqueue_script('template-page-map_footer');
 	}
 
 	// overlay script
    // wp_enqueue_style('magnificpopup-css', get_bloginfo('stylesheet_directory') . '/css/magnific-popup.css');
-    wp_enqueue_script('magnificpopup');
+	wp_enqueue_script('magnificpopup');
 
 
 	// load contact 7 css + js for destination top level | hotel post | restaurant post | shop post | activity post | itinerary | library | offer
@@ -1208,7 +1233,7 @@ function enqueue_scripts() {
 		}
 	}
 
-    // custom select
+	// custom select
 
 }
 add_action('get_header', 'enqueue_scripts');
@@ -1217,8 +1242,8 @@ function enqueue_scripts_here() {
 	global $posts;
 	global $post;
 
-    wp_enqueue_script('customselect');
-    wp_enqueue_script('tabs');
+	wp_enqueue_script('customselect');
+	wp_enqueue_script('tabs');
 
 	if (
 		// singular hotel | resaurant | shop | activity | article | offer | insidertrip
@@ -1440,8 +1465,8 @@ add_filter( 'body_class', 'childtheme_body_class' );
 
 // set doctype for HTML5
 function child_create_doctype() {
-    $content = '<!DOCTYPE html>' . "\n";
-    $content .= '<html';
+	$content = '<!DOCTYPE html>' . "\n";
+	$content .= '<html';
 	return $content;
 }
 add_filter('thematic_create_doctype', 'child_create_doctype');
@@ -1483,7 +1508,7 @@ global $post;
 			indagare\cookies\Counter::updateCounter();
 			if( ! indagare\cookies\Counter::updateCounter() ) {
 				wp_enqueue_script('show.join.popup');
-		    }
+			}
 		}
 
 	// archive itinerary - lock out unless visitor is logged-in user
@@ -1503,18 +1528,18 @@ function childtheme_override_brandingclose() {}
 function childtheme_override_access() {
 ?>
   <div class="candy-wrapper">
-    <div class="wrapper">
-      <section id="branding" class="box"><a href="/"><img src="<?php echo get_bloginfo('stylesheet_directory') ?>/images/indagare-logo.png" alt="indagare-logo" /></a></section>
-      <div id="menu-show-hide" class="box"><a href="#"><b class="menu" data-icon="&#xf0c9;"></b><b class="close-menu" data-icon="&#xf057;"></b></a></div>
-      <section id="access" class="box collapsible">
-        <ul id="nav">
-          <li id="nav-magazine"><a href="/destinations/articles/features/"><?php echo __('Dream','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
-            <div class="subnav">
-              <div class="main-nav-item"><a href="/destinations/articles/features/"><?php echo __('Read Featured Articles','indagare');?></a></div>
-              <div class="nav-item">
-                <h3>Newly Added</h3>
-                <div class="subnav-related"><a href="/destinations/articles/"><?php echo __('See All','indagare');?></a></div>
-                <ul>
+	<div class="wrapper">
+	  <section id="branding" class="box"><a href="/"><img src="<?php echo get_bloginfo('stylesheet_directory') ?>/images/indagare-logo.png" alt="indagare-logo" /></a></section>
+	  <div id="menu-show-hide" class="box"><a href="#"><b class="menu" data-icon="&#xf0c9;"></b><b class="close-menu" data-icon="&#xf057;"></b></a></div>
+	  <section id="access" class="box collapsible">
+		<ul id="nav">
+		  <li id="nav-magazine"><a href="/destinations/articles/features/"><?php echo __('Dream','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
+			<div class="subnav">
+			  <div class="main-nav-item"><a href="/destinations/articles/features/"><?php echo __('Read Featured Articles','indagare');?></a></div>
+			  <div class="nav-item">
+				<h3>Newly Added</h3>
+				<div class="subnav-related"><a href="/destinations/articles/"><?php echo __('See All','indagare');?></a></div>
+				<ul>
 					<?php
 						$args = array('numberposts' => 11, 'post_type' => 'article', 'orderby' => array ( 'date' => 'DESC' ) );
 						$recent = get_posts($args);
@@ -1522,89 +1547,89 @@ function childtheme_override_access() {
 							echo '<li><a href="'.get_permalink($post->ID).'">'.get_the_title($post->ID).'</a></li>'."\n";
 						endforeach;
 					?>
-                </ul>
-                <div class="subnav-related"><a href="/magazines/"><?php echo __('See Digital Magazine','indagare');?></a></div>
-              </div>
-              <div class="nav-item">
+				</ul>
+				<div class="subnav-related"><a href="/magazines/"><?php echo __('See Digital Magazine','indagare');?></a></div>
+			  </div>
+			  <div class="nav-item">
 				<?php $columns = get_terms( 'column', array( 'orderby' => 'name', 'order' => 'ASC', 'hide_empty' => true) ); ?>
 				<?php if ( $columns ) : ?>
 					<h3><?php echo __('Columns','indagare');?></h3>
-	                	<div class="subnav-related"><a href="/destinations/articles/"><?php echo __('See All','indagare');?></a></div>
+						<div class="subnav-related"><a href="/destinations/articles/"><?php echo __('See All','indagare');?></a></div>
 						<ul>
 							<?php foreach ( $columns as $term ) : ?>
 								<li><a href="/destinations/articles/?column=<?php echo $term->slug; ?>"><?php echo $term->name; ?></a></li>
 							<?php endforeach; ?>
 						</ul>
 				  <?php endif; ?>
-              </div>
-            </div>
-          </li>
-          <li id="nav-explore"><a href="/destinations/"><?php echo __('Plan','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
-            <div class="subnav">
-              <div class="main-nav-item"><a href="/destinations/"><?php echo __('Tour Select Destinations','indagare');?></a></div>
-              <div class="nav-item">
-                <h3><?php echo __('Top Destinations','indagare');?></h3>
-                <div class="subnav-related"><a href="/destinations/"><?php echo __('See All','indagare');?></a></div>
+			  </div>
+			</div>
+		  </li>
+		  <li id="nav-explore"><a href="/destinations/"><?php echo __('Plan','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
+			<div class="subnav">
+			  <div class="main-nav-item"><a href="/destinations/"><?php echo __('Tour Select Destinations','indagare');?></a></div>
+			  <div class="nav-item">
+				<h3><?php echo __('Top Destinations','indagare');?></h3>
+				<div class="subnav-related"><a href="/destinations/"><?php echo __('See All','indagare');?></a></div>
 				<?php wp_nav_menu( array('menu' => 'explore-top-destinations','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => true )); ?>
-              </div>
-              <div class="nav-item">
-                <h3><?php echo __('Indagare Spotlight','indagare');?></h3>
-                <div class="subnav-related"><a href="/destinations/"><?php echo __('See All','indagare');?></a></div>
+			  </div>
+			  <div class="nav-item">
+				<h3><?php echo __('Indagare Spotlight','indagare');?></h3>
+				<div class="subnav-related"><a href="/destinations/"><?php echo __('See All','indagare');?></a></div>
 				<?php wp_nav_menu( array('menu' => 'explore-spotlight','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => true )); ?>
-              </div>
-            </div>
-          </li>
-          <li id="nav-book"><a href="/book/"><?php echo __('Book','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
-            <div class="subnav">
-              <div class="main-nav-item"><a href="/destinations/"><?php echo __('View All Destinations','indagare'); ?></a></div>
-              <div class="nav-item">
-                <h3><?php echo __('Top Destinations','indagare');?></h3>
-                <div class="subnav-related"><a href="/destinations/"><?php echo __('See All','indagare');?></a></div>
+			  </div>
+			</div>
+		  </li>
+		  <li id="nav-book"><a href="/book/"><?php echo __('Book','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
+			<div class="subnav">
+			  <div class="main-nav-item"><a href="/destinations/"><?php echo __('View All Destinations','indagare'); ?></a></div>
+			  <div class="nav-item">
+				<h3><?php echo __('Top Destinations','indagare');?></h3>
+				<div class="subnav-related"><a href="/destinations/"><?php echo __('See All','indagare');?></a></div>
 				<?php wp_nav_menu( array('menu' => 'book-top-destinations','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => true )); ?>
-              </div>
-              <div class="nav-item">
-                <h3><?php echo __('Top Hotels','indagare');?></h3>
+			  </div>
+			  <div class="nav-item">
+				<h3><?php echo __('Top Hotels','indagare');?></h3>
 				<?php wp_nav_menu( array('menu' => 'book-top-hotels','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => true )); ?>
-                <div class="subnav-related"><a href="/destinations/offers/"><?php echo __('See Partner Promotions','indagare');?></a></div>
-                <div class="subnav-related"><a href="/destinations/insidertrips/"><?php echo __('See Insider Trips','indagare');?></a></div>
-              </div>
-            </div>
-          </li>
-          <li id="nav-shop"><a href="http://www.shoplatitude.com/collections/indagare" target="_blank"><?php echo __('Shop','indagare');?></a></li>
+				<div class="subnav-related"><a href="/destinations/offers/"><?php echo __('See Partner Promotions','indagare');?></a></div>
+				<div class="subnav-related"><a href="/destinations/insidertrips/"><?php echo __('See Insider Trips','indagare');?></a></div>
+			  </div>
+			</div>
+		  </li>
+		  <li id="nav-shop"><a href="http://www.shoplatitude.com/collections/indagare" target="_blank"><?php echo __('Shop','indagare');?></a></li>
 
 		  <?php if ( is_user_logged_in() ) : ?>
-          <li id="nav-account" class="loggedin single"><a href="#"><?php echo __('Account','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
-            <div class="subnav">
-              <div class="nav-item">
+		  <li id="nav-account" class="loggedin single"><a href="#"><?php echo __('Account','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
+			<div class="subnav">
+			  <div class="nav-item">
 				<?php
 					$account = wp_nav_menu( array('menu' => 'account','container' => '','container_id' => '','container_class' => '','echo' => false ));
 					$account = str_replace('</ul>', '<li><a href="' . wp_logout_url( get_permalink() ) . '">'.__('Log Out','indagare').'</a></li></ul>', $account);
 					echo $account;
 				?>
-              </div>
-            </div>
-          </li>
+			  </div>
+			</div>
+		  </li>
 		  <?php else: ?>
-          <li id="nav-login"><a href="#lightbox-login" class="lightbox-inline"><?php echo __('Log In','indagare');?></a></li>
-          <li id="nav-account" class="single"><a href="#"><?php echo __('Join','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
-            <div class="subnav">
-              <div class="nav-item">
+		  <li id="nav-login"><a href="#lightbox-login" class="lightbox-inline"><?php echo __('Log In','indagare');?></a></li>
+		  <li id="nav-account" class="single"><a href="#"><?php echo __('Join','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
+			<div class="subnav">
+			  <div class="nav-item">
 				<?php wp_nav_menu( array('menu' => 'footer-membership','container' => '','container_id' => '','container_class' => '','echo' => true )); ?>
-              </div>
-            </div>
-          </li>
+			  </div>
+			</div>
+		  </li>
 		  <?php endif; ?>
-        </ul>
-      </section>
-      <section id="search-indagare" class="box collapsible">
-        <form id="searchform" name="searchform" method="get" action="/">
-          <label><?php echo __('Search','indagare');?></label>
-        	<div class="form-combo">
-          	<span class="form-item"><input type="text" id="search-site" name="s" class="element" /><b class="icon" data-icon="&#xf002;"></b></span>
-          </div>
-        </form>
-      </section>
-    </div>
+		</ul>
+	  </section>
+	  <section id="search-indagare" class="box collapsible">
+		<form id="searchform" name="searchform" method="get" action="/">
+		  <label><?php echo __('Search','indagare');?></label>
+			<div class="form-combo">
+		  	<span class="form-item"><input type="text" id="search-site" name="s" class="element" /><b class="icon" data-icon="&#xf002;"></b></span>
+		  </div>
+		</form>
+	  </section>
+	</div>
   </div>
 <?php
 }
@@ -1968,7 +1993,7 @@ function child_abovecontainer() {
 	} else if ( is_archive() && get_query_var('post_type') == 'article' ) {
 		//////////////// ARTICLE
 
-    	$filter = getLastPathSegment($_SERVER['REQUEST_URI']);
+		$filter = getLastPathSegment($_SERVER['REQUEST_URI']);
 
 		echo '<div class="header magazine">'."\n";
 			echo '<h2>Indagare <span class="highlight">Magazine</span></h2>'."\n";
@@ -2097,9 +2122,9 @@ function child_abovecontainer() {
 ?>
 <script>
 if (typeof String.prototype.endsWith !== 'function') {
-    String.prototype.endsWith = function(suffix) {
-        return this.indexOf(suffix, this.length - suffix.length) !== -1;
-    };
+	String.prototype.endsWith = function(suffix) {
+		return this.indexOf(suffix, this.length - suffix.length) !== -1;
+	};
 }
 jQuery().ready(function($) {
 	jQuery.ajax({
@@ -2150,12 +2175,12 @@ jQuery().ready(function($) {
 	}
 
 	// apply filters
-    $('#magazine-filters button.apply-filters').click(function(event) {
+	$('#magazine-filters button.apply-filters').click(function(event) {
    		event.preventDefault();
 
    		var interests = $("ul.filter-interest li a.active-box").map(function(){
-	        return $(this).attr('title');
-	    }).toArray();
+			return $(this).attr('title');
+		}).toArray();
 
    		var interestsurl = '';
    		var desturl = '';
@@ -2168,7 +2193,7 @@ jQuery().ready(function($) {
 					urlparams.push('column=' + column);
 			}
 
-    	// get interests
+		// get interests
 			if ( interests.length > 1 ) {
 
 				i = 1;
@@ -2227,7 +2252,7 @@ jQuery().ready(function($) {
 	// article post
 	} else if ( is_singular( 'article' ) ) {
 
-    	$filter = getLastPathSegment($_SERVER['REQUEST_URI']);
+		$filter = getLastPathSegment($_SERVER['REQUEST_URI']);
 
 		echo '<div class="header magazine">'."\n";
 			echo '<h2>Indagare <span class="highlight">Magazine</span></h2>'."\n";
@@ -2457,7 +2482,7 @@ jQuery().ready(function($) {
 
 	// map page
 	} else if (is_page_template ( 'template-page-map.php' ) ) {
-    include_once 'includes/map-locations.php';
+	include_once 'includes/map-locations.php';
 		echo map_canvas(false, 'hero');
 		maplocations();  // Make sure the JSON is there!
 	// end map page
@@ -3236,11 +3261,11 @@ function childtheme_override_archive_loop() {
 		echo '</article>'."\n";
 
 		$args = array('numberposts' => -1, 'post_type' => 'insidertrip', 'meta_key' => 'date-start', 'orderby' => 'meta_value_num', 'order' => 'ASC', 'meta_query' => array(
-				        array(
-				            'key' => 'trip-state',
-				            'value' => 'current'
-				        ),
-				    ));
+						array(
+							'key' => 'trip-state',
+							'value' => 'current'
+						),
+					));
 
 		$insidertripcurrent = new WP_Query($args);
 
@@ -3297,11 +3322,11 @@ function childtheme_override_archive_loop() {
 
 		// list view of soldout insidertrip
 		$args = array('numberposts' => -1, 'post_type' => 'insidertrip', 'meta_key' => 'date-start', 'orderby' => 'meta_value_num', 'order' => 'DESC', 'meta_query' => array(
-				        array(
-				            'key' => 'trip-state',
-				            'value' => 'soldout'
-				        ),
-				    ));
+						array(
+							'key' => 'trip-state',
+							'value' => 'soldout'
+						),
+					));
 
 		query_posts($args);
 
@@ -3340,11 +3365,11 @@ function childtheme_override_archive_loop() {
 		echo '<section class="all-destinations mini contain">'."\n";
 
 		$args = array('numberposts' => -1, 'post_type' => 'insidertrip', 'meta_key' => 'date-start', 'orderby' => 'meta_value_num', 'order' => 'DESC', 'meta_query' => array(
-				        array(
-				            'key' => 'trip-state',
-				            'value' => 'past'
-				        ),
-				    ));
+						array(
+							'key' => 'trip-state',
+							'value' => 'past'
+						),
+					));
 
 		query_posts($args);
 
@@ -3371,9 +3396,9 @@ function childtheme_override_archive_loop() {
 
 		global $featured;
 
-    	$filter = getLastPathSegment($_SERVER['REQUEST_URI']);
+		$filter = getLastPathSegment($_SERVER['REQUEST_URI']);
 
-    	// articles landing page
+		// articles landing page
 		if ( $filter == 'features' ) {
 
 			remove_all_filters('posts_orderby');
@@ -3635,8 +3660,8 @@ function childtheme_override_archive_loop() {
 			echo '<h2>Connect with Indagare</h2>'."\n";
 
 			echo '<p class="social">'."\n";
-	          echo '<a id="social-facebook" href="https://www.facebook.com/pages/Indagare-Travel/38863077107"><b class="icon custom-icon" data-icon="&#xe003;"><span>facebook</span></b></a> <a href="https://twitter.com/indagaretravel" id="social-twitter"><b class="icon custom-icon" data-icon="&#xe001;"><span>twitter</span></b></a> <a id="social-instagram" href="http://instagram.com/indagaretravel/"><b class="icon custom-icon" data-icon="&#xe618;"><span>instagram</span></b></a> <a id="social-linkedin" href="https://www.linkedin.com/company/indagare"><b class="icon custom-icon" data-icon="&#xe900;"><span>linkedin</span></b></a>'."\n";
-    	    echo '</p>'."\n";
+			  echo '<a id="social-facebook" href="https://www.facebook.com/pages/Indagare-Travel/38863077107"><b class="icon custom-icon" data-icon="&#xe003;"><span>facebook</span></b></a> <a href="https://twitter.com/indagaretravel" id="social-twitter"><b class="icon custom-icon" data-icon="&#xe001;"><span>twitter</span></b></a> <a id="social-instagram" href="http://instagram.com/indagaretravel/"><b class="icon custom-icon" data-icon="&#xe618;"><span>instagram</span></b></a> <a id="social-linkedin" href="https://www.linkedin.com/company/indagare"><b class="icon custom-icon" data-icon="&#xe900;"><span>linkedin</span></b></a>'."\n";
+			echo '</p>'."\n";
 		echo '</div>'."\n";
 
 	// end archive for career
@@ -4114,9 +4139,9 @@ global $post;
 	} else {
 
  	   if ( is_404() || $post->post_type == 'page' || is_singular('magazine') ) {
- 	       $postheader = thematic_postheader_posttitle();
+ 		   $postheader = thematic_postheader_posttitle();
  	   } else {
- 	       $postheader = thematic_postheader_posttitle() . thematic_postheader_postmeta();
+ 		   $postheader = thematic_postheader_posttitle() . thematic_postheader_postmeta();
  	   }
 
  	   echo apply_filters( 'thematic_postheader', $postheader ); // Filter to override default post header
@@ -4808,7 +4833,7 @@ function child_singlepost($content) {
 
 		global $featured;
 
-    	$filter = getLastPathSegment($_SERVER['REQUEST_URI']);
+		$filter = getLastPathSegment($_SERVER['REQUEST_URI']);
 
 //		$rows = get_field('gallery-header');
 
@@ -5219,7 +5244,7 @@ function child_singlepost($content) {
 
 		$destinations_rendered = get_destinations_list();
 		$content .= '<script type="text/javascript" src="'.get_bloginfo('stylesheet_directory').'/js/destinations.js"></script>'."\n";
-    $content .= theme_render_template( 'page--destinations', array( 'destinations' => $destinations_rendered ) );
+	$content .= theme_render_template( 'page--destinations', array( 'destinations' => $destinations_rendered ) );
 
 	// end map page
 
@@ -5550,12 +5575,12 @@ function child_singlepost($content) {
 
 	// sign up step two page
 	} else if (is_page_template ( 'template-page-user-signup-step-two.php' ) ) {
-    	$content = \indagare\wp\WPContent::getContent('signup');
+		$content = \indagare\wp\WPContent::getContent('signup');
 	// end sign up step two page
 
 	// site invite email link landing page
 	//} else if (is_page_template ( 'template-page-user-site-invite.php' ) ) {
-    //	$content = \indagare\wp\WPContent::getContent('invite');
+	//	$content = \indagare\wp\WPContent::getContent('invite');
 	// end site invite email link landing page
 
 	// contact page
@@ -6985,55 +7010,55 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 			echo '</div><!-- #primary -->'."\n";
 		}
 
-	    $rowsscout = get_field('currently-scouting');
-	    $rows = get_field('recently-visited');
-	    $foundername = __("Melissa", 'indagare');
+		$rowsscout = get_field('currently-scouting');
+		$rows = get_field('recently-visited');
+		$foundername = __("Melissa", 'indagare');
 
-	    if ( $rowsscout ) {
+		if ( $rowsscout ) {
 
-	        echo '<section class="recent-articles contain">'."\n";
+			echo '<section class="recent-articles contain">'."\n";
 				echo '<div class="header divider"><h2>';
 				echo sprintf( __( '%s is Currently Scouting', 'indagare'), $foundername );
 				echo '</h2></div>'."\n";
-	            foreach ( $rowsscout as $row ) {
-	                $imageobj = $row['currently-scouting-image'];
-	                $image = $imageobj['sizes']['thumb-small'];
+				foreach ( $rowsscout as $row ) {
+					$imageobj = $row['currently-scouting-image'];
+					$image = $imageobj['sizes']['thumb-small'];
 
-	                echo '<article>'."\n";
-	                    echo '<a href="'.$row['currently-scouting-url'].'">'."\n";
-	                        if ( $image ) {
-	                            echo '<img src="'.$image.'" alt="'.__('Related','indagare').'" />'."\n";
-	                        } else {
-	                            echo '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-small-logo.png" alt="'.__('Related','indagare').'" />'."\n";
-	                        }
-	                        echo '<h3>'.$row['currently-scouting-title'].'</h3>'."\n";
-	                    echo '</a>'."\n";
-	                echo '</article>'."\n";
-	            }
-	        echo '</section><!-- .recent-articles -->'."\n";
+					echo '<article>'."\n";
+						echo '<a href="'.$row['currently-scouting-url'].'">'."\n";
+							if ( $image ) {
+								echo '<img src="'.$image.'" alt="'.__('Related','indagare').'" />'."\n";
+							} else {
+								echo '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-small-logo.png" alt="'.__('Related','indagare').'" />'."\n";
+							}
+							echo '<h3>'.$row['currently-scouting-title'].'</h3>'."\n";
+						echo '</a>'."\n";
+					echo '</article>'."\n";
+				}
+			echo '</section><!-- .recent-articles -->'."\n";
 
-	    }
+		}
 
-	    if ( $rows ) {
+		if ( $rows ) {
 
-	        echo '<section class="recent-articles contain">'."\n";
+			echo '<section class="recent-articles contain">'."\n";
 				echo '<div class="header divider"><h2>';
 				echo sprintf( __( '%s Recently Visited', 'indagare'), $foundername );
 				echo '</h2></div>'."\n";
-	            foreach ( $rows as $row ) {
-	                $imageobj = $row['recently-visited-image'];
-	                $image = $imageobj['sizes']['thumb-small'];
+				foreach ( $rows as $row ) {
+					$imageobj = $row['recently-visited-image'];
+					$image = $imageobj['sizes']['thumb-small'];
 
-	                echo '<article>'."\n";
-	                    echo '<a href="'.$row['recently-visited-url'].'">'."\n";
-	                        echo '<img src="'.$image.'" alt="'.__('Related','indagare').'" />'."\n";
-	                        echo '<h3>'.$row['recently-visited-title'].'</h3>'."\n";
-	                    echo '</a>'."\n";
-	                echo '</article>'."\n";
-	            }
-	        echo '</section><!-- .recent-articles -->'."\n";
+					echo '<article>'."\n";
+						echo '<a href="'.$row['recently-visited-url'].'">'."\n";
+							echo '<img src="'.$image.'" alt="'.__('Related','indagare').'" />'."\n";
+							echo '<h3>'.$row['recently-visited-title'].'</h3>'."\n";
+						echo '</a>'."\n";
+					echo '</article>'."\n";
+				}
+			echo '</section><!-- .recent-articles -->'."\n";
 
-	    }
+		}
 
 	} // end sidebar for founder page
 
@@ -7311,9 +7336,9 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 
 			echo '</section>'."\n";
 
-        }
+		}
 
-        wp_reset_postdata();
+		wp_reset_postdata();
 		// end related articles
 
 	} // end related aritcles for region | destination top level | hotel post | restaurant post | shop post | activity post | itinerary | library
@@ -7404,7 +7429,7 @@ function childtheme_override_siteinfoopen() {}
 function childtheme_override_siteinfo() {
 ?>
   <div class="candy-wrapper">
-    <section id="who-we-are">
+	<section id="who-we-are">
 <?php
 	$whoweare = get_field('footer-who-we-are', 'option');
 
@@ -7414,46 +7439,46 @@ function childtheme_override_siteinfo() {
 
 	}
 ?>
-    </section>
-    <section id="subsidiary">
-      <div id="first" class="newsletter-signup-wrapper">
-        <h4><?php print __('Newsletter','indagare'); ?></h4>
-        <p><?php print __('Receive our free email newsletter full of travel news, tips and advice.','indagare'); ?></p>
+	</section>
+	<section id="subsidiary">
+	  <div id="first" class="newsletter-signup-wrapper">
+		<h4><?php print __('Newsletter','indagare'); ?></h4>
+		<p><?php print __('Receive our free email newsletter full of travel news, tips and advice.','indagare'); ?></p>
 		<?php include_once( 'includes/hubspot.php' );
 		render_hubspot('2459975', '87462c47-c6c3-4de1-bba1-d27262e4604d'); ?>
-      </div>
-      <div id="fourth">
-        <h4><a class="colheader" href="/contact/"><?php print __('Connect','indagare'); ?></a></h4>
-        <p class="vcard">
-          <span class="adr">
-            <span class="street-address">950 Third Avenue </span>
-            <span class="locality">New York</span>, <span class="region">NY</span> <span class="postal-code">10022</span>
-          </span>
-          <span class="tel">(212) 988-2611</span>
-          <a class="email" href="mailto:info@indagare.com"><?php print __('Email Us','indagare'); ?></a>
-        </p>
-        <p class="social">
-          <a id="social-facebook" href="https://www.facebook.com/pages/Indagare-Travel/38863077107"><b class="icon custom-icon" data-icon="&#xe003;"><span><?php print __('facebook','indagare'); ?></span></b></a> <a href="https://twitter.com/indagaretravel" id="social-twitter"><b class="icon custom-icon" data-icon="&#xe001;"><span><?php print __('twitter','indagare'); ?></span></b></a> <a id="social-instagram" href="http://instagram.com/indagaretravel/"><b class="icon custom-icon" data-icon="&#xe618;"><span><?php print __('instagram','indagare'); ?></span></b></a>
-        </p>
-      </div>
-      <div id="second">
-        <h4><a class="colheader" href="/why-join/"><?php print __('Membership','indagare'); ?></a></h4>
+	  </div>
+	  <div id="fourth">
+		<h4><a class="colheader" href="/contact/"><?php print __('Connect','indagare'); ?></a></h4>
+		<p class="vcard">
+		  <span class="adr">
+			<span class="street-address">950 Third Avenue </span>
+			<span class="locality">New York</span>, <span class="region">NY</span> <span class="postal-code">10022</span>
+		  </span>
+		  <span class="tel">(212) 988-2611</span>
+		  <a class="email" href="mailto:info@indagare.com"><?php print __('Email Us','indagare'); ?></a>
+		</p>
+		<p class="social">
+		  <a id="social-facebook" href="https://www.facebook.com/pages/Indagare-Travel/38863077107"><b class="icon custom-icon" data-icon="&#xe003;"><span><?php print __('facebook','indagare'); ?></span></b></a> <a href="https://twitter.com/indagaretravel" id="social-twitter"><b class="icon custom-icon" data-icon="&#xe001;"><span><?php print __('twitter','indagare'); ?></span></b></a> <a id="social-instagram" href="http://instagram.com/indagaretravel/"><b class="icon custom-icon" data-icon="&#xe618;"><span><?php print __('instagram','indagare'); ?></span></b></a>
+		</p>
+	  </div>
+	  <div id="second">
+		<h4><a class="colheader" href="/why-join/"><?php print __('Membership','indagare'); ?></a></h4>
 <?php
 	$footermembership = wp_nav_menu( array('menu' => 'footer-membership','container' => '','container_id' => '','container_class' => '','menu_class' => 'footer-nav','echo' => false ));
 	echo $footermembership;
 ?>
-      </div>
-      <div id="third">
-        <h4><a class="colheader" href="/mission/"><?php print __('About','indagare'); ?></a></h4>
+	  </div>
+	  <div id="third">
+		<h4><a class="colheader" href="/mission/"><?php print __('About','indagare'); ?></a></h4>
 <?php
 	$footerabout = wp_nav_menu( array('menu' => 'footer-about','container' => '','container_id' => '','container_class' => '','menu_class' => 'footer-nav','echo' => false ));
 	echo $footerabout;
 ?>
-      </div>
-    </section>
-    <section id="siteinfo">
-      <p>&copy; 2007 - <?php echo Date('Y'); ?> Indagare Travel, Inc. All rights reserved. Use of this site constitutes acceptance of our <a href="/terms-of-use/">Terms of Use</a> and <a href="/privacy-policy/">Privacy Policy</a>.</p>
-    </section>
+	  </div>
+	</section>
+	<section id="siteinfo">
+	  <p>&copy; 2007 - <?php echo Date('Y'); ?> Indagare Travel, Inc. All rights reserved. Use of this site constitutes acceptance of our <a href="/terms-of-use/">Terms of Use</a> and <a href="/privacy-policy/">Privacy Policy</a>.</p>
+	</section>
   </div>
 <?php
 }
@@ -7483,7 +7508,7 @@ global $count;
 	}
 
 	// email signup modal
-    if ( ind_show_email_popup() ) {
+	if ( ind_show_email_popup() ) {
 ?>
 <div id="lightbox-email-signup" class="lightbox lightbox-two-col lightbox-no-borders white-popup mfp-hide">
 	<header>
@@ -7555,7 +7580,7 @@ jQuery(document).ready(function($) {
 		<div class="field message">
 		</div>
 
-        <?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
+		<?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
 	</form>
 
 </div><!-- #lightbox-login -->
@@ -7622,7 +7647,7 @@ jQuery(document).ready(function($) {
 			<div class="field message">
 			</div>
 
-        	<?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
+			<?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
    		</form>
 	</div><!-- .column -->
 	<footer id="emailsignup" class="newsletter-signup-wrapper">
@@ -7711,8 +7736,8 @@ jQuery(document).ready(function($) {
 			<div class="field message">
 			</div>
 
-        	<?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
-        </form>
+			<?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
+		</form>
 	</div><!-- .column -->
 </div><!-- #lightbox-interstitial -->
 <div id="lightbox-interstitial-flights" class="lightbox lightbox-two-col white-popup mfp-hide contain">
@@ -7961,8 +7986,8 @@ echo do_shortcode('[contact-form-7 id="32337" title="Contact Insider Trips"]');
 		<?php	if ( is_archive() && get_query_var('post_type') == 'insidertrip' ) : 	// insider trip archive ?>
 			$("#faq p").hide();
 		  $("#faq h3").click(function () {
-		    $(this).next("#faq p").slideToggle(500);
-		    $(this).toggleClass("expanded");
+			$(this).next("#faq p").slideToggle(500);
+			$(this).toggleClass("expanded");
 		  });
 		<?php endif; // end insider trip archive  ?>
 
@@ -7984,7 +8009,7 @@ echo do_shortcode('[contact-form-7 id="32337" title="Contact Insider Trips"]');
 			|| is_page_template ( 'template-page-book.php' ) ) : ?>
 
 		var ssotokenvalue_default = 'x4T306PLm1KWuXktHqtGzw%3D%3D',
-		    ssotokenvalue = ssotokenvalue_default;
+			ssotokenvalue = ssotokenvalue_default;
 		<?php if ( is_user_logged_in() ) {
 			$account = \WPSF\Contact::get_account_wp();
 			if ( method_exists( $account, 'get_ssotoken' ) ) {
@@ -8036,12 +8061,12 @@ jQuery().ready(function($) {
  	if (is_home() || is_front_page() ) {
 ?>
   $(function() {
-    $(".rslides").responsiveSlides({
-		auto: true,             // Boolean: Animate automatically, true or false
-		speed: 500,            // Integer: Speed of the transition, in milliseconds
-		timeout: 4000,          // Integer: Time between slide transitions, in milliseconds
-		pager: false,           // Boolean: Show pager, true or false
-		nav: true,             // Boolean: Show navigation, true or false
+	$(".rslides").responsiveSlides({
+		auto: true,			 // Boolean: Animate automatically, true or false
+		speed: 500,			// Integer: Speed of the transition, in milliseconds
+		timeout: 4000,		  // Integer: Time between slide transitions, in milliseconds
+		pager: false,		   // Boolean: Show pager, true or false
+		nav: true,			 // Boolean: Show navigation, true or false
 		pause: true
 	});
 
@@ -8061,12 +8086,12 @@ jQuery().ready(function($) {
 	});
 
   $(function() {
-    $(".rslides").responsiveSlides({
-		auto: true,             // Boolean: Animate automatically, true or false
-		speed: 500,            // Integer: Speed of the transition, in milliseconds
-		timeout: 4000,          // Integer: Time between slide transitions, in milliseconds
-		pager: true,           // Boolean: Show pager, true or false
-		nav: true,             // Boolean: Show navigation, true or false
+	$(".rslides").responsiveSlides({
+		auto: true,			 // Boolean: Animate automatically, true or false
+		speed: 500,			// Integer: Speed of the transition, in milliseconds
+		timeout: 4000,		  // Integer: Time between slide transitions, in milliseconds
+		pager: true,		   // Boolean: Show pager, true or false
+		nav: true,			 // Boolean: Show navigation, true or false
 		pause: true
 	});
 
@@ -8081,12 +8106,12 @@ jQuery().ready(function($) {
 ?>
 
   $(function() {
-    $(".rslides").responsiveSlides({
-		auto: true,             // Boolean: Animate automatically, true or false
-		speed: 500,            // Integer: Speed of the transition, in milliseconds
-		timeout: 6000,          // Integer: Time between slide transitions, in milliseconds
-		pager: true,           // Boolean: Show pager, true or false
-		nav: false,             // Boolean: Show navigation, true or false
+	$(".rslides").responsiveSlides({
+		auto: true,			 // Boolean: Animate automatically, true or false
+		speed: 500,			// Integer: Speed of the transition, in milliseconds
+		timeout: 6000,		  // Integer: Time between slide transitions, in milliseconds
+		pager: true,		   // Boolean: Show pager, true or false
+		nav: false,			 // Boolean: Show navigation, true or false
 		pause: true
 	});
 
@@ -8101,8 +8126,8 @@ jQuery().ready(function($) {
 ?>
 
 	$('.memberlevels').slick({
-        arrows: true,
-        appendArrows: $('.memberlevelsnav'),
+		arrows: true,
+		appendArrows: $('.memberlevelsnav'),
 		slidesToShow: 3,
 		infinite: false,
 		responsive: [
@@ -8122,9 +8147,9 @@ jQuery().ready(function($) {
 				infinite: true
 			}
 		}
-	    ],
-	    prevArrow: '<a href="#" class="rslides_nav prev">Previous</a>',
-	    nextArrow: '<a href="#" class="rslides_nav next">Next</a>',
+		],
+		prevArrow: '<a href="#" class="rslides_nav prev">Previous</a>',
+		nextArrow: '<a href="#" class="rslides_nav next">Next</a>',
 	});
 
 /*
@@ -8139,8 +8164,8 @@ jQuery().ready(function($) {
 	});
 */
 
-    $('.memberlevelitems').matchHeight();
-    $('.memberlevelrecap').matchHeight();
+	$('.memberlevelitems').matchHeight();
+	$('.memberlevelrecap').matchHeight();
 
 <?php
 	} // end new join page
@@ -8150,12 +8175,12 @@ jQuery().ready(function($) {
 ?>
 
   $(function() {
-    $(".rslides").responsiveSlides({
-		auto: true,             // Boolean: Animate automatically, true or false
-		speed: 500,            // Integer: Speed of the transition, in milliseconds
-		timeout: 6000,          // Integer: Time between slide transitions, in milliseconds
-		pager: false,           // Boolean: Show pager, true or false
-		nav: true,             // Boolean: Show navigation, true or false
+	$(".rslides").responsiveSlides({
+		auto: true,			 // Boolean: Animate automatically, true or false
+		speed: 500,			// Integer: Speed of the transition, in milliseconds
+		timeout: 6000,		  // Integer: Time between slide transitions, in milliseconds
+		pager: false,		   // Boolean: Show pager, true or false
+		nav: true,			 // Boolean: Show navigation, true or false
 		pause: true
 	});
 
@@ -8255,11 +8280,11 @@ jQuery().ready(function($) {
 	$('.customselect').wrap('<span class="customSelectWrap"></span>');
 	//$('#user_prefix').customSelect().val(user.title);
 	/* $('#user_prefix').customSelect({
-	      customValue: true,
-	      windowFormatter: function (value) {
-	        return user.title;
-	      }
-	    }); */
+		  customValue: true,
+		  windowFormatter: function (value) {
+			return user.title;
+		  }
+		}); */
 
 }); // end jQuery().ready(function($)
 
@@ -8344,12 +8369,12 @@ jQuery(document).ready(function($) {
 ?>
 <script>
 jQuery(document).ready(function($) {
-    $(".rslides").responsiveSlides({
-		auto: true,             // Boolean: Animate automatically, true or false
-		speed: 500,            // Integer: Speed of the transition, in milliseconds
-		timeout: 4000,          // Integer: Time between slide transitions, in milliseconds
-		pager: true,           // Boolean: Show pager, true or false
-		nav: true,             // Boolean: Show navigation, true or false
+	$(".rslides").responsiveSlides({
+		auto: true,			 // Boolean: Animate automatically, true or false
+		speed: 500,			// Integer: Speed of the transition, in milliseconds
+		timeout: 4000,		  // Integer: Time between slide transitions, in milliseconds
+		pager: true,		   // Boolean: Show pager, true or false
+		nav: true,			 // Boolean: Show navigation, true or false
 		pause: true
 	});
 
@@ -8361,12 +8386,12 @@ jQuery(document).ready(function($) {
 ?>
 <script>
 jQuery(document).ready(function($) {
-    $(".rslides").responsiveSlides({
-		auto: true,             // Boolean: Animate automatically, true or false
-		speed: 500,            // Integer: Speed of the transition, in milliseconds
-		timeout: 4000,          // Integer: Time between slide transitions, in milliseconds
-		pager: true,           // Boolean: Show pager, true or false
-		nav: true,             // Boolean: Show navigation, true or false
+	$(".rslides").responsiveSlides({
+		auto: true,			 // Boolean: Animate automatically, true or false
+		speed: 500,			// Integer: Speed of the transition, in milliseconds
+		timeout: 4000,		  // Integer: Time between slide transitions, in milliseconds
+		pager: true,		   // Boolean: Show pager, true or false
+		nav: true,			 // Boolean: Show navigation, true or false
 		pause: true
 	});
 
@@ -8381,12 +8406,12 @@ jQuery(document).ready(function($) {
 ?>
 <script>
 jQuery(document).ready(function($) {
-    $(".rslides").responsiveSlides({
-		auto: true,             // Boolean: Animate automatically, true or false
-		speed: 500,            // Integer: Speed of the transition, in milliseconds
-		timeout: 4000,          // Integer: Time between slide transitions, in milliseconds
-		pager: true,           // Boolean: Show pager, true or false
-		nav: false,             // Boolean: Show navigation, true or false
+	$(".rslides").responsiveSlides({
+		auto: true,			 // Boolean: Animate automatically, true or false
+		speed: 500,			// Integer: Speed of the transition, in milliseconds
+		timeout: 4000,		  // Integer: Time between slide transitions, in milliseconds
+		pager: true,		   // Boolean: Show pager, true or false
+		nav: false,			 // Boolean: Show navigation, true or false
 		pause: true
 	});
 
@@ -8399,12 +8424,12 @@ jQuery(document).ready(function($) {
 ?>
 <script>
 jQuery(document).ready(function($) {
-    $(".rslides").responsiveSlides({
-		auto: true,             // Boolean: Animate automatically, true or false
-		speed: 500,            // Integer: Speed of the transition, in milliseconds
-		timeout: 4000,          // Integer: Time between slide transitions, in milliseconds
-		pager: true,           // Boolean: Show pager, true or false
-		nav: false,             // Boolean: Show navigation, true or false
+	$(".rslides").responsiveSlides({
+		auto: true,			 // Boolean: Animate automatically, true or false
+		speed: 500,			// Integer: Speed of the transition, in milliseconds
+		timeout: 4000,		  // Integer: Time between slide transitions, in milliseconds
+		pager: true,		   // Boolean: Show pager, true or false
+		nav: false,			 // Boolean: Show navigation, true or false
 		pause: true
 	});
 
@@ -8469,23 +8494,23 @@ add_filter('tiny_mce_before_init', 'customformatTinyMCE' );
 // display hotel booking ID column in admin
 add_filter('manage_hotel_posts_columns', 'new_add_hotel_post_thumbnail_column', 5);
 function new_add_hotel_post_thumbnail_column($cols) {
-    $cols['booking'] = __('Booking ID');
-    return $cols;
+	$cols['booking'] = __('Booking ID');
+	return $cols;
 }
 
 add_action('manage_hotel_posts_custom_column', 'new_display_hotel_post_thumbnail_column', 5, 2);
    function new_display_hotel_post_thumbnail_column($col, $id) {
-       switch($col) {
-           case 'booking':
-           if (function_exists('get_field')){
-              //get the acf value
-              $booking = get_field('booking');
-               if( $booking ) {
-               		echo $booking;
-               }
-           }
-           break;
-       }
+	   switch($col) {
+		   case 'booking':
+		   if (function_exists('get_field')){
+			  //get the acf value
+			  $booking = get_field('booking');
+			   if( $booking ) {
+			   		echo $booking;
+			   }
+		   }
+		   break;
+	   }
    }
 
 // modify number of destinations listed on admin page
@@ -8533,7 +8558,7 @@ function sort_by_name(&$query) {
 
 	  } else if ( !empty($query->query['post_type']) && $query->query['post_type'] == 'article' && getLastPathSegment($_SERVER['REQUEST_URI']) !== 'features' ) {
 		  // order articles by reverse date except features page
-	    $query->set( 'orderby', array( 'date' => 'DESC' ) );
+		$query->set( 'orderby', array( 'date' => 'DESC' ) );
 	  }
 	}
 }
@@ -8564,27 +8589,27 @@ add_action( 'pre_get_posts', 'my_custom_recent_drafts' );
 
 add_filter('new_royalslider_skins', 'new_royalslider_add_custom_skin', 10, 2);
 function new_royalslider_add_custom_skin($skins) {
-      $skins['myCustomSkin'] = array(
-           'label' => 'The custom skin',
-           'path' => get_stylesheet_directory_uri() . '/css/slider.css'  // get_stylesheet_directory_uri returns path to your theme folder
-      );
-      return $skins;
+	  $skins['myCustomSkin'] = array(
+		   'label' => 'The custom skin',
+		   'path' => get_stylesheet_directory_uri() . '/css/slider.css'  // get_stylesheet_directory_uri returns path to your theme folder
+	  );
+	  return $skins;
 }
 
 function my_order_cats($args,$taxonomies){
-    //Check we are admin side
-    if(is_admin() && function_exists('get_current_screen')){
-        $taxonomy = $taxonomies[0];
-        $screen = get_current_screen();
-        if(!empty($screen)){
-        	//Check screen ID and taxonomy and changes $args where appropriate.
-	        if( $screen->id=='edit-destinations' && $taxonomy=='destinations'){
-	            $args['orderby']='name'; //preserves order of subcategories.
-	            $args['order']='asc'; //or desc
-	        }
-        }
-    }
-    return $args;
+	//Check we are admin side
+	if(is_admin() && function_exists('get_current_screen')){
+		$taxonomy = $taxonomies[0];
+		$screen = get_current_screen();
+		if(!empty($screen)){
+			//Check screen ID and taxonomy and changes $args where appropriate.
+			if( $screen->id=='edit-destinations' && $taxonomy=='destinations'){
+				$args['orderby']='name'; //preserves order of subcategories.
+				$args['order']='asc'; //or desc
+			}
+		}
+	}
+	return $args;
 }
 add_action('get_terms_args','my_order_cats',10,2);
 
@@ -8592,28 +8617,28 @@ add_action('get_terms_args','my_order_cats',10,2);
 add_action( 'restrict_manage_posts', 'todo_restrict_manage_posts' );
 add_filter('parse_query','todo_convert_restrict');
 function todo_restrict_manage_posts() {
-    global $typenow;
-//    $args   =   array( 'public' => true, '_builtin' => true );
-    $args   =   array( 'public' => true, '_builtin' => false);
-    $post_types = get_post_types($args);
-    //var_dump($post_types);
-    if ( in_array($typenow, $post_types) && $typenow !== 'magazine' && $typenow !== 'press'  && $typenow !== 'career' ) { // exclude magazine and press and career
-        $filter = get_object_taxonomies($typenow,'objects');
-        /*$filters    = array(
-                        'hotel' => array('destinations','hoteltype'),
-                        'restaurant' => array('destinations','restauranttype','mealtype'),
-                        'shop' => array('destinations','shoptype'),
-                        'activity' => array('destinations','activitytype'),
-                        'itinerary' => array('destinations'),
-                        'library' => array('destinations'),
-                        'article' => array('destinations','column','interest'),
-                        'offer' => array('destinations'),
-                        'insidertrip' => array('destinations')
-        );
-        $filter = $filters[$typenow];*/
+	global $typenow;
+//	$args   =   array( 'public' => true, '_builtin' => true );
+	$args   =   array( 'public' => true, '_builtin' => false);
+	$post_types = get_post_types($args);
+	//var_dump($post_types);
+	if ( in_array($typenow, $post_types) && $typenow !== 'magazine' && $typenow !== 'press'  && $typenow !== 'career' ) { // exclude magazine and press and career
+		$filter = get_object_taxonomies($typenow,'objects');
+		/*$filters	= array(
+						'hotel' => array('destinations','hoteltype'),
+						'restaurant' => array('destinations','restauranttype','mealtype'),
+						'shop' => array('destinations','shoptype'),
+						'activity' => array('destinations','activitytype'),
+						'itinerary' => array('destinations'),
+						'library' => array('destinations'),
+						'article' => array('destinations','column','interest'),
+						'offer' => array('destinations'),
+						'insidertrip' => array('destinations')
+		);
+		$filter = $filters[$typenow];*/
  		if(empty($filter)) return;
-        //var_dump($filters);
-        foreach ($filter as $tax_obj) {
+		//var_dump($filters);
+		foreach ($filter as $tax_obj) {
 			//$tax_obj = get_taxonomy($tax_slug);
 			wp_dropdown_categories(array(
 				'show_option_all' => __('All '.$tax_obj->label ),
@@ -8625,42 +8650,42 @@ function todo_restrict_manage_posts() {
 				'show_count' => false,
 				'hide_empty' => false
 			));
-        }
-    }
+		}
+	}
 }
 function todo_convert_restrict($query) {
-    global $pagenow;
-    global $typenow;
-    if ($pagenow=='edit.php') {
-        $filters = get_object_taxonomies($typenow);
+	global $pagenow;
+	global $typenow;
+	if ($pagenow=='edit.php') {
+		$filters = get_object_taxonomies($typenow);
  		if(empty($filters)) return;
-        foreach ($filters as $tax_slug) {
-            $var = &$query->query_vars[$tax_slug];
-            if ( isset($var) ) {
-                $term = get_term_by('id',$var,$tax_slug);
-                $var = $term->slug;
-            }
-        }
-    }
+		foreach ($filters as $tax_slug) {
+			$var = &$query->query_vars[$tax_slug];
+			if ( isset($var) ) {
+				$term = get_term_by('id',$var,$tax_slug);
+				$var = $term->slug;
+			}
+		}
+	}
 }
 function override_is_tax_on_post_search($query) {
-    global $pagenow;
-    $qv = &$query->query_vars;
-    if ($pagenow == 'edit.php' && isset($qv['taxonomy']) && isset($qv['s'])) {
-        $query->is_tax = true;
-    }
+	global $pagenow;
+	$qv = &$query->query_vars;
+	if ($pagenow == 'edit.php' && isset($qv['taxonomy']) && isset($qv['s'])) {
+		$query->is_tax = true;
+	}
 }
 add_filter('parse_query','override_is_tax_on_post_search');
 
 function getLastPathSegment($url) {
-    $path = parse_url($url, PHP_URL_PATH); // to get the path from a whole URL
-    $pathTrimmed = trim($path, '/'); // normalise with no leading or trailing slash
-    $pathTokens = explode('/', $pathTrimmed); // get segments delimited by a slash
+	$path = parse_url($url, PHP_URL_PATH); // to get the path from a whole URL
+	$pathTrimmed = trim($path, '/'); // normalise with no leading or trailing slash
+	$pathTokens = explode('/', $pathTrimmed); // get segments delimited by a slash
 
-    if (substr($path, -1) !== '/') {
-        array_pop($pathTokens);
-    }
-    return end($pathTokens); // get the last segment
+	if (substr($path, -1) !== '/') {
+		array_pop($pathTokens);
+	}
+	return end($pathTokens); // get the last segment
 }
 
 // export functions on updates
@@ -8908,10 +8933,10 @@ add_action('transition_post_status', 'export_hotels_quick', 10, 3);
 // prevent search with no terms from going to home page
 add_filter( 'request', 'my_request_filter' );
 function my_request_filter( $query_vars ) {
-    if( isset( $_GET['s'] ) && empty( $_GET['s'] ) ) {
-        $query_vars['s'] = " ";
-    }
-    return $query_vars;
+	if( isset( $_GET['s'] ) && empty( $_GET['s'] ) ) {
+		$query_vars['s'] = " ";
+	}
+	return $query_vars;
 }
 
 // sort by last name for team and contributor pages | WP_User_Query
@@ -8933,29 +8958,29 @@ function sort_my_users_by_lastname( $a, $b ) {
  * @return array
  */
  function sortArray( $data, $field ) {
-    $field = (array) $field;
-    uasort( $data, function($a, $b) use($field) {
-        $retval = 0;
-        foreach( $field as $fieldname ) {
-            if( $retval == 0 ) $retval = strnatcmp( $a[$fieldname], $b[$fieldname] );
-        }
-        return $retval;
-    } );
-    return $data;
+	$field = (array) $field;
+	uasort( $data, function($a, $b) use($field) {
+		$retval = 0;
+		foreach( $field as $fieldname ) {
+			if( $retval == 0 ) $retval = strnatcmp( $a[$fieldname], $b[$fieldname] );
+		}
+		return $retval;
+	} );
+	return $data;
 }
 
 // remove prev/next links in header generated by Yoast SEO
 if (defined('WPSEO_VERSION')) {
-    function custom_wpseo_override() {
+	function custom_wpseo_override() {
 
-    global $wpseo_front;
+	global $wpseo_front;
 
-//    remove_action('wpseo_head', array($wpseo_front, 'canonical'), 20);
-//    add_action('wpseo_head', 'custom_wpseo_canonical', 20);
-    remove_action('wpseo_head', array($wpseo_front, 'adjacent_rel_links'), 21);
-    add_action('wpseo_head', 'custom_wpseo_adjacent_rel_links', 21);
-    }
-    add_action('init','custom_wpseo_override');
+//	remove_action('wpseo_head', array($wpseo_front, 'canonical'), 20);
+//	add_action('wpseo_head', 'custom_wpseo_canonical', 20);
+	remove_action('wpseo_head', array($wpseo_front, 'adjacent_rel_links'), 21);
+	add_action('wpseo_head', 'custom_wpseo_adjacent_rel_links', 21);
+	}
+	add_action('init','custom_wpseo_override');
 
 	function custom_wpseo_canonical() {}
 	function custom_wpseo_adjacent_rel_links() {}
@@ -8974,16 +8999,16 @@ function posts_by_year($posttype) {
 
   // get posts from WP
   $posts = get_posts(array(
-    'numberposts' => -1,
-    'orderby' => 'post_date',
-    'order' => 'DESC',
-    'post_type' => $posttype,
-    'post_status' => 'publish'
+	'numberposts' => -1,
+	'orderby' => 'post_date',
+	'order' => 'DESC',
+	'post_type' => $posttype,
+	'post_status' => 'publish'
   ));
 
   // loop through posts, populating $years arrays
   foreach($posts as $post) {
-    $years[date('Y', strtotime($post->post_date))][] = $post;
+	$years[date('Y', strtotime($post->post_date))][] = $post;
   }
 
   // reverse sort by year
@@ -9078,7 +9103,7 @@ function reset_user_password( $login ) {
 	 * @since 2.8.0
 	 * @since 4.4.0 Added the `$user_login` and `$user_data` parameters.
 	 *
-	 * @param string  $title      Default email title.
+	 * @param string  $title	  Default email title.
 	 * @param string  $user_login The username for the user.
 	 * @param WP_User $user_data  WP_User object.
 	 */
@@ -9090,8 +9115,8 @@ function reset_user_password( $login ) {
 	 * @since 2.8.0
 	 * @since 4.1.0 Added `$user_login` and `$user_data` parameters.
 	 *
-	 * @param string  $message    Default mail message.
-	 * @param string  $key        The activation key.
+	 * @param string  $message	Default mail message.
+	 * @param string  $key		The activation key.
 	 * @param string  $user_login The username for the user.
 	 * @param WP_User $user_data  WP_User object.
 	 */
