@@ -321,7 +321,7 @@ function appendCardItem(i,t) {
 function upgradeAccount(e){
 	var p=jQuery('#account-membership-upgrade-select'),t=p.val(),postdata = [];
 	postdata.push({name:'action',value:'idj-renew'});
-	if(p.find(':selected').attr('upgradeMode') == 'upgrade') {
+	if(t != SFData.Membership.Id) {
 		postdata.push({name:'l',value:t});
 	}
 	
@@ -654,14 +654,20 @@ function applyMembershipUpgradeOptions() {
 }
 
 function fixUpgradeButtonText() {
-	var s = jQuery('#account-membership-upgrade-select'),b=jQuery('#upgrade-button');
+	var s=jQuery('#account-membership-upgrade-select'),b=jQuery('#upgrade-button');
 	if(b.length) {
 		if(!s.length) {
 			b.remove();
 			jQuery('#field-account-membership-upgrade-select label').html('No more upgrade options available');
 		} else {
-			var t = s.val(),x="Upgrade Now";
-			if(t == SFData.Membership.Id) {
+			var t=s.val(),x="Upgrade Now",i,tm=false,cm;
+			for(i in SFData.MembershipList) {
+				if(SFData.MembershipList[i].Id == t) {
+					tm=SFData.MembershipList[i];
+					break;
+				}
+			}
+			if(!!tm && ((SFData.Membership.Id == tm.Id) || (SFData.Membership.Amount__c >= tm.Amount))) {
 				x = "Renew Now";
 			}
 			b.html(x);
