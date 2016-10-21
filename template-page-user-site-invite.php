@@ -103,32 +103,32 @@ if ( ! empty( $users ) ) {
 						<div class="tab">
 							<div class="tab-content">
 
-							    <h2>Account Information</h2>
+							    <h2><?php echo __('Account Information','indagare');?></h2>
 
 							    <form id="accountinfo-form" class="editing clearfix">
 									<div field-instance="username" id="field-wp-username" class="input-field field clearfix iform-row-3col iform-row-clear">
 										<input name="username" id="wp-username" type="text">
-										<label for="wp-username">Username</label>
-									    <span class="errmsg">Username is not available.  Please try another one.</span>
+										<label for="wp-username"><?php echo __('Username','indagare');?></label>
+									    <span class="errmsg"><?php echo __('Username is not available.  Please try another one.','indagare');?></span>
 									</div>
 
 									<div field-instance="password1" id="field-wp-password1" class="input-field field clearfix iform-row-3col">
 										<input name="pwd1" id="wp-password1" type="password" validate-group="pw" validate-type="password">
-										<label for="wp-password1">Password</label>
-									    <span class="errmsg">Passwords must:<br/>
+										<label for="wp-password1"><?php echo __('Password','indagare');?></label>
+									    <span class="errmsg"><?php echo __('Passwords must:','indagare');?><br/>
 									    	<ul>
-											 	<li id="passlen">Be at least <span id="passlen_num">6</span> characters long</li>
-											 	<li id="passcase">Contain a mix of uppercase and lowercase letters</li>
-											 	<li id="passnum">Contain at least one number</li>
-											 	<li id="passchar">Contain at least one special character (non-letter or number)</li>
+											 	<li id="passlen"><?php echo sprintf(__('Be at least <span id="passlen_num">%d</span> characters long','indagare'),6);?></li>
+											 	<li id="passcase"><?php echo __('Contain a mix of uppercase and lowercase letters','indagare');?></li>
+											 	<li id="passnum"><?php echo __('Contain at least one number','indagare');?></li>
+											 	<li id="passchar"><?php echo __('Contain at least one special character (non-letter or number)','indagare');?></li>
 										 	</ul>
 									 	</span>
 									</div>
 
 									<div field-instance="password2" id="field-wp-password2" class="input-field field clearfix iform-row-3col">
 										<input name="pwd2" id="wp-password2" type="password" validate-group="pw" validate-type="password-verify">
-										<label for="wp-password2">Verify Password</label>
-									    <span class="errmsg">Passwords must match.</span>
+										<label for="wp-password2"><?php echo __('Verify Password','indagare');?></label>
+									    <span class="errmsg"><?php echo __('Passwords must match.','indagare');?></span>
 									</div>
 
 								</form>
