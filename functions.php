@@ -458,13 +458,18 @@ function mmp_rewrite_rules($rules) {
 
 	$newRules['destinations/?$'] = 'index.php?pagename=map';
 	$newRules['destinations/articles/features?$'] = 'index.php?post_type=article&filter=features';
-	$newRules['destinations/(article|offer|insidertrip)s+/?$'] = 'index.php?post_type=$matches[1]';
+	$newRules['destinations/(article|insidertrip|offer)s+/?$'] = 'index.php?post_type=$matches[1]';
+	$newRules['destinations/(offer)s/(.*)+/?$'] = 'index.php?post_type=$matches[1]&offertype=$matches[2]';
 	$newRules['destinations/(hotel|shop|restaurant)s+/?$'] = 'index.php';
 	$newRules['destinations/(activit|itinerar|librar)(y|ies)/?$'] = 'index.php';
 
-	$newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|offer|insidertrip)s?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]&paged=$matches[4]';
-	$newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|offer|insidertrip)s?/(.+)/?$'] = 'index.php?$matches[3]=$matches[4]';
-	$newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|offer|insidertrip)s?/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]';
+	$newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|insidertrip)s?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]&paged=$matches[4]';
+	$newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|insidertrip)s?/(.+)/?$'] = 'index.php?$matches[3]=$matches[4]';
+	$newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|insidertrip)s?/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]';
+
+	$newRules['destinations/([^/]*/){0,3}([^/]+)/(offer)s?/(.*)/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]&offertype=$matches[4]&paged=$matches[5]';
+	$newRules['destinations/([^/]*/){0,3}([^/]+)/(offer)s?/(.*)/(.+)/?$'] = 'index.php?$matches[3]=$matches[5]&offertype=$matches[4]';
+	$newRules['destinations/([^/]*/){0,3}([^/]+)/(offer)s?/(.*)/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]&offertype=$matches[4]';
 
 	$newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]y&destinations=$matches[2]&paged=$matches[5]';
 	$newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/(.+)/?$'] = 'index.php?$matches[3]y=$matches[5]';
