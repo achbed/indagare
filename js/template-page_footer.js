@@ -78,15 +78,15 @@ jQuery().ready(function($) {
 		if ( $('#mapcanvas').hasClass('show-this') ) {
 			$('.showmap').val('show');
 			$('#gallery-header').hide();
-			$('.detail .view-more a.map').html(ajax_login_object.messages.showimages);
-			$('.archive .view-more a.map').html(ajax_login_object.messages.hidemap);
+			$('.detail .view-more a.map').html(_x.showimages);
+			$('.archive .view-more a.map').html(_x.hidemap);
 			$('#mapcanvas').parent().addClass('show-map');
 			gmap_loadmarkers();
 		} else {
 			$('.showmap').val('');
 			$('#gallery-header').show();
-			$('.detail .view-more a.map').html(ajax_login_object.messages.showmap);
-			$('.archive .view-more a.map').html(ajax_login_object.messages.showmap);
+			$('.detail .view-more a.map').html(_x.showmap);
+			$('.archive .view-more a.map').html(_x.showmap);
 			$('#mapcanvas').parent().removeClass('show-map');
 		}
 		return false;
@@ -96,8 +96,8 @@ jQuery().ready(function($) {
 	
 	if ( $('.showmap').val() && itemcount > 0 ) {
 		$('#mapcanvas').addClass('show-this');
-		$('.detail .view-more a.map').html(ajax_login_object.messages.showimages);
-		$('.archive .view-more a.map').html(ajax_login_object.messages.hidemap);
+		$('.detail .view-more a.map').html(_x.showimages);
+		$('.archive .view-more a.map').html(_x.hidemap);
 		$('#mapcanvas').parent().addClass('show-map');
 		gmap_loadmarkers();
 	}
@@ -105,8 +105,8 @@ jQuery().ready(function($) {
 	$('#map-modal-toggle').click(function(event) {
 		event.preventDefault();
 		$('body').toggleClass('modalmap');
-		$('body #map-modal-toggle').attr('title',ajax_login_object.messages.fullscreen).html(ajax_login_object.messages.fullscreen);
-		$('body.modalmap #map-modal-toggle').attr('title',ajax_login_object.messages.closemap).html(ajax_login_object.messages.closemap);
+		$('body #map-modal-toggle').attr('title',_x.fullscreen).html(_x.fullscreen);
+		$('body.modalmap #map-modal-toggle').attr('title',_x.closemap).html(_x.closemap);
 		google.maps.event.trigger(map, 'resize');
 		goZoom();
 	});
@@ -140,7 +140,7 @@ jQuery().ready(function($) {
 //		console.log ( wrapperID );
 		
 		if (!wrapper.find('.newsletter-signup-input').val().match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/)) {
-			wrapper.find('p').fadeOut().fadeIn().html(ajax_login_object.messages.newsletteremailerr);
+			wrapper.find('p').fadeOut().fadeIn().html(_x.newsletteremailerr);
 			return false;
 		}
 	
@@ -186,20 +186,20 @@ jQuery().ready(function($) {
 		  if(data.id){
 			//successful adds will have an id attribute on the object
 //			alert('thanks for signing up');
-				wrapper.find('h2').fadeOut().fadeIn().html(ajax_login_object.messages.thankyou);
+				wrapper.find('h2').fadeOut().fadeIn().html(_x.thankyou);
 				if ( wrapperID == 'first' || wrapperID == 'emailsignup' ) {
-					wrapper.find('p').fadeOut().fadeIn().html(ajax_login_object.messages.thankyousignup);
+					wrapper.find('p').fadeOut().fadeIn().html(_x.thankyousignup);
 					setTimeout(function() {
 						$.magnificPopup.close();
 					}, 3500);
 				} else if ( wrapperID == 'form-buzz' ) {
-					wrapper.find('p').fadeOut().fadeIn().html(ajax_login_object.messages.newsletter);
+					wrapper.find('p').fadeOut().fadeIn().html(_x.newsletter);
 					$('#'+wrapperID).delay(1500).slideUp();
 				}
 		  } else if (data.title == 'Member Exists') {
 			//MC wil send back an error object with "Member Exists" as the title
 //			alert('thanks, but you are alredy signed up');
-			wrapper.find('p').fadeOut().fadeIn().html(ajax_login_object.messages.alreadysignedup);
+			wrapper.find('p').fadeOut().fadeIn().html(_x.alreadysignedup);
 		  } else {
 			//something went wrong with the API call
 //			alert('oh no, there has been a problem');

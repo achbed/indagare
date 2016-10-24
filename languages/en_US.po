@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-17 14:08-0500\n"
-"PO-Revision-Date: 2016-10-17 14:08-0600\n"
+"POT-Creation-Date: 2016-10-20 16:50-0500\n"
+"PO-Revision-Date: 2016-10-20 16:51-0600\n"
 "Last-Translator: Dennis Wallace <dwallace@shr.global>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: en_US\n"
 
-#: app/lib/iajax.php:545
+#: app/lib/iajax.php:550
 msgid "Error retrieving account information. Please call for support."
 msgstr "Error retrieving account information. Please call for support."
 
-#: app/lib/iajax.php:555
+#: app/lib/iajax.php:560
 msgid ""
 "Unknown membership level. Please choose a different level or call for "
 "support."
@@ -30,7 +30,7 @@ msgstr ""
 "Unknown membership level. Please choose a different level or call for "
 "support."
 
-#: app/lib/iajax.php:562
+#: app/lib/iajax.php:567
 msgid ""
 "Your existing Memership level cannot be renewed. Please choose a different "
 "level or call for support."
@@ -38,9 +38,11 @@ msgstr ""
 "Your existing Memership level cannot be renewed. Please choose a different "
 "level or call for support."
 
-#: app/lib/iajax.php:572
+#: app/lib/iajax.php:582
 msgid "You must update the credit card on file before upgrading or renewing."
-msgstr "You must update the credit card on file before upgrading or renewing."
+msgstr ""
+"You must update the credit card and billing address on file before upgrading "
+"or renewing."
 
 #: author.php:67
 msgid "Email "
@@ -146,168 +148,365 @@ msgstr "Recent Posts"
 msgid "Review Image"
 msgstr "Review Image"
 
-#: functions.php:993
+#: functions.php:989
 msgid "Logging in..."
 msgstr "Logging in..."
 
-#: functions.php:994
+#: functions.php:990
 msgid "Thank you"
 msgstr "Thank you"
 
-#: functions.php:995
+#: functions.php:991
 msgid "Thank you for signing up."
 msgstr "Thank you for signing up."
 
-#: functions.php:996
+#: functions.php:992
 msgid ""
 "Indagare's e-Newsletter, full of travel buzz, is sent out every other week."
 msgstr ""
 "Indagare's e-Newsletter, full of travel buzz, is sent out every other week."
 
-#: functions.php:997
+#: functions.php:993
 msgid "Please enter a valid email address to sign up for our email newsletter."
 msgstr ""
 "Please enter a valid email address to sign up for our email newsletter."
 
-#: functions.php:998
+#: functions.php:994
 msgid "You are already signed up."
 msgstr "You are already signed up."
 
-#: functions.php:999
+#: functions.php:995
 msgid "Show Images"
 msgstr "Show Images"
 
-#: functions.php:1000
+#: functions.php:996
 msgid "Show Map"
 msgstr "Show Map"
 
-#: functions.php:1001
+#: functions.php:997
 msgid "Hide Map"
 msgstr "Hide Map"
 
-#: functions.php:1002
+#: functions.php:998
 msgid "Close Map"
 msgstr "Close Map"
 
-#: functions.php:1003
+#: functions.php:999
 msgid "Full Screen"
 msgstr "Full Screen"
 
+#: functions.php:1001
+msgid "Communications error.  Please try again in a moment."
+msgstr "Communications error.  Please try again in a moment."
+
+#: functions.php:1002
+msgid "Are you sure?"
+msgstr "Are you sure?"
+
+#: functions.php:1003
+msgid "We will now charge your credit card on file for"
+msgstr "We will now charge your credit card on file for"
+
+#: functions.php:1004
+msgid "Cancel"
+msgstr "Cancel"
+
+#: functions.php:1005
+msgid "Updating account"
+msgstr "Updating account"
+
+#: functions.php:1006
+msgid "Please wait..."
+msgstr "Please wait..."
+
+#: functions.php:1007
+msgid "Save failed"
+msgstr "Save failed"
+
+#: functions.php:1008
+msgid "This cannot be un-done."
+msgstr "This cannot be un-done."
+
+#: functions.php:1009
+msgid "Yes, Delete it"
+msgstr "Yes, Delete it"
+
+#: functions.php:1010
+msgid "Delete failed"
+msgstr "Delete failed"
+
+#: functions.php:1011
+msgid "Add Travel Companion"
+msgstr "Add Travel Companion"
+
+#: functions.php:1012
+msgid "Create"
+msgstr "Create"
+
+#: functions.php:1013
+msgid "Create Contact"
+msgstr "Create Contact"
+
+#: functions.php:1015
+msgid "No more upgrade options available"
+msgstr "No more upgrade options available"
+
+#: functions.php:1016
+msgid "Upgrade Now"
+msgstr "Upgrade Now"
+
+#: functions.php:1017
+msgid "Renew Now"
+msgstr "Renew Now"
+
 #: functions.php:1018
+msgid "Account Update Failed"
+msgstr "Account Update Failed"
+
+#: functions.php:1019
+msgid "We could not upgrade your account."
+msgstr "We could not upgrade your account."
+
+#: functions.php:1021
+msgid "Error loading account data!"
+msgstr "Error loading account data!"
+
+#: functions.php:1022
+msgid "Delete"
+msgstr "Delete"
+
+#: functions.php:1023
+msgid "Save"
+msgstr "Save"
+
+#: functions.php:1024 includes/comments-filters.php:75
+msgid "Edit"
+msgstr "Edit"
+
+#: functions.php:1026
+msgid "Creation failed"
+msgstr "Creation failed"
+
+#: functions.php:1027
+msgid "Choose an option..."
+msgstr "Choose an option..."
+
+#: functions.php:1028
+msgid "Month..."
+msgstr "Month..."
+
+#: functions.php:1029
+msgid "Year..."
+msgstr "Year..."
+
+#: functions.php:1030
+msgid "On File"
+msgstr "On File"
+
+#: functions.php:1050
 msgid "Cannot process. Please reload the page and try again."
 msgstr "Cannot process. Please reload the page and try again."
 
-#: functions.php:1043
+#: functions.php:1075
 msgid "Login successful, please wait..."
 msgstr "Login successful, please wait..."
 
-#: functions.php:1051
+#: functions.php:1083
 msgid "Login or password incorrect. Please try again."
 msgstr "Login or password incorrect. Please try again."
 
-#: functions.php:6948 functions.php:7025
+#: functions.php:1536
+msgid "Dream"
+msgstr "Dream"
+
+#: functions.php:1538
+msgid "Read Featured Articles"
+msgstr "Read Featured Articles"
+
+#: functions.php:1541 functions.php:1557 functions.php:1572 functions.php:1577
+#: functions.php:1587
+msgid "See All"
+msgstr "See All"
+
+#: functions.php:1551
+msgid "See Digital Magazine"
+msgstr "See Digital Magazine"
+
+#: functions.php:1556
+msgid "Columns"
+msgstr "Columns"
+
+#: functions.php:1567
+msgid "Plan"
+msgstr "Plan"
+
+#: functions.php:1569
+msgid "Tour Select Destinations"
+msgstr "Tour Select Destinations"
+
+#: functions.php:1571 functions.php:1586
+msgid "Top Destinations"
+msgstr "Top Destinations"
+
+#: functions.php:1576
+msgid "Indagare Spotlight"
+msgstr "Indagare Spotlight"
+
+#: functions.php:1582
+msgid "Book"
+msgstr "Book"
+
+#: functions.php:1584 functions.php:5934 functions.php:6464
+msgid "View All Destinations"
+msgstr "View All Destinations"
+
+#: functions.php:1591
+msgid "Top Hotels"
+msgstr "Top Hotels"
+
+#: functions.php:1593
+msgid "See Partner Promotions"
+msgstr "See Partner Promotions"
+
+#: functions.php:1594
+msgid "See Insider Trips"
+msgstr "See Insider Trips"
+
+#: functions.php:1598
+msgid "Shop"
+msgstr "Shop"
+
+#: functions.php:1601
+msgid "Account"
+msgstr "Account"
+
+#: functions.php:1606
+msgid "Log Out"
+msgstr "Log Out"
+
+#: functions.php:1613
+msgid "Log In"
+msgstr "Log In"
+
+#: functions.php:1614
+msgid "Join"
+msgstr "Join"
+
+#: functions.php:1626
+msgid "Search"
+msgstr "Search"
+
+#: functions.php:5934 functions.php:6464
+msgid "Popular Destinations"
+msgstr "Popular Destinations"
+
+#: functions.php:6127 functions.php:6141
+msgid "You need to log in to see this page."
+msgstr "You need to log in to see this page."
+
+#: functions.php:6944 functions.php:7021
 #, php-format
 msgid "%s is Currently Scouting"
 msgstr "%s is Currently Scouting"
 
-#: functions.php:6957 functions.php:6959 functions.php:6982 functions.php:6984
-#: functions.php:7034 functions.php:7036 functions.php:7058
+#: functions.php:6953 functions.php:6955 functions.php:6978 functions.php:6980
+#: functions.php:7030 functions.php:7032 functions.php:7054
 msgid "Related"
 msgstr "Related"
 
-#: functions.php:6973 functions.php:7050
+#: functions.php:6969 functions.php:7046
 #, php-format
 msgid "%s Recently Visited"
 msgstr "%s Recently Visited"
 
-#: functions.php:7019
+#: functions.php:7015
 msgid "Melissa"
 msgstr "Melissa"
 
-#: functions.php:7449
+#: functions.php:7445
 msgid "Newsletter"
 msgstr "Newsletter"
 
-#: functions.php:7450
+#: functions.php:7446
 msgid "Receive our free email newsletter full of travel news, tips and advice."
 msgstr ""
 "Receive our free email newsletter full of travel news, tips and advice."
 
-#: functions.php:7455
+#: functions.php:7451
 msgid "Connect"
 msgstr "Connect"
 
-#: functions.php:7462
+#: functions.php:7458
 msgid "Email Us"
 msgstr "Email Us"
 
-#: functions.php:7465
+#: functions.php:7461
 msgid "facebook"
 msgstr "facebook"
 
-#: functions.php:7465
+#: functions.php:7461
 msgid "twitter"
 msgstr "twitter"
 
-#: functions.php:7465
+#: functions.php:7461
 msgid "instagram"
 msgstr "instagram"
 
-#: functions.php:7469
+#: functions.php:7465
 msgid "Membership"
 msgstr "Membership"
 
-#: functions.php:7476
+#: functions.php:7472
 msgid "About"
 msgstr "About"
 
-#: functions.php:8273
+#: functions.php:8269
 msgid "Read More"
 msgstr "Read More"
 
-#: functions.php:8273
+#: functions.php:8269
 msgid "Read Less"
 msgstr "Read Less"
 
-#: functions.php:8496
+#: functions.php:8497
 msgid "Booking ID"
 msgstr "Booking ID"
 
-#: functions.php:8643
+#: functions.php:8644
 msgid "All "
 msgstr "All "
 
-#: functions.php:9067
+#: functions.php:9068
 msgid "<strong>ERROR</strong>: Invalid username or email."
 msgstr "<strong>ERROR</strong>: Invalid username or email."
 
-#: functions.php:9080
+#: functions.php:9081
 msgid "Someone has requested a password reset for the following account:"
 msgstr "Someone has requested a password reset for the following account:"
 
-#: functions.php:9082
+#: functions.php:9083
 #, php-format
 msgid "Username: %s"
 msgstr "Username: %s"
 
-#: functions.php:9083
+#: functions.php:9084
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr "If this was a mistake, just ignore this email and nothing will happen."
 
-#: functions.php:9084
+#: functions.php:9085
 msgid "To reset your password, visit the following address:"
 msgstr "To reset your password, visit the following address:"
 
-#: functions.php:9097
+#: functions.php:9098
 #, php-format
 msgid "[%s] Password Reset"
 msgstr "[%s] Password Reset"
 
-#: functions.php:9125
+#: functions.php:9126
 msgid "The email could not be sent."
 msgstr "The email could not be sent."
 
-#: functions.php:9125
+#: functions.php:9126
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr "Possible reason: your host may have disabled the mail() function."
 
@@ -463,10 +662,6 @@ msgstr "%s <span class=\"meta-sep\">|</span> %s"
 #: includes/comments-filters.php:74
 msgid "Edit comment"
 msgstr "Edit comment"
-
-#: includes/comments-filters.php:75
-msgid "Edit"
-msgstr "Edit"
 
 #: includes/last_viewed_posts.php:209
 msgid "Title:"

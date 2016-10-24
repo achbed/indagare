@@ -377,6 +377,7 @@ class AjaxHandler {
 
 		} else {
 			// We are updating an existing account.
+			// I'm not sure we ever get here with the current logic, but it's here just in case.
 			$account = \WPSF\Contact::get_account_wp();
 
 			if ( ! empty( $_POST['cc_num'] ) && ( strpos( $_POST['cc_num'], '*' ) !== false ) ) {
@@ -389,12 +390,13 @@ class AjaxHandler {
 			}
 
 			$acct_type = 'Renewal';
+
 			if ( ! empty( $_POST['l'] ) ) {
-				if ( $account['Membership__c'] != $_POST['l'] ) {
+				if ( ( $_POST['l'] != $account['Membership__c'] ) && $account->is_active() ) {
 					$acct_type = 'Upgrade';
 					$account['Membership_Old__c'] = $account['Membership__c'];
-					$account['Membership__c'] = $_POST['l'];
 				}
+				$account['Membership__c'] = $_POST['l'];
 			}
 
 			$account->update();
@@ -420,7 +422,7 @@ class AjaxHandler {
 			} else {
 				$new_response = $charge->toResult();
 				$response = array_merge( $response, $new_response );
-				if ( ! $response['success'] ) {
+				if ( empty( $response['success'] ) ) {
 					$revert = true;
 				}
 
@@ -448,7 +450,7 @@ class AjaxHandler {
 
 		}
 
-		if ( $revert ) {
+		if ( $revert && ! empty( $account['Membership_Old__c'] ) ) {
 			$account['Membership__c'] = $account['Membership_Old__c'];
 		} else {
 			$account['Membership_Status__c'] = $account->picklistValue( 'Membership_Status__c', 'Active' );
@@ -571,9 +573,14 @@ class AjaxHandler {
 			empty( $account['Credit_Card_Month__c'] ) ||
 			empty( $account['Credit_Card_Year__c'] ) ||
 			empty( $account['Card_CVV_Number__c'] ) ||
-			empty( $account['Credit_Card_Type__c'] ) ) {
-			$response = array_merge( $response, array( 'message' => __( 'You must update the credit card on file before upgrading or renewing.', 'indagare' ) ) );
-			self::slack( 'AJAX Renew: No CC on File.', 'moneyfail' );
+			empty( $account['Credit_Card_Type__c'] ) ||
+			empty( $account['BillingStreet'] ) ||
+			empty( $account['BillingCity'] ) ||
+			empty( $account['BillingState'] ) ||
+			empty( $account['BillingPostalCode'] ) ||
+			empty( $account['BillingCountry'] ) ) {
+				$response = array_merge( $response, array( 'message' => __( 'You must update the credit card on file before upgrading or renewing.', 'indagare' ) ) );
+			self::slack( 'AJAX Renew: No CC or Billing on File.', 'moneyfail' );
 			return wp_send_json_error( $response );
 		}
 
@@ -587,12 +594,12 @@ class AjaxHandler {
 			'Membership_Status__c' => $account['Membership_Status__c'],
 		);
 
-		$account['Membership_Old__c'] = $account['Membership__c'];
-		if ( ! empty( $_POST['l'] ) ) {
-			if ( $account['Membership__c'] != $_POST['l'] ) {
+		if ( ! empty( $args['new_level'] ) ) {
+			if ( ( $args['new_level'] != $account['Membership__c'] ) && $account->is_active() ) {
 				$acct_type = 'Upgrade';
-				$account['Membership__c'] = $_POST['l'];
+				$account['Membership_Old__c'] = $account['Membership__c'];
 			}
+			$account['Membership__c'] = $args['new_level'];
 		}
 
 		$account->update();
@@ -632,7 +639,7 @@ class AjaxHandler {
 			} else {
 				$new_response = $charge->toResult();
 				$response = array_merge( $response, $new_response );
-				if ( ! $response['success'] ) {
+				if ( empty( $response['success'] ) ) {
 					$revert = true;
 				}
 			}
@@ -658,7 +665,7 @@ class AjaxHandler {
 			$revert = true;
 		}
 
-		if ( $revert ) {
+		if ( $revert && ! empty( $account['Membership_Old__c'] ) ) {
 			$account['Membership__c'] = $account['Membership_Old__c'];
 		} else {
 			$account['Membership_Status__c'] = $account->picklistValue( 'Membership_Status__c', 'Active' );
