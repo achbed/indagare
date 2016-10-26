@@ -469,7 +469,7 @@ function mmp_rewrite_rules($rules) {
 
 	$newRules['destinations/([^/]*/){0,3}([^/]+)/(offer)s?/(.*)/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]&offertype=$matches[4]&paged=$matches[5]';
 	$newRules['destinations/([^/]*/){0,3}([^/]+)/(offer)s?/(.*)/(.+)/?$'] = 'index.php?$matches[3]=$matches[5]&offertype=$matches[4]';
-	$newRules['destinations/([^/]*/){0,3}([^/]+)/(offer)s?/(.*)/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]&offertype=$matches[4]';
+    $newRules['destinations/([^/]*/){0,3}([^/]+)/(offer)s?/([^/]+)/?$'] = 'index.php?offertype=$matches[4]&destinations=$matches[2]';
 
 	$newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]y&destinations=$matches[2]&paged=$matches[5]';
 	$newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/(.+)/?$'] = 'index.php?$matches[3]y=$matches[5]';
@@ -899,6 +899,7 @@ function my_register_image_sizes() {
 	add_image_size('hero-medium', 620, 300, true); // used for region
 	add_image_size('hero-review', 620, 413, true); // used for reviews - ie, hotel, restaurant, etc
 	add_image_size('thumb-large', 300, 200, true); // used for destination landing page, home page, special offer page
+	add_image_size('thumb-feature', 300, 250, true); // used for featured destination partners ELENA
 	add_image_size('thumb-medium', 220, 146, true); // used for related items, and listing pages for hotel, restaurant
 	add_image_size('thumb-small', 140, 95, true); // used for recent items
 }
@@ -1607,6 +1608,41 @@ function childtheme_override_access() {
 			  </div>
 			</div>
 		  </li>
+
+		    <!-- ELENA CHANGES-->
+
+            <li id="nav-offers"><a href="/offers/">Offers</a><span class="show-subnav"><a href="#"></a></span>
+            <div class="subnav">
+              <div class="main-nav-item"><a href="/destinations/">View All Destinations</a></div>
+              <div class="nav-item">
+                <h3>Seasonal Partners</h3>
+                <div class="subnav-related"><a href="/destinations/offers/seasonal/">See All</a></div>
+     				<ul>
+						<?php
+						$args = array('numberposts' => 5, 'post_type' => 'offer', 'orderby' => 'rand', 'offertype' => 'seasonal');
+						$recent = get_posts($args);
+							foreach( $recent as $post ) : setup_postdata($post);
+								echo '<li><a href="'.get_permalink($post->ID).'">'.get_the_title($post->ID).'</a></li>'."\n";
+							endforeach;
+						?>
+					</ul>
+              </div>
+              <div class="nav-item">
+                <h3>Destination Partners</h3>
+                <div class="subnav-related"><a href="/destinations/offers/destination/">See All</a></div>
+	     				<ul>
+						<?php
+						$args = array('numberposts' => 5, 'post_type' => 'offer', 'orderby' => 'rand', 'offertype' => 'destination');
+						$recent = get_posts($args);
+							foreach( $recent as $post ) : setup_postdata($post);
+								echo '<li><a href="'.get_permalink($post->ID).'">'.get_the_title($post->ID).'</a></li>'."\n";
+							endforeach;
+						?>
+						</ul>
+              </div>
+            </div>
+          </li>
+
 		  <li id="nav-shop"><a href="http://www.shoplatitude.com/collections/indagare" target="_blank"><?php echo __('Shop','indagare');?></a></li>
 
 		  <?php if ( is_user_logged_in() ) : ?>
@@ -1992,14 +2028,23 @@ function child_abovecontainer() {
 
 	// end archive for hotel | restaurant | shop | activity | itinerary | library
 
-	// archive for offer
-	} else if ( is_archive() && get_query_var('post_type') == 'offer' ) {
+	// archive for seasonal offer elena
+	} else if (is_tax('offertype','seasonal'))  {
 
 		echo '<div class="header top">'."\n";
-			echo '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> <h1>Indagare Partner Promotions</h1>'."\n";
+		echo '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> <h1>Seasonal Partners</h1>'."\n"; //ELENA
 		echo '</div><!-- .header -->'."\n";
 
-	// end archive for offer
+	// end archive for seasonal offer
+
+	// archive for destination offer elena
+	} else if (is_tax('offertype','destination')) {
+
+		echo '<div class="header top">'."\n";
+		echo '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> <h1>Destination Partners</h1>'."\n"; //ELENA
+		echo '</div><!-- .header -->'."\n";
+
+	// end archive for destination offer
 
 	// archive for article
 	} else if ( is_archive() && get_query_var('post_type') == 'article' ) {
@@ -4315,6 +4360,47 @@ function child_singlepost($content) {
 			$content .= '</section><!-- .related-articles -->'."\n";
 		}
 
+		// ELENA FEATURED DESTINATION PARTNERS
+
+		$content .= '<section class="featured-destination-partners contain"><div>'."\n";
+		$content .= '<h3>Featured Destination Partners:</h3>';
+		$content .= '<h3><a href="/destinations/offers/destination/">See All</a></h3>';
+
+		$args = array('posts_per_page' => 4, 'post_type' => 'offer', 'orderby' => 'rand', 'offertype' => 'destination');
+
+		$offer= new WP_Query($args);
+
+		if($offer->have_posts() ) {
+
+			while ( $offer->have_posts() ) : $offer->the_post();
+
+				if ( $rowsraw ) {
+					$imageid = $rowsraw[0];
+					$imageobj = wp_get_attachment_image_src( $imageid, 'thumb-feature' );
+					$imgsrc = $imageobj[0];
+				} else {
+					$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'thumb-feature' );
+					$imgsrc = $imageobj[0];
+				}
+
+				$content .= '<article>'."\n";
+						$content .= '<a href="'.get_permalink().'">'."\n";
+							$content .= '<img src="'.$imgsrc.'" alt="Related" />'."\n";
+						$content .= '</a>'."\n";
+
+						$content .= '<a href="'.get_permalink().'">'."\n";
+							$content .= '<strong><span>'.get_the_title().'</span></strong>'."\n";
+						$content .= '</a>'."\n";
+					$content .= '</article>'."\n";
+
+			endwhile;
+
+			wp_reset_postdata();
+
+		}
+
+		$content .= '</div></section><!-- .all-destinations -->'."\n";
+
 	// end home page
 
 	// hotel post | restaurant post | shop post | activity post
@@ -4605,20 +4691,19 @@ function child_singlepost($content) {
 
 	// end archives for hotel | restaurant | shop | activity
 
-	// offer post
-	}  else if ( is_singular( 'offer' ) ) {
+	}  else if ( is_singular('offer') && is_tax('offertype','seasonal')) {
 
 		$content = '';
 
 		$content .= '<div class="header">'."\n";
-			$content .= '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> <h1>Indagare Partner Promotions<span class="return"><a href="/destinations/offers/"><b class="icon petite" data-icon="&#xf0d9;"></b> Back to Partner Promotions</a></span></h1>'."\n";
+			$content .= '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> <h1>Seasonal Partners<span class="return"><a href="/destinations/offers/"><b class="icon petite" data-icon="&#xf0d9;"></b> Back to Partner Promotions</a></span></h1>'."\n";
 		$content .= '</div>'."\n";
 		$content .= '<article class="detail">'."\n";
 			$content .= '<div class="vcard">'."\n";
 				$content .= '<div class="heading">'."\n";
 					$content .= '<h2 class="org">'.get_the_title().'</h2>'."\n";
 					$content .= '<p class="ind-meta">'."\n";
-						$content .= '<b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b>'."\n";
+						$content .= '<b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Seasonal Partner</span></b>'."\n";
 					$content .= '</p>'."\n";
 				$content .= '</div>'."\n";
 				$content .= '<p class="tagline">'.get_field('subtitle').'</p>'."\n";
@@ -4669,10 +4754,11 @@ function child_singlepost($content) {
 
 		$content .= '</article>'."\n";
 
-	// end offer post
+	// end seasonal offer post
 
-	// archives offer
-	} else if ( is_archive() && get_query_var('post_type') == 'offer' ) {
+	// destination offer post ELENA
+
+	} else if ( is_singular('offer') && is_tax('offertype','destination')) {
 
 		// generate thumbnail from gallery header, if not, use featured image
 //		$rows = get_field('gallery-header');
@@ -4692,9 +4778,55 @@ function child_singlepost($content) {
 
 		$content .= '<a href="'.get_permalink().'">'."\n";
 			if ( $imgsrc ) {
-				$content .= '<img src="'.$imgsrc.'" alt="Destination" />'."\n";
+				$content .= '<img src="'.$imgsrc.'" alt="Destination Partner" />'."\n";
 			}
-			$content .= '<h3>'.get_the_title().'</h3><b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b>'."\n";
+			$content .= '<h3>'.get_the_title().'</h3><b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Destination Partner</span></b>'."\n";
+		$content .= '</a>'."\n";
+			$content .= '<span class="location">'.get_field('subtitle').'</span>'."\n";
+
+			$text = wpautop( get_the_content() );
+			$text = substr( $text, 0, strpos( $text, '</p>' ) + 4 );
+			$text = substr( $text, strpos( $text, '<p>' ), strlen($text) -3 );
+			$text = strip_tags($text, '<a><strong><em><b><i>');
+			$text = str_replace(']]>', ']]>', $text);
+			$excerpt_length = 20; // 20 words
+			$excerpt_more = apply_filters('excerpt_more', '...');
+			$text = wp_trim_words( $text, $excerpt_length, $excerpt_more );
+
+			$content .= '<p class="description">'.$text.'</p>'."\n";
+			$content .= '<p class="description">'."\n";
+				$content .= '<a class="book" href="'.get_permalink().'">Take Me There</a>'."\n";
+			$content .= '</p>'."\n";
+
+	// end destination offer post ELENA
+
+	// BEGIN PARTNER PROMOTIONS ARCHIVES
+
+	// archives destination offer ELENA
+
+	} else if (is_tax('offertype','seasonal')) {
+
+		// generate thumbnail from gallery header, if not, use featured image
+//		$rows = get_field('gallery-header');
+
+		$rowsraw = get_field('gallery-header', false, false);
+
+		if ( $rowsraw ) {
+			$imageid = $rowsraw[0];
+			$imageobj = wp_get_attachment_image_src( $imageid, 'thumb-large' );
+			$imgsrc = $imageobj[0];
+		} else {
+			$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'thumb-large' );
+			$imgsrc = $imageobj[0];
+		}
+
+		$content = '';
+
+		$content .= '<a href="'.get_permalink().'">'."\n";
+			if ( $imgsrc ) {
+				$content .= '<img src="'.$imgsrc.'" alt="Destination Partner" />'."\n";
+			}
+			$content .= '<h3>'.get_the_title().'</h3><b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Seasonal Partner</span></b>'."\n";
 		$content .= '</a>'."\n";
 			$content .= '<span class="location">'.get_field('subtitle').'</span>'."\n";
 
@@ -4712,7 +4844,51 @@ function child_singlepost($content) {
 				$content .= '<a class="book" href="'.get_permalink().'">Details</a>'."\n";
 			$content .= '</p>'."\n";
 
-	// end archives offer
+	// end archives seasonal offer ELENA
+
+	} else if (is_tax('offertype','destination')) {
+
+		// generate thumbnail from gallery header, if not, use featured image
+//		$rows = get_field('gallery-header');
+
+		$rowsraw = get_field('gallery-header', false, false);
+
+		if ( $rowsraw ) {
+			$imageid = $rowsraw[0];
+			$imageobj = wp_get_attachment_image_src( $imageid, 'thumb-large' );
+			$imgsrc = $imageobj[0];
+		} else {
+			$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'thumb-large' );
+			$imgsrc = $imageobj[0];
+		}
+
+		$content = '';
+
+		$content .= '<a href="'.get_permalink().'">'."\n";
+			if ( $imgsrc ) {
+				$content .= '<img src="'.$imgsrc.'" alt="Destination Partner" />'."\n";
+			}
+			$content .= '<h3>'.get_the_title().'</h3><b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Destination Partner</span></b>'."\n";
+		$content .= '</a>'."\n";
+			$content .= '<span class="location">'.get_field('subtitle').'</span>'."\n";
+
+			$text = wpautop( get_the_content() );
+			$text = substr( $text, 0, strpos( $text, '</p>' ) + 4 );
+			$text = substr( $text, strpos( $text, '<p>' ), strlen($text) -3 );
+			$text = strip_tags($text, '<a><strong><em><b><i>');
+			$text = str_replace(']]>', ']]>', $text);
+			$excerpt_length = 20; // 20 words
+			$excerpt_more = apply_filters('excerpt_more', '...');
+			$text = wp_trim_words( $text, $excerpt_length, $excerpt_more );
+
+			$content .= '<p class="description">'.$text.'</p>'."\n";
+			$content .= '<p class="description">'."\n";
+				$content .= '<a class="book" href="'.get_permalink().'">Take Me There</a>'."\n";
+			$content .= '</p>'."\n";
+
+	// end archives destination offer ELENA
+
+	// END PARTNER PROMOTIONS ARCHIVES ELENA
 
 	// insidertrip post
 	}  else if ( is_singular( 'insidertrip' ) ) {
