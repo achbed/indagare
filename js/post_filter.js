@@ -275,24 +275,27 @@ jQuery().ready(function($) {
     $('#clearfilters').click(function(event) {
    		event.preventDefault();
 
-/*
-		var ele = $('#filters').find('input');
-
-		if(ele.is(':checked')){
-			ele.prop('checked', false);
-		}
-*/
-		var showmap = '';
+		var params = window.location.search.replace(/^\?/,'').split(/&/);
 
 		if ( $('.showmap').val() ) {
-			showmap = '?map=show';
+			var f = false;
+			for(var i in params) {
+				if(params[i].indexOf('map=') === -1) {
+					f = true;
+					break;
+				}
+			}
+			if(!f) {
+				params.push('map=show');
+			}
+		}
+		
+		params = params.join("&");
+		if(params.length>0) {
+			params = "?" + params;
 		}
 
-		if ( !!showmap.length ) { 
-			window.location.href = posturl + showmap + '#content';
-		} else {
-			window.location.href = posturl + '#content';
-		}
+		window.location.href = window.location.pathname + params + '#content';
 
     });
 
