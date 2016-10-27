@@ -2521,6 +2521,8 @@ body.modalmap #map-buttons-container { position: fixed; right: 1px; /*  bottom: 
 
 .tab.is-trial .billing, .tab.is-trial .billingBlock { display: none !important; }
 
+.discount .tab.is-trial .billing, .discount .tab.is-trial .billingBlock { display: block !important; }
+
 .tab.is-trial .trial { display: block !important; }
 
 /* Account Bar stylings */
@@ -2696,9 +2698,9 @@ span.keep-together { display: inline-block; }
 
 form.processing .button { background: gray; color: #bbb; cursor: progress; }
 
-.page-template-template-page-user-signup-step-two .input-field { background: white !important; }
+.page-template-template-page-user-signup-step-two .input-field, .page-template-template-page-user-signup-step-two-discount .input-field { background: white !important; }
 
-.page-template-template-page-user-signup-step-two #signup-form-container { background: transparent; }
+.page-template-template-page-user-signup-step-two #signup-form-container, .page-template-template-page-user-signup-step-two-discount #signup-form-container { background: transparent; }
 
 #account-tab-nav-menu, .mobile { display: none; }
 
