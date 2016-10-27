@@ -444,13 +444,6 @@ function childtheme_admin_header_style() {
 	<?php
 }
 
-add_filter('query_vars', 'ind_query_vars');
-function ind_query_vars( $query_vars ) {
-	$query_vars[] = 'offer_type';
-	$query_vars[] = 'filter';
-//	$query_vars[] = 'destinations';
-	return $query_vars;
-}
 
 add_filter('rewrite_rules_array', 'mmp_rewrite_rules');
 function mmp_rewrite_rules($rules) {
@@ -458,8 +451,7 @@ function mmp_rewrite_rules($rules) {
 
 	$newRules['destinations/?$'] = 'index.php?pagename=map';
 	$newRules['destinations/articles/features?$'] = 'index.php?post_type=article&filter=features';
-	$newRules['destinations/(article|insidertrip|offer)s+/?$'] = 'index.php?post_type=$matches[1]';
-	$newRules['destinations/(offer)s/(.*)+/?$'] = 'index.php?post_type=$matches[1]&offertype=$matches[2]';
+    $newRules['destinations/(article|insidertrip)s+/?$'] = 'index.php?post_type=$matches[1]';
 	$newRules['destinations/(hotel|shop|restaurant)s+/?$'] = 'index.php';
 	$newRules['destinations/(activit|itinerar|librar)(y|ies)/?$'] = 'index.php';
 
@@ -467,20 +459,51 @@ function mmp_rewrite_rules($rules) {
 	$newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|insidertrip)s?/(.+)/?$'] = 'index.php?$matches[3]=$matches[4]';
 	$newRules['destinations/([^/]*/){0,3}([^/]+)/(hotel|shop|restaurant|article|insidertrip)s?/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]';
 
-	$newRules['destinations/([^/]*/){0,3}([^/]+)/(offer)s?/(.*)/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]&destinations=$matches[2]&offertype=$matches[4]&paged=$matches[5]';
-	$newRules['destinations/([^/]*/){0,3}([^/]+)/(offer)s?/(.*)/(.+)/?$'] = 'index.php?$matches[3]=$matches[5]&offertype=$matches[4]';
-    $newRules['destinations/([^/]*/){0,3}([^/]+)/(offer)s?/([^/]+)/?$'] = 'index.php?offertype=$matches[4]&destinations=$matches[2]';
-
 	$newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[3]y&destinations=$matches[2]&paged=$matches[5]';
 	$newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/(.+)/?$'] = 'index.php?$matches[3]y=$matches[5]';
 	$newRules['destinations/([^/]*/){0,3}([^/]+)/(activit|itinerar|librar)(y|ies)?/?$'] = 'index.php?post_type=$matches[3]y&destinations=$matches[2]';
 
-	$newRules['destinations/(hotel|shop|restaurant|article|offer|insidertrip)s?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[1]&paged=$matches[2]';
+    $newRules['destinations/(hotel|shop|restaurant|article|insidertrip)s?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[1]&paged=$matches[2]';
 
 	$newRules['destinations/(activit|itinerar|librar)(y|ies)?/page/?([0-9]{1,})/?$'] = 'index.php?post_type=$matches[1]y&paged=$matches[3]';
 	$newRules['destinations/(activit|itinerar|librar)(y|ies)?/?$'] = 'index.php';
 
-	$newRules['destinations/([^/]*/)*([^/]+)/?$'] = 'index.php?destinations=$matches[2]';
+    /* New offer rules */
+
+    /** We're not doing this, but let's save it for future reference just in case **/
+    /*
+    // Offer index within one destination by type
+    $offertypes = get_terms( array( 'taxonomy' => 'offertype', 'hide_empty' => false ) );
+    $o = [];
+    foreach ( $offertypes as $type ) {
+    	$o[] = $type->slug;
+    }
+	if ( ! empty( $o ) ) {
+    	$o = '(' . implode('|', $o) . ')';
+    	$newRules['destinations/([^/]+/){0,3}([^/]+)/offers/'.$o.'/page/?([0-9]{1,})/?$'] = 'index.php?post_type=offer&destinations=$matches[2]&offertype=$matches[3]&paged=$matches[4]';
+    	$newRules['destinations/([^/]+/){0,3}([^/]+)/offers/'.$o.'/?$'] = 'index.php?post_type=offer&destinations=$matches[2]&offertype=$matches[3]';
+    }
+    */
+    
+    /** We're not doing this, but let's save it for future reference just in case **/
+    /*
+    // Offer index within one destination
+    $newRules['destinations/([^/]+/){0,3}([^/]+)/offers/page/?([0-9]{1,})/?$'] = 'index.php?post_type=offer&destinations=$matches[2]&paged=$matches[3]';
+    $newRules['destinations/([^/]+/){0,3}([^/]+)/offers/?$'] = 'index.php?post_type=offer&destinations=$matches[2]';
+    */
+    
+    // Offer item
+    $newRules['destinations/([^/]+/){0,4}offers/([^/]+/)*([^/]+)/?$'] = 'index.php?offer=$matches[3]';
+    
+    // All offers by type
+    $newRules['destinations/offers/([^/]+)/page/?([0-9]{1,})/?$'] = 'index.php?post_type=offer&offertype=$matches[1]&paged=$matches[2]';
+    $newRules['destinations/offers/([^/]+)/?$'] = 'index.php?post_type=offer&offertype=$matches[1]';
+
+    // All offers
+    $newRules['destinations/offers/page/?([0-9]{1,})/?$'] = 'index.php?post_type=offer&paged=$matches[1]';
+    $newRules['destinations/offers/?$'] = 'index.php?post_type=offer';
+    
+    $newRules['destinations/([^/]+/){0,3}([^/]+)/?$'] = 'index.php?destinations=$matches[2]';
 
 	return array_merge($newRules, $rules);
 }
@@ -8739,17 +8762,19 @@ function ind_pre_get_posts(&$query) {
 		}
 	}
 
-	if ( $query->is_admin ) return $query;
+	if ( $query->is_admin ) return;
 
-	if ( !$query->is_main_query() ) return $query;
+	if ( !$query->is_main_query() ) return;
 
-	if (!empty($query->query['post_type']) && ( $query->query['post_type'] == 'memberlevel' ) ) return $query;
+	if (!empty($query->query['post_type']) && ( $query->query['post_type'] == 'memberlevel' ) ) return;
 
 	if ( $query->is_search ) {
 		$query->set( 'posts_per_page', -1);
 	  	if ( ! empty( $query->query_vars['filter'] ) ) {
 	  		$query->set( 'post_type', $query->query_vars['filter'] );
 			unset( $query->query['filter'] );
+  		} else if ( !empty( $_GET['filter'] ) ) {
+			$query->set( 'post_type', $_GET['filter'] );
 	  	} else {
 			$query->set( 'post_type', array( 'hotel', 'restaurant', 'shop', 'activity', 'itinerary', 'library', 'article', 'offer', 'insidertrip' ) );
 		}
@@ -8772,7 +8797,6 @@ function ind_pre_get_posts(&$query) {
 		$query->set( 'orderby', array( 'date' => 'DESC' ) );
 	  }
 	}
-	return $query;
 }
 add_action( 'pre_get_posts', 'ind_pre_get_posts' );
 
