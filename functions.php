@@ -1611,7 +1611,7 @@ function childtheme_override_access() {
 		  </li>
 		  <?php else: ?>
 		  <li id="nav-login"><a href="#lightbox-login" class="lightbox-inline"><?php echo __('Log In','indagare');?></a></li>
-		  <li id="nav-account" class="single"><a href="#"><?php echo __('Join','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
+		  <li id="nav-account" class="single"><a href="/join"><?php echo __('Join','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
 			<div class="subnav">
 			  <div class="nav-item">
 				<?php wp_nav_menu( array('menu' => 'footer-membership','container' => '','container_id' => '','container_class' => '','echo' => true )); ?>
