@@ -5,7 +5,7 @@ Description: Use this theme to start your Thematic Child Theme development.
 Author: Sceptre Hospitality
 Author URI: 
 Template: thematic
-Version: 1.8.0
+Version: 1.8.2
 Tags: white, three-columns, two-columns, fixed-width, theme-options, left-sidebar, right-sidebar, threaded-comments, sticky-post, microformats
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -1281,7 +1281,7 @@ ul.footer-nav li { list-style: none; margin: 0; }
 .hbspt-form div.field label { display: none; }
 
 #subsidiary .hs_email { margin-bottom: 10px; }
-#subsidiary input { box-shadow: inset 0px 1px 1px 0px #D9D9F7; -webkit-box-shadow: inset 0px 1px 1px 0px #D9D9F7; -moz-box-shadow: inset 0px 1px 1px 0px #D9D9F7; -o-box-shadow: inset 0px 1px 1px 0px #D9D9F7; }
+#subsidiary .hs_email input, #subsidiary .hs_firstname input, #subsidiary .hs_lastname input { box-shadow: inset 0px 1px 1px 0px #D9D9F7; -webkit-box-shadow: inset 0px 1px 1px 0px #D9D9F7; -moz-box-shadow: inset 0px 1px 1px 0px #D9D9F7; -o-box-shadow: inset 0px 1px 1px 0px #D9D9F7; }
 #subsidiary .hs_firstname input { border-bottom-left-radius: 0px !important; border-bottom-right-radius: 0px !important; margin-bottom: 0px; }
 #subsidiary .hs_lastname input { border-top-left-radius: 0px !important; border-top-right-radius: 0px !important; }
 
