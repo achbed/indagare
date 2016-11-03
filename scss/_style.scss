@@ -139,10 +139,12 @@ div.subnav-related {font-weight:bold;}
 #access > ul > li#nav-book.open > a:before {border-bottom-color:#fd252a;}
 #access > ul > li#nav-explore.open > a:before {border-bottom-color:#fd522b;}
 #access > ul > li#nav-magazine.open > a:before {border-bottom-color:#558512;}
+#access > ul > li#nav-offers.open > a:before {border-bottom-color:#388ecd;} /*ELENA*/
 #access > ul > li#nav-account.open > a:before, #access > ul > li#nav-join.open > a:before {border-bottom-color:#2687ed;}
 #nav-book .subnav {background-color:#fd252a;}
 #nav-explore .subnav {background-color:#fd522b;}
-#nav-magazine .subnav {background-color:#568513;}
+#nav-magazine .subnav {background-color:#558512;} 
+#nav-offers .subnav {background-color:#388ecd;} /*ELENA*/
 #nav-account .subnav, #nav-join.subnav {background-color:#2687ee;}
 
 /* for dropdown behavior */
@@ -324,6 +326,76 @@ p.author {font-style:italic;font-family:Georgia,Times,serif;font-size:.858em;lin
 .heading h2, .heading p.ind-meta {display:inline-block;}
 .heading h2 {margin:0;padding-bottom:.15em;font-weight:700;margin:0 !important;}
 .heading p.ind-meta {margin:0 0 0 .3em;}
+
+/* ELENA */
+.featured-destination-partners {
+  padding: 10px;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: table;
+  width: 100%; 
+
+	div {
+		background: #e7e8e8;
+		overflow: auto;
+		padding: 10px;
+		font-size: .9em; 
+
+		article {
+			float: left;
+			width: 25%;
+			padding: 0 10px;
+			margin-bottom: .4em;
+
+			img {
+				margin-bottom: .6em; 
+				width: 100%;
+				height: auto;
+			}
+		}
+
+		h3 {
+			float: left;
+			width: 75%;
+			text-transform: none;
+			margin-bottom: 10px;
+			padding-left: 10px;
+			font-weight: bold;
+
+			&:last-of-type {
+				float: right;
+				width: 25%;
+				text-align: right;
+				padding-right: 10px;
+			}
+		}
+
+	}
+}
+
+@media screen and (max-width: 600px){
+
+	.featured-destination-partners div article{ 
+		width: 50%;
+
+		&:nth-child(2n+1){
+			clear:left;
+		}
+		
+	}
+
+}
+
+
+@media screen and (max-width: 400px){
+
+	.featured-destination-partners div article{ 
+		width: 100%;
+		margin-bottom: 20px;
+	}
+}
+
+/* ELENA */
 
 /* subnav */
 /* ------------------------------------------------------------------------- */

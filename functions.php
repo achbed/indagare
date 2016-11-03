@@ -492,9 +492,6 @@ function mmp_rewrite_rules($rules) {
     $newRules['destinations/([^/]+/){0,3}([^/]+)/offers/?$'] = 'index.php?post_type=offer&destinations=$matches[2]';
     */
     
-    // Offer item
-    $newRules['destinations/([^/]+/){0,4}offers/([^/]+/)*([^/]+)/?$'] = 'index.php?offer=$matches[3]';
-    
     // All offers by type
     $newRules['destinations/offers/([^/]+)/page/?([0-9]{1,})/?$'] = 'index.php?post_type=offer&offertype=$matches[1]&paged=$matches[2]';
     $newRules['destinations/offers/([^/]+)/?$'] = 'index.php?post_type=offer&offertype=$matches[1]';
@@ -502,6 +499,9 @@ function mmp_rewrite_rules($rules) {
     // All offers
     $newRules['destinations/offers/page/?([0-9]{1,})/?$'] = 'index.php?post_type=offer&paged=$matches[1]';
     $newRules['destinations/offers/?$'] = 'index.php?post_type=offer';
+    
+    // Offer item
+    $newRules['destinations/([^/]+/){1,3}offers/([^/]+/)*([^/]+)/?$'] = 'index.php?offer=$matches[3]';
     
     $newRules['destinations/([^/]+/){0,3}([^/]+)/?$'] = 'index.php?destinations=$matches[2]';
 
@@ -922,7 +922,7 @@ function my_register_image_sizes() {
 	add_image_size('hero-medium', 620, 300, true); // used for region
 	add_image_size('hero-review', 620, 413, true); // used for reviews - ie, hotel, restaurant, etc
 	add_image_size('thumb-large', 300, 200, true); // used for destination landing page, home page, special offer page
-	add_image_size('thumb-feature', 300, 250, true); // used for featured destination partners ELENA
+	add_image_size('thumb-feature', 450, 375, true); // used for featured destination partners ELENA
 	add_image_size('thumb-medium', 220, 146, true); // used for related items, and listing pages for hotel, restaurant
 	add_image_size('thumb-small', 140, 95, true); // used for recent items
 }
@@ -1649,13 +1649,28 @@ function childtheme_override_access() {
 							endforeach;
 						?>
 					</ul>
+	
+<!-- .get_field('subtitle').-->
+
+
+						<ul>
+						<?php
+							$offers = get_posts( array(
+								   'numberposts' => 5, // we want to retrieve all of the posts
+								   'post_type' => 'offer',
+								   'orderby' => 'rand',
+								   'offertype' => 'seasonal',
+								) );
+							?>
+
+						</ul>
               </div>
               <div class="nav-item">
                 <h3>Destination Partners</h3>
-                <div class="subnav-related"><a href="/destinations/offers/destination/">See All</a></div>
+                <div class="subnav-related"><a href="/destinations/offers/destinations/">See All</a></div>
 	     				<ul>
 						<?php
-						$args = array('numberposts' => 5, 'post_type' => 'offer', 'orderby' => 'rand', 'offertype' => 'destination');
+						$args = array('numberposts' => 5, 'post_type' => 'offer', 'orderby' => 'rand', 'offertype' => 'destinations');
 						$recent = get_posts($args);
 							foreach( $recent as $post ) : setup_postdata($post);
 								echo '<li><a href="'.get_permalink($post->ID).'">'.get_the_title($post->ID).'</a></li>'."\n";
@@ -1665,8 +1680,6 @@ function childtheme_override_access() {
               </div>
             </div>
           </li>
-
-		  <li id="nav-shop"><a href="http://www.shoplatitude.com/collections/indagare" target="_blank"><?php echo __('Shop','indagare');?></a></li>
 
 		  <?php if ( is_user_logged_in() ) : ?>
 		  <li id="nav-account" class="loggedin single"><a href="#"><?php echo __('Account','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
@@ -2055,16 +2068,16 @@ function child_abovecontainer() {
 	} else if (is_tax('offertype','seasonal'))  {
 
 		echo '<div class="header top">'."\n";
-		echo '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> <h1>Seasonal Partners</h1>'."\n"; //ELENA
+		echo '<h1>Seasonal Partners</h1>'."\n"; //ELENA
 		echo '</div><!-- .header -->'."\n";
 
 	// end archive for seasonal offer
 
 	// archive for destination offer elena
-	} else if (is_tax('offertype','destination')) {
+	} else if (is_tax('offertype','destinations')) {
 
 		echo '<div class="header top">'."\n";
-		echo '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> <h1>Destination Partners</h1>'."\n"; //ELENA
+		echo '<h1>Destination Partners</h1>'."\n"; //ELENA
 		echo '</div><!-- .header -->'."\n";
 
 	// end archive for destination offer
@@ -3213,11 +3226,24 @@ function childtheme_override_archive_loop() {
 
 	// end archive for hotel | restaurant | shop | activity
 
-	// archive for offer
-	} else if ( is_archive() && get_query_var('post_type') == 'offer' ) {
+	// archive for seasonal partner offer
+	} else if ( is_archive() && get_query_var('post_type') == 'offer' && is_tax( 'offertype', 'seasonal' )) {
 
 		// featured offer
-		$args = array('numberposts' => 1, 'post_type' => 'offer', 'meta_key' => 'featured', 'meta_value' => 'yes', 'orderby' => 'rand');
+		$args = array(
+			'numberposts' => 1,
+			'post_type' => 'offer',
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'offertype',
+					'field' => 'slug',
+					'terms' => get_query_var( 'offertype' ),
+				),
+			),
+			'meta_key' => 'featured',
+			'meta_value' => 'yes',
+			'orderby' => 'rand',
+		);
 
 		$featured = new WP_Query($args);
 
@@ -3263,7 +3289,9 @@ function childtheme_override_archive_loop() {
 
 							echo '<p class="description">'.$text.'</p>'."\n";
 							echo '<p class="description">'."\n";
-								echo '<a class="book" href="'.get_permalink().'">Details</a>'."\n";
+
+							echo '<a class="book" href="'.get_permalink().'">'.__('Details','indagare').'</a>'."\n";
+
 							echo '</p>'."\n";
 					echo '</div><!-- .special-info -->'."\n";
 				echo '</div><!-- .widget-wrapper -->'."\n";
@@ -3306,7 +3334,117 @@ function childtheme_override_archive_loop() {
 
 		echo '</section>'."\n";
 
-	// end archive for offer
+	// end seasonal partner offer
+
+	// archive for destination partner offer
+	} else if ( is_archive() && get_query_var('post_type') == 'offer' && is_tax( 'offertype', 'destinations' )) {
+
+		// featured offer
+		$args = array(
+			'numberposts' => 1,
+			'post_type' => 'offer',
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'offertype',
+					'field' => 'slug',
+					'terms' => get_query_var( 'offertype' ),
+				),
+			),
+			'meta_key' => 'featured',
+			'meta_value' => 'yes',
+			'orderby' => 'rand',
+		);
+
+		$featured = new WP_Query($args);
+
+		if($featured->have_posts() ) {
+
+			while ( $featured->have_posts() ) : $featured->the_post();
+
+				// generate thumbnail from gallery header, if not, use featured image
+//				$rows = get_field('gallery-header');
+
+				$rowsraw = get_field('gallery-header', false, false);
+
+				if ( $rowsraw ) {
+					$imageid = $rowsraw[0];
+					$imageobj = wp_get_attachment_image_src( $imageid, 'hero-medium' );
+					$imgsrc = $imageobj[0];
+				} else {
+					$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-medium' );
+					$imgsrc = $imageobj[0];
+				}
+
+				echo '<div id="hero-image">'."\n";
+					if ( $imgsrc ) {
+						echo '<img src="'.$imgsrc.'" alt="hero-region" />'."\n";
+					}
+				echo '</div><!-- #hero-image -->'."\n";
+
+				echo '<div class="widget-wrapper">'."\n";
+					echo '<div class="special-info">'."\n";
+						echo '<a href="'.get_permalink().'">'."\n";
+							echo '<h3>'.get_the_title().'</h3>'."\n";
+						echo '</a>'."\n";
+							echo '<span class="location"><strong><em>'.get_field('subtitle').'</em></strong></span>'."\n";
+
+							$text = wpautop( get_the_content() );
+							$text = substr( $text, 0, strpos( $text, '</p>' ) + 4 );
+							$text = substr( $text, strpos( $text, '<p>' ), strlen($text) -3 );
+							$text = strip_tags($text, '<a><strong><em><b><i>');
+							$text = str_replace(']]>', ']]>', $text);
+							$excerpt_length = 20; // 20 words
+							$excerpt_more = apply_filters('excerpt_more', '...');
+							$text = wp_trim_words( $text, $excerpt_length, $excerpt_more );
+
+							echo '<p class="description">'.$text.'</p>'."\n";
+							echo '<p class="description">'."\n";
+
+							echo '<a class="book" href="'.get_permalink().'">'.__('Take Me There','indagare').'</a>'."\n";
+
+							echo '</p>'."\n";
+					echo '</div><!-- .special-info -->'."\n";
+				echo '</div><!-- .widget-wrapper -->'."\n";
+
+				echo '<div class="header divider"></div>'."\n";
+
+			endwhile;
+
+		}
+
+		wp_reset_postdata();
+
+		// list view of offers
+		echo '<section class="all-destinations contain results">'."\n";
+
+		while ( have_posts() ) : the_post();
+
+			$featured = get_field('featured');
+
+			// skip featured offer
+			if ( $featured !== 'yes' ) {
+
+				echo '<article id="post-';
+				the_ID();
+				echo '" ';
+				post_class('contain');
+				echo ' >'."\n";
+
+				thematic_content();
+
+				echo '</article><!-- #post -->'."\n";
+
+			}
+
+		endwhile;
+
+		if ( $max > 1 ) {
+			echo '<p class="load-more"></p>';
+		}
+
+		echo '</section>'."\n";
+
+	// end destination partner offer
 
 	// archive for insidertrip
 	} else if ( is_archive() && get_query_var('post_type') == 'insidertrip' ) {
@@ -4265,20 +4403,20 @@ function child_singlepost($content) {
 			$content .= '<div class="widget-wrapper home">'."\n";
 				$content .= '<div id="booking-widget" class="simple">'."\n";
 					$content .= '<ul class="book-type contain">'."\n";
-						$content .= '<li>Book Hotels</li>'."\n";
-						$content .= '<li><a href="#" id="bookflights">Book Flights</a></li>'."\n";
+						$content .= '<li>'.__('Book Hotels','indagare').'</li>'."\n";
+						$content .= '<li><a href="#" id="bookflights">'.__('Book Flights','indagare').'</a></li>'."\n";
 					$content .= '</ul>'."\n";
 					$content .= '<form id="book-hotels">'."\n";
 						$content .= '<div class="form-combo">'."\n";
-							$content .= '<span class="form-item"><input type="text" id="book-destination" class="element acInput" placeholder="Destination or Hotel" /><b class="icon" data-icon="&#61442;"></b></span>'."\n";
+							$content .= '<span class="form-item"><input type="text" id="book-destination" class="element acInput" placeholder="'.__('Destination or Hotel','indagare').'" /><b class="icon" data-icon="&#61442;"></b></span>'."\n";
 							$content .= '<div class="autocomplete"></div>'."\n";
 						$content .= '</div>'."\n";
 						$content .= '<div class="form-combo">'."\n";
-							$content .= '<span class="form-item"><input type="text" id="dep_date" class="element dateinput" placeholder="Check In (optional)" /><b class="icon" data-icon="&#61555;"></b></span>'."\n";
-							$content .= '<span class="form-item"><input type="text" id="ret_date" class="element dateinput" placeholder="Check Out (optional)" /><b class="icon" data-icon="&#61555;"></b></span>'."\n";
+							$content .= '<span class="form-item"><input type="text" id="dep_date" class="element dateinput" placeholder="'.__('Check In (optional)','indagare').'" /><b class="icon" data-icon="&#61555;"></b></span>'."\n";
+							$content .= '<span class="form-item"><input type="text" id="ret_date" class="element dateinput" placeholder="'.__('Check Out (optional)','indagare').'" /><b class="icon" data-icon="&#61555;"></b></span>'."\n";
 						$content .= '</div>'."\n";
 						$content .= '<div class="buttons">'."\n";
-							$content .= '<button type="submit" class="primary button">Find Rooms</button>'."\n";
+							$content .= '<button type="submit" class="primary button">'.__('Find Rooms','indagare').'</button>'."\n";
 						$content .= '</div>'."\n";
 						$content .= '<div id="last_selected"></div>'."\n";
 						$content .= '<input class="autocompletedestination" type="hidden" />'."\n";
@@ -4342,7 +4480,7 @@ function child_singlepost($content) {
 						$content .= '<article>'."\n";
 							$content .= '<a href="'.$row['home-featured-url'].'">'."\n";
 								if ( $image ) {
-									$content .= '<img src="'.$image.'" alt="Related" />'."\n";
+									$content .= '<img src="'.$image.'" alt="'.__('Related','indagare').'" />'."\n";
 								}
 								$content .= '<span class="info">'."\n";
 									$content .= '<h4>'.$row['home-featured-heading'].'</h4>'."\n";
@@ -4385,34 +4523,32 @@ function child_singlepost($content) {
 
 		// ELENA FEATURED DESTINATION PARTNERS
 
-		$content .= '<section class="featured-destination-partners contain"><div>'."\n";
-		$content .= '<h3>Featured Destination Partners:</h3>';
-		$content .= '<h3><a href="/destinations/offers/destination/">See All</a></h3>';
-
-		$args = array('posts_per_page' => 4, 'post_type' => 'offer', 'orderby' => 'rand', 'offertype' => 'destination');
+		$args = array('posts_per_page' => 4, 'post_type' => 'offer', 'orderby' => 'rand', 'offertype' => 'destinations');
 
 		$offer= new WP_Query($args);
 
 		if($offer->have_posts() ) {
 
+			$content .= '<section class="featured-destination-partners contain"><div>'."\n";
+			$content .= '<h3>'.__('Featured Destination Partners:','indagare').'</h3>';
+			$content .= '<h3><a href="/destinations/offers/destinations/">'.__('See All','indagare').'</a></h3>';
+
 			while ( $offer->have_posts() ) : $offer->the_post();
 
-				if ( $rowsraw ) {
-					$imageid = $rowsraw[0];
-					$imageobj = wp_get_attachment_image_src( $imageid, 'thumb-feature' );
-					$imgsrc = $imageobj[0];
-				} else {
-					$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'thumb-feature' );
-					$imgsrc = $imageobj[0];
+				if ( $rows ) {
+			    	$imageobj= get_field('offer_adimage');
+					$imagesize= 'thumb-feature';
+					$imgsrc = $imageobj['sizes'][$imagesize];
+
 				}
 
 				$content .= '<article>'."\n";
 						$content .= '<a href="'.get_permalink().'">'."\n";
-							$content .= '<img src="'.$imgsrc.'" alt="Related" />'."\n";
+							$content .= '<img src="'.$imgsrc.'" alt="'.__('Destination Partner','indagare').'" />'."\n";
 						$content .= '</a>'."\n";
-
+						$content .= '<!-- '.print_r($imgsrc,true).' -->';
 						$content .= '<a href="'.get_permalink().'">'."\n";
-							$content .= '<strong><span>'.get_the_title().'</span></strong>'."\n";
+							$content .= '<strong><span>'.get_field('offer_adtext').'</span></strong>'."\n";
 						$content .= '</a>'."\n";
 					$content .= '</article>'."\n";
 
@@ -4420,9 +4556,10 @@ function child_singlepost($content) {
 
 			wp_reset_postdata();
 
+			$content .= '</div></section><!-- .all-destinations -->'."\n";
+
 		}
 
-		$content .= '</div></section><!-- .all-destinations -->'."\n";
 
 	// end home page
 
@@ -4714,7 +4851,7 @@ function child_singlepost($content) {
 
 	// end archives for hotel | restaurant | shop | activity
 
-	}  else if ( is_singular('offer') && is_tax('offertype','seasonal')) {
+	}  else if ( is_singular('offer') ) {
 
 		$content = '';
 
@@ -4779,50 +4916,6 @@ function child_singlepost($content) {
 
 	// end seasonal offer post
 
-	// destination offer post ELENA
-
-	} else if ( is_singular('offer') && is_tax('offertype','destination')) {
-
-		// generate thumbnail from gallery header, if not, use featured image
-//		$rows = get_field('gallery-header');
-
-		$rowsraw = get_field('gallery-header', false, false);
-
-		if ( $rowsraw ) {
-			$imageid = $rowsraw[0];
-			$imageobj = wp_get_attachment_image_src( $imageid, 'thumb-large' );
-			$imgsrc = $imageobj[0];
-		} else {
-			$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'thumb-large' );
-			$imgsrc = $imageobj[0];
-		}
-
-		$content = '';
-
-		$content .= '<a href="'.get_permalink().'">'."\n";
-			if ( $imgsrc ) {
-				$content .= '<img src="'.$imgsrc.'" alt="Destination Partner" />'."\n";
-			}
-			$content .= '<h3>'.get_the_title().'</h3><b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Destination Partner</span></b>'."\n";
-		$content .= '</a>'."\n";
-			$content .= '<span class="location">'.get_field('subtitle').'</span>'."\n";
-
-			$text = wpautop( get_the_content() );
-			$text = substr( $text, 0, strpos( $text, '</p>' ) + 4 );
-			$text = substr( $text, strpos( $text, '<p>' ), strlen($text) -3 );
-			$text = strip_tags($text, '<a><strong><em><b><i>');
-			$text = str_replace(']]>', ']]>', $text);
-			$excerpt_length = 20; // 20 words
-			$excerpt_more = apply_filters('excerpt_more', '...');
-			$text = wp_trim_words( $text, $excerpt_length, $excerpt_more );
-
-			$content .= '<p class="description">'.$text.'</p>'."\n";
-			$content .= '<p class="description">'."\n";
-				$content .= '<a class="book" href="'.get_permalink().'">Take Me There</a>'."\n";
-			$content .= '</p>'."\n";
-
-	// end destination offer post ELENA
-
 	// BEGIN PARTNER PROMOTIONS ARCHIVES
 
 	// archives destination offer ELENA
@@ -4847,7 +4940,7 @@ function child_singlepost($content) {
 
 		$content .= '<a href="'.get_permalink().'">'."\n";
 			if ( $imgsrc ) {
-				$content .= '<img src="'.$imgsrc.'" alt="Destination Partner" />'."\n";
+				$content .= '<img src="'.$imgsrc.'" alt="Seasonal Partner" />'."\n";
 			}
 			$content .= '<h3>'.get_the_title().'</h3><b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Seasonal Partner</span></b>'."\n";
 		$content .= '</a>'."\n";
@@ -4869,7 +4962,7 @@ function child_singlepost($content) {
 
 	// end archives seasonal offer ELENA
 
-	} else if (is_tax('offertype','destination')) {
+	} else if ( is_tax( 'offertype', 'destinations' ) ) {
 
 		// generate thumbnail from gallery header, if not, use featured image
 //		$rows = get_field('gallery-header');
@@ -4891,9 +4984,9 @@ function child_singlepost($content) {
 			if ( $imgsrc ) {
 				$content .= '<img src="'.$imgsrc.'" alt="Destination Partner" />'."\n";
 			}
-			$content .= '<h3>'.get_the_title().'</h3><b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Destination Partner</span></b>'."\n";
+			$content .= '<h3>'.get_the_title().'</h3>'."\n";
 		$content .= '</a>'."\n";
-			$content .= '<span class="location">'.get_field('subtitle').'</span>'."\n";
+			$content .= '<span class="location">Partner: '.get_field('subtitle').'</span>'."\n";
 
 			$text = wpautop( get_the_content() );
 			$text = substr( $text, 0, strpos( $text, '</p>' ) + 4 );
@@ -5028,12 +5121,17 @@ function child_singlepost($content) {
 
 		$content .= $basecontent;
 
+		// ELENA TOP TABLE
+
 		$ttcolumn = wp_get_post_terms( $post->ID, 'column' );
 		$ttcolummname = ($ttcolumn[0]->name);
 
 		if ($ttcolummname == 'Top Tables') {
+
 			$content .= '<p class="author">&ndash; '.get_the_author_meta( 'display_name', $post->post_author ).'</p>'."\n";
+
 		} else
+
 		$content .= '<p class="author">&ndash; '.get_the_author_meta( 'display_name', $post->post_author ).' on '.get_the_time( get_option('date_format') ).'</p>'."\n";
 
 		// article meta for favorites and social links
@@ -5042,6 +5140,7 @@ function child_singlepost($content) {
 		$content .= '</article>'."\n";
 
 	// end article post
+
 
 	// archives for article
 	} else if (
