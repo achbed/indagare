@@ -775,7 +775,7 @@ function handleDisplayField() {
 				case 'Membership_End_Date__c':
 				case 'Member_Since__c':
 					if(h && h != '') {
-						var t = new Date(h);
+						var t = new Date(h.replace(/T.+/, ''));
 						h = t.toLocaleDateString();
 					}
 			}
@@ -929,7 +929,7 @@ function isExpired() {
 		}
 	}
 	
-	var end = new Date(SFData.Account.Membership_End_Date__c);
+	var end = new Date(SFData.Account.Membership_End_Date__c.replace(/T.+/, ''));
 	end.setTime( end.getTime() - 8 * 86400000 );
 	// Adjust math for Daylight Savings
 	end.setTime( end.getTime() + 12 * 1000 * 60 * 60 ); 
@@ -951,7 +951,7 @@ function isRenewal() {
 		}
 	}
 	
-	var end = new Date(SFData.Account.Membership_End_Date__c);
+	var end = new Date(SFData.Account.Membership_End_Date__c.replace(/T.+/, ''));
 	end.setTime( end.getTime() - 8 * 86400000 );
 	// Adjust math for Daylight Savings
 	end.setTime( end.getTime() + 12 * 1000 * 60 * 60 ); 
@@ -1293,7 +1293,7 @@ function makeInput(a,p,l,t,r) {
 					'picker':'date'
 			});
 			
-			v = new String(v).split('T')[0];
+			v = new String(v).replace(/T.+/, '');
 			if(v && v !='null' && v != '') {
 				v = new Date(v);
 				jQuery(s).val(v.toLocaleDateString());
