@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-20 16:50-0500\n"
-"PO-Revision-Date: 2016-10-20 16:51-0600\n"
+"POT-Creation-Date: 2016-10-21 08:50-0500\n"
+"PO-Revision-Date: 2016-10-21 08:51-0600\n"
 "Last-Translator: Dennis Wallace <dwallace@shr.global>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -47,6 +47,18 @@ msgstr ""
 #: author.php:67
 msgid "Email "
 msgstr "Email "
+
+#: comments.php:21
+msgid "Comments"
+msgstr "Comments"
+
+#: comments.php:21
+msgid "Open"
+msgstr "Open"
+
+#: comments.php:21
+msgid "Close"
+msgstr "Close"
 
 #: comments.php:28
 msgid "Please do not load this page directly."
@@ -388,7 +400,7 @@ msgstr "Log Out"
 msgid "Log In"
 msgstr "Log In"
 
-#: functions.php:1614
+#: functions.php:1614 render-memberlevel.tpl.php:6
 msgid "Join"
 msgstr "Join"
 
@@ -695,6 +707,10 @@ msgstr ""
 "Sorry, but nothing matched your search criteria. Please try again with some "
 "different keywords."
 
+#: template-modal-contact.php:8
+msgid "Contact Us"
+msgstr "Contact Us"
+
 #: template-page-user-site-invite.php:48
 msgid "<strong>ERROR</strong>: Multiple Logins tied to this Contact."
 msgstr "<strong>ERROR</strong>: Multiple Logins tied to this Contact."
@@ -714,6 +730,51 @@ msgstr ""
 #: template-page-user-site-invite.php:75
 msgid "<strong>ERROR</strong>: Multiple Logins tied to this Contact Email."
 msgstr "<strong>ERROR</strong>: Multiple Logins tied to this Contact Email."
+
+#: template-page-user-site-invite.php:106
+msgid "Account Information"
+msgstr "Account Information"
+
+#: template-page-user-site-invite.php:111
+msgid "Username"
+msgstr "Username"
+
+#: template-page-user-site-invite.php:112
+msgid "Username is not available.  Please try another one."
+msgstr "Username is not available.  Please try another one."
+
+#: template-page-user-site-invite.php:117
+msgid "Password"
+msgstr "Password"
+
+#: template-page-user-site-invite.php:118
+msgid "Passwords must:"
+msgstr "Passwords must:"
+
+#: template-page-user-site-invite.php:120
+#, php-format
+msgid "Be at least <span id=\"passlen_num\">%d</span> characters long"
+msgstr "Be at least <span id=\"passlen_num\">%d</span> characters long"
+
+#: template-page-user-site-invite.php:121
+msgid "Contain a mix of uppercase and lowercase letters"
+msgstr "Contain a mix of uppercase and lowercase letters"
+
+#: template-page-user-site-invite.php:122
+msgid "Contain at least one number"
+msgstr "Contain at least one number"
+
+#: template-page-user-site-invite.php:123
+msgid "Contain at least one special character (non-letter or number)"
+msgstr "Contain at least one special character (non-letter or number)"
+
+#: template-page-user-site-invite.php:130
+msgid "Verify Password"
+msgstr "Verify Password"
+
+#: template-page-user-site-invite.php:131
+msgid "Passwords must match."
+msgstr "Passwords must match."
 
 #~ msgid "Your email address"
 #~ msgstr "Your email address"

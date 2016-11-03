@@ -18,7 +18,7 @@
 
 				<div id="comments">
 
-				<p class="open-close"><a href="#"><span class="title">Comments<?php global $post; $comments_count = wp_count_comments( $post->ID ); if ( $comments_count->approved > 0 ) { echo ' ('.$comments_count->approved.')'; } ?></span> <b class="icon open-this" data-icon="&#xf0d9;"><span>Open</span></b><b class="icon close-this" data-icon="&#xf0d7;"><span>Close</span></b></a></p>
+				<p class="open-close"><a href="#"><span class="title"><?php echo __('Comments','indagare');?><?php global $post; $comments_count = wp_count_comments( $post->ID ); if ( $comments_count->approved > 0 ) { echo ' ('.$comments_count->approved.')'; } ?></span> <b class="icon open-this" data-icon="&#xf0d9;"><span><?php echo __('Open','indagare');?></span></b><b class="icon close-this" data-icon="&#xf0d7;"><span><?php echo __('Close','indagare');?></span></b></a></p>
 
 				<div class="collapse">
 
@@ -34,7 +34,7 @@
 					if ( post_password_required() ) :
 				?>
 
-					<div class="nopassword"><?php _e('This post is password protected. Enter the password to view any comments.', 'thematic') ?></div>
+					<div class="nopassword"><?php __('This post is password protected. Enter the password to view any comments.', 'thematic') ?></div>
 
 					<?php
 					print '</div><!-- #collapse -->';
