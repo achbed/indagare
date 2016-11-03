@@ -760,6 +760,19 @@ function handleDisplayIf() {
 	});
 }
 
+function newDate(a) {
+	if(!a) {
+		return new Date();
+	}
+	a = String(a);
+	var d = new Date(a);
+	if(a.indexOf('T')==-1) {
+		// No time zone in the date.  Offset to current time zone.
+		d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+	}
+	return d;
+}
+
 function handleDisplayField() {
 	jQuery('[data-display-field]').each(function(x,f){
 		var d = jQuery(f).attr('data-source-object');
@@ -775,7 +788,7 @@ function handleDisplayField() {
 				case 'Membership_End_Date__c':
 				case 'Member_Since__c':
 					if(h && h != '') {
-						var t = new Date(h.replace(/T.+/, ''));
+						var t = newDate(h);
 						h = t.toLocaleDateString();
 					}
 			}
@@ -899,7 +912,7 @@ function arrayToProps(a) {
  *  A date object means Autorenew is enabled, and we should not show either "Renew" or "Enable Autorenew"
  */
 function renewMode() {
-	var end = new Date(SFData.Account.Membership_End_Date__c.replace(/T.+/, ''));
+	var end = newDate(SFData.Account.Membership_End_Date__c);
 	end.setTime( end.getTime() - 8 * 86400000 );
 	// Adjust math for Daylight Savings
 	end.setTime( end.getTime() + 12 * 1000 * 60 * 60 ); 
@@ -907,13 +920,13 @@ function renewMode() {
 	
 	if ( SFData.Account.Is_Renewal__c ) {
 		// Autorenew is enabled.
-		if ( end > new Date() ) {
+		if ( end > newDate() ) {
 			return end;
 		}
 		return false;
 	}
 	
-	if ( end > new Date() ) {
+	if ( end > newDate() ) {
 		// The threshold is in the future.  Allow Autorenew Enable.
 		return true;
 	}
@@ -929,13 +942,13 @@ function isExpired() {
 		}
 	}
 	
-	var end = new Date(SFData.Account.Membership_End_Date__c.replace(/T.+/, ''));
+	var end = newDate(SFData.Account.Membership_End_Date__c);
 	end.setTime( end.getTime() - 8 * 86400000 );
 	// Adjust math for Daylight Savings
 	end.setTime( end.getTime() + 12 * 1000 * 60 * 60 ); 
 	end.setHours(0);
 	
-	if ( end > new Date() ) {
+	if ( end > newDate() ) {
 		// The threshold is in the future.
 		return false;
 	}
@@ -951,7 +964,7 @@ function isRenewal() {
 		}
 	}
 	
-	var end = new Date(SFData.Account.Membership_End_Date__c.replace(/T.+/, ''));
+	var end = newDate(SFData.Account.Membership_End_Date__c);
 	end.setTime( end.getTime() - 8 * 86400000 );
 	// Adjust math for Daylight Savings
 	end.setTime( end.getTime() + 12 * 1000 * 60 * 60 ); 
@@ -959,7 +972,7 @@ function isRenewal() {
 	
 	if ( SFData.Account.Is_Renewal__c ) {
 		// Autorenew is enabled.
-		if ( end > new Date() ) {
+		if ( end > newDate() ) {
 			// And the renewal processing date is in the future.
 			return false;
 		}
@@ -968,7 +981,7 @@ function isRenewal() {
 		return true;
 	}
 	
-	if ( end > new Date() ) {
+	if ( end > newDate() ) {
 		// The threshold is in the future.
 		return false;
 	}
@@ -1268,7 +1281,7 @@ function makeInput(a,p,l,t,r) {
 				v = '**';
 			}
 			
-			var dte = new Date();
+			var dte = newDate();
 			y = dte.getFullYear();
 			maxy = y + 10;
 			for (;y<maxy;y++) {
@@ -1293,9 +1306,9 @@ function makeInput(a,p,l,t,r) {
 					'picker':'date'
 			});
 			
-			v = new String(v).replace(/T.+/, '');
+			v = new String(v);
 			if(v && v !='null' && v != '') {
-				v = new Date(v);
+				v = newDate(v);
 				jQuery(s).val(v.toLocaleDateString());
 			}
 
@@ -1308,7 +1321,7 @@ function makeInput(a,p,l,t,r) {
 						changeMonth:true
 				};
 				if(a['name'] == 'Birthdate') {
-					var year = new Date().getFullYear();
+					var year = newDate().getFullYear();
 					var minyear = Math.max(1900,year - 125);
 					args.yearRange = ''+minyear+':'+year;
 				}
