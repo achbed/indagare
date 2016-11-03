@@ -899,7 +899,7 @@ function arrayToProps(a) {
  *  A date object means Autorenew is enabled, and we should not show either "Renew" or "Enable Autorenew"
  */
 function renewMode() {
-	var end = new Date(SFData.Account.Membership_End_Date__c);
+	var end = new Date(SFData.Account.Membership_End_Date__c.replace(/T.+/, ''));
 	end.setTime( end.getTime() - 8 * 86400000 );
 	// Adjust math for Daylight Savings
 	end.setTime( end.getTime() + 12 * 1000 * 60 * 60 ); 
