@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-20 16:50-0500\n"
+"POT-Creation-Date: 2016-10-21 08:50-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,6 +38,18 @@ msgstr ""
 
 #: author.php:67
 msgid "Email "
+msgstr ""
+
+#: comments.php:21
+msgid "Comments"
+msgstr ""
+
+#: comments.php:21
+msgid "Open"
+msgstr ""
+
+#: comments.php:21
+msgid "Close"
 msgstr ""
 
 #: comments.php:28
@@ -359,7 +371,7 @@ msgstr ""
 msgid "Log In"
 msgstr ""
 
-#: functions.php:1614
+#: functions.php:1614 render-memberlevel.tpl.php:6
 msgid "Join"
 msgstr ""
 
@@ -663,6 +675,10 @@ msgid ""
 "different keywords."
 msgstr ""
 
+#: template-modal-contact.php:8
+msgid "Contact Us"
+msgstr ""
+
 #: template-page-user-site-invite.php:48
 msgid "<strong>ERROR</strong>: Multiple Logins tied to this Contact."
 msgstr ""
@@ -679,4 +695,49 @@ msgstr ""
 
 #: template-page-user-site-invite.php:75
 msgid "<strong>ERROR</strong>: Multiple Logins tied to this Contact Email."
+msgstr ""
+
+#: template-page-user-site-invite.php:106
+msgid "Account Information"
+msgstr ""
+
+#: template-page-user-site-invite.php:111
+msgid "Username"
+msgstr ""
+
+#: template-page-user-site-invite.php:112
+msgid "Username is not available.  Please try another one."
+msgstr ""
+
+#: template-page-user-site-invite.php:117
+msgid "Password"
+msgstr ""
+
+#: template-page-user-site-invite.php:118
+msgid "Passwords must:"
+msgstr ""
+
+#: template-page-user-site-invite.php:120
+#, php-format
+msgid "Be at least <span id=\"passlen_num\">%d</span> characters long"
+msgstr ""
+
+#: template-page-user-site-invite.php:121
+msgid "Contain a mix of uppercase and lowercase letters"
+msgstr ""
+
+#: template-page-user-site-invite.php:122
+msgid "Contain at least one number"
+msgstr ""
+
+#: template-page-user-site-invite.php:123
+msgid "Contain at least one special character (non-letter or number)"
+msgstr ""
+
+#: template-page-user-site-invite.php:130
+msgid "Verify Password"
+msgstr ""
+
+#: template-page-user-site-invite.php:131
+msgid "Passwords must match."
 msgstr ""

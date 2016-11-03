@@ -1682,7 +1682,7 @@ function childtheme_override_access() {
 		  </li>
 		  <?php else: ?>
 		  <li id="nav-login"><a href="#lightbox-login" class="lightbox-inline"><?php echo __('Log In','indagare');?></a></li>
-		  <li id="nav-account" class="single"><a href="#"><?php echo __('Join','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
+		  <li id="nav-account" class="single"><a href="/join"><?php echo __('Join','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
 			<div class="subnav">
 			  <div class="nav-item">
 				<?php wp_nav_menu( array('menu' => 'footer-membership','container' => '','container_id' => '','container_class' => '','echo' => true )); ?>
@@ -5028,6 +5028,12 @@ function child_singlepost($content) {
 
 		$content .= $basecontent;
 
+		$ttcolumn = wp_get_post_terms( $post->ID, 'column' );
+		$ttcolummname = ($ttcolumn[0]->name);
+
+		if ($ttcolummname == 'Top Tables') {
+			$content .= '<p class="author">&ndash; '.get_the_author_meta( 'display_name', $post->post_author ).'</p>'."\n";
+		} else
 		$content .= '<p class="author">&ndash; '.get_the_author_meta( 'display_name', $post->post_author ).' on '.get_the_time( get_option('date_format') ).'</p>'."\n";
 
 		// article meta for favorites and social links
