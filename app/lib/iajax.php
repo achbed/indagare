@@ -120,6 +120,7 @@ class AjaxHandler {
 				'id' => 0,
 				'name' => 'Invalid code',
 				'length' => 'Invalid code',
+				'payment' => false,
 		);
 
 		try {
@@ -139,6 +140,9 @@ class AjaxHandler {
 				'trialname' => $codes[0]['Name'],
 				'name' => $codes[0]['Membership']['Name'],
 				'length' => $codes[0]['Period'],
+				'payment' => ( empty( $codes[0]['Payment'] ) ? false : true ) ,
+				'amount' => $codes[0]['Amount'],
+				'codes' => $codes,
 			);
 		} catch( \Exception $e ) {
 			$response = array(
@@ -147,6 +151,7 @@ class AjaxHandler {
 				'name' => $e->getMessage(),
 				'length' => $e->getMessage(),
 				'err' => $e->getMessage(),
+				'payment' => false,
 			);
 		}
 
