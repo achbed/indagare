@@ -591,7 +591,7 @@ if (!signup) {
 							function(result) {
 								var mb_select = jQuery("#Membership_Level__c");
 
-								showBilling = result.payment;
+								showBilling = (result.payment && (result.amount > 0));
 								self.fixBilling();
 								
 								if (!result.valid) {

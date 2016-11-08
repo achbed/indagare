@@ -130,6 +130,8 @@ jQuery().ready(function($) {
     		neighborhoodsurl = neighborhoods.join(',');
     	if ( !!benefits.length )
     		benefitsurl = benefits.join(','); 
+    	if ( !!editors.length )
+    		editorsurl = editors.join(','); 
     	if ( !!meals.length )
     		mealsurl = meals.join(','); 
     	urlvars = '';
