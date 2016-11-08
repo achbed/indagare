@@ -5122,10 +5122,16 @@ function child_singlepost($content) {
 		( is_archive() && get_query_var('post_type') == 'career' )
 	) {
 
+			if ( has_excerpt() ) {
+				$contentexcerpt = get_the_excerpt() . ' ';
+			} else {
+				$contentexcerpt = '';
+			}
+
 			$content = '';
 
 			$content .= '<p><strong>'.get_the_title().'</strong></p>'."\n";
-			$content .= '<p>'.get_the_excerpt().' <a class="more" href="#">Read More</a> | <a class="apply lightbox-inline" href="#lightbox-contact-apply-'.$post->ID.'">Apply</a></p>'."\n";
+			$content .= '<p>'.$contentexcerpt.'<a class="more" href="#">Read More</a> | <a class="apply lightbox-inline" href="#lightbox-contact-apply-'.$post->ID.'">Apply</a></p>'."\n";
 
 			$content .= '<div class="more">'."\n";
 			$content .= $basecontent;
