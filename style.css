@@ -961,16 +961,59 @@ p.author { font-style: italic; font-family: Georgia,Times,serif; font-size: .858
 .heading p.ind-meta { margin: 0 0 0 .3em; }
 
 /* ELENA */
-.featured-destination-partners { padding: 10px; -moz-box-sizing: border-box; box-sizing: border-box; display: table; width: 100%; }
-.featured-destination-partners div { background: #e7e8e8; overflow: auto; padding: 10px; font-size: .9em; }
-.featured-destination-partners div article { float: left; width: 25%; padding: 0 10px; margin-bottom: .4em; }
-.featured-destination-partners div article img { margin-bottom: .6em; width: 100%; height: auto; }
-.featured-destination-partners div h3 { float: left; width: 75%; text-transform: none; margin-bottom: 10px; padding-left: 10px; font-weight: bold; }
-.featured-destination-partners div h3:last-of-type { float: right; width: 25%; text-align: right; padding-right: 10px; }
+.featured-destination-partners { padding: 10px; background: #e7e8e8; }
+.featured-destination-partners div.destination-slide { padding: 0 10px; -moz-box-sizing: border-box; box-sizing: border-box; }
+.featured-destination-partners div.destination-slide img { width: 100%; height: auto; margin-bottom: 5px; }
+.featured-destination-partners .regular { clear: both; }
+.featured-destination-partners .slick-prev:before, .featured-destination-partners .slick-next:before { color: black; }
+.featured-destination-partners .labels { display: block; clear: both; }
+.featured-destination-partners .labels h3 { float: left; width: 75%; text-transform: none; margin-bottom: 10px; padding-left: 10px; font-weight: bold; }
+.featured-destination-partners .labels h3:last-of-type { float: right; width: 25%; text-align: right; padding-right: 10px; }
+.featured-destination-partners .slick-next { right: -35px; }
+.featured-destination-partners .slick-prev { left: -35px; }
 
-@media screen and (max-width: 600px) { .featured-destination-partners div article { width: 50%; }
-  .featured-destination-partners div article:nth-child(2n+1) { clear: left; } }
-@media screen and (max-width: 400px) { .featured-destination-partners div article { width: 100%; margin-bottom: 20px; } }
+/*.featured-destination-partners { padding: 10px; -moz-box-sizing: border-box; box-sizing: border-box; display: table; width: 100%; 
+
+	div {
+		background: #e7e8e8;
+		overflow: auto;
+		padding: 10px;
+		font-size: .9em; 
+
+		article {
+			float: left;
+			width: 25%;
+			padding: 0 10px;
+			margin-bottom: .4em;
+
+			img {
+				margin-bottom: .6em; 
+				width: 100%;
+				height: auto;
+			}
+		}
+
+		h3 {
+			float: left;
+			width: 75%;
+			text-transform: none;
+			margin-bottom: 10px;
+			padding-left: 10px;
+			font-weight: bold;
+
+			&:last-of-type {
+				float: right;
+				width: 25%;
+				text-align: right;
+				padding-right: 10px;
+			}
+		}
+
+	}
+}*/
+@media screen and (max-width: 600px) { .featured-destination-partners .labels h3 { font-size: 1em; }
+  /*	.featured-destination-partners div article{  		width: 50%;  		&:nth-child(2n+1){ 			clear:left; 		} 		 	}*/ }
+@media screen and (max-width: 400px) { /*.featured-destination-partners div article{  	width: 100%; 	margin-bottom: 20px; }*/ }
 /* ELENA */
 /* subnav */
 /* ------------------------------------------------------------------------- */
@@ -1281,7 +1324,7 @@ ul.footer-nav li { list-style: none; margin: 0; }
 .hbspt-form div.field label { display: none; }
 
 #subsidiary .hs_email { margin-bottom: 10px; }
-#subsidiary .hs_email input, #subsidiary .hs_firstname input, #subsidiary .hs_lastname input { box-shadow: inset 0px 1px 1px 0px #D9D9F7; -webkit-box-shadow: inset 0px 1px 1px 0px #D9D9F7; -moz-box-shadow: inset 0px 1px 1px 0px #D9D9F7; -o-box-shadow: inset 0px 1px 1px 0px #D9D9F7; }
+#subsidiary input { box-shadow: inset 0px 1px 1px 0px #D9D9F7; -webkit-box-shadow: inset 0px 1px 1px 0px #D9D9F7; -moz-box-shadow: inset 0px 1px 1px 0px #D9D9F7; -o-box-shadow: inset 0px 1px 1px 0px #D9D9F7; }
 #subsidiary .hs_firstname input { border-bottom-left-radius: 0px !important; border-bottom-right-radius: 0px !important; margin-bottom: 0px; }
 #subsidiary .hs_lastname input { border-top-left-radius: 0px !important; border-top-right-radius: 0px !important; }
 

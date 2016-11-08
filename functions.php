@@ -1155,6 +1155,9 @@ function enqueue_scripts() {
 	// home page - responsive slides
 	if ( is_home() || is_front_page() ) {
 		wp_enqueue_script('rslidesalt');
+		wp_enqueue_style('slickcss', $f.'/css/slick.css');
+		wp_enqueue_style('slicktheme', $f.'/css/slick-theme.css');
+		wp_enqueue_script('slick');
 	}
 
 	// book page - responsive slides
@@ -1638,7 +1641,7 @@ function childtheme_override_access() {
             <div class="subnav">
               <div class="main-nav-item"><a href="/destinations/">View All Destinations</a></div>
               <div class="nav-item">
-                <h3>Seasonal Partners</h3>
+                <h3><a href="/destinations/offers/seasonal/">Seasonal Partners</a></h3>
                 <div class="subnav-related"><a href="/destinations/offers/seasonal/">See All</a></div>
      				<ul>
 						<?php
@@ -1666,14 +1669,20 @@ function childtheme_override_access() {
 						</ul>
               </div>
               <div class="nav-item">
-                <h3>Destination Partners</h3>
+                <h3><a href="/destinations/offers/destinations/">Destination Partners</a></h3>
                 <div class="subnav-related"><a href="/destinations/offers/destinations/">See All</a></div>
 	     				<ul>
 						<?php
 						$args = array('numberposts' => 5, 'post_type' => 'offer', 'orderby' => 'rand', 'offertype' => 'destinations');
 						$recent = get_posts($args);
 							foreach( $recent as $post ) : setup_postdata($post);
-								echo '<li><a href="'.get_permalink($post->ID).'">'.get_the_title($post->ID).'</a></li>'."\n";
+
+								$destinationstree = destinationstree($post->ID);
+								$dest = $destinationstree['dest'];
+								$reg = $destinationstree['reg'];
+								$top = $destinationstree['top'];
+
+								echo '<li><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/">'.get_the_title($post->ID).'</a></li>'."\n";
 							endforeach;
 						?>
 						</ul>
@@ -1821,6 +1830,8 @@ function child_abovecontainer() {
 
 	// home page
 	} else if ( is_home() || is_front_page() ) {
+
+		
 
 		$rows = get_field('home-gallery');
 
@@ -3386,7 +3397,7 @@ function childtheme_override_archive_loop() {
 						echo '<a href="'.get_permalink().'">'."\n";
 							echo '<h3>'.get_the_title().'</h3>'."\n";
 						echo '</a>'."\n";
-							echo '<span class="location"><strong><em>'.get_field('subtitle').'</em></strong></span>'."\n";
+							echo '<span class="location">'.get_field('subtitle').'</span>'."\n";
 
 							$text = wpautop( get_the_content() );
 							$text = substr( $text, 0, strpos( $text, '</p>' ) + 4 );
@@ -4523,15 +4534,19 @@ function child_singlepost($content) {
 
 		// ELENA FEATURED DESTINATION PARTNERS
 
-		$args = array('posts_per_page' => 4, 'post_type' => 'offer', 'orderby' => 'rand', 'offertype' => 'destinations');
+		$args = array('posts_per_page' => -1, 'post_type' => 'offer', 'orderby' => 'rand', 'offertype' => 'destinations');
 
 		$offer= new WP_Query($args);
 
 		if($offer->have_posts() ) {
 
-			$content .= '<section class="featured-destination-partners contain"><div>'."\n";
+
+			$content .= '<div class="featured-destination-partners">'."\n";
+			$content .= '<div class="labels">';
 			$content .= '<h3>'.__('Featured Destination Partners:','indagare').'</h3>';
 			$content .= '<h3><a href="/destinations/offers/destinations/">'.__('See All','indagare').'</a></h3>';
+			$content .= '</div>';
+ 			$content .=  '<div class="regular slider">';
 
 			while ( $offer->have_posts() ) : $offer->the_post();
 
@@ -4539,24 +4554,52 @@ function child_singlepost($content) {
 			    	$imageobj= get_field('offer_adimage');
 					$imagesize= 'thumb-feature';
 					$imgsrc = $imageobj['sizes'][$imagesize];
+					$offerstart = get_field('date_start');
+					$offerend = get_field('date_end');
+
+					$destinationstree = destinationstree($post_id);
+					$dest = $destinationstree['dest'];
+					$reg = $destinationstree['reg'];
+					$top = $destinationstree['top'];
 
 				}
 
-				$content .= '<article>'."\n";
-						$content .= '<a href="'.get_permalink().'">'."\n";
-							$content .= '<img src="'.$imgsrc.'" alt="'.__('Destination Partner','indagare').'" />'."\n";
-						$content .= '</a>'."\n";
-						$content .= '<!-- '.print_r($imgsrc,true).' -->';
-						$content .= '<a href="'.get_permalink().'">'."\n";
-							$content .= '<strong><span>'.get_field('offer_adtext').'</span></strong>'."\n";
-						$content .= '</a>'."\n";
-					$content .= '</article>'."\n";
+				if ( ! empty( $_GET['_y'] ) )
+					$year = absint( $_GET['_y'] );
+				else
+					$year = trim( date( 'Y ') );
+
+				if ( ! empty( $_GET['_m'] ) && in_array( $month = absint( $_GET['_m'] ), range( 1, 12 ) ) )
+					$month = zeroise( $month, 2 );
+				else
+					$month = date( 'm' );
+
+				if ( ! empty( $_GET['_d'] ) && in_array( $day = absint( $_GET['_m'] ), range( 1, 31 ) ) )
+					$day = zeroise( $day, 2 );
+				else
+					$day = date( 'd' );
+
+				$fulldate = $year.$month.$day;
+
+				if ( $imageobj && ( $offerstart <= $fulldate || is_null( $offerstart ) || $offerstart === false || $offerstart == '' ) && ( $offerend >= $fulldate || is_null( $offerend ) || $offerend === false || $offerend == '' ) ) {
+
+						$content .= '<div class="destination-slide">'."\n";
+							$content .= '<a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/">'."\n";
+								$content .= '<img src="'.$imgsrc.'" alt="'.__('Destination Partner','indagare').'" />'."\n";
+							$content .= '</a>'."\n";
+							$content .= '<a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/">'."\n";
+								$content .= '<strong><span>'.get_field('offer_adtext').'</span></strong>'."\n";
+							$content .= '</a>'."\n";
+						$content .= '</div>'."\n";
+
+				}
 
 			endwhile;
 
 			wp_reset_postdata();
 
-			$content .= '</div></section><!-- .all-destinations -->'."\n";
+			$content .= '</div><!-- regular slide -->';
+			$content .= '</div><!-- .all-destinations -->'."\n";
 
 		}
 
@@ -4985,8 +5028,8 @@ function child_singlepost($content) {
 				$content .= '<img src="'.$imgsrc.'" alt="Destination Partner" />'."\n";
 			}
 			$content .= '<h3>'.get_the_title().'</h3>'."\n";
-		$content .= '</a>'."\n";
-			$content .= '<span class="location">Partner: '.get_field('subtitle').'</span>'."\n";
+			$content .= '</a>'."\n";
+			$content .= '<span class="location"><em>Partner</em>: '.get_field('subtitle').'</span>'."\n";
 
 			$text = wpautop( get_the_content() );
 			$text = substr( $text, 0, strpos( $text, '</p>' ) + 4 );
@@ -8394,6 +8437,35 @@ jQuery().ready(function($) {
 
 	$('.rslides_tabs').insertAfter('#rslideswrapper');
   });
+
+
+	$('.regular').slick({
+		arrows: true,
+		autoplay: true,
+		autoplaySpeed: 1500,
+		slidesToShow: 4,
+		slidesToScroll: 4,
+		infinite: true,
+		responsive: [
+		{
+			breakpoint: 730,
+			settings: {
+				slidesToShow: 2,
+				slidesToScroll: 1,
+				infinite: false
+			}
+		},
+		{
+			breakpoint: 480,
+			settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1,
+				infinite: true
+			}
+		}
+		]
+
+	});
 
 <?php
 	} // end home page

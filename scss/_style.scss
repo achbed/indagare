@@ -328,7 +328,64 @@ p.author {font-style:italic;font-family:Georgia,Times,serif;font-size:.858em;lin
 .heading p.ind-meta {margin:0 0 0 .3em;}
 
 /* ELENA */
+
 .featured-destination-partners {
+  padding: 10px;
+  background: #e7e8e8;
+
+	div.destination-slide{
+		padding: 0 10px;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+
+		img{
+			width: 100%;
+			height: auto;
+			margin-bottom: 5px;
+		}
+
+	}
+
+	.regular{
+		clear:both;
+	}
+
+	.slick-prev:before, .slick-next:before {
+	    color: black;
+	}
+
+	.labels{
+		display: block;
+		clear: both;
+
+		h3 {
+			float: left;
+			width: 75%;
+			text-transform: none;
+			margin-bottom: 10px;
+			padding-left: 10px;
+			font-weight: bold;
+
+			&:last-of-type {
+				float: right;
+				width: 25%;
+				text-align: right;
+				padding-right: 10px;
+			}
+		}
+	}
+
+	.slick-next {
+	    right: -35px;
+	}
+
+	.slick-prev {
+	    left: -35px;
+	}
+
+ }
+
+/*.featured-destination-partners {
   padding: 10px;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -371,28 +428,32 @@ p.author {font-style:italic;font-family:Georgia,Times,serif;font-size:.858em;lin
 		}
 
 	}
-}
+}*/
 
 @media screen and (max-width: 600px){
 
-	.featured-destination-partners div article{ 
+	.featured-destination-partners .labels h3{
+		font-size: 1em;
+	}
+
+/*	.featured-destination-partners div article{ 
 		width: 50%;
 
 		&:nth-child(2n+1){
 			clear:left;
 		}
 		
-	}
+	}*/
 
 }
 
 
 @media screen and (max-width: 400px){
 
-	.featured-destination-partners div article{ 
+	/*.featured-destination-partners div article{ 
 		width: 100%;
 		margin-bottom: 20px;
-	}
+	}*/
 }
 
 /* ELENA */
@@ -869,15 +930,12 @@ ul.footer-nav li {list-style:none;margin:0;}
 }
 #subsidiary{
 	.hs_email{
-		margin-bottom: 10px;
-	}
-	.hs_email,.hs_firstname,.hs_lastname {
-		input{
-			box-shadow: inset 0px 1px 1px 0px #D9D9F7;
-			-webkit-box-shadow: inset 0px 1px 1px 0px #D9D9F7;
-			-moz-box-shadow: inset 0px 1px 1px 0px #D9D9F7;
-			-o-box-shadow: inset 0px 1px 1px 0px #D9D9F7;
-		}
+		margin-bottom: 10px;}
+	input{
+		box-shadow: inset 0px 1px 1px 0px #D9D9F7;
+		-webkit-box-shadow: inset 0px 1px 1px 0px #D9D9F7;
+		-moz-box-shadow: inset 0px 1px 1px 0px #D9D9F7;
+		-o-box-shadow: inset 0px 1px 1px 0px #D9D9F7;
 	}
 	.hs_firstname{
 		input{
