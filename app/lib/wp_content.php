@@ -178,11 +178,16 @@ class WPContent {
 		$showTrial = false;
 		$trial = "";
 		$mb_js_arr = array();
-		if (isset($_GET["trial"])) {
+		if (isset($_GET["trial"]) || isset($_GET["code"])) {
 			$showTrial = true;
 			if(!empty($_GET["trial"])) {
 				// Do a string replace to ensure that we don't have JS crashing due to bad input
 				$trial = sanitize_text_field( urldecode( $_GET['trial'] ) );
+				$trial = str_replace('"', '\"', trim( $trial ) );
+			}
+			if(!empty($_GET["code"])) {
+				// Do a string replace to ensure that we don't have JS crashing due to bad input
+				$trial = sanitize_text_field( urldecode( $_GET['code'] ) );
 				$trial = str_replace('"', '\"', trim( $trial ) );
 			}
 			//$mb_js_arr = \WPSF\TrialCode::get_all();

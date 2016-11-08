@@ -21,6 +21,8 @@ var QueryString = function () {
   return query_string;
 }();
 
+var showBilling = !showTrial;
+
 var signup;
 if (!signup) {
 	function signupObj() {
@@ -38,13 +40,18 @@ if (!signup) {
 				self.mbSelect = jQuery('#Membership_Level__c');
 			}
 		};
+		
+		this.fixBilling = function() {
+			if (showBilling) {
+				jQuery('.tab').removeClass('is-trial');
+			} else {
+				jQuery('.tab').addClass('is-trial');
+			}
+		};
 
 		this.initFields = function() {
 			self.selfInit();
-
-			if (showTrial) {
-				jQuery('.tab').addClass('is-trial');
-			}
+			self.fixBilling();
 
 			populateCountries('s_country', 's_state', 'United States');
 
@@ -101,7 +108,7 @@ if (!signup) {
 			mbs = mbs.sort(function(a,b){if(a.Amount != b.Amount) return a.Amount>b.Amount; return a.Type>b.Type;});
 			for ( var m in mbs ) {
 				jQuery("<option></option>")
-					.text(mbs[m]['Name']+' - $'+mbs[m]['Amount'])
+					.text(mbs[m]['Name']+' - '+numeral(mbs[m]['Amount']).format('$0,000.00'))
 					.val(mbs[m]['Id'])
 					.attr({
 						'data-type':mbs[m]['Type'],
@@ -411,7 +418,7 @@ if (!signup) {
 
 			complete = self.validateTermAcceptance() && complete;
 
-			if (!showTrial) {
+			if (showBilling) {
 				complete = self.validateThisField('s_address1') && complete;
 				complete = self.validateThisField('s_city') && complete;
 				complete = self.validateThisField('s_state') && complete;
@@ -584,6 +591,9 @@ if (!signup) {
 							function(result) {
 								var mb_select = jQuery("#Membership_Level__c");
 
+								showBilling = (result.payment && (result.amount > 0));
+								self.fixBilling();
+								
 								if (!result.valid) {
 									self.fieldValidated('#tgCode', false);
 									return;
@@ -595,17 +605,18 @@ if (!signup) {
 
 								var option = document.createElement("option");
 								option.text = result.name;
+								if(showBilling) {
+									option.text += ' - '+numeral(result.amount).format('$0,000.00');
+								}
 								option.value = result.name;
 								option.selected = "selected";
 								var t = jQuery('#Membership_Level__c>option[value="'
 										+ option.value + '"]');
-								if (t.length == 0) {
-									self.mbSelect.append(option).trigger(
-											'render');
-								} else {
-									t.prop('selected', true).change().trigger(
-											'render');
+								if (t.length > 0) {
+									t.remove();
 								}
+								self.mbSelect.append(option).trigger(
+										'render');
 								self.mbSelect.attr('disabled', 'true');
 
 								jQuery(".inputgroup").show();

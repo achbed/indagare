@@ -120,27 +120,6 @@ jQuery().ready(function($) {
     	
     	if ( !!posttypes.length )
     		posttypesurl = posttypes.join('+');
-    	// get post types
-/*		if ( posttypes.length > 1 ) {
-		
-			i = 1;
-			posttypes.forEach(function(item) {
-
-				if ( i !== 1 ) {
-//					posttypesurl += ','+item;
-					posttypesurl += '+'+item;
-				} else {
-					posttypesurl += item;
-				}
-				i++;
-
-			});			
-
-		} else if ( posttypes.length == 1 ) {
-				posttypesurl = posttypes[0];
-		}
-*/
-    	// get neighborhoods
     	if ( !!neighborhoodsdest.length ) { // destination level
     		neighborhoods = neighborhoodsdest;
     	} else if ( !!neighborhoodsreg.length ) { // region level
@@ -149,90 +128,12 @@ jQuery().ready(function($) {
     	
     	if ( !!neighborhoods.length )
     		neighborhoodsurl = neighborhoods.join(',');
-		/*
-		if ( !!neighborhoods.length && neighborhoods.length > 1 ) {
-		
-			i = 1;
-			neighborhoods.forEach(function(item) {
-
-				if ( i !== 1 ) {
-					neighborhoodsurl += ','+item;
-				} else {
-					neighborhoodsurl += item;
-				}
-				i++;
-
-			});			
-
-		} else if ( !!neighborhoods.length && neighborhoods.length == 1 ) {
-				neighborhoodsurl = neighborhoods[0];
-		}
-*/
-    	
-    	// get benefits
     	if ( !!benefits.length )
-    		benefitsurl = benefits.join(','); /*
-		if ( benefits.length > 1 ) {
-		
-			i = 1;
-			benefits.forEach(function(item) {
-
-				if ( i !== 1 ) {
-					benefitsurl += ','+item;
-				} else {
-					benefitsurl += item;
-				}
-				i++;
-
-			});			
-
-		} else if ( benefits.length == 1 ) {
-				benefitsurl = benefits[0];
-		}
-*/
-    	
-    	// get editors
+    		benefitsurl = benefits.join(','); 
     	if ( !!editors.length )
-    		editorsurl = editors.join(','); /*
-		if ( editors.length > 1 ) {
-		
-			i = 1;
-			editors.forEach(function(item) {
-
-				if ( i !== 1 ) {
-					editorsurl += ','+item;
-				} else {
-					editorsurl += item;
-				}
-				i++;
-
-			});			
-
-		} else if ( editors.length == 1 ) {
-				editorsurl = editors[0];
-		}
-*/
-    	// get meals
+    		editorsurl = editors.join(','); 
     	if ( !!meals.length )
-    		mealsurl = meals.join(','); /*
-		if ( meals.length > 1 ) {
-		
-			i = 1;
-			meals.forEach(function(item) {
-
-				if ( i !== 1 ) {
-					mealsurl += ','+item;
-				} else {
-					mealsurl += item;
-				}
-				i++;
-
-			});			
-
-		} else if ( meals.length == 1 ) {
-				mealsurl = meals[0];
-		}
-*/
+    		mealsurl = meals.join(','); 
     	urlvars = '';
     	urlvara = new Array();
 
@@ -257,7 +158,7 @@ jQuery().ready(function($) {
 			urlvara.push('mealtype=' + mealsurl);
 		}
 		
-		if ( $('.showmap').val() ) {
+		if ( $('#content.show-map').length ) {
 			urlvara.push('map=show');
 		}
 
@@ -275,19 +176,11 @@ jQuery().ready(function($) {
     $('#clearfilters').click(function(event) {
    		event.preventDefault();
 
-		var params = window.location.search.replace(/^\?/,'').split(/&/);
+		var params = [];
+		//window.location.search.replace(/^\?/,'').split(/&/);
 
-		if ( $('.showmap').val() ) {
-			var f = false;
-			for(var i in params) {
-				if(params[i].indexOf('map=') === -1) {
-					f = true;
-					break;
-				}
-			}
-			if(!f) {
-				params.push('map=show');
-			}
+		if ( $('#content.show-map').length ) {
+			params.push('map=show');
 		}
 		
 		params = params.join("&");
