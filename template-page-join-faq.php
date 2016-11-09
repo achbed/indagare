@@ -17,7 +17,7 @@
 				// action hook for placing content above #content
 				thematic_abovecontent();
 
-				// filter for manipulating the element that wraps the content 
+				// filter for manipulating the element that wraps the content
 				echo apply_filters( 'thematic_open_id_content', '<div id="content">' . "\n" );
 			
 				// calling the widget area 'page-top'
@@ -30,7 +30,7 @@
 	            thematic_abovepost();
 	        ?>
     	     		
-				<div id="post-<?php the_ID(); ?>" <?php post_class(); ?> > 
+				<div id="post-<?php the_ID(); ?>" <?php post_class(); ?> >
 
 				<?php
 	                
@@ -43,9 +43,9 @@
 						<?php
 	                    	the_content();
 	                    
-	                    	wp_link_pages( "\t\t\t\t\t<div class='page-link'>" . __( 'Pages: ', 'thematic' ), "</div>\n", 'number' );
+	                    	wp_link_pages( "\t\t\t\t\t<div class='page-link'>" . __( 'Pages: ', 'indagare' ), "</div>\n", 'number' );
 	                    
-//	                    	edit_post_link( __( 'Edit', 'thematic' ), "\n\t\t\t\t\t\t" . '<span class="edit-link">' , '</span>' . "\n" );
+//	                    	edit_post_link( __( 'Edit', 'indagare' ), "\n\t\t\t\t\t\t" . '<span class="edit-link">' , '</span>' . "\n" );
 	                    ?>
 
 					</div><!-- .entry-content -->
@@ -68,18 +68,18 @@
 	
 			</div><!-- #content -->
 			
-			<?php 
+			<?php
 				// action hook for placing content below #content
-				thematic_belowcontent(); 
-			?> 
+				thematic_belowcontent();
+			?>
 			
 		</div><!-- #container -->
 
-<?php 
+<?php
     // action hook for placing content below #container
     thematic_belowcontainer();
 
-    // calling the standard sidebar 
+    // calling the standard sidebar
     thematic_sidebar();
     
     // calling footer.php

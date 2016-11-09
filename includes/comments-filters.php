@@ -8,7 +8,7 @@ function child_comments($comment, $args, $depth) {
     
        	<li id="comment-<?php comment_ID() ?>" <?php comment_class() ?>>
     	
-    		<?php 
+    		<?php
     			// action hook for inserting content above #comment
     			thematic_abovecomment();
     		?>
@@ -17,10 +17,10 @@ function child_comments($comment, $args, $depth) {
     		
     			<?php thematic_commentmeta(TRUE); ?>
     		
-    			<?php  
+    			<?php
     				if ( $comment->comment_approved == '0' ) {
     					echo "\t\t\t\t\t" . '<span class="unapproved">';
-    					_e( 'Your comment is awaiting moderation', 'thematic' );
+    					_e( 'Your comment is awaiting moderation', 'indagare' );
     					echo ".</span>\n";
     				}
     			?>
@@ -36,10 +36,10 @@ function child_comments($comment, $args, $depth) {
 /*
 				if( $args['type'] == 'all' || get_comment_type() == 'comment' ) :
 					comment_reply_link( array_merge( $args, array(
-						'reply_text' => __( 'Reply','thematic' ), 
-						'login_text' => __( 'Log in to reply.','thematic' ),
+						'reply_text' => __( 'Reply','indagare' ),
+						'login_text' => __( 'Log in to reply.','indagare' ),
 						'depth'      => $depth,
-						'before'     => '<div class="comment-reply-link">', 
+						'before'     => '<div class="comment-reply-link">',
 						'after'      => '</div>'
 					)));
 				endif;
@@ -50,7 +50,7 @@ function child_comments($comment, $args, $depth) {
 			
 			<?php
 				// action hook for inserting content above #comment
-				thematic_belowcomment() 
+				thematic_belowcomment()
 			?>
 
 <?php }
@@ -63,16 +63,16 @@ function child_list_comments_arg() {
 
 function childtheme_override_commentmeta($print = TRUE) {
 
-	$content = '<div class="comment-meta">' . 
-				sprintf( _x('%s <span class="meta-sep">|</span> %s', '{$time} <span class="meta-sep">|</span> {$date}', 'thematic') , 
+	$content = '<div class="comment-meta">' .
+				sprintf( _x('%s <span class="meta-sep">|</span> %s', '{$time} <span class="meta-sep">|</span> {$date}', 'indagare') ,
 					get_comment_time(),
 					get_comment_date() );
 
 	if ( get_edit_comment_link() ) {
 		$content .=	sprintf(' <span class="meta-sep">|</span><span class="edit-link"> <a class="comment-edit-link" href="%1$s" title="%2$s">%3$s</a></span>',
 					get_edit_comment_link(),
-					__( 'Edit comment' , 'thematic' ),
-					__( 'Edit', 'thematic' ) );
+					__( 'Edit comment' , 'indagare' ),
+					__( 'Edit', 'indagare' ) );
 		}
 	
 	$content .= '</div>' . "\n";

@@ -1673,7 +1673,55 @@ function childtheme_override_access() {
                 <div class="subnav-related"><a href="/destinations/offers/destinations/">See All</a></div>
 	     				<ul>
 						<?php
-						$args = array('numberposts' => 5, 'post_type' => 'offer', 'orderby' => 'rand', 'offertype' => 'destinations');
+						$today = current_time('Ymd');
+
+						$args = array(
+							'numberposts' => 5, 
+							'post_type' => 'offer', 
+							'orderby' => 'rand', 
+							'offertype' => 'destinations',
+							'meta_query' => array(
+							  'relation' => 'AND',
+							  array(
+								'relation' => 'OR',
+								array(
+								  'key'        => 'date_start',
+								  'compare'    => 'NOT EXISTS',
+								  'value'      => 'bug #23268',
+								),
+								array(
+								  'key'        => 'date_start',
+								  'compare'    => '=',
+								  'value'      => '',
+								),
+								array(
+								  'key'        => 'date_start',
+								  'compare'    => '<=',
+								  'value'      => $today,
+								  'type'       => 'NUMERIC',
+								),
+							  ),
+							  array(
+								'relation' => 'OR',
+								array(
+								  'key'        => 'date_end',
+								  'compare'    => 'NOT EXISTS',
+								  'value'      => 'bug #23268',
+								),
+								array(
+								  'key'        => 'date_end',
+								  'compare'    => '=',
+								  'value'      => '',
+								),
+								 array(
+								  'key'        => 'date_end',
+								  'compare'    => '>=',
+								  'value'      => $today,
+								  'type'       => 'NUMERIC',
+								)
+							  ),
+							),
+						);
 						$recent = get_posts($args);
 							foreach( $recent as $post ) : setup_postdata($post);
 
@@ -1681,8 +1729,19 @@ function childtheme_override_access() {
 								$dest = $destinationstree['dest'];
 								$reg = $destinationstree['reg'];
 								$top = $destinationstree['top'];
+								
+								$offerurl = '';
+								if ( $top) {
+									$offerurl .= $top->slug.'/';
+								}
+								if ( $reg) {
+									$offerurl .= $reg->slug.'/';
+								}
+								if ( $dest) {
+									$offerurl .= $dest->slug.'/';
+								}
 
-								echo '<li><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/">'.get_the_title($post->ID).'</a></li>'."\n";
+								echo '<li><a href="/destinations/'.$offerurl.'">'.get_the_title($post->ID).'</a></li>'."\n";
 							endforeach;
 						?>
 						</ul>
@@ -4534,14 +4593,62 @@ function child_singlepost($content) {
 
 		// ELENA FEATURED DESTINATION PARTNERS
 
-		$args = array('posts_per_page' => -1, 'post_type' => 'offer', 'orderby' => 'rand', 'offertype' => 'destinations');
+		$today = current_time('Ymd');
+
+		$args = array(
+			'posts_per_page' => -1, 
+			'post_type' => 'offer', 
+			'orderby' => 'rand', 
+			'offertype' => 'destinations',
+			'meta_query' => array(
+			  'relation' => 'AND',
+			  array(
+				'relation' => 'OR',
+				array(
+				  'key'        => 'date_start',
+				  'compare'    => 'NOT EXISTS',
+				  'value'      => 'bug #23268',
+				),
+				array(
+				  'key'        => 'date_start',
+				  'compare'    => '=',
+				  'value'      => '',
+				),
+				array(
+				  'key'        => 'date_start',
+				  'compare'    => '<=',
+				  'value'      => $today,
+				  'type'       => 'NUMERIC',
+				),
+			  ),
+			  array(
+				'relation' => 'OR',
+				array(
+				  'key'        => 'date_end',
+				  'compare'    => 'NOT EXISTS',
+				  'value'      => 'bug #23268',
+				),
+				array(
+				  'key'        => 'date_end',
+				  'compare'    => '=',
+				  'value'      => '',
+				),
+				 array(
+				  'key'        => 'date_end',
+				  'compare'    => '>=',
+				  'value'      => $today,
+				  'type'       => 'NUMERIC',
+				)
+			  ),
+			),
+		);
 
 		$offer= new WP_Query($args);
 
 		if($offer->have_posts() ) {
 
 
-			$content .= '<div class="featured-destination-partners">'."\n";
+			$content .= '<div class="featured-destination-partners"><div class="fd-container">'."\n";
 			$content .= '<div class="labels">';
 			$content .= '<h3>'.__('Featured Destination Partners:','indagare').'</h3>';
 			$content .= '<h3><a href="/destinations/offers/destinations/">'.__('See All','indagare').'</a></h3>';
@@ -4554,16 +4661,28 @@ function child_singlepost($content) {
 			    	$imageobj= get_field('offer_adimage');
 					$imagesize= 'thumb-feature';
 					$imgsrc = $imageobj['sizes'][$imagesize];
-					$offerstart = get_field('date_start');
-					$offerend = get_field('date_end');
+//					$offerstart = get_field('date_start');
+//					$offerend = get_field('date_end');
 
 					$destinationstree = destinationstree($post_id);
 					$dest = $destinationstree['dest'];
 					$reg = $destinationstree['reg'];
 					$top = $destinationstree['top'];
 
+					$offerurl = '';
+					if ( $top) {
+						$offerurl .= $top->slug.'/';
+					}
+					if ( $reg) {
+						$offerurl .= $reg->slug.'/';
+					}
+					if ( $dest) {
+						$offerurl .= $dest->slug.'/';
+					}
+
 				}
 
+/*
 				if ( ! empty( $_GET['_y'] ) )
 					$year = absint( $_GET['_y'] );
 				else
@@ -4580,14 +4699,16 @@ function child_singlepost($content) {
 					$day = date( 'd' );
 
 				$fulldate = $year.$month.$day;
+*/
 
-				if ( $imageobj && ( $offerstart <= $fulldate || is_null( $offerstart ) || $offerstart === false || $offerstart == '' ) && ( $offerend >= $fulldate || is_null( $offerend ) || $offerend === false || $offerend == '' ) ) {
+//				if ( $imageobj && ( $offerstart <= $fulldate || is_null( $offerstart ) || $offerstart === false || $offerstart == '' ) && ( $offerend >= $fulldate || is_null( $offerend ) || $offerend === false || $offerend == '' ) ) {
+				if ( $imageobj ) {
 
 						$content .= '<div class="destination-slide">'."\n";
-							$content .= '<a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/">'."\n";
+							$content .= '<a href="/destinations/'.$offerurl.'">'."\n";
 								$content .= '<img src="'.$imgsrc.'" alt="'.__('Destination Partner','indagare').'" />'."\n";
 							$content .= '</a>'."\n";
-							$content .= '<a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/">'."\n";
+							$content .= '<a href="/destinations/'.$offerurl.'">'."\n";
 								$content .= '<strong><span>'.get_field('offer_adtext').'</span></strong>'."\n";
 							$content .= '</a>'."\n";
 						$content .= '</div>'."\n";
@@ -4599,7 +4720,7 @@ function child_singlepost($content) {
 			wp_reset_postdata();
 
 			$content .= '</div><!-- regular slide -->';
-			$content .= '</div><!-- .all-destinations -->'."\n";
+			$content .= '</div></div><!-- .all-destinations -->'."\n";
 
 		}
 
@@ -5041,10 +5162,11 @@ function child_singlepost($content) {
 			$text = wp_trim_words( $text, $excerpt_length, $excerpt_more );
 
 			$content .= '<p class="description">'.$text.'</p>'."\n";
-			$content .= '<p class="description">'."\n";
-				$content .= '<a class="book" href="'.get_permalink().'">Take Me There</a>'."\n";
-			$content .= '</p>'."\n";
-
+		
+			$content .=  '<p class="description">'."\n";
+			$content .= '<a class="book" href="'.get_permalink().'">Take Me There</a>'."\n";
+			$content .=  '</p>'."\n";
+			
 	// end archives destination offer ELENA
 
 	// END PARTNER PROMOTIONS ARCHIVES ELENA
@@ -7096,6 +7218,102 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 		}
 
 
+	}
+	
+	// destination offer for destination top level | hotel post | restaurant post | shop post | activity post | itinerary | library | offer
+	if (
+		is_singular( 'hotel' ) || is_singular( 'restaurant' ) || is_singular( 'shop' ) || is_singular( 'activity' ) || is_singular( 'offer' )
+		|| ( is_archive() && get_query_var('post_type') == 'hotel' )
+		|| ( is_archive() && get_query_var('post_type') == 'restaurant' )
+		|| ( is_archive() && get_query_var('post_type') == 'shop' )
+		|| ( is_archive() && get_query_var('post_type') == 'activity' )
+		|| ( is_archive() && get_query_var('post_type') == 'itinerary' )
+		|| ( is_archive() && get_query_var('post_type') == 'library' )
+		|| ( is_archive() && $dest && $depth == 2 && !get_query_var('post_type') )
+	) {
+	
+		$today = current_time('Ymd');
+
+		$args = array(
+			'posts_per_page' => -1, 
+			'post_type' => 'offer', 
+			'orderby' => 'rand', 
+			'offertype' => 'destinations', 
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'destinations',
+					'field' => 'slug',
+					'terms' => $dest->slug,
+				),
+			),
+			'meta_query' => array(
+			  'relation' => 'AND',
+			  array(
+				'relation' => 'OR',
+				array(
+				  'key'        => 'date_start',
+				  'compare'    => 'NOT EXISTS',
+				  'value'      => 'bug #23268',
+				),
+				array(
+				  'key'        => 'date_start',
+				  'compare'    => '=',
+				  'value'      => '',
+				),
+				array(
+				  'key'        => 'date_start',
+				  'compare'    => '<=',
+				  'value'      => $today,
+				  'type'       => 'NUMERIC',
+				),
+			  ),
+			  array(
+				'relation' => 'OR',
+				array(
+				  'key'        => 'date_end',
+				  'compare'    => 'NOT EXISTS',
+				  'value'      => 'bug #23268',
+				),
+				array(
+				  'key'        => 'date_end',
+				  'compare'    => '=',
+				  'value'      => '',
+				),
+				 array(
+				  'key'        => 'date_end',
+				  'compare'    => '>=',
+				  'value'      => $today,
+				  'type'       => 'NUMERIC',
+				)
+			  ),
+			),
+		);
+		
+		$destoffers = new WP_Query($args);
+		
+		if($destoffers->have_posts() ) {
+		
+			while ( $destoffers->have_posts() ) : $destoffers->the_post();
+			
+				$imageobj= get_field('offer_adimage');
+				$imgsrc = $imageobj['url'];
+
+				if ( $imageobj ) {
+
+					echo '<div class="banneroffer">'."\n";
+						echo '<a href="'.get_permalink().'">'."\n";
+							echo '<img src="'.$imgsrc.'" alt="'.__('Destination Partner','indagare').'" />'."\n";
+						echo '</a>'."\n";
+					echo '</div>'."\n";
+
+				}
+
+			endwhile;
+		
+			wp_reset_postdata();
+
+		}
+		
 	}
 
 			echo '<a class="contact lightbox-inline" href="#lightbox-contact-team"><img src="'.get_bloginfo('stylesheet_directory').'/images/contact-phone.png" /></a>'."\n";

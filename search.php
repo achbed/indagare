@@ -54,11 +54,11 @@
 
 				<div id="post-0" class="post noresults">
 
-					<h1 class="entry-title"><?php _e( 'Nothing Found', 'thematic' ) ?></h1>
+					<h1 class="entry-title"><?php _e( 'Nothing Found', 'indagare' ) ?></h1>
 
 					<div class="entry-content">
 
-						<p><?php _e( 'Sorry, but nothing matched your search criteria. Please try again with some different keywords.', 'thematic' ) ?></p>
+						<p><?php _e( 'Sorry, but nothing matched your search criteria. Please try again with some different keywords.', 'indagare' ) ?></p>
 
 					</div><!-- .entry-content -->
 
@@ -68,7 +68,7 @@
 
 							<input id="noresults-s" name="s" type="text" value="<?php the_search_query();  ?>" size="40" />
 
-							<input id="noresults-searchsubmit" name="searchsubmit" type="submit" value="<?php esc_attr_e( 'Find', 'thematic' ) ?>" />
+							<input id="noresults-searchsubmit" name="searchsubmit" type="submit" value="<?php esc_attr_e( 'Find', 'indagare' ) ?>" />
 
 						</div>
 
