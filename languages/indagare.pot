@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-09 15:17-0600\n"
+"POT-Creation-Date: 2016-11-09 16:10-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -115,6 +115,22 @@ msgstr ""
 msgid "PasswordNotificationMessage"
 msgstr ""
 
+#: functions.php:238 functions.php:239
+msgid "Indagare Settings"
+msgstr ""
+
+#: functions.php:572 functions.php:574 includes/admin.php:41
+msgid "Destinations"
+msgstr ""
+
+#: functions.php:575
+msgid "Destination Interests"
+msgstr ""
+
+#: functions.php:576
+msgid "Destination Seasons"
+msgstr ""
+
 #: functions.php:606
 msgid "Biographical Info"
 msgstr ""
@@ -127,6 +143,10 @@ msgstr ""
 
 #: functions.php:648
 msgid "Recent Posts"
+msgstr ""
+
+#: functions.php:824
+msgid "..."
 msgstr ""
 
 #: functions.php:933
@@ -174,7 +194,7 @@ msgstr ""
 msgid "Close Map"
 msgstr ""
 
-#: functions.php:1035
+#: functions.php:1035 includes/map.php:12
 msgid "Full Screen"
 msgstr ""
 
@@ -306,8 +326,12 @@ msgstr ""
 msgid "Read Featured Articles"
 msgstr ""
 
+#: functions.php:1579
+msgid "Newly Added"
+msgstr ""
+
 #: functions.php:1580 functions.php:1596 functions.php:1611 functions.php:1616
-#: functions.php:1626 functions.php:4654
+#: functions.php:1626 functions.php:1645 functions.php:1673 functions.php:4672
 msgid "See All"
 msgstr ""
 
@@ -339,7 +363,7 @@ msgstr ""
 msgid "Book"
 msgstr ""
 
-#: functions.php:1623 functions.php:6421 functions.php:6951
+#: functions.php:1623 functions.php:1642 functions.php:6455 functions.php:6985
 msgid "View All Destinations"
 msgstr ""
 
@@ -353,6 +377,18 @@ msgstr ""
 
 #: functions.php:1633
 msgid "See Insider Trips"
+msgstr ""
+
+#: functions.php:1640
+msgid "Offers"
+msgstr ""
+
+#: functions.php:1644
+msgid "Seasonal Partners"
+msgstr ""
+
+#: functions.php:1672
+msgid "Destination Partners"
 msgstr ""
 
 #: functions.php:1753
@@ -375,156 +411,157 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: functions.php:3363
+#: functions.php:3365
 msgid "Details"
 msgstr ""
 
-#: functions.php:3473
+#: functions.php:3491
 msgid "Take Me There"
 msgstr ""
 
-#: functions.php:4476
+#: functions.php:4494
 msgid "Book Hotels"
 msgstr ""
 
-#: functions.php:4477
+#: functions.php:4495
 msgid "Book Flights"
 msgstr ""
 
-#: functions.php:4481
+#: functions.php:4499
 msgid "Destination or Hotel"
 msgstr ""
 
-#: functions.php:4485
+#: functions.php:4503
 msgid "Check In (optional)"
 msgstr ""
 
-#: functions.php:4486
+#: functions.php:4504
 msgid "Check Out (optional)"
 msgstr ""
 
-#: functions.php:4489
+#: functions.php:4507
 msgid "Find Rooms"
 msgstr ""
 
-#: functions.php:4553 functions.php:7536 functions.php:7538 functions.php:7561
-#: functions.php:7563 functions.php:7613 functions.php:7615 functions.php:7637
+#: functions.php:4571 functions.php:7570 functions.php:7572 functions.php:7595
+#: functions.php:7597 functions.php:7647 functions.php:7649 functions.php:7671
+#: includes/last_viewed_posts.php:171
 msgid "Related"
 msgstr ""
 
-#: functions.php:4653
+#: functions.php:4671
 msgid "Featured Destination Partners:"
 msgstr ""
 
-#: functions.php:4709 functions.php:7305
+#: functions.php:4727 functions.php:7339
 msgid "Destination Partner"
 msgstr ""
 
-#: functions.php:6421 functions.php:6951
+#: functions.php:6455 functions.php:6985
 msgid "Popular Destinations"
 msgstr ""
 
-#: functions.php:6614 functions.php:6628
+#: functions.php:6648 functions.php:6662
 msgid "You need to log in to see this page."
 msgstr ""
 
-#: functions.php:7527 functions.php:7604
+#: functions.php:7561 functions.php:7638
 #, php-format
 msgid "%s is Currently Scouting"
 msgstr ""
 
-#: functions.php:7552 functions.php:7629
+#: functions.php:7586 functions.php:7663
 #, php-format
 msgid "%s Recently Visited"
 msgstr ""
 
-#: functions.php:7598
+#: functions.php:7632
 msgid "Melissa"
 msgstr ""
 
-#: functions.php:8028
+#: functions.php:8062
 msgid "Newsletter"
 msgstr ""
 
-#: functions.php:8029
+#: functions.php:8063
 msgid "Receive our free email newsletter full of travel news, tips and advice."
 msgstr ""
 
-#: functions.php:8034
+#: functions.php:8068
 msgid "Connect"
 msgstr ""
 
-#: functions.php:8041
+#: functions.php:8075
 msgid "Email Us"
 msgstr ""
 
-#: functions.php:8044
+#: functions.php:8078
 msgid "facebook"
 msgstr ""
 
-#: functions.php:8044
+#: functions.php:8078
 msgid "twitter"
 msgstr ""
 
-#: functions.php:8044
+#: functions.php:8078
 msgid "instagram"
 msgstr ""
 
-#: functions.php:8048
+#: functions.php:8082
 msgid "Membership"
 msgstr ""
 
-#: functions.php:8055
+#: functions.php:8089
 msgid "About"
 msgstr ""
 
-#: functions.php:8881
+#: functions.php:8915 includes/search-destination.php:28
 msgid "Read More"
 msgstr ""
 
-#: functions.php:8881
+#: functions.php:8915
 msgid "Read Less"
 msgstr ""
 
-#: functions.php:9109
+#: functions.php:9143
 msgid "Booking ID"
 msgstr ""
 
-#: functions.php:9259
+#: functions.php:9293
 msgid "All "
 msgstr ""
 
-#: functions.php:9683
+#: functions.php:9717
 msgid "<strong>ERROR</strong>: Invalid username or email."
 msgstr ""
 
-#: functions.php:9696
+#: functions.php:9730
 msgid "Someone has requested a password reset for the following account:"
 msgstr ""
 
-#: functions.php:9698
+#: functions.php:9732
 #, php-format
 msgid "Username: %s"
 msgstr ""
 
-#: functions.php:9699
+#: functions.php:9733
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr ""
 
-#: functions.php:9700
+#: functions.php:9734
 msgid "To reset your password, visit the following address:"
 msgstr ""
 
-#: functions.php:9713
+#: functions.php:9747
 #, php-format
 msgid "[%s] Password Reset"
 msgstr ""
 
-#: functions.php:9741
+#: functions.php:9775
 msgid "The email could not be sent."
 msgstr ""
 
-#: functions.php:9741
+#: functions.php:9775
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
 
@@ -681,8 +718,38 @@ msgstr ""
 msgid "Edit comment"
 msgstr ""
 
+#: includes/destinations.php:200
+msgid "Article"
+msgstr ""
+
+#: includes/first-visit.php:70
+msgid ""
+"Enter the new Indagare now &#8211; pick an article to experience the "
+"Indagare redesign:"
+msgstr ""
+
+#: includes/first-visit.php:93
+msgid "Not a member yet?"
+msgstr ""
+
+#: includes/first-visit.php:94
+msgid "Join Now"
+msgstr ""
+
 #: includes/last_viewed_posts.php:209
 msgid "Title:"
+msgstr ""
+
+#: includes/last_viewed_posts.php:218 includes/last_viewed_posts.php:219
+msgid "Last Viewed Posts"
+msgstr ""
+
+#: includes/map.php:11
+msgid "Zoom"
+msgstr ""
+
+#: includes/search-destination.php:25
+msgid "Destination"
 msgstr ""
 
 #: page.php:61 template-page-404.php:50
@@ -776,4 +843,16 @@ msgstr ""
 
 #: template-page-user-site-invite.php:131
 msgid "Passwords must match."
+msgstr ""
+
+#: templates/page--destinations.tpl.php:12
+msgid "Filter by Destination:"
+msgstr ""
+
+#: templates/page--destinations.tpl.php:31
+msgid "Filter by Interest:"
+msgstr ""
+
+#: templates/page--destinations.tpl.php:40
+msgid "Filter by Season:"
 msgstr ""

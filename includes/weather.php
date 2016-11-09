@@ -6,12 +6,7 @@
 include_once('utilities.php');
 
 function get_weather($loc_string, $days = 1, $cache_length = 3600) {
-	if( !class_exists( 'SHRCache' ) ) {
 		return get_weather_direct($loc_string, $days);
-	}
-	
-	$c = new SHRCache('getweather2', $cache_length, 'get_weather_direct', $loc_string, $days);
-	return $c->get();
 }
 
 /*
@@ -26,7 +21,7 @@ function get_weather_direct($loc_string, $days = 1) {
 		return array();
 	}
 	
-	$premiumurl = sprintf('http://api.worldweatheronline.com/premium/v1/weather.ashx?key=%s&q=%s&num_of_days=%s&showlocaltime=yes', 
+	$premiumurl = sprintf('http://api.worldweatheronline.com/premium/v1/weather.ashx?key=%s&q=%s&num_of_days=%s&showlocaltime=yes',
 			$api_key, urlencode($loc_string), intval($num_of_days));
 		
 	$userurl = 'http://www.worldweatheronline.com/v2/weather.aspx?q='.$loc_string;
@@ -84,7 +79,7 @@ function get_weather_direct($loc_string, $days = 1) {
 
 
 /*
- * Gets and formats the weather given either a get_weather result, or a post_id.  If no valid 
+ * Gets and formats the weather given either a get_weather result, or a post_id.  If no valid
  * data is found, returns an empty string.
  */
 function format_weather( $w, $cache_length = 3600 ) {

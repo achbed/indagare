@@ -38,7 +38,7 @@ function adjust_the_wp_menu() {
     	'edit.php?post_type=insidertrip',
         'edit-tags.php?taxonomy=destinations&amp;post_type=insidertrip'
     );
-	add_menu_page('Destinations', 'Destinations', 'edit_posts', 'edit-tags.php?taxonomy=destinations', '', '', '50');
+	add_menu_page(__('Destinations','indagare'), __('Destinations','indagare'), 'edit_posts', 'edit-tags.php?taxonomy=destinations', '', '', '50');
 
 }
 add_action( 'admin_menu', 'adjust_the_wp_menu', 999 );

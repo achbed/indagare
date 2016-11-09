@@ -168,7 +168,7 @@ function zg_recently_viewed() { // Output
 							$imgsrc = get_bloginfo('stylesheet_directory').'/images/blank-thumb-small-logo.png';
 						}
 
-						echo '<img src="'.$imgsrc.'" alt="Related" />'."\n";
+						echo '<img src="'.$imgsrc.'" alt="'.__('Related','indagare').'" />'."\n";
 						echo '<h3>'.$zg_title_out->post_title.'</h3>'."\n";
 					echo '</a>'."\n";
 					echo '</article>'."\n";
@@ -215,8 +215,8 @@ function zg_lwp_widget_control() { // Widget control
 function zg_lwp_init() { // Widget init
   	if ( !function_exists('wp_register_sidebar_widget') )
   		return;
-	wp_register_sidebar_widget('lwp_widget','Last Viewed Posts','zg_lwp_widget');
-	wp_register_widget_control('lwp_widget_control','Last Viewed Posts','zg_lwp_widget_control'/*, 250, 100*/);
+	wp_register_sidebar_widget('lwp_widget',__('Last Viewed Posts','indagare'),'zg_lwp_widget');
+	wp_register_widget_control('lwp_widget_control',__('Last Viewed Posts','indagare'),'zg_lwp_widget_control'/*, 250, 100*/);
 }
 
 add_action('get_header','zg_lwp_header');

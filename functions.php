@@ -235,8 +235,8 @@ function indagare_wp_handle() {
 
 	if(function_exists('acf_add_options_page'))
 	acf_add_options_page(array(
-		'page_title' 	=> 'Indagare Settings',
-		'menu_title'	=> 'Indagare Settings',
+		'page_title' 	=> __('Indagare Settings','indagare'),
+		'menu_title'	=> __('Indagare Settings','indagare'),
 		'menu_slug' 	=> 'acf-options',
 		'capability'	=> 'edit_posts',
 		'redirect'		=> false
@@ -569,14 +569,14 @@ function adjust_the_wp_menu() {
 		'upload.php',
 		'edit-tags.php?taxonomy=destinations&amp;post_type=attachment'
 	);
-	add_menu_page('Destinations', 'Destinations', 'edit_posts', 'edit-tags.php?taxonomy=destinations', '', '', '37.5');
+	add_menu_page(__('Destinations','indagare'), __('Destinations','indagare'), 'edit_posts', 'edit-tags.php?taxonomy=destinations', '', '', '37.5');
 
-		add_submenu_page( 'edit-tags.php?taxonomy=destinations', 'Destinations', 'Destinations', 'manage_options', 'edit-tags.php?taxonomy=destinations');
-		add_submenu_page( 'edit-tags.php?taxonomy=destinations', 'Destination Interests', 'Destination Interests', 'manage_options', 'edit-tags.php?taxonomy=destinationinterest');
-		add_submenu_page( 'edit-tags.php?taxonomy=destinations', 'Destination Seasons', 'Destination Seasons', 'manage_options', 'edit-tags.php?taxonomy=destinationseason');
+		add_submenu_page( 'edit-tags.php?taxonomy=destinations', __('Destinations','indagare'), __('Destinations','indagare'), 'manage_options', 'edit-tags.php?taxonomy=destinations');
+		add_submenu_page( 'edit-tags.php?taxonomy=destinations', __('Destination Interests','indagare'), __('Destination Interests','indagare'), 'manage_options', 'edit-tags.php?taxonomy=destinationinterest');
+		add_submenu_page( 'edit-tags.php?taxonomy=destinations', __('Destination Seasons','indagare'), __('Destination Seasons','indagare'), 'manage_options', 'edit-tags.php?taxonomy=destinationseason');
 
-//	add_submenu_page('edit-tags.php?taxonomy=destinations','Destination Interest', 'Destination Interest', 'edit-tags.php?taxonomy=destinationinterest', '', '', '36.51');
-//	add_submenu_page('edit-tags.php?taxonomy=destinations','Destination Season', 'Destination Season', 'edit-tags.php?taxonomy=destinationseason', '', '', '36.52');
+//	add_submenu_page('edit-tags.php?taxonomy=destinations',__('Destination Interest','indagare'), __('Destination Interest','indagare'), 'edit-tags.php?taxonomy=destinationinterest', '', '', '36.51');
+//	add_submenu_page('edit-tags.php?taxonomy=destinations',__('Destination Season','indagare'), __('Destination Season','indagare'), 'edit-tags.php?taxonomy=destinationseason', '', '', '36.52');
 
 }
 add_action( 'admin_menu', 'adjust_the_wp_menu', 999 );
@@ -821,7 +821,7 @@ function custom_field_excerpt($title,$tax) {
 				$excerpt_length = 20; // 20 words
 				$excerpt_length_char = 160; // 160 characters
 //				$excerpt_more = apply_filters('excerpt_more', ' ' . '[...]');
-				$excerpt_more = apply_filters('excerpt_more', '...');
+				$excerpt_more = apply_filters('excerpt_more', __('...','indagare'));
 				$text = wp_trim_words( $text, $excerpt_length, $excerpt_more );
 //				$text = wp_html_excerpt( $text, $excerpt_length_char );
 			}
@@ -930,7 +930,7 @@ function my_register_image_sizes() {
 // custom image size in editor insertion
 function my_custom_sizes( $sizes ) {
 	return array_merge( $sizes, array(
-		'hero-review' => __('Review Image'),
+		'hero-review' => __('Review Image','indagare'),
 	) );
 }
 add_filter( 'image_size_names_choose', 'my_custom_sizes' );
@@ -1576,7 +1576,7 @@ function childtheme_override_access() {
 			<div class="subnav">
 			  <div class="main-nav-item"><a href="/destinations/articles/features/"><?php echo __('Read Featured Articles','indagare');?></a></div>
 			  <div class="nav-item">
-				<h3>Newly Added</h3>
+				<h3><?php echo __('Newly Added','indagare'); ?></h3>
 				<div class="subnav-related"><a href="/destinations/articles/"><?php echo __('See All','indagare');?></a></div>
 				<ul>
 					<?php
@@ -1637,12 +1637,12 @@ function childtheme_override_access() {
 
 		    <!-- ELENA CHANGES-->
 
-            <li id="nav-offers"><a href="/offers/">Offers</a><span class="show-subnav"><a href="#"></a></span>
+            <li id="nav-offers"><a href="/offers/"><?php echo __('Offers','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
             <div class="subnav">
-              <div class="main-nav-item"><a href="/destinations/">View All Destinations</a></div>
+              <div class="main-nav-item"><a href="/destinations/"><?php echo __('View All Destinations','indagare');?></a></div>
               <div class="nav-item">
-                <h3><a href="/destinations/offers/seasonal/">Seasonal Partners</a></h3>
-                <div class="subnav-related"><a href="/destinations/offers/seasonal/">See All</a></div>
+                <h3><a href="/destinations/offers/seasonal/"><?php echo __('Seasonal Partners','indagare');?></a></h3>
+                <div class="subnav-related"><a href="/destinations/offers/seasonal/"><?php echo __('See All','indagare');?></a></div>
      				<ul>
 						<?php
 						$args = array('numberposts' => 5, 'post_type' => 'offer', 'orderby' => 'rand', 'offertype' => 'seasonal');
@@ -1669,16 +1669,16 @@ function childtheme_override_access() {
 						</ul>
               </div>
               <div class="nav-item">
-                <h3><a href="/destinations/offers/destinations/">Destination Partners</a></h3>
-                <div class="subnav-related"><a href="/destinations/offers/destinations/">See All</a></div>
+                <h3><a href="/destinations/offers/destinations/"><?php echo __('Destination Partners','indagare');?></a></h3>
+                <div class="subnav-related"><a href="/destinations/offers/destinations/"><?php echo __('See All','indagare');?></a></div>
 	     				<ul>
 						<?php
 						$today = current_time('Ymd');
 
 						$args = array(
-							'numberposts' => 5, 
-							'post_type' => 'offer', 
-							'orderby' => 'rand', 
+							'numberposts' => 5,
+							'post_type' => 'offer',
+							'orderby' => 'rand',
 							'offertype' => 'destinations',
 							'meta_query' => array(
 							  'relation' => 'AND',
@@ -1785,6 +1785,8 @@ function childtheme_override_access() {
   </div>
 <?php
 }
+
+//@TODO: Translated To Here
 
 // above container
 function child_abovecontainer() {
@@ -3434,6 +3436,22 @@ function childtheme_override_archive_loop() {
 				// generate thumbnail from gallery header, if not, use featured image
 //				$rows = get_field('gallery-header');
 
+				$destinationstree = destinationstree($post->ID);
+				$dest = $destinationstree['dest'];
+				$reg = $destinationstree['reg'];
+				$top = $destinationstree['top'];
+				
+				$offerurl = '/destinations/';
+				if ( $top) {
+					$offerurl .= $top->slug.'/';
+				}
+				if ( $reg) {
+					$offerurl .= $reg->slug.'/';
+				}
+				if ( $dest) {
+					$offerurl .= $dest->slug.'/';
+				}
+
 				$rowsraw = get_field('gallery-header', false, false);
 
 				if ( $rowsraw ) {
@@ -3453,7 +3471,7 @@ function childtheme_override_archive_loop() {
 
 				echo '<div class="widget-wrapper">'."\n";
 					echo '<div class="special-info">'."\n";
-						echo '<a href="'.get_permalink().'">'."\n";
+						echo '<a href="'.$offerurl.'">'."\n";
 							echo '<h3>'.get_the_title().'</h3>'."\n";
 						echo '</a>'."\n";
 							echo '<span class="location">'.get_field('subtitle').'</span>'."\n";
@@ -3470,7 +3488,7 @@ function childtheme_override_archive_loop() {
 							echo '<p class="description">'.$text.'</p>'."\n";
 							echo '<p class="description">'."\n";
 
-							echo '<a class="book" href="'.get_permalink().'">'.__('Take Me There','indagare').'</a>'."\n";
+							echo '<a class="book" href="'.$offerurl.'">'.__('Take Me There','indagare').'</a>'."\n";
 
 							echo '</p>'."\n";
 					echo '</div><!-- .special-info -->'."\n";
@@ -4596,9 +4614,9 @@ function child_singlepost($content) {
 		$today = current_time('Ymd');
 
 		$args = array(
-			'posts_per_page' => -1, 
-			'post_type' => 'offer', 
-			'orderby' => 'rand', 
+			'posts_per_page' => -1,
+			'post_type' => 'offer',
+			'orderby' => 'rand',
 			'offertype' => 'destinations',
 			'meta_query' => array(
 			  'relation' => 'AND',
@@ -5131,6 +5149,22 @@ function child_singlepost($content) {
 		// generate thumbnail from gallery header, if not, use featured image
 //		$rows = get_field('gallery-header');
 
+		$destinationstree = destinationstree($post->ID);
+		$dest = $destinationstree['dest'];
+		$reg = $destinationstree['reg'];
+		$top = $destinationstree['top'];
+		
+		$offerurl = '/destinations/';
+		if ( $top) {
+			$offerurl .= $top->slug.'/';
+		}
+		if ( $reg) {
+			$offerurl .= $reg->slug.'/';
+		}
+		if ( $dest) {
+			$offerurl .= $dest->slug.'/';
+		}
+
 		$rowsraw = get_field('gallery-header', false, false);
 
 		if ( $rowsraw ) {
@@ -5144,7 +5178,7 @@ function child_singlepost($content) {
 
 		$content = '';
 
-		$content .= '<a href="'.get_permalink().'">'."\n";
+		$content .= '<a href="'.$offerurl.'">'."\n";
 			if ( $imgsrc ) {
 				$content .= '<img src="'.$imgsrc.'" alt="Destination Partner" />'."\n";
 			}
@@ -5164,7 +5198,7 @@ function child_singlepost($content) {
 			$content .= '<p class="description">'.$text.'</p>'."\n";
 		
 			$content .=  '<p class="description">'."\n";
-			$content .= '<a class="book" href="'.get_permalink().'">Take Me There</a>'."\n";
+			$content .= '<a class="book" href="'.$offerurl.'">Take Me There</a>'."\n";
 			$content .=  '</p>'."\n";
 			
 	// end archives destination offer ELENA
@@ -7235,10 +7269,10 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 		$today = current_time('Ymd');
 
 		$args = array(
-			'posts_per_page' => -1, 
-			'post_type' => 'offer', 
-			'orderby' => 'rand', 
-			'offertype' => 'destinations', 
+			'posts_per_page' => -1,
+			'post_type' => 'offer',
+			'orderby' => 'rand',
+			'offertype' => 'destinations',
 			'tax_query' => array(
 				array(
 					'taxonomy' => 'destinations',

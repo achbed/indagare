@@ -169,34 +169,7 @@ function make_destinations_details( $update = false ) {
 	file_put_contents($fn, json_encode($details_json));
 }
 
-//add_action( 'save_post', 'clear_destinations_list' );
-//add_action( 'transition_post_status',  'clear_destinations_list', 20, 1);
-
-add_action('edited_destinations', 'clear_destinations_list', 20, 1);
-add_action('created_destinations', 'clear_destinations_list', 20, 1);
-add_action('delete_destinations', 'clear_destinations_list', 20, 1);
-
 function get_destinations_list(){
-	if ( ! class_exists( 'SHRCache' ) ) {
-		// No cache object.  Go direct.
-		return get_destinations_list_direct();
-	}
-
-	$c = new SHRCache('getdestlist2', 0, 'get_destinations_list_direct' );
-	return $c->get();
-}
-
-function clear_destinations_list(){
-	if ( ! class_exists( 'SHRCache' ) ) {
-		// No cache object.  Nothing to clear.
-		return;
-	}
-
-	$c = new SHRCache( 'getdestlist2', 0, 'get_destinations_list_direct' );
-	$c->prime();
-}
-
-function get_destinations_list_direct(){
 	$content = '';
 	$destinations = get_terms( 'destinations', array( 'hide_empty' => 0 ) );
 	$destinationsf = array_filter($destinations, function ($t) {
@@ -224,7 +197,7 @@ function get_destinations_list_direct(){
 
 			$content .= '<article class="'. $destclass .'">'."\n";
 			$content .= '<a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $destination->slug .'/">'."\n";
-			$content .= '<img src="'.$image.'" alt="Article">'."\n";
+			$content .= '<img src="'.$image.'" alt="'.__('Article','indagare').'">'."\n";
 			//$content .= '<img class="lazy" data-original="'.$image.'" alt="Article">'."\n";
 			$content .= '<span class="info">'."\n";
 			$content .= '<h3>'.$destination->name.'</h3>'."\n";

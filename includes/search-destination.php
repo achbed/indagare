@@ -22,10 +22,10 @@ function render_destination_term($top, $reg, $term) {
 		$output .= '<article>'."\n";
 	  $output .= '<a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $term->slug.'/">'."\n";
 		if (!empty($image)) {
-			$output .= '<img src="'.$image.'" alt="Destination" />'."\n";
+			$output .= '<img src="'.$image.'" alt="'.__('Destination','indagare').'" />'."\n";
 		}
 		$output .= '<h3>'.$term->name.'</h3>'."\n";
-		$output .= '<p class="description">'.$overview.' <span class="read-more">Read More</span></p>'."\n";
+		$output .= '<p class="description">'.$overview.' <span class="read-more">'.__('Read More','indagare').'</span></p>'."\n";
 		$output .= '</a>'."\n";
 		$output .= '</article>'."\n";
 	}

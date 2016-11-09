@@ -961,17 +961,22 @@ p.author { font-style: italic; font-family: Georgia,Times,serif; font-size: .858
 .heading p.ind-meta { margin: 0 0 0 .3em; }
 
 /* ELENA */
-.featured-destination-partners { padding: 10px; background: #e7e8e8; }
-.featured-destination-partners div.destination-slide { padding: 0 10px; -moz-box-sizing: border-box; box-sizing: border-box; }
+.featured-destination-partners { padding: 10px; }
+.featured-destination-partners .fd-container { background: #e7e8e8; padding: 10px 25px; }
+.featured-destination-partners div.destination-slide { padding: 0 10px; -moz-box-sizing: border-box; box-sizing: border-box; font-size: .95em; }
 .featured-destination-partners div.destination-slide img { width: 100%; height: auto; margin-bottom: 5px; }
 .featured-destination-partners .regular { clear: both; }
-.featured-destination-partners .slick-prev:before, .featured-destination-partners .slick-next:before { color: black; }
+.featured-destination-partners .slick-next { background: transparent url("images/slick-arrows-sm.png") no-repeat; width: 15px; height: 49px; background-position: 100%; background-size: cover; top: 45%; right: -20px; }
+.featured-destination-partners .slick-prev { background: transparent url("images/slick-arrows-sm.png") no-repeat; width: 15px; height: 49px; background-position: 0%; background-size: cover; top: 45%; left: -20px; }
+.featured-destination-partners .slick-next::before, .featured-destination-partners .slick-prev::before { content: '' !important; }
 .featured-destination-partners .labels { display: block; clear: both; }
 .featured-destination-partners .labels h3 { float: left; width: 75%; text-transform: none; margin-bottom: 10px; padding-left: 10px; font-weight: bold; }
 .featured-destination-partners .labels h3:last-of-type { float: right; width: 25%; text-align: right; padding-right: 10px; }
-.featured-destination-partners .slick-next { right: -35px; }
-.featured-destination-partners .slick-prev { left: -35px; }
 
+@media screen and (min-width: 900px) { .slick-next { right: -35px; }
+  .slick-prev { left: -35px; }
+  .fd-container { padding: 10px; } }
+@media screen and (max-width: 600px) { .featured-destination-partners .labels h3 { font-size: 1em; } }
 /*.featured-destination-partners { padding: 10px; -moz-box-sizing: border-box; box-sizing: border-box; display: table; width: 100%; 
 
 	div {
@@ -1011,8 +1016,7 @@ p.author { font-style: italic; font-family: Georgia,Times,serif; font-size: .858
 
 	}
 }*/
-@media screen and (max-width: 600px) { .featured-destination-partners .labels h3 { font-size: 1em; }
-  /*	.featured-destination-partners div article{  		width: 50%;  		&:nth-child(2n+1){ 			clear:left; 		} 		 	}*/ }
+@media screen and (max-width: 600px) { .featured-destination-partners .labels h3 { font-size: 1em; } }
 @media screen and (max-width: 400px) { /*.featured-destination-partners div article{  	width: 100%; 	margin-bottom: 20px; }*/ }
 /* ELENA */
 /* subnav */
@@ -1709,6 +1713,10 @@ article.magazine .photo-gallery .caption { border-bottom: 1px solid #ccc; paddin
 #primary .bannerad { display: block; margin: 0 auto 1.429em; }
 
 #primary .bannerad img { display: block; width: 100%; height: auto; margin: 0 auto; max-width: 300px; }
+
+#primary .banneroffer { display: block; margin: 0 auto 1.429em; }
+
+#primary .banneroffer img { display: block; width: 100%; height: auto; margin: 0 auto; max-width: 300px; }
 
 #primary .contact { display: block; margin: 0 auto 1.429em; /* matched to background */ /*background-color:#47a1ff;*/ }
 

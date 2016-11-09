@@ -1,7 +1,7 @@
 <?php
 /*
  * Template to render the destinations page.
- * 
+ *
  * Variables:
  * $destinations - A fully populated list of articles - one per destination
  */
@@ -9,10 +9,10 @@
 // To debug knockout.js:    <pre data-bind="text: ko.toJSON($data, null, 2)"></pre>
 ?>
 <div id="destinationsfilter" style="height:0;">
-	<h3>Filter by Destination:</h3>
+	<h3><?php echo __('Filter by Destination:','indagare'); ?></h3>
 	<div class="filterwrapper">
 		<select class="customselect" id="selecttop2" data-bind="
-		    value: selectedTopslug, 
+		    value: selectedTopslug,
 		    options: listTopslug,
 		    optionsText: 'name',
     		optionsValue: 'value',
@@ -21,14 +21,14 @@
 	</div>
 	<div class="filterwrapper">
 		<select class="customselect" id="selectregion2" data-bind="
-		    value: selectedRegslug, 
+		    value: selectedRegslug,
 		    options: filteredRegslug,
 		    optionsText: 'name',
     		optionsValue: 'value',
     		optionsAfterRender: setTid">
 		</select>
 	</div>
-	<h3>Filter by Interest:</h3>
+	<h3><?php echo __('Filter by Interest:','indagare'); ?></h3>
 	<section class="recent-articles contain" data-bind="foreach: listInterests">
 		<article data-bind="attr:{class:'filter ' +classes()}">
 			<a href="" data-bind="{click:$parent.toggle_interest, attr:{value:value}}">
@@ -37,7 +37,7 @@
 			</a>
 		</article>
 	</section>
-	<h3>Filter by Season:</h3>
+	<h3><?php echo __('Filter by Season:','indagare'); ?></h3>
 	<div class="filterwrapper iconfilterwrapper" data-bind="foreach: listSeasons">
 		<div data-bind="attr:{class:'iconfilter '+classes()}">
 			<a href="" data-bind="{click:$parent.toggle_season, attr:{value:value}}">
@@ -66,9 +66,9 @@
 
 <div class="destinationlist-wrapper" style="height:0;">
 	<section id="destinationlist" class="all-destinations all-articles contain">
-		<?php 
+		<?php
 			// Print the destinations list here to give good SEO and spider data.
-			print $destinations; 
+			print $destinations;
 		?>
 	</section>
 </div>

@@ -8,8 +8,8 @@ function map_canvas($controls = false, $mapclass = '') {
 	if($controls !== false) {
 		$output .= '<div id="map-buttons">';
 		$output .= '<div id="map-buttons-container">';
-		$output .= '<a id="map-zoom-button" title="Zoom" onclick="return goZoom();" href="#">Zoom</a>'."\n";
-		$output .= '<a id="map-modal-toggle" title="Full Screen" href="#">Full Screen</a>'."\n";
+		$output .= '<a id="map-zoom-button" title="'.__('Zoom','indagare').'" onclick="return goZoom();" href="#">'.__('Zoom','indagare').'</a>'."\n";
+		$output .= '<a id="map-modal-toggle" title="'.__('Full Screen','indagare').'" href="#">'.__('Full Screen','indagare').'</a>'."\n";
 		$output .= '</div>'."\n";
 		$output .= '</div>'."\n";
 	}

@@ -4,16 +4,16 @@ function first_visit() {
 global $post;
 
 	$args = array(
-		'post_type'  => 'page', 
-		'meta_query' => array( 
+		'post_type'  => 'page',
+		'meta_query' => array(
 			array(
-				'key'   => '_wp_page_template', 
+				'key'   => '_wp_page_template',
 				'value' => 'template-page-new.php'
 			)
 		)
 	);
 
-	$firstvisit = get_posts($args);	
+	$firstvisit = get_posts($args);
 	
 	foreach( $firstvisit as $post ) : setup_postdata($post);
 
@@ -67,7 +67,7 @@ global $post;
 		
 		echo  '</div>'."\n";
 
-		echo  '<div class="header divider"><h2>Enter the new Indagare now &#8211; pick an article to experience the Indagare redesign:</p></div>'."\n";
+		echo  '<div class="header divider"><h2>'.__('Enter the new Indagare now &#8211; pick an article to experience the Indagare redesign:','indagare').'</p></div>'."\n";
 
 		$rows = get_field('new-articles');
 		
@@ -90,8 +90,8 @@ global $post;
 		}
 
 		echo '<footer class="newsletter-signup-wrapper">'."\n";
-			echo '<h4>Not a member yet?</h4>'."\n";
-			echo '<a class="button primary floatright" href="/join/">Join Now</a>'."\n";
+			echo '<h4>'.__('Not a member yet?','indagare').'</h4>'."\n";
+			echo '<a class="button primary floatright" href="/join/">'.__('Join Now','indagare').'</a>'."\n";
 			echo get_field('new-cta');
 		echo '</footer>'."\n";
 		echo '</div><!-- #lightbox-first -->'."\n";
