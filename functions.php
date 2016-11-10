@@ -1786,8 +1786,6 @@ function childtheme_override_access() {
 <?php
 }
 
-//@TODO: Translated To Here
-
 // above container
 function child_abovecontainer() {
 	global $post;
@@ -1867,9 +1865,9 @@ function child_abovecontainer() {
 		*/
 		$navabout = wp_nav_menu( array('menu' => 'account','container' => 'div','container_id' => '','container_class' => 'header magazine contain','menu_id' => 'subnav-magazine','echo' => false ));
 		if( is_user_logged_in() ) {
-			$navabout = str_replace('</ul>', '<li><a href="' . wp_logout_url( get_permalink() ) . '">Log Out</a></li></ul>', $navabout);
+			$navabout = str_replace('</ul>', '<li><a href="' . wp_logout_url( get_permalink() ) . '">'.__('Log Out','indagare').'</a></li></ul>', $navabout);
 		} else {
-			$navabout = str_replace('</ul>', '<li><a href="'.get_bloginfo('stylesheet_directory').'/logout.php">Log Out</a></li></ul>', $navabout);
+			$navabout = str_replace('</ul>', '<li><a href="'.get_bloginfo('stylesheet_directory').'/logout.php">'.__('Log Out','indagare').'</a></li></ul>', $navabout);
 		}
 		echo $navabout;
 	}
@@ -1879,13 +1877,13 @@ function child_abovecontainer() {
 	if ( is_search() ) {
 
 		echo '<div class="header magazine search">'."\n";
-			echo '<h2>Search</h2>'."\n";
+			echo '<h2>'.__('Search','indagare').'</h2>'."\n";
 			$searchvalue = urldecode( $_GET['s'] );
 			$searchvalue = sanitize_text_field( $searchvalue );
 			if ( ! empty( $_GET['filter'] ) ) {
-				echo '<span class="results"><a href="/?s='.urlencode($searchvalue).'">Results for "'.$searchvalue.'"</a></span>'."\n";
+				echo '<span class="results"><a href="/?s='.urlencode($searchvalue).'">'.sprintf(__('Results for "%s"','indagare'),$searchvalue).'</a></span>'."\n";
 			} else {
-				echo '<span class="results">Results for "'.$searchvalue.'"</span>'."\n";
+				echo '<span class="results">'.sprintf(__('Results for "%s"','indagare'),$searchvalue).'</span>'."\n";
 			}
 		echo '</div><!-- .header -->'."\n";
 
@@ -1949,32 +1947,32 @@ function child_abovecontainer() {
 		echo '<div class="header"><h1>'.$dest->name.'</h1></div>'."\n";
 		echo '<div id="subnav" class="rainbow">'."\n";
 			echo '<ul>'."\n";
-				echo '<li id="subnav01"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/">Overview</a></li>'."\n";
+				echo '<li id="subnav01"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/">'.__('Overview','indagare').'</a></li>'."\n";
 				if ( $hotelcount !== 0 ) {
 					echo '<li id="subnav02"';
 					if ( is_singular( 'hotel' ) ) { echo ' class="active"'; }
-					echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/hotels/">Stay</a></li>'."\n";
+					echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/hotels/">'.__('Stay','indagare').'</a></li>'."\n";
 				}
 				if ( $restaurantcount !== 0 ) {
 					echo '<li id="subnav03"';
 					if ( is_singular( 'restaurant' ) ) { echo ' class="active"'; }
-					echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/restaurants/">Eat</a></li>'."\n";
+					echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/restaurants/">'.__('Eat','indagare').'</a></li>'."\n";
 				}
 				if ( $shopcount !== 0 ) {
 					echo '<li id="subnav04"';
 					if ( is_singular( 'shop' ) ) { echo ' class="active"'; }
-					echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/shops/">Shop</a></li>'."\n";
+					echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/shops/">'.__('Shop','indagare').'</a></li>'."\n";
 				}
 				if ( $activitycount !== 0 ) {
 					echo '<li id="subnav05"';
 					if ( is_singular( 'activity' ) ) { echo ' class="active"'; }
-					echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/activities/">See &amp; Do</a></li>'."\n";
+					echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/activities/">'.__('See &amp; Do','indagare').'</a></li>'."\n";
 				}
 				if ( $itinerarycount !== 0 ) {
-					echo '<li id="subnav06"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/itineraries/">Itinerary</a></li>'."\n";
+					echo '<li id="subnav06"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/itineraries/">'.__('Itinerary','indagare').'</a></li>'."\n";
 				}
 				if ( $librarycount !== 0 ) {
-					echo '<li id="subnav07"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/library/">Library</a></li>'."\n";
+					echo '<li id="subnav07"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/library/">'.__('Library','indagare').'</a></li>'."\n";
 				}
 			echo '</ul>'."\n";
 		echo '</div>'."\n";
@@ -2000,39 +1998,44 @@ function child_abovecontainer() {
 		// destination level with post type
 		if ( $dest ) {
 
-			echo '<div class="header"><h1>'.$dest->name.'<span class="return"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/"><b class="icon petite" data-icon="&#xf0d9;"></b> Back to '.$reg->name.'</a></span></h1></div>'."\n";
+			echo '<div class="header">';
+			echo '<h1>'.$dest->name.'<span class="return"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/">';
+			echo '<b class="icon petite" data-icon="&#xf0d9;"></b> ';
+			echo sprintf(__('Back to %s','indagare'),$reg->name);
+			echo '</a></span></h1>';
+			echo '</div>'."\n";
 			echo '<div id="subnav" class="rainbow">'."\n";
 				echo '<ul>'."\n";
-					echo '<li id="subnav01"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/">Overview</a></li>'."\n";
+					echo '<li id="subnav01"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/">'.__('Overview','indagare').'</a></li>'."\n";
 					if ( $hotelcount !== 0 ) {
 						echo '<li id="subnav02"';
 						if ( get_query_var('post_type') == 'hotel' ) { echo ' class="active"'; }
-						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/hotels/">Stay</a></li>'."\n";
+						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/hotels/">'.__('Stay','indagare').'</a></li>'."\n";
 					}
 					if ( $restaurantcount !== 0 ) {
 						echo '<li id="subnav03"';
 						if ( get_query_var('post_type') == 'restaurant' ) { echo ' class="active"'; }
-						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/restaurants/">Eat</a></li>'."\n";
+						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/restaurants/">'.__('Eat','indagare').'</a></li>'."\n";
 					}
 					if ( $shopcount !== 0 ) {
 						echo '<li id="subnav04"';
 						if ( get_query_var('post_type') == 'shop' ) { echo ' class="active"'; }
-						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/shops/">Shop</a></li>'."\n";
+						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/shops/">'.__('Shop','indagare').'</a></li>'."\n";
 					}
 					if ( $activitycount !== 0 ) {
 						echo '<li id="subnav05"';
 						if ( get_query_var('post_type') == 'activity' ) { echo ' class="active"'; }
-						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/activities/">See &amp; Do</a></li>'."\n";
+						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/activities/">'.__('See &amp; Do','indagare').'</a></li>'."\n";
 					}
 					if ( $itinerarycount !== 0 ) {
 						echo '<li id="subnav06"';
 						if ( get_query_var('post_type') == 'itinerary' ) { echo ' class="active"'; }
-						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/itineraries/">Itinerary</a></li>'."\n";
+						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/itineraries/">'.__('Itinerary','indagare').'</a></li>'."\n";
 					}
 					if ( $librarycount !== 0 ) {
 						echo '<li id="subnav07"';
 						if ( get_query_var('post_type') == 'library' ) { echo ' class="active"'; }
-						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/library/">Library</a></li>'."\n";
+						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/library/">'.__('Library','indagare').'</a></li>'."\n";
 					}
 				echo '</ul>'."\n";
 			echo '</div>'."\n";
@@ -2140,7 +2143,7 @@ function child_abovecontainer() {
 	} else if (is_tax('offertype','seasonal'))  {
 
 		echo '<div class="header top">'."\n";
-		echo '<h1>Seasonal Partners</h1>'."\n"; //ELENA
+		echo '<h1>'.__('Seasonal Partners','indagare').'</h1>'."\n"; //ELENA
 		echo '</div><!-- .header -->'."\n";
 
 	// end archive for seasonal offer
@@ -2149,7 +2152,7 @@ function child_abovecontainer() {
 	} else if (is_tax('offertype','destinations')) {
 
 		echo '<div class="header top">'."\n";
-		echo '<h1>Destination Partners</h1>'."\n"; //ELENA
+		echo '<h1>'.__('Destination Partners','indagare').'</h1>'."\n"; //ELENA
 		echo '</div><!-- .header -->'."\n";
 
 	// end archive for destination offer
@@ -2161,18 +2164,18 @@ function child_abovecontainer() {
 		$filter = getLastPathSegment($_SERVER['REQUEST_URI']);
 
 		echo '<div class="header magazine">'."\n";
-			echo '<h2>Indagare <span class="highlight">Magazine</span></h2>'."\n";
+			echo '<h2>'.__('Indagare <span class="highlight">Magazine</span>','indagare').'</h2>'."\n";
 
 			echo '<ul id="subnav-magazine">'."\n";
 				if ( $filter == 'features' ) {
-					echo '<li class="current"><a href="/destinations/articles/features/">Features</a></li>'."\n";
+					echo '<li class="current"><a href="/destinations/articles/features/">'.__('Features','indagare').'</a></li>'."\n";
 				} else {
-					echo '<li><a href="/destinations/articles/features/">Features</a></li>'."\n";
+					echo '<li><a href="/destinations/articles/features/">'.__('Features','indagare').'</a></li>'."\n";
 				}
 				if ( ! empty( $_GET['column'] ) ) {
-					echo '<li class="parent current"><a href="#">Columns</a>'."\n";
+					echo '<li class="parent current"><a href="#">'.__('Columns','indagare').'</a>'."\n";
 				} else {
-					echo '<li class="parent"><a href="#">Columns</a>'."\n";
+					echo '<li class="parent"><a href="#">'.__('Columns','indagare').'</a>'."\n";
 				}
 
 				$columns = get_terms( 'column', array( 'orderby' => 'name', 'order' => 'ASC', 'hide_empty' => true) );
@@ -2186,11 +2189,11 @@ function child_abovecontainer() {
 				}
 				echo '</li>'."\n";
 				if ( ( $filter !== 'features')  && ! empty( $_GET['column'] ) ) {
-					echo '<li class="current"><a href="/destinations/articles/">All Articles</a></li>'."\n";
+					echo '<li class="current"><a href="/destinations/articles/">'.__('All Articles','indagare').'</a></li>'."\n";
 				} else {
-					echo '<li><a href="/destinations/articles/">All Articles</a></li>'."\n";
+					echo '<li><a href="/destinations/articles/">'.__('All Articles','indagare').'</a></li>'."\n";
 				}
-				echo '<li><a href="/magazines/">Digital Magazine</a></li>'."\n";
+				echo '<li><a href="/magazines/">'.__('Digital Magazine','indagare').'</a></li>'."\n";
 			echo '</ul><!-- #subnav-magazine -->'."\n";
 
 		echo '</div><!-- .header -->'."\n";
@@ -2225,7 +2228,7 @@ function child_abovecontainer() {
 
 					echo '<li>'."\n";
 						echo '<a href="'.get_permalink().'">'."\n";
-						echo '<img src="'.$imgsrc.'" alt="Article">'."\n";
+						echo '<img src="'.$imgsrc.'" alt="'.__('Article','indagare').'">'."\n";
 						echo '<span class="slide-caption">'."\n";
 							echo '<h2>'.$column[0]->name.': '.get_the_title().'</h2>'."\n";
 						echo '</span><!-- .slide-caption -->'."\n";
@@ -2244,11 +2247,11 @@ function child_abovecontainer() {
 		} else {
 
 			echo '<div class="header filter">'."\n";
-				echo '<h2>All Articles</h2>'."\n";
-				echo '<button class="button filters">+ Show Filters</button>'."\n";
+				echo '<h2>'.__('All Articles','indagare').'</h2>'."\n";
+				echo '<button class="button filters">+ '.__('Show Filters','indagare').'</button>'."\n";
 
 				echo '<div id="magazine-filters" class="">'."\n";
-					echo '<h4>By Interests</h4>'."\n";
+					echo '<h4>'.__('By Interests','indagare').'</h4>'."\n";
 
 					$interests = get_terms( 'interest', array( 'orderby' => 'name', 'order' => 'ASC', 'hide_empty' => false) );
 
@@ -2262,8 +2265,8 @@ function child_abovecontainer() {
 					}
 
 					echo '<span class="filter-destination">'."\n";
-						echo '<h4>By Destination</h4>'."\n";
-						echo '<input id="inputdestination" type="text" placeholder="Filter by city or region" />'."\n";
+						echo '<h4>'.__('By Destination','indagare').'</h4>'."\n";
+						echo '<input id="inputdestination" type="text" placeholder="'.__('Filter by city or region','indagare').'" />'."\n";
 						echo '<div class="autocomplete"></div>'."\n";
 						if ( ! empty( $_GET['destinations'] ) ) {
 							echo '<input class="autocompletedestination" type="hidden" value="'.$_GET['destinations'].'" />'."\n";
@@ -2277,7 +2280,7 @@ function child_abovecontainer() {
 						if(!empty($_GET['column'])) {
 							$column = '?column='.$_GET['column'];
 						}
-						echo '<button class="button apply-filters">Apply Filters</button> or <a href="/destinations/articles/'.$column.'">remove all filters</a>'."\n";
+						echo '<button class="button apply-filters">'.__('Apply Filters','indagare').'</button> '.__('or','indagare').' <a href="/destinations/articles/'.$column.'">'.__('remove all filters','indagare').'</a>'."\n";
 					echo '</span><!-- .filter-apply -->'."\n";
 
 				echo '</div><!-- #magazine-filters -->'."\n";
@@ -2420,15 +2423,15 @@ jQuery().ready(function($) {
 		$filter = getLastPathSegment($_SERVER['REQUEST_URI']);
 
 		echo '<div class="header magazine">'."\n";
-			echo '<h2>Indagare <span class="highlight">Magazine</span></h2>'."\n";
+			echo '<h2>'.__('Indagare <span class="highlight">Magazine</span>','indagare').'</h2>'."\n";
 
 			echo '<ul id="subnav-magazine">'."\n";
 				if ( $filter == 'features' ) {
-					echo '<li class="current"><a href="/destinations/articles/features/">Features</a></li>'."\n";
+					echo '<li class="current"><a href="/destinations/articles/features/">'.__('Features','indagare').'</a></li>'."\n";
 				} else {
-					echo '<li><a href="/destinations/articles/features/">Features</a></li>'."\n";
+					echo '<li><a href="/destinations/articles/features/">'.__('Features','indagare').'</a></li>'."\n";
 				}
-				echo '<li class="parent"><a href="#">Columns</a>'."\n";
+				echo '<li class="parent"><a href="#">'.__('Columns','indagare').'</a>'."\n";
 
 				$columns = get_terms( 'column', array( 'orderby' => 'name', 'order' => 'ASC', 'hide_empty' => true) );
 
@@ -2444,11 +2447,11 @@ jQuery().ready(function($) {
 				wp_reset_postdata();
 
 				if ( $filter !== 'features') {
-					echo '<li class="current"><a href="/destinations/articles/">All Articles</a></li>'."\n";
+					echo '<li class="current"><a href="/destinations/articles/">'.__('All Articles','indagare').'</a></li>'."\n";
 				} else {
-					echo '<li><a href="/destinations/articles/">All Articles</a></li>'."\n";
+					echo '<li><a href="/destinations/articles/">'.__('All Articles','indagare').'</a></li>'."\n";
 				}
-				echo '<li><a href="/magazines/">Digital Magazine</a></li>'."\n";
+				echo '<li><a href="/magazines/">'.__('Digital Magazine','indagare').'</a></li>'."\n";
 			echo '</ul><!-- #subnav-magazine -->'."\n";
 
 		echo '</div><!-- .header -->'."\n";
@@ -2502,11 +2505,11 @@ jQuery().ready(function($) {
 	} else if ( is_archive() && get_query_var('post_type') == 'magazine' ) {
 
 		echo '<div class="header magazine">'."\n";
-			echo '<h2>Indagare <span class="highlight">Magazine</span></h2>'."\n";
+			echo '<h2>'.__('Indagare <span class="highlight">Magazine</span>','indagare').'</h2>'."\n";
 
 			echo '<ul id="subnav-magazine">'."\n";
-				echo '<li><a href="/destinations/articles/features/">Features</a></li>'."\n";
-				echo '<li class="parent"><a href="#">Columns</a>'."\n";
+				echo '<li><a href="/destinations/articles/features/">'.__('Features','indagare').'</a></li>'."\n";
+				echo '<li class="parent"><a href="#">'.__('Columns','indagare').'</a>'."\n";
 
 				$columns = get_terms( 'column', array( 'orderby' => 'name', 'order' => 'ASC', 'hide_empty' => true) );
 
@@ -2518,8 +2521,8 @@ jQuery().ready(function($) {
 					echo '</ul>'."\n";
 				}
 				echo '</li>'."\n";
-				echo '<li><a href="/destinations/articles/">All Articles</a></li>'."\n";
-				echo '<li class="current"><a href="/magazines/">Digital Magazine</a></li>'."\n";
+				echo '<li><a href="/destinations/articles/">'.__('All Articles','indagare').'</a></li>'."\n";
+				echo '<li class="current"><a href="/magazines/">'.__('Digital Magazine','indagare').'</a></li>'."\n";
 			echo '</ul><!-- #subnav-magazine -->'."\n";
 
 		echo '</div><!-- .header -->'."\n";
@@ -2530,11 +2533,11 @@ jQuery().ready(function($) {
 	} else if ( is_singular( 'magazine' ) ) {
 
 		echo '<div class="header magazine">'."\n";
-			echo '<h2>Indagare <span class="highlight">Magazine</span></h2>'."\n";
+			echo '<h2>'.__('Indagare <span class="highlight">Magazine</span>','indagare').'</h2>'."\n";
 
 			echo '<ul id="subnav-magazine">'."\n";
-				echo '<li><a href="/destinations/articles/features/">Features</a></li>'."\n";
-				echo '<li class="parent"><a href="#">Columns</a>'."\n";
+				echo '<li><a href="/destinations/articles/features/">'.__('Features','indagare').'</a></li>'."\n";
+				echo '<li class="parent"><a href="#">'.__('Columns','indagare').'</a>'."\n";
 
 				$columns = get_terms( 'column', array( 'orderby' => 'name', 'order' => 'ASC', 'hide_empty' => true) );
 
@@ -2546,8 +2549,8 @@ jQuery().ready(function($) {
 					echo '</ul>'."\n";
 				}
 				echo '</li>'."\n";
-				echo '<li><a href="/destinations/articles/">All Articles</a></li>'."\n";
-				echo '<li class="current"><a href="/magazines/">Digital Magazine</a></li>'."\n";
+				echo '<li><a href="/destinations/articles/">'.__('All Articles','indagare').'</a></li>'."\n";
+				echo '<li class="current"><a href="/magazines/">'.__('Digital Magazine','indagare').'</a></li>'."\n";
 			echo '</ul><!-- #subnav-magazine -->'."\n";
 
 		echo '</div><!-- .header -->'."\n";
@@ -2565,7 +2568,7 @@ jQuery().ready(function($) {
 		$caption = get_post( $imageid )->post_excerpt;
 
 		echo '<div class="header">'."\n";
-			echo '<h1>Insider Trips</h1>'."\n";
+			echo '<h1>'.__('Insider Trips','indagare').'</h1>'."\n";
 		echo '</div><!-- .header -->'."\n";
 
 		echo '<div class="hero">'."\n";
@@ -2586,33 +2589,35 @@ jQuery().ready(function($) {
 	// archive for destination
 	} else if ( $dest && $depth == 2  ) {
 
-		echo '<div class="header"><h1>'.$dest->name.'<span class="return"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/"><b class="icon petite" data-icon="&#xf0d9;"></b> Back to '.$reg->name.'</a></span></h1></div>'."\n";
+		echo '<div class="header"><h1>'.$dest->name.'<span class="return"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/"><b class="icon petite" data-icon="&#xf0d9;"></b> ';
+		echo sprintf(__('Back to %s','indagare'),$reg->name);
+		echo '</a></span></h1></div>'."\n";
 			echo '<div id="subnav" class="rainbow">'."\n";
 				echo '<ul>'."\n";
-					echo '<li id="subnav01" class="active"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/">Overview</a></li>'."\n";
+					echo '<li id="subnav01" class="active"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/">'.__('Overview','indagare').'</a></li>'."\n";
 					if ( $hotelcount !== 0 ) {
 						echo '<li id="subnav02"';
-						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/hotels/">Stay</a></li>'."\n";
+						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/hotels/">'.__('Stay','indagare').'</a></li>'."\n";
 					}
 					if ( $restaurantcount !== 0 ) {
 						echo '<li id="subnav03"';
-						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/restaurants/">Eat</a></li>'."\n";
+						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/restaurants/">'.__('Eat','indagare').'</a></li>'."\n";
 					}
 					if ( $shopcount !== 0 ) {
 						echo '<li id="subnav04"';
-						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/shops/">Shop</a></li>'."\n";
+						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/shops/">'.__('Shop','indagare').'</a></li>'."\n";
 					}
 					if ( $activitycount !== 0 ) {
 						echo '<li id="subnav05"';
-						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/activities/">See &amp; Do</a></li>'."\n";
+						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/activities/">'.__('See &amp; Do','indagare').'</a></li>'."\n";
 					}
 					if ( $itinerarycount !== 0 ) {
 						echo '<li id="subnav06"';
-						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/itineraries/">Itinerary</a></li>'."\n";
+						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/itineraries/">'.__('Itinerary','indagare').'</a></li>'."\n";
 					}
 					if ( $librarycount !== 0 ) {
 						echo '<li id="subnav07"';
-						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/library/">Library</a></li>'."\n";
+						echo '><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/library/">'.__('Library','indagare').'</a></li>'."\n";
 					}
 				echo '</ul>'."\n";
 			echo '</div>'."\n";
@@ -2701,7 +2706,7 @@ jQuery().ready(function($) {
 						echo '</a>'."\n";
 						if ( $benefit ) {
 							echo '<div class="benefitwrapper">'."\n";
-							echo '<p class="benefitmore">See Indagare Plus Amenities</p>'."\n";
+							echo '<p class="benefitmore">'.__('See Indagare Plus Amenities','indagare').'</p>'."\n";
 							echo '<div class="benefit">'."\n";
 							echo $benefit[0]['benefit-content'];
 							echo '</div>'."\n";
@@ -2807,7 +2812,7 @@ jQuery().ready(function($) {
 				echo '<p class="summary">'.$caption.'</p>'."\n";
 			}
 			if ( ! is_user_logged_in() ) {
-				echo '<a class="button primary floatright" href="/join/">Join</a>'."\n";
+				echo '<a class="button primary floatright" href="/join/">'.__('Join','indagare').'</a>'."\n";
 			}
 			if ( $overview ) {
 				echo $overview;
@@ -3070,7 +3075,7 @@ function childtheme_override_archive_loop() {
 			echo '<div class="header"><h2>'.$postypename.' ('.$count.') in '.$dest->name.', '.$reg->name.'</h2>';
 		}
 		if ( $count > 0 ) {
-			echo '<p class="view-more"><a class="map" href="#"><b class="icon petite custom-icon" data-icon="&#xe000;"></b>Show Map</a></p>';
+			echo '<p class="view-more"><a class="map" href="#"><b class="icon petite custom-icon" data-icon="&#xe000;"></b>'.__('Show Map','indagare').'</a></p>';
 		}
 		echo '</div>'."\n";
 
@@ -3087,18 +3092,18 @@ function childtheme_override_archive_loop() {
 
 		$filterid = 1;
 
-			echo '<p class="open-close"><a href="#"><span class="title">Filter Results</span> <b class="icon open-this" data-icon="&#xf0d9;"><span>Open</span></b><b class="icon close-this" data-icon="&#xf0d7;"><span>Close</span></b></a></p>'."\n";
+			echo '<p class="open-close"><a href="#"><span class="title">'.__('Filter Results','indagare').'</span> <b class="icon open-this" data-icon="&#xf0d9;"><span>'.__('Open','indagare').'</span></b><b class="icon close-this" data-icon="&#xf0d7;"><span>'.__('Close','indagare').'</span></b></a></p>'."\n";
 			echo '<div class="collapse">'."\n";
 				echo '<div class="collapsegroup">'."\n";
 					// type of post filter
 					if ( get_query_var('post_type') == 'hotel' ) {
-						echo '<h4>Type of Property</h4>'."\n";
+						echo '<h4>'.__('Type of Property','indagare').'</h4>'."\n";
 					} else if ( get_query_var('post_type') == 'restaurant' ) {
-						echo '<h4>Type of Restaurant</h4>'."\n";
+						echo '<h4>'.__('Type of Restaurant','indagare').'</h4>'."\n";
 					} else if ( get_query_var('post_type') == 'shop' ) {
-						echo '<h4>Type of Shop</h4>'."\n";
+						echo '<h4>'.__('Type of Shop','indagare').'</h4>'."\n";
 					} else if ( get_query_var('post_type') == 'activity' ) {
-						echo '<h4>Type of Activity</h4>'."\n";
+						echo '<h4>'.__('Type of Activity','indagare').'</h4>'."\n";
 					}
 
 					echo '<ul id="posttypes" class="filter">'."\n";
@@ -3137,7 +3142,7 @@ function childtheme_override_archive_loop() {
 						$meal = get_terms( 'mealtype', array( 'orderby' => 'name', 'order' => 'ASC', 'hide_empty' => true) );
 
 						if ( $meal ) {
-							echo '<h4>Type of Meal</h4>'."\n";
+							echo '<h4>'.__('Type of Meal','indagare').'</h4>'."\n";
 							echo '<ul id="meals">'."\n";
 
 								foreach ( $meal as $term ) {
@@ -3177,9 +3182,9 @@ function childtheme_override_archive_loop() {
 
 					if ( $neigh ) {
 						if ( $depth == 1 ) { // region level
-							echo '<h4>Destination</h4>'."\n";
+							echo '<h4>'.__('Destination','indagare').'</h4>'."\n";
 						} else { // destination level
-							echo '<h4>Neighborhood</h4>'."\n";
+							echo '<h4>'.__('Neighborhood','indagare').'</h4>'."\n";
 						}
 						echo '<ul id="neighborhoods" class="filter">'."\n";
 
@@ -3201,7 +3206,7 @@ function childtheme_override_archive_loop() {
 					$benefits = get_terms( 'benefit', array( 'orderby' => 'name', 'order' => 'ASC', 'hide_empty' => true) );
 
 						if ( $benefits ) {
-							echo '<h4>Benefits</h4>'."\n";
+							echo '<h4>'.__('Benefits','indagare').'</h4>'."\n";
 							echo '<ul id="benefits" class="filter">'."\n";
 
 								foreach ( $benefits as $term ) {
@@ -3221,7 +3226,7 @@ function childtheme_override_archive_loop() {
 					}
 
 					if ( ! empty( $editors ) ) {
-						echo '<h4>Editor\'s Picks</h4>'."\n";
+						echo '<h4>'.__('Editor\'s Picks','indagare').'</h4>'."\n";
 						echo '<ul id="editors" class="filter">'."\n";
 
 							foreach ( $editors as $term ) {
@@ -3236,8 +3241,8 @@ function childtheme_override_archive_loop() {
 				echo '</div>'."\n"; // close column
 
 				echo '<div class="buttons">'."\n";
-				echo '<a id="clearfilters" class="button secondary" href="#">Clear</a>'."\n";
-				echo '<a id="applyfilters" class="button primary" href="#">Apply</a>'."\n";
+				echo '<a id="clearfilters" class="button secondary" href="#">'.__('Clear','indagare').'</a>'."\n";
+				echo '<a id="applyfilters" class="button primary" href="#">'.__('Apply','indagare').'</a>'."\n";
 				echo '</div>'."\n";
 
 				if ( ! empty( $_GET['map'] ) ) {
@@ -3346,7 +3351,7 @@ function childtheme_override_archive_loop() {
 				echo '<div class="widget-wrapper">'."\n";
 					echo '<div class="special-info">'."\n";
 						echo '<a href="'.get_permalink().'">'."\n";
-							echo '<h3>'.get_the_title().'</h3><b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b>'."\n";
+							echo '<h3>'.get_the_title().'</h3><b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>'.__('Offers','indagare').'</span></b>'."\n";
 						echo '</a>'."\n";
 							echo '<span class="location">'.get_field('subtitle').'</span>'."\n";
 
@@ -3356,7 +3361,7 @@ function childtheme_override_archive_loop() {
 							$text = strip_tags($text, '<a><strong><em><b><i>');
 							$text = str_replace(']]>', ']]>', $text);
 							$excerpt_length = 20; // 20 words
-							$excerpt_more = apply_filters('excerpt_more', '...');
+							$excerpt_more = apply_filters('excerpt_more', __('...','indagare'));
 							$text = wp_trim_words( $text, $excerpt_length, $excerpt_more );
 
 							echo '<p class="description">'.$text.'</p>'."\n";
@@ -3539,7 +3544,7 @@ function childtheme_override_archive_loop() {
 
 		// faqs
 		echo '<div class="header">'."\n";
-			echo '<h2>Frequently Asked Questions</h2>'."\n";
+			echo '<h2>'.__('Frequently Asked Questions','indagare').'</h2>'."\n";
 		echo '</div><!-- .header -->'."\n";
 
 		$rows = get_field('faq','option');
@@ -3563,7 +3568,7 @@ function childtheme_override_archive_loop() {
 
 		// list view of current insidertrip
 		echo '<article class="divider">'."\n";
-			echo '<h2>Current Insider Trips</h2>'."\n";
+			echo '<h2>'.__('Current Insider Trips','indagare').'</h2>'."\n";
 		echo '</article>'."\n";
 
 		$args = array('numberposts' => -1, 'post_type' => 'insidertrip', 'meta_key' => 'date-start', 'orderby' => 'meta_value_num', 'order' => 'ASC', 'meta_query' => array(
@@ -3598,7 +3603,7 @@ function childtheme_override_archive_loop() {
 					echo '<article>'."\n";
 						echo '<a href="'.get_permalink().'">'."\n";
 						if ( $imgsrc ) {
-							echo '<img src="'.$imgsrc.'" alt="Destination" />'."\n";
+							echo '<img src="'.$imgsrc.'" alt="'.__('Destination','indagare').'" />'."\n";
 						}
 						echo '<span class="info">'."\n";
 							echo '<h3>'.get_the_title().'</h3>'."\n";
@@ -3609,11 +3614,11 @@ function childtheme_override_archive_loop() {
 							$text = strip_tags($text, '<a><strong><em><b><i>');
 							$text = str_replace(']]>', ']]>', $text);
 							$excerpt_length = 20; // 20 words
-							$excerpt_more = apply_filters('excerpt_more', '...');
+							$excerpt_more = apply_filters('excerpt_more', __('...','indagare'));
 							$text = wp_trim_words( $text, $excerpt_length, $excerpt_more );
 
 							echo '<p>'.$text.'</p>'."\n";
-							echo '<a href="'.get_permalink().'">Read More</a>'."\n";
+							echo '<a href="'.get_permalink().'">'.__('Read More','indagare').'</a>'."\n";
 						echo '</span><!-- .info -->'."\n";
 						echo '</a>'."\n";
 					echo '</article>'."\n";
@@ -3640,7 +3645,7 @@ function childtheme_override_archive_loop() {
 		if ( have_posts() ) {
 
 			echo '<article class="divider">'."\n";
-				echo '<h2>Sold Out Insider Trips</h2>'."\n";
+				echo '<h2>'.__('Sold Out Insider Trips','indagare').'</h2>'."\n";
 			echo '</article>'."\n";
 
 			echo '<section class="all-destinations mini contain">'."\n";
@@ -3665,7 +3670,7 @@ function childtheme_override_archive_loop() {
 
 		// list view of past insidertrip
 		echo '<article class="divider">'."\n";
-			echo '<h2>Some Past Insider Trips</h2>'."\n";
+			echo '<h2>'.__('Some Past Insider Trips','indagare').'</h2>'."\n";
 		echo '</article>'."\n";
 
 		echo '<section class="all-destinations mini contain">'."\n";
@@ -3841,13 +3846,13 @@ function childtheme_override_archive_loop() {
 
 			} else {
 
-				echo '<p>Members-only content.</p>'."\n";
+				echo '<p>'.__('Members-only content.','indagare').'</p>'."\n";
 
 			}
 
 		} else {
 
-			echo '<p>There is not an itinerary for this destination.</p>'."\n";
+			echo '<p>'.__('There is not an itinerary for this destination.','indagare').'</p>'."\n";
 
 		}
 
@@ -3869,7 +3874,7 @@ function childtheme_override_archive_loop() {
 
 		} else {
 
-			echo '<p>There is not a library for this destination.</p>'."\n";
+			echo '<p>'.__('There is not a library for this destination.','indagare').'</p>'."\n";
 
 		}
 
@@ -3915,7 +3920,7 @@ function childtheme_override_archive_loop() {
 
 		echo '<div class="header">'."\n";
 
-			echo '<p><img src="'.$image.'" alt="Careers" /></p>'."\n";
+			echo '<p><img src="'.$image.'" alt="'.__('Careers','indagare').'" /></p>'."\n";
 
 			echo $careersintro;
 
@@ -3939,7 +3944,7 @@ function childtheme_override_archive_loop() {
 		echo '</section>'."\n";
 
 		echo '<div class="header">'."\n";
-			echo '<h2>General Inquiry</h2>'."\n";
+			echo '<h2>'.__('General Inquiry','indagare').'</h2>'."\n";
 		echo '</div>'."\n";
 
 		echo '<section class="all-destinations career contain">'."\n";
@@ -3947,15 +3952,15 @@ function childtheme_override_archive_loop() {
 			echo '<article>'."\n";
 			echo '<p>';
 			echo $careersgeneral;
-			echo ' <a class="lightbox-inline" href="#lightbox-contact-apply-general">Apply</a></p>'."\n";
+			echo ' <a class="lightbox-inline" href="#lightbox-contact-apply-general">'.__('Apply','indagare').'</a></p>'."\n";
 			echo '</article><!-- #post -->';
 
 		echo '</section>'."\n";
 
 		echo '<div id="lightbox-contact-apply-general" class="lightbox white-popup contact mfp-hide">'."\n";
 			echo '<header>'."\n";
-				echo '<h2>Apply Now</h2>'."\n";
-				echo '<h3>General Inquiry</h3>'."\n";
+				echo '<h2>'.__('Apply Now','indagare').'</h2>'."\n";
+				echo '<h3>'.__('General Inquiry','indagare').'</h3>'."\n";
 			echo '</header>'."\n";
 
 		 echo do_shortcode('[contact-form-7 id="75335" title="Contact Apply Now General"]');
@@ -3963,10 +3968,10 @@ function childtheme_override_archive_loop() {
 		echo '</div><!-- #lightbox -->'."\n";
 
 		echo '<div class="header">'."\n";
-			echo '<h2>Connect with Indagare</h2>'."\n";
+			echo '<h2>'.__('Connect with Indagare','indagare').'</h2>'."\n";
 
 			echo '<p class="social">'."\n";
-			  echo '<a id="social-facebook" href="https://www.facebook.com/pages/Indagare-Travel/38863077107"><b class="icon custom-icon" data-icon="&#xe003;"><span>facebook</span></b></a> <a href="https://twitter.com/indagaretravel" id="social-twitter"><b class="icon custom-icon" data-icon="&#xe001;"><span>twitter</span></b></a> <a id="social-instagram" href="http://instagram.com/indagaretravel/"><b class="icon custom-icon" data-icon="&#xe618;"><span>instagram</span></b></a> <a id="social-linkedin" href="https://www.linkedin.com/company/indagare"><b class="icon custom-icon" data-icon="&#xe900;"><span>linkedin</span></b></a>'."\n";
+			  echo '<a id="social-facebook" href="https://www.facebook.com/pages/Indagare-Travel/38863077107"><b class="icon custom-icon" data-icon="&#xe003;"><span>'.__('facebook','indagare').'</span></b></a> <a href="https://twitter.com/indagaretravel" id="social-twitter"><b class="icon custom-icon" data-icon="&#xe001;"><span>'.__('twitter','indagare').'</span></b></a> <a id="social-instagram" href="http://instagram.com/indagaretravel/"><b class="icon custom-icon" data-icon="&#xe618;"><span>'.__('instagram','indagare').'</span></b></a> <a id="social-linkedin" href="https://www.linkedin.com/company/indagare"><b class="icon custom-icon" data-icon="&#xe900;"><span>'.__('linkedin','indagare').'</span></b></a>'."\n";
 			echo '</p>'."\n";
 		echo '</div>'."\n";
 
@@ -3987,27 +3992,27 @@ function childtheme_override_archive_loop() {
 		echo '<div class="widget-wrapper">'."\n";
 		echo '<div id="booking-widget" class="simple">'."\n";
 			echo '<ul class="book-type contain">'."\n";
-				echo '<li>Book Hotels</li>'."\n";
-				echo '<li><a href="#" id="bookflights">Book Flights</a></li>'."\n";
+				echo '<li>'.__('Book Hotels','indagare').'</li>'."\n";
+				echo '<li><a href="#" id="bookflights">'.__('Book Flights','indagare').'</a></li>'."\n";
 			echo '</ul>'."\n";
 			echo '<form id="book-hotels">'."\n";
 				echo '<div class="form-combo">'."\n";
-					echo '<span class="form-item"><input type="text" id="book-destination" class="element acInput" placeholder="Destination or Hotel" /><b class="icon" data-icon="&#61442;"></b></span>'."\n";
+					echo '<span class="form-item"><input type="text" id="book-destination" class="element acInput" placeholder="'.__('Destination or Hotel','indagare').'" /><b class="icon" data-icon="&#61442;"></b></span>'."\n";
 					echo '<div class="autocomplete"></div>'."\n";
 				echo '</div>'."\n";
 				echo '<div class="form-combo">'."\n";
-					echo '<span class="form-item"><input type="text" id="dep_date" class="element dateinput" placeholder="Check In (optional)" /><b class="icon" data-icon="&#61555;"></b></span>'."\n";
+					echo '<span class="form-item"><input type="text" id="dep_date" class="element dateinput" placeholder="'.__('Check In (optional)','indagare').'" /><b class="icon" data-icon="&#61555;"></b></span>'."\n";
 					echo '<!-- <div id="ui-datepicker-div"></div> -->'."\n";
-					echo '<span class="form-item"><input type="text" id="ret_date" class="element dateinput" placeholder="Check Out (optional)" /><b class="icon" data-icon="&#61555;"></b></span>'."\n";
+					echo '<span class="form-item"><input type="text" id="ret_date" class="element dateinput" placeholder="'.__('Check Out (optional)','indagare').'" /><b class="icon" data-icon="&#61555;"></b></span>'."\n";
 					echo '<!-- <div id="book-ckeck-out-cal"></div> -->'."\n";
 				echo '</div>'."\n";
 				echo '<div class="buttons">'."\n";
-					echo '<button type="submit" class="primary button">Find Rooms</button>'."\n";
+					echo '<button type="submit" class="primary button">'.__('Find Rooms','indagare').'</button>'."\n";
 				echo '</div>'."\n";
 				echo '<div id="last_selected"></div>'."\n";
 				echo '<input class="autocompletedestination" type="hidden" />'."\n";
 			echo '</form>'."\n";
-			echo '<p class="view-all"><a href="/destinations/'.$top->slug.'/'.$reg->slug.'/hotels/">Or view all hotels in '.$reg->name.'</a></p>'."\n";
+			echo '<p class="view-all"><a href="/destinations/'.$top->slug.'/'.$reg->slug.'/hotels/">'.sprintf(__('Or view all hotels in %s','indagare'),$reg->name).'</a></p>'."\n";
 		echo '</div>'."\n";
 		echo '</div>'."\n";
 		// end region widget
@@ -4069,7 +4074,7 @@ jQuery().ready(function($) {
 
 <?php
 
-		echo '<div class="header divider"><h2>All Destination Guides</h2></div>'."\n";
+		echo '<div class="header divider"><h2>'.__('All Destination Guides','indagare').'</h2></div>'."\n";
 		echo '<section class="all-destinations contain" location="BBBB">'."\n";
 
 //		$destinations = get_terms( 'destinations', array( 'child_of' => $reg->term_id , 'parent' => $reg->term_id, 'orderby' => 'name', 'order' => 'ASC', 'hide_empty' => true) );
@@ -4087,10 +4092,10 @@ jQuery().ready(function($) {
 					echo '<article>'."\n";
 						echo '<a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $term->slug.'/">'."\n";
 							if ($imageobj) {
-								echo '<img src="'.$image.'" alt="Destination" />'."\n";
+								echo '<img src="'.$image.'" alt="'.__('Destination','indagare').'" />'."\n";
 							}
 							echo '<h3>'.$term->name.'</h3>'."\n";
-							echo '<p class="description">'.$overview.' <span class="read-more">Read More</span></p>'."\n";
+							echo '<p class="description">'.$overview.' <span class="read-more">'.__('Read More','indagare').'</span></p>'."\n";
 						echo '</a>'."\n";
 					echo '</article>'."\n";
 
@@ -4112,7 +4117,7 @@ jQuery().ready(function($) {
 		$destcitation = get_field('destination-citation', 'destinations' . '_' . $dest->term_id);
 
 		if ( $cheatsheet ) {
-			echo '<div class="header"><h2>Cheat Sheet</h2></div>'."\n";
+			echo '<div class="header"><h2>'.__('Cheat Sheet','indagare').'</h2></div>'."\n";
 			echo '<div class="cheat-sheet">'."\n";
 			echo $cheatsheet;
 			echo '</div>'."\n";
@@ -4120,7 +4125,7 @@ jQuery().ready(function($) {
 
 		if ( $destcontent ) {
 			echo '<article class="divider">'."\n";
-			echo '<h2>Lay of the Land</h2>'."\n";
+			echo '<h2>'.__('Lay of the Land','indagare').'</h2>'."\n";
 			if ( $destquote ) {
 				echo '<div class="pullquote">'."\n";
 					echo '<blockquote>&ldquo;'.$destquote.'&rdquo;</blockquote>'."\n";
@@ -4137,7 +4142,6 @@ jQuery().ready(function($) {
 	}
 
 } // end override archive loop
-
 
 // override author loop | team archive | contributor archive
 function childtheme_override_author_loop() {
@@ -4179,16 +4183,16 @@ function childtheme_override_search_loop() {
 		$categories = array ( $post_type => $post_type_object->labels->name );
 	} else {
 		$categories = array(
-			'destinations' => 'Destination Guides', // destination taxonomy
-			'hotel' => 'Hotels',
-			'restaurant' => 'Restaurants',
-			'shop' => 'Shops',
-			'activity' => 'Activities',
-			'article' => 'Articles',
-			'itinerary' => 'Itineraries',
-			'library' => 'Libraries',
-			'offer' => 'Offers',
-			'insidertrip' => 'Insider Trips',
+			'destinations' => __('Destination Guides','indagare'), // destination taxonomy
+			'hotel' => __('Hotels','indagare'),
+			'restaurant' => __('Restaurants','indagare'),
+			'shop' => __('Shops','indagare'),
+			'activity' => __('Activities','indagare'),
+			'article' => __('Articles','indagare'),
+			'itinerary' => __('Itineraries','indagare'),
+			'library' => __('Libraries','indagare'),
+			'offer' => __('Offers','indagare'),
+			'insidertrip' => __('Insider Trips','indagare'),
 		);
 	}
 
@@ -4236,7 +4240,7 @@ function childtheme_override_search_loop() {
 		echo '<div class="header divider">';
 
 		if ( $group == 'destinations' ) {
-			echo '<h2>Destination Guides</h2>'."\n";
+			echo '<h2>'.__('Destination Guides','indagare').'</h2>'."\n";
 		} else {
 			echo '<h2>'.$t.'</h2>'."\n";
 		}
@@ -4244,7 +4248,7 @@ function childtheme_override_search_loop() {
 		if ( $group !== 'destinations' ) {
 			if ( empty( $_GET['filter'] ) ) {
 				if ( count( $searchresults[$group] ) > INDG_SEARCHPAGE_SECTIONCOUNT ) {
-					echo '<p class="view-more"><a href="/?s='.urlencode( $search ).'&filter='.$group.'">View All Results</a></p>'."\n";
+					echo '<p class="view-more"><a href="/?s='.urlencode( $search ).'&filter='.$group.'">'.__('View All Results','indagare').'</a></p>'."\n";
 					if($group == 'article') {
 						ksort($searchresults[$group]);
 						$newarray = array_slice($searchresults[$group],-8,8,true);
@@ -4336,6 +4340,7 @@ function childtheme_override_search_loop() {
 
 } // end override search loop
 
+
 // page title
 function child_page_title($content) {
 global $post;
@@ -4382,13 +4387,14 @@ global $post;
 				$content .= '<p>'.get_the_author_meta( 'display_name', $post->post_author ).' | '.get_the_time( get_option('date_format') ).'</p>'."\n";
 			}
 		} else {
-			$content = '<h2>Members-Only Content</h2>'."\n";
+			$content = '<h2>'.__('Members-Only Content','indagare').'</h2>'."\n";
 		}
 	}
 
 	return $content;
 }
 add_filter('thematic_page_title','child_page_title');
+
 
 // remove thematic post title
 function childtheme_override_postheader() {
@@ -4759,23 +4765,33 @@ function child_singlepost($content) {
 		parse_str($_SERVER['QUERY_STRING'], $urlvars);
 		$urlvars = http_build_query($urlvars);
 
-		if ( is_singular( 'hotel' ) && $urlvars ) {
-			$content .= '<p class="nav"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/hotels/?'.$urlvars.'"><b class="icon petite custom-icon" data-icon="&#xf0d9;"></b> Back to Hotel Listings for '.$dest->name.', '.$reg->name.'</a></p>'."\n";
-		} else if ( is_singular( 'hotel' ) ) {
-			$content .= '<p class="nav"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/hotels/"><b class="icon petite custom-icon" data-icon="&#xf0d9;"></b> Back to Hotel Listings for '.$dest->name.', '.$reg->name.'</a></p>'."\n";
-		} else if ( is_singular( 'restaurant' ) && $urlvars ) {
-			$content .= '<p class="nav"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/restaurants/?'.$urlvars.'"><b class="icon petite custom-icon" data-icon="&#xf0d9;"></b> Back to Restaurant Listings for '.$dest->name.', '.$reg->name.'</a></p>'."\n";
-		} else if ( is_singular( 'restaurant' ) ) {
-			$content .= '<p class="nav"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/restaurants/"><b class="icon petite custom-icon" data-icon="&#xf0d9;"></b> Back to Restaurant Listings for '.$dest->name.', '.$reg->name.'</a></p>'."\n";
-		} else if ( is_singular( 'shop' ) && $urlvars ) {
-			$content .= '<p class="nav"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/shops/?'.$urlvars.'"><b class="icon petite custom-icon" data-icon="&#xf0d9;"></b> Back to Shop Listings for '.$dest->name.', '.$reg->name.'</a></p>'."\n";
-		} else if ( is_singular( 'shop' ) ) {
-			$content .= '<p class="nav"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/shops/"><b class="icon petite custom-icon" data-icon="&#xf0d9;"></b> Back to Shop Listings for '.$dest->name.', '.$reg->name.'</a></p>'."\n";
-		} else if ( is_singular( 'activity' ) && $urlvars ) {
-			$content .= '<p class="nav"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/activities/?'.$urlvars.'"><b class="icon petite custom-icon" data-icon="&#xf0d9;"></b> Back to Activity Listings for '.$dest->name.', '.$reg->name.'</a></p>'."\n";
-		} else if ( is_singular( 'activity' ) ) {
-			$content .= '<p class="nav"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/activities/"><b class="icon petite custom-icon" data-icon="&#xf0d9;"></b> Back to Activity Listings for '.$dest->name.', '.$reg->name.'</a></p>'."\n";
+		if ( ! empty( $urlvars ) ) {
+			$urlvars = "?" . $urlvars;
 		}
+		
+		$type_label = '';
+		$type_slug = '';
+		
+		if ( is_singular( 'hotel' ) ) {
+			$type_label = 'Hotel';
+			$type_slug = 'hotel';
+		} else if ( is_singular( 'restaurant' ) ) {
+			$type_label = 'Restaurant';
+			$type_slug = 'restaurants';
+		} else if ( is_singular( 'shop' ) ) {
+			$type_label = 'Shop';
+			$type_slug = 'shops';
+		} else if ( is_singular( 'activity' ) ) {
+			$type_label = 'Activity';
+			$type_slug = 'activities';
+		}
+		
+		$content .= '<p class="nav">';
+		$content .= '<a href="/' . implode('/', array( 'destinations', $top->slug, $reg->slug, $dest->slug, $type_slug, $urlvars ) ) . '">';
+		$content .= '<b class="icon petite custom-icon" data-icon="&#xf0d9;"></b> ';
+		$content .= sprintf(__('Back to %s Listings for %s, %s','indagare'),$type_label, $dest->name,$reg->name);
+		$content .= '</a>';
+		$content .= "</p>\n";
 
 		$content .= '<article class="detail">'."\n";
 		$content .= '<div class="vcard">'."\n";
@@ -4783,16 +4799,16 @@ function child_singlepost($content) {
 				$content .= '<h2 class="org">'.get_the_title().'</h2>'."\n";
 				$content .= '<p class="ind-meta">';
 				if (pa_in_taxonomy('benefit', 'special-offer')) {
-					$content .= '<b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> ';
+					$content .= '<b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>'.__('Offers','indagare').'</span></b> ';
 				}
 				if (pa_in_taxonomy('benefit', 'indagare-plus')) {
-					$content .= '<b class="icon petite custom-icon" data-icon="&#xe009;" id="ind-plus"><span>Plus</span></b> ';
+					$content .= '<b class="icon petite custom-icon" data-icon="&#xe009;" id="ind-plus"><span>'.__('Plus','indagare').'</span></b> ';
 				}
 				if (pa_in_taxonomy('hoteltype', 'indagare-picks')) {
-					$content .= '<b class="icon petite custom-icon" data-icon="&#xe00a;" id="ind-picks"><span>Plus</span></b> ';
+					$content .= '<b class="icon petite custom-icon" data-icon="&#xe00a;" id="ind-picks"><span>'.__('Picks','indagare').'</span></b> ';
 				}
 				if (pa_in_taxonomy('hoteltype', 'indagare-adored')) {
-					$content .= '<b class="icon petite custom-icon" data-icon="&#xe00b;" id="ind-adored"><span>Adored</span></b>';
+					$content .= '<b class="icon petite custom-icon" data-icon="&#xe00b;" id="ind-adored"><span>'.__('Adored','indagare').'</span></b>';
 				}
 				$content .= '</p>'."\n";
 			$content .= '</div>'."\n";
@@ -4818,25 +4834,25 @@ function child_singlepost($content) {
 
 			$content .= '</p>'."\n";
 		$content .= '</div>'."\n";
-		$content .= '<p class="view-more"><a class="map" href="#"><b class="icon petite custom-icon" data-icon="&#xe000;"></b>Show Map</a>';
+		$content .= '<p class="view-more"><a class="map" href="#"><b class="icon petite custom-icon" data-icon="&#xe000;"></b>'.__('Show Map','indagare').'</a>';
 
 				$content .= '<span id="selectors">'."\n";
-				$content .= '<span class="selectorstitle">What\'s Nearby:</span> '."\n";
+				$content .= '<span class="selectorstitle">'.__('What\'s Nearby:','indagare').'</span> '."\n";
 //					$content .= '<div id="toggle-layers" style="position: relative;">'."\n";
 						$content .= '<span id="Hotel" class="togglelayer">'."\n";
-							$content .= 'Hotels'."\n";
+							$content .= __('Hotels','indagare')."\n";
 							$content .= '<input id="HotelCheckbox" class="poicategory" style="display: none;" type="checkbox" value="Hotel" class="checkbox" />'."\n";
 						$content .= '</span>'."\n";
 						$content .= '<span id="Restaurant" class="togglelayer">'."\n";
-							$content .= 'Restaurants'."\n";
+							$content .= __('Restaurants','indagare')."\n";
 							$content .= '<input id="RestaurantCheckbox" class="poicategory" style="display: none;" type="checkbox" value="Restaurant" class="checkbox" />'."\n";
 						$content .= '</span>'."\n";
 						$content .= '<span id="Shop" class="togglelayer">'."\n";
-							$content .= 'Shops'."\n";
+							$content .= __('Shops','indagare')."\n";
 							$content .= '<input id="ShopCheckbox" class="poicategory" style="display: none;" type="checkbox" value="Shop" class="checkbox" />'."\n";
 						$content .= '</span>'."\n";
 						$content .= '<span id="Activity" class="togglelayer">'."\n";
-							$content .= 'Sights'."\n";
+							$content .= __('Sights','indagare')."\n";
 							$content .= '<input id="ActivityCheckbox" class="poicategory" style="display: none;" type="checkbox" value="Activity" class="checkbox" />'."\n";
 						$content .= '</span>'."\n";
 						//					$content .= '</div>'."\n";
@@ -4919,7 +4935,7 @@ function child_singlepost($content) {
 
 		if ($rows) {
 
-			$content .= '<div class="header divider"><h2>Also Recommended</h2></div>'."\n";
+			$content .= '<div class="header divider"><h2>'.__('Also Recommended','indagare').'</h2></div>'."\n";
 
 			$content .= '<section class="related-articles contain">'."\n";
 
@@ -4938,7 +4954,7 @@ function child_singlepost($content) {
 								$imgsrc = $imageobj[0];
 							}
 
-							$content .= '<img src="'.$imgsrc.'" alt="Related" />'."\n";
+							$content .= '<img src="'.$imgsrc.'" alt="'.__('Related','indagare').'" />'."\n";
 
 							$content .= '<h3>'.get_the_title($hotel).'</h3>'."\n";
 						$content .= '</a>'."\n";
@@ -4987,23 +5003,23 @@ function child_singlepost($content) {
 				$content .= '<a href="'.get_permalink().'">'."\n";
 			}
 				if ( $imgsrc ) {
-					$content .= '<div class="photo"><img src="'.$imgsrc.'" alt="Related" /></div>'."\n";
+					$content .= '<div class="photo"><img src="'.$imgsrc.'" alt="'.__('Related','indagare').'" /></div>'."\n";
 				}
 				$content .= '<div class="matter">'."\n";
 					$content .= '<div class="heading">'."\n";
 						$content .= '<h2>'.get_the_title().'</h2>'."\n";
 						$content .= '<p class="ind-meta">';
 						if (pa_in_taxonomy('benefit', 'special-offer')) {
-							$content .= '<b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> ';
+							$content .= '<b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>'.__('Offers','indagare').'</span></b> ';
 						}
 						if (pa_in_taxonomy('benefit', 'indagare-plus')) {
-							$content .= '<b class="icon petite custom-icon" data-icon="&#xe009;" id="ind-plus"><span>Plus</span></b> ';
+							$content .= '<b class="icon petite custom-icon" data-icon="&#xe009;" id="ind-plus"><span>'.__('Plus','indagare').'</span></b> ';
 						}
 						if (pa_in_taxonomy('hoteltype', 'indagare-picks')) {
-							$content .= '<b class="icon petite custom-icon" data-icon="&#xe00a;" id="ind-picks"><span>Picks</span></b> ';
+							$content .= '<b class="icon petite custom-icon" data-icon="&#xe00a;" id="ind-picks"><span>'.__('Picks','indagare').'</span></b> ';
 						}
 						if (pa_in_taxonomy('hoteltype', 'indagare-adored')) {
-							$content .= '<b class="icon petite custom-icon" data-icon="&#xe00b;" id="ind-adored"><span>Adored</span></b>';
+							$content .= '<b class="icon petite custom-icon" data-icon="&#xe00b;" id="ind-adored"><span>'.__('Adored','indagare').'</span></b>';
 						}
 						$content .= '</p>'."\n";
 					$content .= '</div>'."\n";
@@ -5018,13 +5034,13 @@ function child_singlepost($content) {
 					$text = str_replace(']]>', ']]>', $text);
 					$excerpt_length = 20; // 20 words
 //					$excerpt_more = apply_filters('excerpt_more', ' ' . '[...]');
-					$excerpt_more = apply_filters('excerpt_more', '...');
+					$excerpt_more = apply_filters('excerpt_more', __('...','indagare'));
 					$text = wp_trim_words( $text, $excerpt_length, $excerpt_more );
 
 					if ( get_query_var('post_type') == 'hotel' ) {
-						$content .= '<p class="description">'.$text.' <span class="read-more">Review and Rates</span></p>'."\n";
+						$content .= '<p class="description">'.$text.' <span class="read-more">'.__('Review and Rates','indagare').'</span></p>'."\n";
 					} else {
-						$content .= '<p class="description">'.$text.' <span class="read-more">Read more</span></p>'."\n";
+						$content .= '<p class="description">'.$text.' <span class="read-more">'.__('Read more','indagare').'</span></p>'."\n";
 					}
 
 				$content .= '</div>'."\n";
@@ -5038,14 +5054,16 @@ function child_singlepost($content) {
 		$content = '';
 
 		$content .= '<div class="header">'."\n";
-			$content .= '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Offers</span></b> <h1>Seasonal Partners<span class="return"><a href="/destinations/offers/"><b class="icon petite" data-icon="&#xf0d9;"></b> Back to Partner Promotions</a></span></h1>'."\n";
+			$content .= '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>'.__('Offers','indagare').'</span></b>';
+			$content .= '<h1>'.__('Seasonal Partners','indagare').'<span class="return"><a href="/destinations/offers/"><b class="icon petite" data-icon="&#xf0d9;"></b> ';
+			$content .= __('Back to Partner Promotions','indagare').'</a></span></h1>'."\n";
 		$content .= '</div>'."\n";
 		$content .= '<article class="detail">'."\n";
 			$content .= '<div class="vcard">'."\n";
 				$content .= '<div class="heading">'."\n";
 					$content .= '<h2 class="org">'.get_the_title().'</h2>'."\n";
 					$content .= '<p class="ind-meta">'."\n";
-						$content .= '<b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Seasonal Partner</span></b>'."\n";
+						$content .= '<b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>'.__('Seasonal Partner','indagare').'</span></b>'."\n";
 					$content .= '</p>'."\n";
 				$content .= '</div>'."\n";
 				$content .= '<p class="tagline">'.get_field('subtitle').'</p>'."\n";
@@ -5122,9 +5140,9 @@ function child_singlepost($content) {
 
 		$content .= '<a href="'.get_permalink().'">'."\n";
 			if ( $imgsrc ) {
-				$content .= '<img src="'.$imgsrc.'" alt="Seasonal Partner" />'."\n";
+				$content .= '<img src="'.$imgsrc.'" alt="'.__('Seasonal Partner','indagare').'" />'."\n";
 			}
-			$content .= '<h3>'.get_the_title().'</h3><b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>Seasonal Partner</span></b>'."\n";
+			$content .= '<h3>'.get_the_title().'</h3><b class="icon petite custom-icon" data-icon="&#xe600;" id="ind-offers"><span>'.__('Seasonal Partner','indagare').'</span></b>'."\n";
 		$content .= '</a>'."\n";
 			$content .= '<span class="location">'.get_field('subtitle').'</span>'."\n";
 
@@ -5139,7 +5157,7 @@ function child_singlepost($content) {
 
 			$content .= '<p class="description">'.$text.'</p>'."\n";
 			$content .= '<p class="description">'."\n";
-				$content .= '<a class="book" href="'.get_permalink().'">Details</a>'."\n";
+				$content .= '<a class="book" href="'.get_permalink().'">'.__('Details','indagare').'</a>'."\n";
 			$content .= '</p>'."\n";
 
 	// end archives seasonal offer ELENA
@@ -5180,11 +5198,11 @@ function child_singlepost($content) {
 
 		$content .= '<a href="'.$offerurl.'">'."\n";
 			if ( $imgsrc ) {
-				$content .= '<img src="'.$imgsrc.'" alt="Destination Partner" />'."\n";
+				$content .= '<img src="'.$imgsrc.'" alt="'.__('Destination Partner','indagare').'" />'."\n";
 			}
 			$content .= '<h3>'.get_the_title().'</h3>'."\n";
 			$content .= '</a>'."\n";
-			$content .= '<span class="location"><em>Partner</em>: '.get_field('subtitle').'</span>'."\n";
+			$content .= '<span class="location"><em>'.__('Partner','indagare').'</em>: '.get_field('subtitle').'</span>'."\n";
 
 			$text = wpautop( get_the_content() );
 			$text = substr( $text, 0, strpos( $text, '</p>' ) + 4 );
@@ -5198,7 +5216,7 @@ function child_singlepost($content) {
 			$content .= '<p class="description">'.$text.'</p>'."\n";
 		
 			$content .=  '<p class="description">'."\n";
-			$content .= '<a class="book" href="'.$offerurl.'">Take Me There</a>'."\n";
+			$content .= '<a class="book" href="'.$offerurl.'">'.__('Take Me There','indagare').'</a>'."\n";
 			$content .=  '</p>'."\n";
 			
 	// end archives destination offer ELENA
@@ -5211,7 +5229,7 @@ function child_singlepost($content) {
 		$content = '';
 
 		$content .= '<div class="header">'."\n";
-			$content .= '<h1>Insider Trips<span class="return"><a href="/destinations/insidertrips/"><b class="icon petite" data-icon="&#xf0d9;"></b> Back to Insider Trips</a></span></h1>'."\n";
+			$content .= '<h1>'.__('Insider Trips','indagare').'<span class="return"><a href="/destinations/insidertrips/"><b class="icon petite" data-icon="&#xf0d9;"></b> '.__('Back to Insider Trips','indagare').'</a></span></h1>'."\n";
 		$content .= '</div>'."\n";
 		$content .= '<article class="detail">'."\n";
 			$content .= '<div class="vcard">'."\n";
@@ -5219,7 +5237,7 @@ function child_singlepost($content) {
 					$content .= '<h2 class="org">'.get_the_title().'</h2>'."\n";
 				$content .= '</div>'."\n";
 				$content .= '<p class="tagline">'.get_field('subtitle').'</p>'."\n";
-				$content .= '<a class="lightbox-inline book" href="#lightbox-contact-insidertrip" class="book">Inquire Now</a>'."\n";
+				$content .= '<a class="lightbox-inline book" href="#lightbox-contact-insidertrip" class="book">'.__('Inquire Now','indagare').'</a>'."\n";
 			$content .= '</div>  '."\n";
 
 //			$rows = get_field('gallery-header');
@@ -5289,7 +5307,7 @@ function child_singlepost($content) {
 
 			if ( $imgsrc ) {
 				$content .= '<a href="'.get_permalink().'">'."\n";
-				$content .= '<img src="'.$imgsrc.'" alt="Destination" />'."\n";
+				$content .= '<img src="'.$imgsrc.'" alt="'.__('Destination','indagare').'" />'."\n";
 				$content .= '</a>'."\n";
 			}
 			$content .= '<span class="info">'."\n";
@@ -5302,11 +5320,11 @@ function child_singlepost($content) {
 				$text = strip_tags($text, '<a><strong><em><b><i>');
 				$text = str_replace(']]>', ']]>', $text);
 				$excerpt_length = 20; // 20 words
-				$excerpt_more = apply_filters('excerpt_more', '...');
+				$excerpt_more = apply_filters('excerpt_more', __('...','indagare'));
 				$text = wp_trim_words( $text, $excerpt_length, $excerpt_more );
 
 				$content .= '<p>'.$text.'</p>'."\n";
-				$content .= '<a href="'.get_permalink().'">Read More</a>'."\n";
+				$content .= '<a href="'.get_permalink().'">'.__('Read More','indagare').'</a>'."\n";
 			$content .= '</span><!-- .info -->'."\n";
 
 	// end archives insidertrip
@@ -5398,7 +5416,7 @@ function child_singlepost($content) {
 		$content = '';
 
 		$content .='<a href="'.get_permalink().'">'."\n";
-			$content .='<img src="'.$imgsrc.'" alt="Article" />'."\n";
+			$content .='<img src="'.$imgsrc.'" alt="'.__('Article','indagare').'" />'."\n";
 			$content .='<span class="info">'."\n";
 				$content .='<h4>'.$column[0]->name.'</h4>'."\n";
 				$content .='<h3>'.get_the_title().'</h3>'."\n";
@@ -5423,7 +5441,7 @@ function child_singlepost($content) {
 		$content .= '<h4>'.$subtitle.'</h4>'."\n";
 		$content .= $basecontent;
 
-		$content .= '<p><a class="button secondary" target="_blank" href="'.$pdfobj['url'].'">View PDF</a></p>'."\n";
+		$content .= '<p><a class="button secondary" target="_blank" href="'.$pdfobj['url'].'">'.__('View PDF','indagare').'</a></p>'."\n";
 
 		$content .= '</article>'."\n";
 
@@ -5452,9 +5470,9 @@ function child_singlepost($content) {
 		}
 
 		if ( $imgsrc ) {
-			$content .='<img src="'.$imgsrc.'" alt="Magazine" />'."\n";
+			$content .='<img src="'.$imgsrc.'" alt="'.__('Magazine','indagare').'" />'."\n";
 		} else {
-			$content .= '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-large.png" alt="Article" />'."\n";
+			$content .= '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-large.png" alt="'.__('Article','indagare').'" />'."\n";
 		}
 
 		if ( $allowed ) {
@@ -5462,30 +5480,30 @@ function child_singlepost($content) {
 
 			$content .= '<a href="'.get_permalink().'">'."\n";
 			$content .= '<div class="rollover">'."\n";
-			$content .= '<h4 class="more">View this issue</h4>'."\n";
+			$content .= '<h4 class="more">'.__('View this issue','indagare').'</h4>'."\n";
 			$content .= '</div><!-- .rollover -->'."\n";
 			$content .= '</a>'."\n";
 		} else if ( ! is_user_logged_in() ) {
 			$content .= '<a href="/join/">'."\n";
 			$content .= '<div class="rollover">'."\n";
-			$content .= '<h4 class="more">Join today to see this issue</h4>'."\n";
+			$content .= '<h4 class="more">'.__('Join today to see this issue','indagare').'</h4>'."\n";
 			$content .= '</div><!-- .rollover -->'."\n";
 			$content .= '</a>'."\n";
 		} else {
 			$content .= '<a href="/account/">'."\n";
 			$content .= '<div class="rollover">'."\n";
-			$content .= '<h4 class="more">Upgrade today to see this issue</h4>'."\n";
+			$content .= '<h4 class="more">'.__('Upgrade today to see this issue','indagare').'</h4>'."\n";
 			$content .= '</div><!-- .rollover -->'."\n";
 			$content .= '</a>'."\n";
 		}
 
 		$content .='<span class="info">'."\n";
 		if ( $allowed ) {
-			$content .= '<p class="links"><a class="button secondary" target="_blank" href="'.$pdfobj['url'].'">View PDF</a></p>'."\n";
+			$content .= '<p class="links"><a class="button secondary" target="_blank" href="'.$pdfobj['url'].'">'.__('View PDF','indagare').'</a></p>'."\n";
 		}
 
 		if ( $current ) {
-			$content .='<h4>Current Issue: '.$subtitle.'</h4>'."\n";
+			$content .='<h4>'.__('Current Issue:','indagare').' '.$subtitle.'</h4>'."\n";
 		} else {
 			$content .='<h4>'.$subtitle.'</h4>'."\n";
 		}
@@ -5640,7 +5658,7 @@ function child_singlepost($content) {
 			$content = '';
 
 			$content .= '<p><strong>'.get_the_title().'</strong></p>'."\n";
-			$content .= '<p>'.$contentexcerpt.'<a class="more" href="#">Read More</a> | <a class="apply lightbox-inline" href="#lightbox-contact-apply-'.$post->ID.'">Apply</a></p>'."\n";
+			$content .= '<p>'.$contentexcerpt.'<a class="more" href="#">'.__('Read More','indagare').'</a> | <a class="apply lightbox-inline" href="#lightbox-contact-apply-'.$post->ID.'">'.__('Apply','indagare').'</a></p>'."\n";
 
 			$content .= '<div class="more">'."\n";
 			$content .= $basecontent;
@@ -5649,7 +5667,7 @@ function child_singlepost($content) {
 
 			$content .= '<div id="lightbox-contact-apply-'.$post->ID.'" class="lightbox white-popup contact mfp-hide">'."\n";
 				$content .= '<header>'."\n";
-					$content .= '<h2>Apply Now</h2>'."\n";
+					$content .= '<h2>'.__('Apply Now','indagare').'</h2>'."\n";
 					$content .= '<h3>'.get_the_title().'</h3>'."\n";
 				$content .= '</header>'."\n";
 
@@ -5717,7 +5735,7 @@ function child_singlepost($content) {
 					$imgsrc = get_bloginfo('stylesheet_directory').'/images/blank-thumb-medium-logo.png';
 				}
 
-				$content .= '<img src="'.$imgsrc.'" alt="Related" />'."\n";
+				$content .= '<img src="'.$imgsrc.'" alt="'.__('Related','indagare').'" />'."\n";
 
 				$content .= '<h3>'.get_the_title($post->ID).'</h3>'."\n";
 
@@ -5733,7 +5751,7 @@ function child_singlepost($content) {
 				$text = str_replace(']]>', ']]>', $text);
 				$text = str_replace('At a Glance', '', $text);
 				$excerpt_length = 10; // 15 words
-				$excerpt_more = apply_filters('excerpt_more', '...');
+				$excerpt_more = apply_filters('excerpt_more', __('...','indagare'));
 				$text = wp_trim_words( $text, $excerpt_length, $excerpt_more );
 
 				$content .= '<p class="description">'.$text.'</p>'."\n";
@@ -5785,19 +5803,19 @@ function child_singlepost($content) {
 			$content .= '<div id="booking-widget" class="simple">'."\n";
 				$content .= '<ul class="book-type contain">'."\n";
 					$content .= '<li>Book Hotels</li>'."\n";
-					$content .= '<li><a href="#" id="bookflights">Book Flights</a></li>'."\n";
+					$content .= '<li><a href="#" id="bookflights">'.__('Book Flights','indagare').'</a></li>'."\n";
 				$content .= '</ul>'."\n";
 				$content .= '<form id="book-hotels">'."\n";
 					$content .= '<div class="form-combo">'."\n";
-						$content .= '<span class="form-item"><input type="text" id="book-destination" class="element acInput" placeholder="Destination or Hotel" /><b class="icon" data-icon="&#61442;"></b></span>'."\n";
+						$content .= '<span class="form-item"><input type="text" id="book-destination" class="element acInput" placeholder="'.__('Destination or Hotel','indagare').'" /><b class="icon" data-icon="&#61442;"></b></span>'."\n";
 						$content .= '<div class="autocomplete"></div>'."\n";
 					$content .= '</div>'."\n";
 					$content .= '<div class="form-combo form-combo-date">'."\n";
-						$content .= '<span class="form-item"><input type="text" id="dep_date" class="element dateinput" placeholder="Check In (optional)" /><b class="icon" data-icon="&#61555;"></b></span>'."\n";
-						$content .= '<span class="form-item"><input type="text" id="ret_date" class="element dateinput" placeholder="Check Out (optional)" /><b class="icon" data-icon="&#61555;"></b></span>'."\n";
+						$content .= '<span class="form-item"><input type="text" id="dep_date" class="element dateinput" placeholder="'.__('Check In (optional)','indagare').'" /><b class="icon" data-icon="&#61555;"></b></span>'."\n";
+						$content .= '<span class="form-item"><input type="text" id="ret_date" class="element dateinput" placeholder="'.__('Check Out (optional)','indagare').'" /><b class="icon" data-icon="&#61555;"></b></span>'."\n";
 					$content .= '</div>'."\n";
 					$content .= '<div class="buttons">'."\n";
-						$content .= '<button type="submit" class="primary button">Find Rooms</button>'."\n";
+						$content .= '<button type="submit" class="primary button">'.__('Find Rooms','indagare').'</button>'."\n";
 					$content .= '</div>'."\n";
 					$content .= '<div id="last_selected"></div>'."\n";
 					$content .= '<input class="autocompletedestination" type="hidden" />'."\n";
@@ -5906,7 +5924,7 @@ function child_singlepost($content) {
 						} else {
 							$content .= '<span>'."\n";
 						}
-							$content .= '<img src="'.$imgsrc.'" alt="Interest" />'."\n";
+							$content .= '<img src="'.$imgsrc.'" alt="'.__('Interest','indagare').'" />'."\n";
 							$content .= '<h3>'.$row['book-interest-title'].'</h3>'."\n";
 						if ( $url ) {
 							$content .= '</a>'."\n";
@@ -5957,7 +5975,7 @@ function child_singlepost($content) {
 				$details = $row['membership-details'];
 
 				$content .= '<div class="filters filtersflip show-this">'."\n";
-					$content .= '<p class="open-close"><span class="title membertitle">'.$name.'</span><span class="rate">From $'.$rate.'</span><a class="button primary" href="/signup/?mb='.$link.'">Join</a></p>'."\n";
+					$content .= '<p class="open-close"><span class="title membertitle">'.$name.'</span><span class="rate">'.__('From','indagare').' $'.$rate.'</span><a class="button primary" href="/signup/?mb='.$link.'">'.__('Join','indagare').'</a></p>'."\n";
 					$content .= '<div class="collapse">'."\n";
 						$content .= '<div class="collapsegroup">'."\n";
 						$content .= $details;
@@ -6088,8 +6106,8 @@ function child_singlepost($content) {
 		}
 
 		$content .= '<div class="join-contact">'."\n";
-		$content .= '<div class="left"><h4>Question about Indagare? </h4></div>';
-		$content .= '<div class="right"><span>Contact Us:</span> <a href="tel:+12129882611">212-988-2611</a>&nbsp;|&nbsp;<a href="mailto:membership@indagare.com">membership@indagare.com</a></div>';
+		$content .= '<div class="left"><h4>'.__('Question about Indagare?','indagare').' </h4></div>';
+		$content .= '<div class="right"><span>'.__('Contact Us','indagare').':</span> '.__('<a href="tel:+12129882611">212-988-2611</a>','indagare').'&nbsp;|&nbsp;'.__('<a href="mailto:membership@indagare.com">membership@indagare.com</a>','indagare').'</div>';
 		$content .= '</div>'."\n";
 
 	// end new sign up step one page
@@ -6125,7 +6143,8 @@ function child_singlepost($content) {
 				$a = $row['faq-answer'];
 
 				$content .= '<div class="filters filtersflip filtersfullwidth">'."\n";
-					$content .= '<p class="open-close"><a href="#"><b class="icon open-this" data-icon="&#xf0da;"><span>Open</span></b><b class="icon close-this" data-icon="&#xf0d7;"><span>Close</span></b> <span class="title">'.$q.'</span></a></p>'."\n";
+					$content .= '<p class="open-close"><a href="#"><b class="icon open-this" data-icon="&#xf0da;"><span>'.__('Open','indagare').'</span></b>';
+					$content .= '<b class="icon close-this" data-icon="&#xf0d7;"><span>'.__('Close','indagare').'</span></b> <span class="title">'.$q.'</span></a></p>'."\n";
 					$content .= '<div class="collapse">'."\n";
 						$content .= '<div class="collapsegroup">'."\n";
 						$content .= $a;
@@ -6160,7 +6179,7 @@ function child_singlepost($content) {
 			}
 		}
 
-		$content .= '<div class="join-cta"><a href="/join/">Join</a></div>'."\n";
+		$content .= '<div class="join-cta"><a href="/join/">'.__('Join','indagare').'</a></div>'."\n";
 
 		$i = 1;
 
@@ -6180,8 +6199,8 @@ function child_singlepost($content) {
 		}
 
 		$content .= '<div class="join-contact">'."\n";
-		$content .= '<div class="left"><h4>Question about Indagare? </h4></div>';
-		$content .= '<div class="right"><span>Contact Us:</span> <a href="tel:+12129882611">212-988-2611</a>&nbsp;|&nbsp;<a href="mailto:membership@indagare.com">membership@indagare.com</a></div>';
+		$content .= '<div class="left"><h4>'.__('Question about Indagare?','indagare').' </h4></div>';
+		$content .= '<div class="right"><span>'.__('Contact Us','indagare').':</span> '.__('<a href="tel:+12129882611">212-988-2611</a>','indagare').'&nbsp;|&nbsp;'.__('<a href="mailto:membership@indagare.com">membership@indagare.com</a>','indagare').'</div>';
 		$content .= '</div>'."\n";
 
 	// end new how to book page
@@ -6231,7 +6250,7 @@ function child_singlepost($content) {
 				$content .= $stepcontent;
 				$content .= '</div>'."\n";
 
-				$content .= '<div class="join-cta"><a href="/join/">Join</a></div>'."\n";
+				$content .= '<div class="join-cta"><a href="/join/">'.__('Join','indagare').'</a></div>'."\n";
 
 				$i++;
 
@@ -6240,8 +6259,8 @@ function child_singlepost($content) {
 		}
 
 		$content .= '<div class="join-contact">'."\n";
-		$content .= '<div class="left"><h4>Question about Indagare? </h4></div>';
-		$content .= '<div class="right"><span>Contact Us:</span> <a href="tel:+12129882611">212-988-2611</a>&nbsp;|&nbsp;<a href="mailto:membership@indagare.com">membership@indagare.com</a></div>';
+		$content .= '<div class="left"><h4>'.__('Question about Indagare?','indagare').' </h4></div>';
+		$content .= '<div class="right"><span>'.__('Contact Us','indagare').':</span> '.__('<a href="tel:+12129882611">212-988-2611</a>','indagare').'&nbsp;|&nbsp;'.__('<a href="mailto:membership@indagare.com">membership@indagare.com</a>','indagare').'</div>';
 		$content .= '</div>'."\n";
 
 	// end how we work page
@@ -6251,7 +6270,7 @@ function child_singlepost($content) {
 
 		$content = '';
 
-		$content .= '<div class="header"><h2>Benefits</h2></div>'."\n";
+		$content .= '<div class="header"><h2>'.__('Benefits','indagare').'</h2></div>'."\n";
 
 		$rows = get_field('benefit');
 
@@ -6308,9 +6327,9 @@ function child_singlepost($content) {
 			$content .= '</div>'."\n";
 		}
 
-		$content .= '<div class="join-cta"><a href="/join/">Join</a></div>'."\n";
+		$content .= '<div class="join-cta"><a href="/join/">'.__('Join','indagare').'</a></div>'."\n";
 
-		$content .= '<div class="header"><h2>What We Do Best</h2></div>'."\n";
+		$content .= '<div class="header"><h2>'.__('What We Do Best','indagare').'</h2></div>'."\n";
 
 		$rows = get_field('benefit');
 
@@ -6383,7 +6402,7 @@ function child_singlepost($content) {
 
 		$content .= '<div class="join-cta"><a href="/join/">Join</a></div>'."\n";
 
-		$content .= '<div class="header"><h2>The Indagare Advantage</h2></div>'."\n";
+		$content .= '<div class="header"><h2>'.__('The Indagare Advantage','indagare').'</h2></div>'."\n";
 
 		$rows = get_field('advantage');
 
@@ -6408,8 +6427,8 @@ function child_singlepost($content) {
 		}
 
 		$content .= '<div class="join-contact">'."\n";
-		$content .= '<div class="left"><h4>Question about Indagare? </h4></div>';
-		$content .= '<div class="right"><span>Contact Us:</span> <a href="tel:+12129882611">212-988-2611</a>&nbsp;|&nbsp;<a href="mailto:membership@indagare.com">membership@indagare.com</a></div>';
+		$content .= '<div class="left"><h4>'.__('Question about Indagare?','indagare').' </h4></div>';
+		$content .= '<div class="right"><span>'.__('Contact Us','indagare').':</span> '.__('<a href="tel:+12129882611">212-988-2611</a>','indagare').'&nbsp;|&nbsp;'.__('<a href="mailto:membership@indagare.com">membership@indagare.com</a>','indagare').'</div>';
 		$content .= '</div>'."\n";
 
 	// end new why join page
@@ -6419,7 +6438,7 @@ function child_singlepost($content) {
 
 		$content = '';
 
-		$content .= '<div class="header"><h2>Getting Started</h2></div>'."\n";
+		$content .= '<div class="header"><h2>'.__('Getting Started','indagare').'</h2></div>'."\n";
 
 		$rows = get_field('getting-started');
 
@@ -6442,7 +6461,7 @@ function child_singlepost($content) {
 						}
 						$content .= '<h3>'.$starttitle.'</h3>'."\n";
 						$content .= $startcontent;
-						$content .= '<span class="read-more">Read More</span>';
+						$content .= '<span class="read-more">'.__('Read More','indagare').'</span>';
 						$content .= '</a>'."\n";
 					$content .= '</article>'."\n";
 
@@ -6481,7 +6500,7 @@ function child_singlepost($content) {
 						$overview = strip_shortcodes( $overview );
 						$overview = str_replace(']]>', ']]>', $overview);
 						$excerpt_length = 15; // 15 words
-						$excerpt_more = apply_filters('excerpt_more', '...');
+						$excerpt_more = apply_filters('excerpt_more', __('...','indagare'));
 						$overview = wp_trim_words( $overview, $excerpt_length, $excerpt_more );
 
 
@@ -6517,7 +6536,7 @@ function child_singlepost($content) {
 			$imgsrc = $imageobj[0];
 
 			if ( $imgsrc ) {
-				$content .= '<img class="intrologo" src="'.$imgsrc.'" alt="Indagare" />'."\n";
+				$content .= '<img class="intrologo" src="'.$imgsrc.'" alt="'.__('Indagare','indagare').'" />'."\n";
 			}
 
 			$content .= $basecontent;
@@ -6616,7 +6635,7 @@ function child_singlepost($content) {
 
 		$content .= '</div>'."\n";
 
-		$content .= '<div class="header divider"><h2>Enter the new Indagare now &#8211; pick an article to experience the Indagare redesign:</p></div>'."\n";
+		$content .= '<div class="header divider"><h2>'.__('Enter the new Indagare now &#8211; pick an article to experience the Indagare redesign:','indagare').'</p></div>'."\n";
 
 		$rows = get_field('new-articles');
 
@@ -6707,7 +6726,7 @@ function child_singlepost($content) {
 							$text = str_replace(']]>', ']]>', $text);
 							$text = str_replace('At a Glance', '', $text);
 							$excerpt_length = 15; // 15 words
-							$excerpt_more = apply_filters('excerpt_more', '...');
+							$excerpt_more = apply_filters('excerpt_more', __('...','indagare'));
 							$text = wp_trim_words( $text, $excerpt_length, $excerpt_more );
 
 							$content .= '<p class="description">'.$text.'</p>'."\n";
@@ -6732,13 +6751,13 @@ function child_singlepost($content) {
 		$content .= '<div class="wpcf7">'."\n";
 			$content .= '<form id="form-reset" class="login" method="post" novalidate="">'."\n";
 				$content .= '<div id="field1-container" class="field">'."\n";
-					$content .= '<label for="field1">Email</label>'."\n";
-					$content .= '<input type="text" name="email" id="email" required="required" placeholder="Your email">'."\n";
+					$content .= '<label for="field1">'.__('Email','indagare').'</label>'."\n";
+					$content .= '<input type="text" name="email" id="email" required="required" placeholder="'.__('Your email','indagare').'">'."\n";
 				$content .= '</div>'."\n";
 
 				$content .= '<div id="form-submit" class="field clearfix submit">'."\n";
 					$content .= '<label for=""></label>'."\n";
-				  $content .= ' <input type="submit" value="Submit Request" class="button primary">'."\n";
+				  $content .= ' <input type="submit" value="'.__('Submit Request','indagare').'" class="button primary">'."\n";
 				$content .= '</div>'."\n";
 
 				$content .= '<div class="field message">'."\n";
@@ -6756,12 +6775,12 @@ function child_singlepost($content) {
 		$content .= '<div class="styledform">'."\n";
 			$content .= '<form id="form-external-login" class="login" method="post" novalidate="" action="/wp-content/themes/indagare/app/lib/external_login.php?submit=yes">'."\n";
 				$content .= '<div id="field1-container" class="field">'."\n";
-					$content .= '<label for="field1">Username</label>'."\n";
-					$content .= '<input type="text" name="externaluser" id="externaluser" required="required" placeholder="Username">'."\n";
+					$content .= '<label for="field1">'.__('Username','indagare').'</label>'."\n";
+					$content .= '<input type="text" name="externaluser" id="externaluser" required="required" placeholder="'.__('Username','indagare').'">'."\n";
 				$content .= '</div>'."\n";
 				$content .= '<div id="field1-container" class="field">'."\n";
-					$content .= '<label for="field1">Password</label>'."\n";
-					$content .= '<input type="text" name="externalpassword" id="externalpassword" required="required" placeholder="Password">'."\n";
+					$content .= '<label for="field1">'.__('Password','indagare').'</label>'."\n";
+					$content .= '<input type="text" name="externalpassword" id="externalpassword" required="required" placeholder="'.__('Password','indagare').'">'."\n";
 				$content .= '</div>'."\n";
 				$getparams=array("pc","gdsType","cin","cout");
 				foreach ($getparams as $keyget => $valueget)
@@ -6892,18 +6911,18 @@ function child_singlepost($content) {
 							if ( $image ) {
 								$content .= '<img src="'.$image.'" alt="team member" />'."\n";
 							} else {
-								$content .= '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-team.png" alt="team member" />'."\n";
+								$content .= '<img src="'.get_bloginfo('stylesheet_directory').'/images/blank-thumb-team.png" alt="'.__('team member','indagare').'" />'."\n";
 							}
 						$content .= '</a>'."\n";
 						if ( $rows ) {
 							$content .= '<div class="rollover">'."\n";
-								$content .= '<h4>'.$user->first_name.' Recently Visited</h4>'."\n";
+								$content .= '<h4>'.$user->first_name.' '.__('Recently Visited','indagare').'</h4>'."\n";
 								$content .= '<ul>'."\n";
 									foreach ( $rows as $row ) {
 										$content .= '<li>'.$row['author-recently-visited-title'].'</li>'."\n";
 									}
 								$content .= '</ul>'."\n";
-								$content .= '<a href="'.get_author_posts_url( $user->ID ).'" class="more">Read More</a>'."\n";
+								$content .= '<a href="'.get_author_posts_url( $user->ID ).'" class="more">'.__('Read More','indagare').'</a>'."\n";
 							$content .= '</div><!-- .rollover -->'."\n";
 						}
 					$content .= '</div><!-- .thumbnail -->'."\n";
@@ -6928,6 +6947,7 @@ function child_singlepost($content) {
 }
 add_filter('the_content','child_singlepost');
 
+
 // 404 page content
 function childtheme_override_404_content() {
 	global $post;
@@ -6947,7 +6967,7 @@ function childtheme_override_404_content() {
 
 	while ($notfound->have_posts()) : $notfound->the_post();
 
-		echo '<div class="header"><h2>Getting Started</h2></div>'."\n";
+		echo '<div class="header"><h2>'.__('Getting Started','indagare').'</h2></div>'."\n";
 
 		$rows = get_field('getting-started');
 
@@ -6970,7 +6990,7 @@ function childtheme_override_404_content() {
 						}
 						echo '<h3>'.$starttitle.'</h3>'."\n";
 						echo $startcontent;
-						echo '<span class="read-more">Read More</span>';
+						echo '<span class="read-more">'.__('Read More','indagare').'</span>';
 						echo '</a>'."\n";
 					echo '</article>'."\n";
 
@@ -7079,28 +7099,28 @@ function child_belowcontainer() {
 				// booking widget
 				echo '<div id="booking-widget" class="double">'."\n";
 					echo '<ul class="book-type contain">'."\n";
-						echo '<li>Book Hotels</li>'."\n";
-						echo '<li><a href="#" id="bookflights">Book Flights</a></li>'."\n";
+						echo '<li>'.__('Book Hotels','indagare').'</li>'."\n";
+						echo '<li><a href="#" id="bookflights">'.__('Book Flights','indagare').'</a></li>'."\n";
 					echo '</ul>'."\n";
 					echo '<form id="book-hotels">'."\n";
 						echo '<div class="form-combo">'."\n";
-							echo '<span class="form-item"><input type="text" id="book-destination" class="element acInput" placeholder="Destination or Hotel" /><b class="icon" data-icon="&#61442;"></b></span>'."\n";
+							echo '<span class="form-item"><input type="text" id="book-destination" class="element acInput" placeholder="'.__('Destination or Hotel','indagare').'" /><b class="icon" data-icon="&#61442;"></b></span>'."\n";
 							echo '<div class="autocomplete"></div>'."\n";
 						echo '</div>'."\n";
 						echo '<div class="form-combo">'."\n";
-							echo '<span class="form-item"><input type="text" id="dep_date" class="element dateinput" placeholder="Check In (optional)" /><b class="icon" data-icon="&#61555;"></b></span>'."\n";
+							echo '<span class="form-item"><input type="text" id="dep_date" class="element dateinput" placeholder="'.__('Check In (optional)','indagare').'" /><b class="icon" data-icon="&#61555;"></b></span>'."\n";
 							echo '<!-- <div id="ui-datepicker-div"></div> -->'."\n";
-							echo '<span class="form-item"><input type="text" id="ret_date" class="element dateinput" placeholder="Check Out (optional)" /><b class="icon" data-icon="&#61555;"></b></span>'."\n";
+							echo '<span class="form-item"><input type="text" id="ret_date" class="element dateinput" placeholder="'.__('Check Out (optional)','indagare').'" /><b class="icon" data-icon="&#61555;"></b></span>'."\n";
 							echo '<!-- <div id="book-ckeck-out-cal"></div> -->'."\n";
 						echo '</div>'."\n";
 						echo '<div class="buttons">'."\n";
-							echo '<button type="submit" class="primary button">Find Rooms</button>'."\n";
+							echo '<button type="submit" class="primary button">'.__('Find Rooms','indagare').'</button>'."\n";
 						echo '</div>'."\n";
 						echo '<div id="last_selected"></div>'."\n";
 						echo '<input class="autocompletedestination" type="hidden" />'."\n";
 					echo '</form>'."\n";
 					if ( $depth !== 1 ) {
-						echo '<p class="view-all"><a href="/destinations/'.$top->slug.'/'.$reg->slug.'/hotels/">Or view all hotels in '.$reg->name.'</a></p>'."\n";
+						echo '<p class="view-all"><a href="/destinations/'.$top->slug.'/'.$reg->slug.'/hotels/">'.sprintf(__('Or view all hotels in %s','indagare'),$reg->name).'</a></p>'."\n";
 					}
 				echo '</div>'."\n";
 				// end booking widget
@@ -7355,8 +7375,8 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 			// sidebar newsletter signup
 
 			echo '<div id="form-buzz" class="newsletter-signup-wrapper">'."\n";
-				echo '<h2>The Buzz</h2>'."\n";
-				echo '<p>Subscribe to our free e-Newsletter for current travel news and tips.</p>'."\n";
+				echo '<h2>'.__('The Buzz','indagare').'</h2>'."\n";
+				echo '<p>'.__('Subscribe to our free e-Newsletter for current travel news and tips.','indagare').'</p>'."\n";
 
 				//elena hubspot
 				include_once( 'includes/hubspot.php' );
@@ -7378,28 +7398,28 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 			echo '<div id="secondary">'."\n";
 				echo '<section class="aside">'."\n";
 					echo '<article>'."\n";
-						echo '<h2 class="icon custom-icon" data-icon="&#xe009;" id="ind-plus">Indagare Plus</h2>'."\n";
+						echo '<h2 class="icon custom-icon" data-icon="&#xe009;" id="ind-plus">'.__('Indagare Plus','indagare').'</h2>'."\n";
 						$plus = get_field('indagare-plus', 'option');
 						if ( $plus ) {
 							echo $plus;
 						}
 					echo '</article>'."\n";
 					echo '<article>'."\n";
-						echo '<h2 class="icon custom-icon" data-icon="&#xe00a;" id="ind-picks">Indagare Picks</h2>'."\n";
+						echo '<h2 class="icon custom-icon" data-icon="&#xe00a;" id="ind-picks">'.__('Indagare Picks','indagare').'</h2>'."\n";
 						$picks = get_field('indagare-picks', 'option');
 						if ( $picks ) {
 							echo $picks;
 						}
 					echo '</article>'."\n";
 					echo '<article>'."\n";
-						echo '<h2 class="icon custom-icon" data-icon="&#xe00b;" id="ind-adored">Indagare Adored</h2>'."\n";
+						echo '<h2 class="icon custom-icon" data-icon="&#xe00b;" id="ind-adored">'.__('Indagare Adored','indagare').'</h2>'."\n";
 						$adored = get_field('indagare-adored', 'option');
 						if ( $adored ) {
 							echo $adored;
 						}
 					echo '</article>'."\n";
 					echo '<article>'."\n";
-						echo '<a href="/destinations/offers/"><h2 class="icon custom-icon" data-icon="&#xe600;" id="ind-offers">Indagare Partner Promotions</h2></a>'."\n";
+						echo '<a href="/destinations/offers/"><h2 class="icon custom-icon" data-icon="&#xe600;" id="ind-offers">'.__('Indagare Partner Promotions','indagare').'</h2></a>'."\n";
 						$offers = get_field('indagare-special-offers', 'option');
 						if ( $offers ) {
 							echo $offers;
@@ -7421,8 +7441,8 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 						if($insidertriprelated->have_posts() ) {
 
 							echo '<article class="custom contain">'."\n";
-								echo '<h2>Insider Trip</h2>'."\n";
-								echo '<p>Immersive, small-group journeys designed by Indagare founder Melissa Biggs Bradley to some of the world&rsquo;s inspiring destinations.</p>'."\n";
+								echo '<h2>'.__('Insider Trip','indagare').'</h2>'."\n";
+								echo '<p>'.__('Immersive, small-group journeys designed by Indagare founder Melissa Biggs Bradley to some of the world&rsquo;s inspiring destinations.','indagare').'</p>'."\n";
 
 								while ( $insidertriprelated->have_posts() ) : $insidertriprelated->the_post();
 
@@ -7438,8 +7458,8 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 									}
 
 									echo '<div class="contain">'."\n";
-									echo '<p class="thumbnail"><a href="'.get_permalink().'"><img src="'.$imgsrc.'" alt="insider trip" /></a></p>'."\n";
-									echo '<p class="link"><a href="'.get_permalink().'">See the insider trip for '.get_the_title().'</a></p>'."\n";
+									echo '<p class="thumbnail"><a href="'.get_permalink().'"><img src="'.$imgsrc.'" alt="'.__('insider trip','indagare').'" /></a></p>'."\n";
+									echo '<p class="link"><a href="'.get_permalink().'">'.sprintf(__('See the insider trip for %s','indagare'),get_the_title()).'</a></p>'."\n";
 									echo '</div>'."\n";
 
 								endwhile;
@@ -7483,7 +7503,7 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 			// primary
 			echo '<div id="primary">'."\n";
 				echo '<div class="widget">'."\n";
-					echo '<h3>Also Recommended</h3>'."\n";
+					echo '<h3>'.__('Also Recommended','indagare').'</h3>'."\n";
 					echo '<ul>'."\n";
 
 					foreach ( $rows as $trip ) {
@@ -7731,7 +7751,7 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 
 
 			echo '<div class="widget">'."\n";
-				echo '<h3>Column</h3>'."\n";
+				echo '<h3>'.__('Column','indagare').'</h3>'."\n";
 				echo '<ul>'."\n";
 					echo '<li><a href="/destinations/articles/?column='.$column[0]->slug.'">'.$column[0]->name.'</a></li>'."\n";
 				echo '</ul>'."\n";
@@ -7739,7 +7759,7 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 
 			if ( $interests ) {
 				echo '<div class="widget">'."\n";
-					echo '<h3>Interest</h3>'."\n";
+					echo '<h3>'.__('Interest','indagare').'</h3>'."\n";
 					echo '<ul>'."\n";
 					foreach ( $interests as $term ) {
 						echo '<li><a href="/destinations/articles/?interest='.$term->slug.'">'.$term->name.'</a></li>'."\n";
@@ -7750,7 +7770,7 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 
 			if ( $dest ) {
 				echo '<div class="widget">'."\n";
-					echo '<h3>Destination</h3>'."\n";
+					echo '<h3>'.__('Destination','indagare').'</h3>'."\n";
 					echo '<ul>'."\n";
 //						echo '<li><a href="/destinations/articles/?destinations='.$dest->slug.'">'.$dest->name.'</a></li>'."\n";
 						echo '<li><a href="/search/?s='.$dest->name.'">'.$dest->name.'</a></li>'."\n";
@@ -7763,7 +7783,7 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 
 			if ( $quote ) {
 				echo '<div class="widget">'."\n";
-					echo '<h3>Quotable</h3>'."\n";
+					echo '<h3>'.__('Quotable','indagare').'</h3>'."\n";
 					echo '<blockquote><span class="openclose">&#8220;</span>'.$quote.'<span class="openclose">&#8221;</span></blockquote>'."\n";
 					if ( $citation ) {
 						echo '<cite> ~ '.$citation.'</cite>'."\n";
@@ -7777,7 +7797,7 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 			if ($rows) {
 				echo '<div class="widget">'."\n";
 
-					echo '<h3>Related Hotels</h3>'."\n";
+					echo '<h3>'.__('Related Hotels','indagare').'</h3>'."\n";
 					echo '<ul>'."\n";
 
 						foreach ( $rows as $hotel ) {
@@ -7832,7 +7852,7 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 
 			$relatedlist = sortArray( $relatedlist, 'name' );
 
-	  		echo '<div class="header divider"><h2>Beyond&hellip; '.$dest->name.'</h2><p>Consider combining your trip with one of these destinations.</p></div>'."\n";
+	  		echo '<div class="header divider"><h2>'.__('Beyond&hellip;','indagare').' '.$dest->name.'</h2><p>'.__('Consider combining your trip with one of these destinations.','indagare').'</p></div>'."\n";
 
 			echo '<section class="related-articles related-destinations contain">'."\n";
 
@@ -7895,13 +7915,13 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 			$i = 0;
 
 			if ( is_page_template ( 'template-page-welcome.php' ) || is_404() ) {
-		  		echo '<div class="header divider"><h2>Recent Articles</h2><p class="view-more"><a href="/destinations/articles/">View All Articles</a></p></div>'."\n";
+		  		echo '<div class="header divider"><h2>'.__('Recent Articles','indagare').'</h2><p class="view-more"><a href="/destinations/articles/">'.__('View All Articles','indagare').'</a></p></div>'."\n";
 			} else if ( $reg && $depth == 1 ) {
-//		  		echo '<div class="header divider"><h2>Related Articles</h2><p class="view-more"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/articles/">View All Related Articles</a></p></div>'."\n";
-		  		echo '<div class="header divider"><h2>Related Articles</h2><p class="view-more"><a href="/destinations/articles/?destinations='.$reg->slug .'">View All Related Articles</a></p></div>'."\n";
+//		  		echo '<div class="header divider"><h2>'.__('Related Articles','indagare').'</h2><p class="view-more"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/articles/">'.__('View All Related Articles','indagare').'</a></p></div>'."\n";
+		  		echo '<div class="header divider"><h2>'.__('Related Articles','indagare').'</h2><p class="view-more"><a href="/destinations/articles/?destinations='.$reg->slug .'">'.__('View All Related Articles','indagare').'</a></p></div>'."\n";
 	  		} else {
-//		  		echo '<div class="header divider"><h2>Related Articles</h2><p class="view-more"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/articles/">View All Related Articles</a></p></div>'."\n";
-		  		echo '<div class="header divider"><h2>Related Articles</h2><p class="view-more"><a href="/destinations/articles/?destinations='.$dest->slug .'">View All Related Articles</a></p></div>'."\n";
+//		  		echo '<div class="header divider"><h2>'.__('Related Articles','indagare').'</h2><p class="view-more"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/'. $dest->slug.'/articles/">'.__('View All Related Articles','indagare').'</a></p></div>'."\n";
+		  		echo '<div class="header divider"><h2>'.__('Related Articles','indagare').'</h2><p class="view-more"><a href="/destinations/articles/?destinations='.$dest->slug .'">'.__('View All Related Articles','indagare').'</a></p></div>'."\n";
 	  		}
 
 			echo '<section class="related-articles contain">'."\n";
@@ -7932,13 +7952,13 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 						$text = strip_shortcodes( $post->post_content );
 						$text = str_replace(']]>', ']]>', $text);
 						$excerpt_length = 15; // 15 words
-						$excerpt_more = apply_filters('excerpt_more', '...');
+						$excerpt_more = apply_filters('excerpt_more', __('...','indagare'));
 						$text = wp_trim_words( $text, $excerpt_length, $excerpt_more );
 
 						echo '<article>'."\n";
 							echo '<a href="'.get_permalink($post->ID).'">'."\n";
 								if ( $imgsrc ) {
-									echo '<img src="'.$imgsrc.'" alt="Related" />'."\n";
+									echo '<img src="'.$imgsrc.'" alt="'.__('Related','indagare').'" />'."\n";
 								}
 								echo '<h3>'.$post->post_title.'</h3>'."\n";
 									echo '<p class="description">'.$text.'</p>'."\n";
@@ -7979,7 +7999,7 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 
 		// recently viewed
 		if (function_exists('zg_recently_viewed') && !is_page_template ( 'template-page-welcome.php' )):  if (isset($_COOKIE["WP-LastViewedPosts"])) {
-			echo '<div class="header divider"><h2>Recently Viewed</h2></div>'."\n";
+			echo '<div class="header divider"><h2>'.__('Recently Viewed','indagare').'</h2></div>'."\n";
 			echo '<section class="recent-articles contain">'."\n";
 
 			zg_recently_viewed();
@@ -8021,8 +8041,8 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 
 			echo '<div id="join-today" class="contain">'."\n";
 				echo '<div class="join-indagare">'."\n";
-					echo '<p class="action">Become an Indagare Member Today</p>'."\n";
-					echo '<p class="action-button"><a href="/join/" class="button">Join</a> <a href="#lightbox-login" class="lightbox-inline">or sign in</a></p>'."\n";
+					echo '<p class="action">'.__('Become an Indagare Member Today','indagare').'</p>'."\n";
+					echo '<p class="action-button"><a href="/join/" class="button">'.__('Join','indagare').'</a> <a href="#lightbox-login" class="lightbox-inline">'.__('or sign in','indagare').'</a></p>'."\n";
 				echo '</div>'."\n";
 			echo '</div>'."\n";
 
@@ -8034,12 +8054,14 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 	// home page | !why join page
 //	if (is_home() || is_front_page() || is_page_template ( 'template-page-why-join.php' ) ) {
 	if (is_home() || is_front_page() ) {
-		echo '<span class="dictionary">Indagare <span class="gray">(in&bull;da&bull;ga&bull;re) <em>verb (latin).</span> To discover, explore, seek, scout.</em></span>'."\n";
+		echo '<span class="dictionary">'.__('Indagare <span class="gray">(in&bull;da&bull;ga&bull;re) <em>verb (latin).</span> To discover, explore, seek, scout.</em>','indagare').'</span>'."\n";
 	} // end why join page
 
 
 }
 add_filter('thematic_belowcontainer','child_belowcontainer');
+
+
 
 // footer content
 function childtheme_override_siteinfoopen() {}
@@ -8068,10 +8090,10 @@ function childtheme_override_siteinfo() {
 		<h4><a class="colheader" href="/contact/"><?php print __('Connect','indagare'); ?></a></h4>
 		<p class="vcard">
 		  <span class="adr">
-			<span class="street-address">950 Third Avenue </span>
-			<span class="locality">New York</span>, <span class="region">NY</span> <span class="postal-code">10022</span>
+			<span class="street-address"><?php print __('950 Third Avenue','indagare'); ?> </span>
+			<span class="locality"><?php print __('New York','indagare'); ?></span>, <span class="region"><?php print __('NY','indagare'); ?></span> <span class="postal-code"><?php print __('10022','indagare'); ?></span>
 		  </span>
-		  <span class="tel">(212) 988-2611</span>
+		  <span class="tel"><?php print __('(212) 988-2611','indagare'); ?></span>
 		  <a class="email" href="mailto:info@indagare.com"><?php print __('Email Us','indagare'); ?></a>
 		</p>
 		<p class="social">
@@ -8094,14 +8116,14 @@ function childtheme_override_siteinfo() {
 	  </div>
 	</section>
 	<section id="siteinfo">
-	  <p>&copy; 2007 - <?php echo Date('Y'); ?> Indagare Travel, Inc. All rights reserved. Use of this site constitutes acceptance of our <a href="/terms-of-use/">Terms of Use</a> and <a href="/privacy-policy/">Privacy Policy</a>.</p>
+	  <p>&copy; 2007 - <?php echo Date('Y'); ?> <?php print __('Indagare Travel, Inc. All rights reserved. Use of this site constitutes acceptance of our','indagare'); ?> <a href="/terms-of-use/"><?php print __('Terms of Use','indagare'); ?></a> <?php print __('and','indagare'); ?> <a href="/privacy-policy/"><?php print __('Privacy Policy','indagare'); ?></a>.</p>
 	</section>
   </div>
 <?php
 }
 function childtheme_override_siteinfoclose() {}
 
-
+// @TODO: Translated to Here
 
 function child_after() {
 global $post;

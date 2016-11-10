@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-09 16:10-0600\n"
+"POT-Creation-Date: 2016-11-09 18:01-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,11 +44,11 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
-#: comments.php:21
+#: comments.php:21 functions.php:3095 functions.php:6146
 msgid "Open"
 msgstr ""
 
-#: comments.php:21
+#: comments.php:21 functions.php:3095 functions.php:6147
 msgid "Close"
 msgstr ""
 
@@ -145,7 +145,9 @@ msgstr ""
 msgid "Recent Posts"
 msgstr ""
 
-#: functions.php:824
+#: functions.php:824 functions.php:3364 functions.php:3617 functions.php:5037
+#: functions.php:5323 functions.php:5754 functions.php:6503 functions.php:6729
+#: functions.php:7955
 msgid "..."
 msgstr ""
 
@@ -182,7 +184,7 @@ msgstr ""
 msgid "Show Images"
 msgstr ""
 
-#: functions.php:1032
+#: functions.php:1032 functions.php:3078 functions.php:4837
 msgid "Show Map"
 msgstr ""
 
@@ -331,7 +333,7 @@ msgid "Newly Added"
 msgstr ""
 
 #: functions.php:1580 functions.php:1596 functions.php:1611 functions.php:1616
-#: functions.php:1626 functions.php:1645 functions.php:1673 functions.php:4672
+#: functions.php:1626 functions.php:1645 functions.php:1673 functions.php:4678
 msgid "See All"
 msgstr ""
 
@@ -339,7 +341,8 @@ msgstr ""
 msgid "See Digital Magazine"
 msgstr ""
 
-#: functions.php:1595
+#: functions.php:1595 functions.php:2176 functions.php:2178 functions.php:2434
+#: functions.php:2512 functions.php:2540
 msgid "Columns"
 msgstr ""
 
@@ -363,7 +366,7 @@ msgstr ""
 msgid "Book"
 msgstr ""
 
-#: functions.php:1623 functions.php:1642 functions.php:6455 functions.php:6985
+#: functions.php:1623 functions.php:1642 functions.php:6474 functions.php:7005
 msgid "View All Destinations"
 msgstr ""
 
@@ -379,15 +382,16 @@ msgstr ""
 msgid "See Insider Trips"
 msgstr ""
 
-#: functions.php:1640
+#: functions.php:1640 functions.php:3354 functions.php:4194 functions.php:4802
+#: functions.php:5013 functions.php:5057
 msgid "Offers"
 msgstr ""
 
-#: functions.php:1644
+#: functions.php:1644 functions.php:2146 functions.php:5058
 msgid "Seasonal Partners"
 msgstr ""
 
-#: functions.php:1672
+#: functions.php:1672 functions.php:2155
 msgid "Destination Partners"
 msgstr ""
 
@@ -395,7 +399,7 @@ msgstr ""
 msgid "Account"
 msgstr ""
 
-#: functions.php:1758
+#: functions.php:1758 functions.php:1868 functions.php:1870
 msgid "Log Out"
 msgstr ""
 
@@ -403,165 +407,714 @@ msgstr ""
 msgid "Log In"
 msgstr ""
 
-#: functions.php:1766 render-memberlevel.tpl.php:6
+#: functions.php:1766 functions.php:2815 functions.php:5978 functions.php:6182
+#: functions.php:6253 functions.php:6330 functions.php:8045
+#: render-memberlevel.tpl.php:6
 msgid "Join"
 msgstr ""
 
-#: functions.php:1778
+#: functions.php:1778 functions.php:1880
 msgid "Search"
 msgstr ""
 
-#: functions.php:3365
+#: functions.php:1884 functions.php:1886
+#, php-format
+msgid "Results for \"%s\""
+msgstr ""
+
+#: functions.php:1950 functions.php:2009 functions.php:2597
+msgid "Overview"
+msgstr ""
+
+#: functions.php:1954 functions.php:2013 functions.php:2600
+msgid "Stay"
+msgstr ""
+
+#: functions.php:1959 functions.php:2018 functions.php:2604
+msgid "Eat"
+msgstr ""
+
+#: functions.php:1964 functions.php:2023 functions.php:2608
+msgid "Shop"
+msgstr ""
+
+#: functions.php:1969 functions.php:2028 functions.php:2612
+msgid "See &amp; Do"
+msgstr ""
+
+#: functions.php:1972 functions.php:2033 functions.php:2616
+msgid "Itinerary"
+msgstr ""
+
+#: functions.php:1975 functions.php:2038 functions.php:2620
+msgid "Library"
+msgstr ""
+
+#: functions.php:2004 functions.php:2593
+#, php-format
+msgid "Back to %s"
+msgstr ""
+
+#: functions.php:2167 functions.php:2426 functions.php:2508 functions.php:2536
+msgid "Indagare <span class=\"highlight\">Magazine</span>"
+msgstr ""
+
+#: functions.php:2171 functions.php:2173 functions.php:2430 functions.php:2432
+#: functions.php:2511 functions.php:2539
+msgid "Features"
+msgstr ""
+
+#: functions.php:2192 functions.php:2194 functions.php:2250 functions.php:2450
+#: functions.php:2452 functions.php:2524 functions.php:2552
+msgid "All Articles"
+msgstr ""
+
+#: functions.php:2196 functions.php:2454 functions.php:2525 functions.php:2553
+msgid "Digital Magazine"
+msgstr ""
+
+#: functions.php:2231 functions.php:5419 functions.php:5475
+#: includes/destinations.php:200
+msgid "Article"
+msgstr ""
+
+#: functions.php:2251
+msgid "Show Filters"
+msgstr ""
+
+#: functions.php:2254
+msgid "By Interests"
+msgstr ""
+
+#: functions.php:2268
+msgid "By Destination"
+msgstr ""
+
+#: functions.php:2269
+msgid "Filter by city or region"
+msgstr ""
+
+#: functions.php:2283
+msgid "Apply Filters"
+msgstr ""
+
+#: functions.php:2283
+msgid "or"
+msgstr ""
+
+#: functions.php:2283
+msgid "remove all filters"
+msgstr ""
+
+#: functions.php:2571 functions.php:4195 functions.php:5232
+msgid "Insider Trips"
+msgstr ""
+
+#: functions.php:2709
+msgid "See Indagare Plus Amenities"
+msgstr ""
+
+#: functions.php:3095
+msgid "Filter Results"
+msgstr ""
+
+#: functions.php:3100
+msgid "Type of Property"
+msgstr ""
+
+#: functions.php:3102
+msgid "Type of Restaurant"
+msgstr ""
+
+#: functions.php:3104
+msgid "Type of Shop"
+msgstr ""
+
+#: functions.php:3106
+msgid "Type of Activity"
+msgstr ""
+
+#: functions.php:3145
+msgid "Type of Meal"
+msgstr ""
+
+#: functions.php:3185 functions.php:3606 functions.php:4095 functions.php:5310
+#: functions.php:7773 includes/search-destination.php:25
+msgid "Destination"
+msgstr ""
+
+#: functions.php:3187
+msgid "Neighborhood"
+msgstr ""
+
+#: functions.php:3209 functions.php:6273
+msgid "Benefits"
+msgstr ""
+
+#: functions.php:3229
+msgid "Editor's Picks"
+msgstr ""
+
+#: functions.php:3244
+msgid "Clear"
+msgstr ""
+
+#: functions.php:3245 functions.php:3955 functions.php:5661
+msgid "Apply"
+msgstr ""
+
+#: functions.php:3370 functions.php:5160
 msgid "Details"
 msgstr ""
 
-#: functions.php:3491
+#: functions.php:3496 functions.php:5219
 msgid "Take Me There"
 msgstr ""
 
-#: functions.php:4494
+#: functions.php:3547
+msgid "Frequently Asked Questions"
+msgstr ""
+
+#: functions.php:3571
+msgid "Current Insider Trips"
+msgstr ""
+
+#: functions.php:3621 functions.php:4098 functions.php:5327 functions.php:5661
+#: functions.php:6464 functions.php:6925 functions.php:6993 functions.php:8937
+#: includes/search-destination.php:28
+msgid "Read More"
+msgstr ""
+
+#: functions.php:3648
+msgid "Sold Out Insider Trips"
+msgstr ""
+
+#: functions.php:3673
+msgid "Some Past Insider Trips"
+msgstr ""
+
+#: functions.php:3849
+msgid "Members-only content."
+msgstr ""
+
+#: functions.php:3855
+msgid "There is not an itinerary for this destination."
+msgstr ""
+
+#: functions.php:3877
+msgid "There is not a library for this destination."
+msgstr ""
+
+#: functions.php:3923
+msgid "Careers"
+msgstr ""
+
+#: functions.php:3947 functions.php:3963
+msgid "General Inquiry"
+msgstr ""
+
+#: functions.php:3962 functions.php:5670
+msgid "Apply Now"
+msgstr ""
+
+#: functions.php:3971
+msgid "Connect with Indagare"
+msgstr ""
+
+#: functions.php:3974 functions.php:8100
+msgid "facebook"
+msgstr ""
+
+#: functions.php:3974 functions.php:8100
+msgid "twitter"
+msgstr ""
+
+#: functions.php:3974 functions.php:8100
+msgid "instagram"
+msgstr ""
+
+#: functions.php:3974
+msgid "linkedin"
+msgstr ""
+
+#: functions.php:3995 functions.php:4500 functions.php:7102
 msgid "Book Hotels"
 msgstr ""
 
-#: functions.php:4495
+#: functions.php:3996 functions.php:4501 functions.php:5806 functions.php:7103
 msgid "Book Flights"
 msgstr ""
 
-#: functions.php:4499
+#: functions.php:4000 functions.php:4505 functions.php:5810 functions.php:7107
 msgid "Destination or Hotel"
 msgstr ""
 
-#: functions.php:4503
+#: functions.php:4004 functions.php:4509 functions.php:5814 functions.php:7111
 msgid "Check In (optional)"
 msgstr ""
 
-#: functions.php:4504
+#: functions.php:4006 functions.php:4510 functions.php:5815 functions.php:7113
 msgid "Check Out (optional)"
 msgstr ""
 
-#: functions.php:4507
+#: functions.php:4010 functions.php:4513 functions.php:5818 functions.php:7117
 msgid "Find Rooms"
 msgstr ""
 
-#: functions.php:4571 functions.php:7570 functions.php:7572 functions.php:7595
-#: functions.php:7597 functions.php:7647 functions.php:7649 functions.php:7671
+#: functions.php:4015 functions.php:7123
+#, php-format
+msgid "Or view all hotels in %s"
+msgstr ""
+
+#: functions.php:4077
+msgid "All Destination Guides"
+msgstr ""
+
+#: functions.php:4120
+msgid "Cheat Sheet"
+msgstr ""
+
+#: functions.php:4128
+msgid "Lay of the Land"
+msgstr ""
+
+#: functions.php:4186 functions.php:4243
+msgid "Destination Guides"
+msgstr ""
+
+#: functions.php:4187 functions.php:4843
+msgid "Hotels"
+msgstr ""
+
+#: functions.php:4188 functions.php:4847
+msgid "Restaurants"
+msgstr ""
+
+#: functions.php:4189 functions.php:4851
+msgid "Shops"
+msgstr ""
+
+#: functions.php:4190
+msgid "Activities"
+msgstr ""
+
+#: functions.php:4191
+msgid "Articles"
+msgstr ""
+
+#: functions.php:4192
+msgid "Itineraries"
+msgstr ""
+
+#: functions.php:4193
+msgid "Libraries"
+msgstr ""
+
+#: functions.php:4251
+msgid "View All Results"
+msgstr ""
+
+#: functions.php:4390
+msgid "Members-Only Content"
+msgstr ""
+
+#: functions.php:4577 functions.php:4957 functions.php:5006 functions.php:5738
+#: functions.php:7590 functions.php:7592 functions.php:7615 functions.php:7617
+#: functions.php:7667 functions.php:7669 functions.php:7691 functions.php:7961
 #: includes/last_viewed_posts.php:171
 msgid "Related"
 msgstr ""
 
-#: functions.php:4671
+#: functions.php:4677
 msgid "Featured Destination Partners:"
 msgstr ""
 
-#: functions.php:4727 functions.php:7339
+#: functions.php:4733 functions.php:5201 functions.php:7359
 msgid "Destination Partner"
 msgstr ""
 
-#: functions.php:6455 functions.php:6985
+#: functions.php:4792
+#, php-format
+msgid "Back to %s Listings for %s, %s"
+msgstr ""
+
+#: functions.php:4805 functions.php:5016
+msgid "Plus"
+msgstr ""
+
+#: functions.php:4808 functions.php:5019
+msgid "Picks"
+msgstr ""
+
+#: functions.php:4811 functions.php:5022
+msgid "Adored"
+msgstr ""
+
+#: functions.php:4840
+msgid "What's Nearby:"
+msgstr ""
+
+#: functions.php:4855
+msgid "Sights"
+msgstr ""
+
+#: functions.php:4938 functions.php:7506
+msgid "Also Recommended"
+msgstr ""
+
+#: functions.php:5041
+msgid "Review and Rates"
+msgstr ""
+
+#: functions.php:5043
+msgid "Read more"
+msgstr ""
+
+#: functions.php:5059
+msgid "Back to Partner Promotions"
+msgstr ""
+
+#: functions.php:5066 functions.php:5143 functions.php:5145
+msgid "Seasonal Partner"
+msgstr ""
+
+#: functions.php:5205
+msgid "Partner"
+msgstr ""
+
+#: functions.php:5232
+msgid "Back to Insider Trips"
+msgstr ""
+
+#: functions.php:5240
+msgid "Inquire Now"
+msgstr ""
+
+#: functions.php:5444 functions.php:5502
+msgid "View PDF"
+msgstr ""
+
+#: functions.php:5473
+msgid "Magazine"
+msgstr ""
+
+#: functions.php:5483
+msgid "View this issue"
+msgstr ""
+
+#: functions.php:5489
+msgid "Join today to see this issue"
+msgstr ""
+
+#: functions.php:5495
+msgid "Upgrade today to see this issue"
+msgstr ""
+
+#: functions.php:5506
+msgid "Current Issue:"
+msgstr ""
+
+#: functions.php:5927 functions.php:7762
+msgid "Interest"
+msgstr ""
+
+#: functions.php:5978
+msgid "From"
+msgstr ""
+
+#: functions.php:6109 functions.php:6202 functions.php:6262 functions.php:6430
+msgid "Question about Indagare?"
+msgstr ""
+
+#: functions.php:6110 functions.php:6203 functions.php:6263 functions.php:6431
+#: template-modal-contact.php:8
+msgid "Contact Us"
+msgstr ""
+
+#: functions.php:6110 functions.php:6203 functions.php:6263 functions.php:6431
+msgid "<a href=\"tel:+12129882611\">212-988-2611</a>"
+msgstr ""
+
+#: functions.php:6110 functions.php:6203 functions.php:6263 functions.php:6431
+msgid "<a href=\"mailto:membership@indagare.com\">membership@indagare.com</a>"
+msgstr ""
+
+#: functions.php:6332
+msgid "What We Do Best"
+msgstr ""
+
+#: functions.php:6405
+msgid "The Indagare Advantage"
+msgstr ""
+
+#: functions.php:6441 functions.php:6970
+msgid "Getting Started"
+msgstr ""
+
+#: functions.php:6474 functions.php:7005
 msgid "Popular Destinations"
 msgstr ""
 
-#: functions.php:6648 functions.php:6662
+#: functions.php:6539
+msgid "Indagare"
+msgstr ""
+
+#: functions.php:6638 includes/first-visit.php:70
+msgid ""
+"Enter the new Indagare now &#8211; pick an article to experience the "
+"Indagare redesign:"
+msgstr ""
+
+#: functions.php:6667 functions.php:6681
 msgid "You need to log in to see this page."
 msgstr ""
 
-#: functions.php:7561 functions.php:7638
+#: functions.php:6754
+msgid "Email"
+msgstr ""
+
+#: functions.php:6755
+msgid "Your email"
+msgstr ""
+
+#: functions.php:6760
+msgid "Submit Request"
+msgstr ""
+
+#: functions.php:6778 functions.php:6779
+#: template-page-user-site-invite.php:111
+msgid "Username"
+msgstr ""
+
+#: functions.php:6782 functions.php:6783
+#: template-page-user-site-invite.php:117
+msgid "Password"
+msgstr ""
+
+#: functions.php:6914
+msgid "team member"
+msgstr ""
+
+#: functions.php:6919
+msgid "Recently Visited"
+msgstr ""
+
+#: functions.php:7378
+msgid "The Buzz"
+msgstr ""
+
+#: functions.php:7379
+msgid "Subscribe to our free e-Newsletter for current travel news and tips."
+msgstr ""
+
+#: functions.php:7401
+msgid "Indagare Plus"
+msgstr ""
+
+#: functions.php:7408
+msgid "Indagare Picks"
+msgstr ""
+
+#: functions.php:7415
+msgid "Indagare Adored"
+msgstr ""
+
+#: functions.php:7422
+msgid "Indagare Partner Promotions"
+msgstr ""
+
+#: functions.php:7444
+msgid "Insider Trip"
+msgstr ""
+
+#: functions.php:7445
+msgid ""
+"Immersive, small-group journeys designed by Indagare founder Melissa Biggs "
+"Bradley to some of the world&rsquo;s inspiring destinations."
+msgstr ""
+
+#: functions.php:7461
+msgid "insider trip"
+msgstr ""
+
+#: functions.php:7462
+#, php-format
+msgid "See the insider trip for %s"
+msgstr ""
+
+#: functions.php:7581 functions.php:7658
 #, php-format
 msgid "%s is Currently Scouting"
 msgstr ""
 
-#: functions.php:7586 functions.php:7663
+#: functions.php:7606 functions.php:7683
 #, php-format
 msgid "%s Recently Visited"
 msgstr ""
 
-#: functions.php:7632
+#: functions.php:7652
 msgid "Melissa"
 msgstr ""
 
-#: functions.php:8062
+#: functions.php:7754
+msgid "Column"
+msgstr ""
+
+#: functions.php:7786
+msgid "Quotable"
+msgstr ""
+
+#: functions.php:7800
+msgid "Related Hotels"
+msgstr ""
+
+#: functions.php:7855
+msgid "Beyond&hellip;"
+msgstr ""
+
+#: functions.php:7855
+msgid "Consider combining your trip with one of these destinations."
+msgstr ""
+
+#: functions.php:7918
+msgid "Recent Articles"
+msgstr ""
+
+#: functions.php:7918
+msgid "View All Articles"
+msgstr ""
+
+#: functions.php:7921 functions.php:7924
+msgid "Related Articles"
+msgstr ""
+
+#: functions.php:7921 functions.php:7924
+msgid "View All Related Articles"
+msgstr ""
+
+#: functions.php:8002
+msgid "Recently Viewed"
+msgstr ""
+
+#: functions.php:8044
+msgid "Become an Indagare Member Today"
+msgstr ""
+
+#: functions.php:8045
+msgid "or sign in"
+msgstr ""
+
+#: functions.php:8057
+msgid ""
+"Indagare <span class=\"gray\">(in&bull;da&bull;ga&bull;re) <em>verb (latin)."
+"</span> To discover, explore, seek, scout.</em>"
+msgstr ""
+
+#: functions.php:8084
 msgid "Newsletter"
 msgstr ""
 
-#: functions.php:8063
+#: functions.php:8085
 msgid "Receive our free email newsletter full of travel news, tips and advice."
 msgstr ""
 
-#: functions.php:8068
+#: functions.php:8090
 msgid "Connect"
 msgstr ""
 
-#: functions.php:8075
+#: functions.php:8093
+msgid "950 Third Avenue"
+msgstr ""
+
+#: functions.php:8094
+msgid "New York"
+msgstr ""
+
+#: functions.php:8094
+msgid "NY"
+msgstr ""
+
+#: functions.php:8094
+msgid "10022"
+msgstr ""
+
+#: functions.php:8096
+msgid "(212) 988-2611"
+msgstr ""
+
+#: functions.php:8097
 msgid "Email Us"
 msgstr ""
 
-#: functions.php:8078
-msgid "facebook"
-msgstr ""
-
-#: functions.php:8078
-msgid "twitter"
-msgstr ""
-
-#: functions.php:8078
-msgid "instagram"
-msgstr ""
-
-#: functions.php:8082
+#: functions.php:8104
 msgid "Membership"
 msgstr ""
 
-#: functions.php:8089
+#: functions.php:8111
 msgid "About"
 msgstr ""
 
-#: functions.php:8915 includes/search-destination.php:28
-msgid "Read More"
+#: functions.php:8119
+msgid ""
+"Indagare Travel, Inc. All rights reserved. Use of this site constitutes "
+"acceptance of our"
 msgstr ""
 
-#: functions.php:8915
+#: functions.php:8119
+msgid "Terms of Use"
+msgstr ""
+
+#: functions.php:8119
+msgid "and"
+msgstr ""
+
+#: functions.php:8119
+msgid "Privacy Policy"
+msgstr ""
+
+#: functions.php:8937
 msgid "Read Less"
 msgstr ""
 
-#: functions.php:9143
+#: functions.php:9165
 msgid "Booking ID"
 msgstr ""
 
-#: functions.php:9293
+#: functions.php:9315
 msgid "All "
 msgstr ""
 
-#: functions.php:9717
+#: functions.php:9739
 msgid "<strong>ERROR</strong>: Invalid username or email."
 msgstr ""
 
-#: functions.php:9730
+#: functions.php:9752
 msgid "Someone has requested a password reset for the following account:"
 msgstr ""
 
-#: functions.php:9732
+#: functions.php:9754
 #, php-format
 msgid "Username: %s"
 msgstr ""
 
-#: functions.php:9733
+#: functions.php:9755
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr ""
 
-#: functions.php:9734
+#: functions.php:9756
 msgid "To reset your password, visit the following address:"
 msgstr ""
 
-#: functions.php:9747
+#: functions.php:9769
 #, php-format
 msgid "[%s] Password Reset"
 msgstr ""
 
-#: functions.php:9775
+#: functions.php:9797
 msgid "The email could not be sent."
 msgstr ""
 
-#: functions.php:9775
+#: functions.php:9797
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
 
@@ -718,16 +1271,6 @@ msgstr ""
 msgid "Edit comment"
 msgstr ""
 
-#: includes/destinations.php:200
-msgid "Article"
-msgstr ""
-
-#: includes/first-visit.php:70
-msgid ""
-"Enter the new Indagare now &#8211; pick an article to experience the "
-"Indagare redesign:"
-msgstr ""
-
 #: includes/first-visit.php:93
 msgid "Not a member yet?"
 msgstr ""
@@ -746,10 +1289,6 @@ msgstr ""
 
 #: includes/map.php:11
 msgid "Zoom"
-msgstr ""
-
-#: includes/search-destination.php:25
-msgid "Destination"
 msgstr ""
 
 #: page.php:61 template-page-404.php:50
@@ -778,10 +1317,6 @@ msgid ""
 "different keywords."
 msgstr ""
 
-#: template-modal-contact.php:8
-msgid "Contact Us"
-msgstr ""
-
 #: template-page-user-site-invite.php:48
 msgid "<strong>ERROR</strong>: Multiple Logins tied to this Contact."
 msgstr ""
@@ -804,16 +1339,8 @@ msgstr ""
 msgid "Account Information"
 msgstr ""
 
-#: template-page-user-site-invite.php:111
-msgid "Username"
-msgstr ""
-
 #: template-page-user-site-invite.php:112
 msgid "Username is not available.  Please try another one."
-msgstr ""
-
-#: template-page-user-site-invite.php:117
-msgid "Password"
 msgstr ""
 
 #: template-page-user-site-invite.php:118
