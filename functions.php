@@ -4671,6 +4671,13 @@ function child_singlepost($content) {
 
 		if($offer->have_posts() ) {
 
+			echo "<script>";
+				echo "jQuery().ready(function($) {";
+					 echo "if($('.destination-slide').length > 4) {";
+		  				echo "$('.fd-container').addClass('has-slider');";
+					 echo  "}"; 
+				echo  "});";
+			echo "</script>";
 
 			$content .= '<div class="featured-destination-partners"><div class="fd-container">'."\n";
 			$content .= '<div class="labels">';

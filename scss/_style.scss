@@ -334,7 +334,11 @@ p.author {font-style:italic;font-family:Georgia,Times,serif;font-size:.858em;lin
 
   	.fd-container{ 
 		background: #e7e8e8;
-		padding: 10px 25px;
+		padding: 10px 15px;
+
+		&.has-slider{
+			padding: 10px 25px;
+		}
 	}
 
 	div.destination-slide{

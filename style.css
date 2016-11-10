@@ -962,7 +962,8 @@ p.author { font-style: italic; font-family: Georgia,Times,serif; font-size: .858
 
 /* ELENA */
 .featured-destination-partners { padding: 10px; }
-.featured-destination-partners .fd-container { background: #e7e8e8; padding: 10px 25px; }
+.featured-destination-partners .fd-container { background: #e7e8e8; padding: 10px 15px; }
+.featured-destination-partners .fd-container.has-slider { padding: 10px 25px; }
 .featured-destination-partners div.destination-slide { padding: 0 10px; -moz-box-sizing: border-box; box-sizing: border-box; font-size: .95em; }
 .featured-destination-partners div.destination-slide img { width: 100%; height: auto; margin-bottom: 5px; }
 .featured-destination-partners .regular { clear: both; }
