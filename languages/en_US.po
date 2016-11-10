@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-09 18:57-0600\n"
-"PO-Revision-Date: 2016-11-09 18:57-0600\n"
+"POT-Creation-Date: 2016-11-10 12:20-0600\n"
+"PO-Revision-Date: 2016-11-10 12:20-0600\n"
 "Last-Translator: Dennis Wallace <dwallace@shr.global>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -52,11 +52,11 @@ msgstr "Email "
 msgid "Comments"
 msgstr "Comments"
 
-#: comments.php:21 functions.php:3095 functions.php:6146
+#: comments.php:21 functions.php:3095 functions.php:6153
 msgid "Open"
 msgstr "Open"
 
-#: comments.php:21 functions.php:3095 functions.php:6147
+#: comments.php:21 functions.php:3095 functions.php:6154
 msgid "Close"
 msgstr "Close"
 
@@ -172,9 +172,9 @@ msgstr ""
 msgid "Recent Posts"
 msgstr "Recent Posts"
 
-#: functions.php:824 functions.php:3364 functions.php:3617 functions.php:5037
-#: functions.php:5323 functions.php:5754 functions.php:6503 functions.php:6729
-#: functions.php:7955
+#: functions.php:824 functions.php:3364 functions.php:3617 functions.php:5044
+#: functions.php:5330 functions.php:5761 functions.php:6510 functions.php:6736
+#: functions.php:7962
 msgid "..."
 msgstr "..."
 
@@ -213,7 +213,7 @@ msgstr "You are already signed up."
 msgid "Show Images"
 msgstr "Show Images"
 
-#: functions.php:1032 functions.php:3078 functions.php:4837
+#: functions.php:1032 functions.php:3078 functions.php:4844
 msgid "Show Map"
 msgstr "Show Map"
 
@@ -289,7 +289,7 @@ msgstr "No more upgrade options available"
 msgid "Upgrade Now"
 msgstr "Upgrade Now"
 
-#: functions.php:1053 functions.php:8327
+#: functions.php:1053 functions.php:8334
 msgid "Renew Now"
 msgstr "Renew Now"
 
@@ -362,7 +362,7 @@ msgid "Newly Added"
 msgstr "Newly Added"
 
 #: functions.php:1580 functions.php:1596 functions.php:1611 functions.php:1616
-#: functions.php:1626 functions.php:1645 functions.php:1673 functions.php:4678
+#: functions.php:1626 functions.php:1645 functions.php:1673 functions.php:4685
 msgid "See All"
 msgstr "See All"
 
@@ -395,7 +395,7 @@ msgstr "Indagare Spotlight"
 msgid "Book"
 msgstr "Book"
 
-#: functions.php:1623 functions.php:1642 functions.php:6474 functions.php:7005
+#: functions.php:1623 functions.php:1642 functions.php:6481 functions.php:7012
 msgid "View All Destinations"
 msgstr "View All Destinations"
 
@@ -411,12 +411,12 @@ msgstr "See Partner Promotions"
 msgid "See Insider Trips"
 msgstr "See Insider Trips"
 
-#: functions.php:1640 functions.php:3354 functions.php:4194 functions.php:4802
-#: functions.php:5013 functions.php:5057
+#: functions.php:1640 functions.php:3354 functions.php:4194 functions.php:4809
+#: functions.php:5020 functions.php:5064
 msgid "Offers"
 msgstr "Offers"
 
-#: functions.php:1644 functions.php:2146 functions.php:5058
+#: functions.php:1644 functions.php:2146 functions.php:5065
 msgid "Seasonal Partners"
 msgstr "Seasonal Partners"
 
@@ -436,8 +436,8 @@ msgstr "Log Out"
 msgid "Log In"
 msgstr "Log In"
 
-#: functions.php:1766 functions.php:2815 functions.php:5978 functions.php:6182
-#: functions.php:6253 functions.php:6330 functions.php:8045 functions.php:8404
+#: functions.php:1766 functions.php:2815 functions.php:5985 functions.php:6189
+#: functions.php:6260 functions.php:6337 functions.php:8052 functions.php:8411
 #: render-memberlevel.tpl.php:6
 msgid "Join"
 msgstr "Join"
@@ -502,7 +502,7 @@ msgstr "All Articles"
 msgid "Digital Magazine"
 msgstr "Digital Magazine"
 
-#: functions.php:2231 functions.php:5419 functions.php:5475
+#: functions.php:2231 functions.php:5426 functions.php:5482
 #: includes/destinations.php:200
 msgid "Article"
 msgstr "Article"
@@ -535,7 +535,7 @@ msgstr "or"
 msgid "remove all filters"
 msgstr "remove all filters"
 
-#: functions.php:2571 functions.php:4195 functions.php:5232
+#: functions.php:2571 functions.php:4195 functions.php:5239
 msgid "Insider Trips"
 msgstr "Insider Trips"
 
@@ -567,8 +567,8 @@ msgstr "Type of Activity"
 msgid "Type of Meal"
 msgstr "Type of Meal"
 
-#: functions.php:3185 functions.php:3606 functions.php:4095 functions.php:5310
-#: functions.php:7773 includes/search-destination.php:25
+#: functions.php:3185 functions.php:3606 functions.php:4095 functions.php:5317
+#: functions.php:7780 includes/search-destination.php:25
 msgid "Destination"
 msgstr "Destination"
 
@@ -576,7 +576,7 @@ msgstr "Destination"
 msgid "Neighborhood"
 msgstr "Neighborhood"
 
-#: functions.php:3209 functions.php:6273
+#: functions.php:3209 functions.php:6280
 msgid "Benefits"
 msgstr "Benefits"
 
@@ -588,15 +588,19 @@ msgstr "Editor's Picks"
 msgid "Clear"
 msgstr "Clear"
 
-#: functions.php:3245 functions.php:3955 functions.php:5661
+#: functions.php:3245 functions.php:3955 functions.php:5668
 msgid "Apply"
 msgstr "Apply"
 
-#: functions.php:3370 functions.php:5160
+#: functions.php:3370 functions.php:5167
 msgid "Details"
 msgstr "Details"
 
-#: functions.php:3496 functions.php:5219
+#: functions.php:3482 functions.php:5212
+msgid "Partner"
+msgstr "Partner"
+
+#: functions.php:3496 functions.php:5226
 msgid "Take Me There"
 msgstr "Take Me There"
 
@@ -608,8 +612,8 @@ msgstr "Frequently Asked Questions"
 msgid "Current Insider Trips"
 msgstr "Current Insider Trips"
 
-#: functions.php:3621 functions.php:4098 functions.php:5327 functions.php:5661
-#: functions.php:6464 functions.php:6925 functions.php:6993 functions.php:8935
+#: functions.php:3621 functions.php:4098 functions.php:5334 functions.php:5668
+#: functions.php:6471 functions.php:6932 functions.php:7000 functions.php:8942
 #: includes/search-destination.php:28
 msgid "Read More"
 msgstr "Read More"
@@ -642,7 +646,7 @@ msgstr "Careers"
 msgid "General Inquiry"
 msgstr "General Inquiry"
 
-#: functions.php:3962 functions.php:5670
+#: functions.php:3962 functions.php:5677
 msgid "Apply Now"
 msgstr "Apply Now"
 
@@ -654,15 +658,15 @@ msgstr "Contact Apply Now General"
 msgid "Connect with Indagare"
 msgstr "Connect with Indagare"
 
-#: functions.php:3974 functions.php:8100
+#: functions.php:3974 functions.php:8107
 msgid "facebook"
 msgstr "facebook"
 
-#: functions.php:3974 functions.php:8100
+#: functions.php:3974 functions.php:8107
 msgid "twitter"
 msgstr "twitter"
 
-#: functions.php:3974 functions.php:8100
+#: functions.php:3974 functions.php:8107
 msgid "instagram"
 msgstr "instagram"
 
@@ -670,31 +674,31 @@ msgstr "instagram"
 msgid "linkedin"
 msgstr "linkedin"
 
-#: functions.php:3995 functions.php:4500 functions.php:7102
+#: functions.php:3995 functions.php:4500 functions.php:7109
 msgid "Book Hotels"
 msgstr "Book Hotels"
 
-#: functions.php:3996 functions.php:4501 functions.php:5806 functions.php:7103
+#: functions.php:3996 functions.php:4501 functions.php:5813 functions.php:7110
 msgid "Book Flights"
 msgstr "Book Flights"
 
-#: functions.php:4000 functions.php:4505 functions.php:5810 functions.php:7107
+#: functions.php:4000 functions.php:4505 functions.php:5817 functions.php:7114
 msgid "Destination or Hotel"
 msgstr "Destination or Hotel"
 
-#: functions.php:4004 functions.php:4509 functions.php:5814 functions.php:7111
+#: functions.php:4004 functions.php:4509 functions.php:5821 functions.php:7118
 msgid "Check In (optional)"
 msgstr "Check In (optional)"
 
-#: functions.php:4006 functions.php:4510 functions.php:5815 functions.php:7113
+#: functions.php:4006 functions.php:4510 functions.php:5822 functions.php:7120
 msgid "Check Out (optional)"
 msgstr "Check Out (optional)"
 
-#: functions.php:4010 functions.php:4513 functions.php:5818 functions.php:7117
+#: functions.php:4010 functions.php:4513 functions.php:5825 functions.php:7124
 msgid "Find Rooms"
 msgstr "Find Rooms"
 
-#: functions.php:4015 functions.php:7123
+#: functions.php:4015 functions.php:7130
 #, php-format
 msgid "Or view all hotels in %s"
 msgstr "Or view all hotels in %s"
@@ -715,15 +719,15 @@ msgstr "Lay of the Land"
 msgid "Destination Guides"
 msgstr "Destination Guides"
 
-#: functions.php:4187 functions.php:4843
+#: functions.php:4187 functions.php:4850
 msgid "Hotels"
 msgstr "Hotels"
 
-#: functions.php:4188 functions.php:4847
+#: functions.php:4188 functions.php:4854
 msgid "Restaurants"
 msgstr "Restaurants"
 
-#: functions.php:4189 functions.php:4851
+#: functions.php:4189 functions.php:4858
 msgid "Shops"
 msgstr "Shops"
 
@@ -751,156 +755,152 @@ msgstr "View All Results"
 msgid "Members-Only Content"
 msgstr "Members-Only Content"
 
-#: functions.php:4577 functions.php:4957 functions.php:5006 functions.php:5738
-#: functions.php:7590 functions.php:7592 functions.php:7615 functions.php:7617
-#: functions.php:7667 functions.php:7669 functions.php:7691 functions.php:7961
+#: functions.php:4577 functions.php:4964 functions.php:5013 functions.php:5745
+#: functions.php:7597 functions.php:7599 functions.php:7622 functions.php:7624
+#: functions.php:7674 functions.php:7676 functions.php:7698 functions.php:7968
 #: includes/last_viewed_posts.php:171
 msgid "Related"
 msgstr "Related"
 
-#: functions.php:4677
+#: functions.php:4684
 msgid "Featured Destination Partners:"
 msgstr "Featured Destination Partners:"
 
-#: functions.php:4733 functions.php:5201 functions.php:7359
+#: functions.php:4740 functions.php:5208 functions.php:7366
 msgid "Destination Partner"
 msgstr "Destination Partner"
 
-#: functions.php:4792
+#: functions.php:4799
 #, php-format
 msgid "Back to %s Listings for %s, %s"
 msgstr "Back to %s Listings for %s, %s"
 
-#: functions.php:4805 functions.php:5016
+#: functions.php:4812 functions.php:5023
 msgid "Plus"
 msgstr "Plus"
 
-#: functions.php:4808 functions.php:5019
+#: functions.php:4815 functions.php:5026
 msgid "Picks"
 msgstr "Picks"
 
-#: functions.php:4811 functions.php:5022
+#: functions.php:4818 functions.php:5029
 msgid "Adored"
 msgstr "Adored"
 
-#: functions.php:4840
+#: functions.php:4847
 msgid "What's Nearby:"
 msgstr "What's Nearby:"
 
-#: functions.php:4855
+#: functions.php:4862
 msgid "Sights"
 msgstr "Sights"
 
-#: functions.php:4938 functions.php:7506
+#: functions.php:4945 functions.php:7513
 msgid "Also Recommended"
 msgstr "Also Recommended"
 
-#: functions.php:5041
+#: functions.php:5048
 msgid "Review and Rates"
 msgstr "Review and Rates"
 
-#: functions.php:5043
+#: functions.php:5050
 msgid "Read more"
 msgstr "Read more"
 
-#: functions.php:5059
+#: functions.php:5066
 msgid "Back to Partner Promotions"
 msgstr "Back to Partner Promotions"
 
-#: functions.php:5066 functions.php:5143 functions.php:5145
+#: functions.php:5073 functions.php:5150 functions.php:5152
 msgid "Seasonal Partner"
 msgstr "Seasonal Partner"
 
-#: functions.php:5205
-msgid "Partner"
-msgstr "Partner"
-
-#: functions.php:5232
+#: functions.php:5239
 msgid "Back to Insider Trips"
 msgstr "Back to Insider Trips"
 
-#: functions.php:5240
+#: functions.php:5247
 msgid "Inquire Now"
 msgstr "Inquire Now"
 
-#: functions.php:5444 functions.php:5502
+#: functions.php:5451 functions.php:5509
 msgid "View PDF"
 msgstr "View PDF"
 
-#: functions.php:5473
+#: functions.php:5480
 msgid "Magazine"
 msgstr "Magazine"
 
-#: functions.php:5483
+#: functions.php:5490
 msgid "View this issue"
 msgstr "View this issue"
 
-#: functions.php:5489
+#: functions.php:5496
 msgid "Join today to see this issue"
 msgstr "Join today to see this issue"
 
-#: functions.php:5495
+#: functions.php:5502
 msgid "Upgrade today to see this issue"
 msgstr "Upgrade today to see this issue"
 
-#: functions.php:5506
+#: functions.php:5513
 msgid "Current Issue:"
 msgstr "Current Issue:"
 
-#: functions.php:5674
+#: functions.php:5681
 msgid "Contact Apply Now"
 msgstr "Contact Apply Now"
 
-#: functions.php:5927 functions.php:7762
+#: functions.php:5934 functions.php:7769
 msgid "Interest"
 msgstr "Interest"
 
-#: functions.php:5978
+#: functions.php:5985
 msgid "From"
 msgstr "From"
 
-#: functions.php:6109 functions.php:6202 functions.php:6262 functions.php:6430
+#: functions.php:6116 functions.php:6209 functions.php:6269 functions.php:6437
 msgid "Question about Indagare?"
 msgstr "Question about Indagare?"
 
-#: functions.php:6110 functions.php:6203 functions.php:6263 functions.php:6431
-#: functions.php:8574 template-modal-contact.php:8
+#: functions.php:6117 functions.php:6210 functions.php:6270 functions.php:6438
+#: functions.php:8581 template-modal-contact.php:8
 msgid "Contact Us"
 msgstr "Contact Us"
 
-#: functions.php:6110 functions.php:6203 functions.php:6263 functions.php:6431
+#: functions.php:6117 functions.php:6210 functions.php:6270 functions.php:6438
 msgid "<a href=\"tel:+12129882611\">212-988-2611</a>"
 msgstr "<a href=\"tel:+12129882611\">212-988-2611</a>"
 
-#: functions.php:6110 functions.php:6203 functions.php:6263 functions.php:6431
+#: functions.php:6117 functions.php:6210 functions.php:6270 functions.php:6438
 msgid "<a href=\"mailto:membership@indagare.com\">membership@indagare.com</a>"
 msgstr "<a href=\"mailto:membership@indagare.com\">membership@indagare.com</a>"
 
-#: functions.php:6128
+#: functions.php:6135
 msgid "Contact"
 msgstr "Contact"
 
-#: functions.php:6332
+#: functions.php:6339
 msgid "What We Do Best"
 msgstr "What We Do Best"
 
-#: functions.php:6405
+#: functions.php:6412
 msgid "The Indagare Advantage"
 msgstr "The Indagare Advantage"
 
-#: functions.php:6441 functions.php:6970
+#: functions.php:6448 functions.php:6977
 msgid "Getting Started"
 msgstr "Getting Started"
 
-#: functions.php:6474 functions.php:7005
+#: functions.php:6481 functions.php:7012
 msgid "Popular Destinations"
 msgstr "Popular Destinations"
 
-#: functions.php:6539
+#: functions.php:6546
 msgid "Indagare"
 msgstr "Indagare"
 
-#: functions.php:6638 includes/first-visit.php:70
+#: functions.php:6645 includes/first-visit.php:70
 msgid ""
 "Enter the new Indagare now &#8211; pick an article to experience the "
 "Indagare redesign:"
@@ -908,70 +908,70 @@ msgstr ""
 "Enter the new Indagare now &#8211; pick an article to experience the "
 "Indagare redesign:"
 
-#: functions.php:6667 functions.php:6681
+#: functions.php:6674 functions.php:6688
 msgid "You need to log in to see this page."
 msgstr "You need to log in to see this page."
 
-#: functions.php:6754
+#: functions.php:6761
 msgid "Email"
 msgstr "Email"
 
-#: functions.php:6755
+#: functions.php:6762
 msgid "Your email"
 msgstr "Your email"
 
-#: functions.php:6760
+#: functions.php:6767
 msgid "Submit Request"
 msgstr "Submit Request"
 
-#: functions.php:6778 functions.php:6779 functions.php:8203
+#: functions.php:6785 functions.php:6786 functions.php:8210
 #: template-page-user-site-invite.php:111
 msgid "Username"
 msgstr "Username"
 
-#: functions.php:6782 functions.php:6783 functions.php:8208 functions.php:8275
-#: functions.php:8364 functions.php:8396
+#: functions.php:6789 functions.php:6790 functions.php:8215 functions.php:8282
+#: functions.php:8371 functions.php:8403
 #: template-page-user-site-invite.php:117
 msgid "Password"
 msgstr "Password"
 
-#: functions.php:6914
+#: functions.php:6921
 msgid "team member"
 msgstr "team member"
 
-#: functions.php:6919
+#: functions.php:6926
 msgid "Recently Visited"
 msgstr "Recently Visited"
 
-#: functions.php:7378
+#: functions.php:7385
 msgid "The Buzz"
 msgstr "The Buzz"
 
-#: functions.php:7379
+#: functions.php:7386
 msgid "Subscribe to our free e-Newsletter for current travel news and tips."
 msgstr "Subscribe to our free e-Newsletter for current travel news and tips."
 
-#: functions.php:7401
+#: functions.php:7408
 msgid "Indagare Plus"
 msgstr "Indagare Plus"
 
-#: functions.php:7408
+#: functions.php:7415
 msgid "Indagare Picks"
 msgstr "Indagare Picks"
 
-#: functions.php:7415
+#: functions.php:7422
 msgid "Indagare Adored"
 msgstr "Indagare Adored"
 
-#: functions.php:7422
+#: functions.php:7429
 msgid "Indagare Partner Promotions"
 msgstr "Indagare Partner Promotions"
 
-#: functions.php:7444
+#: functions.php:7451
 msgid "Insider Trip"
 msgstr "Insider Trip"
 
-#: functions.php:7445
+#: functions.php:7452
 msgid ""
 "Immersive, small-group journeys designed by Indagare founder Melissa Biggs "
 "Bradley to some of the world&rsquo;s inspiring destinations."
@@ -979,78 +979,78 @@ msgstr ""
 "Immersive, small-group journeys designed by Indagare founder Melissa Biggs "
 "Bradley to some of the world&rsquo;s inspiring destinations."
 
-#: functions.php:7461
+#: functions.php:7468
 msgid "insider trip"
 msgstr "insider trip"
 
-#: functions.php:7462
+#: functions.php:7469
 #, php-format
 msgid "See the insider trip for %s"
 msgstr "See the insider trip for %s"
 
-#: functions.php:7581 functions.php:7658
+#: functions.php:7588 functions.php:7665
 #, php-format
 msgid "%s is Currently Scouting"
 msgstr "%s is Currently Scouting"
 
-#: functions.php:7606 functions.php:7683
+#: functions.php:7613 functions.php:7690
 #, php-format
 msgid "%s Recently Visited"
 msgstr "%s Recently Visited"
 
-#: functions.php:7652
+#: functions.php:7659
 msgid "Melissa"
 msgstr "Melissa"
 
-#: functions.php:7754
+#: functions.php:7761
 msgid "Column"
 msgstr "Column"
 
-#: functions.php:7786
+#: functions.php:7793
 msgid "Quotable"
 msgstr "Quotable"
 
-#: functions.php:7800
+#: functions.php:7807
 msgid "Related Hotels"
 msgstr "Related Hotels"
 
-#: functions.php:7855
+#: functions.php:7862
 msgid "Beyond&hellip;"
 msgstr "Beyond&hellip;"
 
-#: functions.php:7855
+#: functions.php:7862
 msgid "Consider combining your trip with one of these destinations."
 msgstr "Consider combining your trip with one of these destinations."
 
-#: functions.php:7918
+#: functions.php:7925
 msgid "Recent Articles"
 msgstr "Recent Articles"
 
-#: functions.php:7918
+#: functions.php:7925
 msgid "View All Articles"
 msgstr "View All Articles"
 
-#: functions.php:7921 functions.php:7924
+#: functions.php:7928 functions.php:7931
 msgid "Related Articles"
 msgstr "Related Articles"
 
-#: functions.php:7921 functions.php:7924
+#: functions.php:7928 functions.php:7931
 msgid "View All Related Articles"
 msgstr "View All Related Articles"
 
-#: functions.php:8002
+#: functions.php:8009
 msgid "Recently Viewed"
 msgstr "Recently Viewed"
 
-#: functions.php:8044
+#: functions.php:8051
 msgid "Become an Indagare Member Today"
 msgstr "Become an Indagare Member Today"
 
-#: functions.php:8045
+#: functions.php:8052
 msgid "or sign in"
 msgstr "or sign in"
 
-#: functions.php:8057
+#: functions.php:8064
 msgid ""
 "Indagare <span class=\"gray\">(in&bull;da&bull;ga&bull;re) <em>verb (latin)."
 "</span> To discover, explore, seek, scout.</em>"
@@ -1058,52 +1058,52 @@ msgstr ""
 "Indagare <span class=\"gray\">(in&bull;da&bull;ga&bull;re) <em>verb (latin)."
 "</span> To discover, explore, seek, scout.</em>"
 
-#: functions.php:8084
+#: functions.php:8091
 msgid "Newsletter"
 msgstr "Newsletter"
 
-#: functions.php:8085
+#: functions.php:8092
 msgid "Receive our free email newsletter full of travel news, tips and advice."
 msgstr ""
 "Receive our free email newsletter full of travel news, tips and advice."
 
-#: functions.php:8090
+#: functions.php:8097
 msgid "Connect"
 msgstr "Connect"
 
-#: functions.php:8093
+#: functions.php:8100
 msgid "950 Third Avenue"
 msgstr "950 Third Avenue"
 
-#: functions.php:8094
+#: functions.php:8101
 msgid "New York"
 msgstr "New York"
 
-#: functions.php:8094
+#: functions.php:8101
 msgid "NY"
 msgstr "NY"
 
-#: functions.php:8094
+#: functions.php:8101
 msgid "10022"
 msgstr "10022"
 
-#: functions.php:8096
+#: functions.php:8103
 msgid "(212) 988-2611"
 msgstr "(212) 988-2611"
 
-#: functions.php:8097
+#: functions.php:8104
 msgid "Email Us"
 msgstr "Email Us"
 
-#: functions.php:8104
+#: functions.php:8111
 msgid "Membership"
 msgstr "Membership"
 
-#: functions.php:8111
+#: functions.php:8118
 msgid "About"
 msgstr "About"
 
-#: functions.php:8119
+#: functions.php:8126
 msgid ""
 "Indagare Travel, Inc. All rights reserved. Use of this site constitutes "
 "acceptance of our"
@@ -1111,75 +1111,75 @@ msgstr ""
 "Indagare Travel, Inc. All rights reserved. Use of this site constitutes "
 "acceptance of our"
 
-#: functions.php:8119 functions.php:8164
+#: functions.php:8126 functions.php:8171
 msgid "Terms of Use"
 msgstr "Terms of Use"
 
-#: functions.php:8119 functions.php:8164
+#: functions.php:8126 functions.php:8171
 msgid "and"
 msgstr "and"
 
-#: functions.php:8119 functions.php:8164
+#: functions.php:8126 functions.php:8171
 msgid "Privacy Policy"
 msgstr "Privacy Policy"
 
-#: functions.php:8154
+#: functions.php:8161
 msgid "Welcome!"
 msgstr "Welcome!"
 
-#: functions.php:8155
-msgid ""
-"Please share your email to continue reading some of Indagare's latest travel "
-"stories and destination guides."
-msgstr ""
-"Please share your email to continue reading some of Indagare's latest travel "
-"stories and destination guides."
-
 #: functions.php:8162
 msgid ""
+"Please share your email to continue reading some of Indagare's latest travel "
+"stories and destination guides."
+msgstr ""
+"Please share your email to continue reading some of Indagare's latest travel "
+"stories and destination guides."
+
+#: functions.php:8169
+msgid ""
 "You will receive our free e-Newsletter full of travel news and insider "
 "recommendations."
 msgstr ""
 "You will receive our free e-Newsletter full of travel news and insider "
 "recommendations."
 
-#: functions.php:8164
+#: functions.php:8171
 msgid "By clicking \"Submit,\" you accept our"
 msgstr "By clicking \"Submit,\" you accept our"
 
-#: functions.php:8166 functions.php:8194
+#: functions.php:8173 functions.php:8201
 msgid "Member Login"
 msgstr "Member Login"
 
-#: functions.php:8167
+#: functions.php:8174
 msgid "Already a member? Please"
 msgstr "Already a member? Please"
 
-#: functions.php:8167
+#: functions.php:8174
 msgid "log in"
 msgstr "log in"
 
-#: functions.php:8204 functions.php:8270 functions.php:8359 functions.php:8391
+#: functions.php:8211 functions.php:8277 functions.php:8366 functions.php:8398
 msgid "Your username"
 msgstr "Your username"
 
-#: functions.php:8209 functions.php:8277 functions.php:8366 functions.php:8398
+#: functions.php:8216 functions.php:8284 functions.php:8373 functions.php:8405
 msgid "Your password"
 msgstr "Your password"
 
-#: functions.php:8214
+#: functions.php:8221
 msgid "Submit"
 msgstr "Submit"
 
-#: functions.php:8215 functions.php:8282 functions.php:8371 functions.php:8403
+#: functions.php:8222 functions.php:8289 functions.php:8378 functions.php:8410
 msgid "Forgot Password"
 msgstr "Forgot Password"
 
-#: functions.php:8234 functions.php:8304
+#: functions.php:8241 functions.php:8311
 msgid "Sorry!"
 msgstr "Sorry!"
 
-#: functions.php:8235
+#: functions.php:8242
 msgid ""
 "You've exceeded the amount of content available to non-paying members. We "
 "would love to have you as part of our community.\n"
@@ -1191,17 +1191,17 @@ msgstr ""
 "\t\tIf you're not ready to join, <a href=\"/\">return to our hotel reviews</"
 "a> &#8212; these are available to everyone."
 
-#: functions.php:8239
+#: functions.php:8246
 msgid "Why Join?"
 msgstr "Why Join?"
 
-#: functions.php:8242 functions.php:8312
+#: functions.php:8249 functions.php:8319
 msgid ""
 "To enjoy unlimited access to the online content and our Black Book magazines."
 msgstr ""
 "To enjoy unlimited access to the online content and our Black Book magazines."
 
-#: functions.php:8243 functions.php:8313
+#: functions.php:8250 functions.php:8320
 msgid ""
 "To receive special rates &amp; amenities at hundreds of hotels and resorts "
 "worldwide."
@@ -1209,23 +1209,23 @@ msgstr ""
 "To receive special rates &amp; amenities at hundreds of hotels and resorts "
 "worldwide."
 
-#: functions.php:8244 functions.php:8314
+#: functions.php:8251 functions.php:8321
 msgid "To benefit from customized trip planning from our expert team."
 msgstr "To benefit from customized trip planning from our expert team."
 
-#: functions.php:8245 functions.php:8315
+#: functions.php:8252 functions.php:8322
 msgid "To gain access to Insider Trips, events and more."
 msgstr "To gain access to Insider Trips, events and more."
 
-#: functions.php:8247 functions.php:8317
+#: functions.php:8254 functions.php:8324
 msgid "Learn More"
 msgstr "Learn More"
 
-#: functions.php:8251 functions.php:8258 includes/first-visit.php:94
+#: functions.php:8258 functions.php:8265 includes/first-visit.php:94
 msgid "Join Now"
 msgstr "Join Now"
 
-#: functions.php:8254 functions.php:8324
+#: functions.php:8261 functions.php:8331
 msgid ""
 "Four levels of membership designed for everyone from the leisure traveler to "
 "the corporate client."
@@ -1233,7 +1233,7 @@ msgstr ""
 "Four levels of membership designed for everyone from the leisure traveler to "
 "the corporate client."
 
-#: functions.php:8255 functions.php:8325
+#: functions.php:8262 functions.php:8332
 msgid ""
 "Savings on just one hotel booking usually surpass the cost of a basic "
 "membership thanks to special rates."
@@ -1241,7 +1241,7 @@ msgstr ""
 "Savings on just one hotel booking usually surpass the cost of a basic "
 "membership thanks to special rates."
 
-#: functions.php:8256
+#: functions.php:8263
 msgid ""
 "Skip the application and become a member now by using the Referral Code: "
 "<strong>IndagareTravel</strong>."
@@ -1249,23 +1249,23 @@ msgstr ""
 "Skip the application and become a member now by using the Referral Code: "
 "<strong>IndagareTravel</strong>."
 
-#: functions.php:8262
+#: functions.php:8269
 msgid "Already a Member?"
 msgstr "Already a Member?"
 
-#: functions.php:8268 functions.php:8357 functions.php:8389
+#: functions.php:8275 functions.php:8364 functions.php:8396
 msgid "Username or Email"
 msgstr "Username or Email"
 
-#: functions.php:8281
+#: functions.php:8288
 msgid "Login"
 msgstr "Login"
 
-#: functions.php:8292
+#: functions.php:8299
 msgid "Sign Up: Travel Newsletter"
 msgstr "Sign Up: Travel Newsletter"
 
-#: functions.php:8293
+#: functions.php:8300
 msgid ""
 "Receive our free, bimonthly e-Newsletter full of travel stories, reviews and "
 "insider recommendations."
@@ -1273,7 +1273,7 @@ msgstr ""
 "Receive our free, bimonthly e-Newsletter full of travel stories, reviews and "
 "insider recommendations."
 
-#: functions.php:8305
+#: functions.php:8312
 msgid ""
 "You've exceeded the amount of content available to non-paying members. We "
 "would love to have you as part of our community.\n"
@@ -1285,19 +1285,19 @@ msgstr ""
 "\t\tIf you're not ready to renew your membership, <a href=\"/\">return to "
 "our hotel reviews</a> &#8212; these are available to everyone."
 
-#: functions.php:8309
+#: functions.php:8316
 msgid "Why Renew?"
 msgstr "Why Renew?"
 
-#: functions.php:8321
+#: functions.php:8328
 msgid "Renew or Upgrade Now"
 msgstr "Renew or Upgrade Now"
 
-#: functions.php:8338
+#: functions.php:8345
 msgid "Book as a Guest"
 msgstr "Book as a Guest"
 
-#: functions.php:8340
+#: functions.php:8347
 msgid ""
 "You are about to check room availability as a guest. If you would like to "
 "take advantage of our member rates and benefits, please <a href=\"/join/"
@@ -1307,15 +1307,15 @@ msgstr ""
 "take advantage of our member rates and benefits, please <a href=\"/join/"
 "\">join Indagare now</a>."
 
-#: functions.php:8344
+#: functions.php:8351
 msgid "Book Now"
 msgstr "Book Now"
 
-#: functions.php:8350 functions.php:8383
+#: functions.php:8357 functions.php:8390
 msgid "Book as a Member"
 msgstr "Book as a Member"
 
-#: functions.php:8352
+#: functions.php:8359
 msgid ""
 "Sign in to be able to book the best rates and amenities available only to "
 "Indagare members. If you do not see the special Indagare plus rates, contact "
@@ -1325,15 +1325,15 @@ msgstr ""
 "Indagare members. If you do not see the special Indagare plus rates, contact "
 "our <a href=\"/contact/\">Bookings Team</a>."
 
-#: functions.php:8370 functions.php:8402
+#: functions.php:8377 functions.php:8409
 msgid "Sign In"
 msgstr "Sign In"
 
-#: functions.php:8422
+#: functions.php:8429
 msgid "Thank you for applying for Indagare membership"
 msgstr "Thank you for applying for Indagare membership"
 
-#: functions.php:8425
+#: functions.php:8432
 msgid ""
 "Thank you for submitting an application to Indagare. We appreciate your "
 "interest in joining our community and will respond to you shortly."
@@ -1341,11 +1341,11 @@ msgstr ""
 "Thank you for submitting an application to Indagare. We appreciate your "
 "interest in joining our community and will respond to you shortly."
 
-#: functions.php:8431
+#: functions.php:8438
 msgid "Payment Error"
 msgstr "Payment Error"
 
-#: functions.php:8434
+#: functions.php:8441
 msgid ""
 "There was an error verifying your credit card information for payment. "
 "Please go to the <a href=\"/account#billing-tab\">Billing section</a> of "
@@ -1355,11 +1355,11 @@ msgstr ""
 "Please go to the <a href=\"/account#billing-tab\">Billing section</a> of "
 "your account, and try processing your payment again."
 
-#: functions.php:8441
+#: functions.php:8448
 msgid "Thank you for joining Indagare"
 msgstr "Thank you for joining Indagare"
 
-#: functions.php:8444 functions.php:8493
+#: functions.php:8451 functions.php:8500
 msgid ""
 "Here's your new membership information for your records. A confirmation "
 "message has been sent to the email in your account."
@@ -1367,47 +1367,47 @@ msgstr ""
 "Here's your new membership information for your records. A confirmation "
 "message has been sent to the email in your account."
 
-#: functions.php:8446
+#: functions.php:8453
 msgid "Member Name"
 msgstr "Member Name"
 
-#: functions.php:8447 functions.php:8496
+#: functions.php:8454 functions.php:8503
 msgid "Membership Level"
 msgstr "Membership Level"
 
-#: functions.php:8448 functions.php:8498
+#: functions.php:8455 functions.php:8505
 msgid "Duration"
 msgstr "Duration"
 
-#: functions.php:8449 functions.php:8497
+#: functions.php:8456 functions.php:8504
 msgid "Price"
 msgstr "Price"
 
-#: functions.php:8450 functions.php:8495
+#: functions.php:8457 functions.php:8502
 msgid "Signup Date"
 msgstr "Signup Date"
 
-#: functions.php:8451
+#: functions.php:8458
 msgid "Valid Through"
 msgstr "Valid Through"
 
-#: functions.php:8452 functions.php:8500
+#: functions.php:8459 functions.php:8507
 msgid "Payment Using Credit Card Ending In"
 msgstr "Payment Using Credit Card Ending In"
 
-#: functions.php:8453 functions.php:8501
+#: functions.php:8460 functions.php:8508
 msgid "Transaction Code"
 msgstr "Transaction Code"
 
-#: functions.php:8455 functions.php:8503
+#: functions.php:8462 functions.php:8510
 msgid "Continue"
 msgstr "Continue"
 
-#: functions.php:8466
+#: functions.php:8473
 msgid "Account Error"
 msgstr "Account Error"
 
-#: functions.php:8469
+#: functions.php:8476
 msgid ""
 "There was an error creating your account. Please call customer support at <a "
 "href=\"tel:+12129882611\">212-988-2611</a> and reference the following error:"
@@ -1415,11 +1415,11 @@ msgstr ""
 "There was an error creating your account. Please call customer support at <a "
 "href=\"tel:+12129882611\">212-988-2611</a> and reference the following error:"
 
-#: functions.php:8481
+#: functions.php:8488
 msgid "Credit Card Payment Error"
 msgstr "Credit Card Payment Error"
 
-#: functions.php:8484
+#: functions.php:8491
 msgid ""
 "There was an error verifying your credit card information for payment. "
 "Please check the information that you entered and try again."
@@ -1427,77 +1427,77 @@ msgstr ""
 "There was an error verifying your credit card information for payment. "
 "Please check the information that you entered and try again."
 
-#: functions.php:8490
+#: functions.php:8497
 msgid "Thank you for renewing your membership with Indagare"
 msgstr "Thank you for renewing your membership with Indagare"
 
-#: functions.php:8499
+#: functions.php:8506
 msgid "Cardholder Name"
 msgstr "Cardholder Name"
 
-#: functions.php:8526
+#: functions.php:8533
 msgid "Contact the Indagare Team"
 msgstr "Contact the Indagare Team"
 
-#: functions.php:8532
+#: functions.php:8539
 msgid "Contact Booking Detailed"
 msgstr "Contact Booking Detailed"
 
-#: functions.php:8549
+#: functions.php:8556
 msgid "Share This Page"
 msgstr "Share This Page"
 
-#: functions.php:8557
+#: functions.php:8564
 msgid "Contact Tell a Friend"
 msgstr "Contact Tell a Friend"
 
-#: functions.php:8580
+#: functions.php:8587
 msgid "Contact Insider Trips"
 msgstr "Contact Insider Trips"
 
-#: functions.php:8935
+#: functions.php:8942
 msgid "Read Less"
 msgstr "Read Less"
 
-#: functions.php:9163
+#: functions.php:9170
 msgid "Booking ID"
 msgstr "Booking ID"
 
-#: functions.php:9313
+#: functions.php:9320
 msgid "All "
 msgstr "All "
 
-#: functions.php:9737
+#: functions.php:9744
 msgid "<strong>ERROR</strong>: Invalid username or email."
 msgstr "<strong>ERROR</strong>: Invalid username or email."
 
-#: functions.php:9750
+#: functions.php:9757
 msgid "Someone has requested a password reset for the following account:"
 msgstr "Someone has requested a password reset for the following account:"
 
-#: functions.php:9752
+#: functions.php:9759
 #, php-format
 msgid "Username: %s"
 msgstr "Username: %s"
 
-#: functions.php:9753
+#: functions.php:9760
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr "If this was a mistake, just ignore this email and nothing will happen."
 
-#: functions.php:9754
+#: functions.php:9761
 msgid "To reset your password, visit the following address:"
 msgstr "To reset your password, visit the following address:"
 
-#: functions.php:9767
+#: functions.php:9774
 #, php-format
 msgid "[%s] Password Reset"
 msgstr "[%s] Password Reset"
 
-#: functions.php:9795
+#: functions.php:9802
 msgid "The email could not be sent."
 msgstr "The email could not be sent."
 
-#: functions.php:9795
+#: functions.php:9802
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr "Possible reason: your host may have disabled the mail() function."
 
