@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-09 18:01-0600\n"
+"POT-Creation-Date: 2016-11-09 18:57-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -260,7 +260,7 @@ msgstr ""
 msgid "Upgrade Now"
 msgstr ""
 
-#: functions.php:1053
+#: functions.php:1053 functions.php:8327
 msgid "Renew Now"
 msgstr ""
 
@@ -408,7 +408,7 @@ msgid "Log In"
 msgstr ""
 
 #: functions.php:1766 functions.php:2815 functions.php:5978 functions.php:6182
-#: functions.php:6253 functions.php:6330 functions.php:8045
+#: functions.php:6253 functions.php:6330 functions.php:8045 functions.php:8404
 #: render-memberlevel.tpl.php:6
 msgid "Join"
 msgstr ""
@@ -580,7 +580,7 @@ msgid "Current Insider Trips"
 msgstr ""
 
 #: functions.php:3621 functions.php:4098 functions.php:5327 functions.php:5661
-#: functions.php:6464 functions.php:6925 functions.php:6993 functions.php:8937
+#: functions.php:6464 functions.php:6925 functions.php:6993 functions.php:8935
 #: includes/search-destination.php:28
 msgid "Read More"
 msgstr ""
@@ -615,6 +615,10 @@ msgstr ""
 
 #: functions.php:3962 functions.php:5670
 msgid "Apply Now"
+msgstr ""
+
+#: functions.php:3966
+msgid "Contact Apply Now General"
 msgstr ""
 
 #: functions.php:3971
@@ -814,6 +818,10 @@ msgstr ""
 msgid "Current Issue:"
 msgstr ""
 
+#: functions.php:5674
+msgid "Contact Apply Now"
+msgstr ""
+
 #: functions.php:5927 functions.php:7762
 msgid "Interest"
 msgstr ""
@@ -827,7 +835,7 @@ msgid "Question about Indagare?"
 msgstr ""
 
 #: functions.php:6110 functions.php:6203 functions.php:6263 functions.php:6431
-#: template-modal-contact.php:8
+#: functions.php:8574 template-modal-contact.php:8
 msgid "Contact Us"
 msgstr ""
 
@@ -837,6 +845,10 @@ msgstr ""
 
 #: functions.php:6110 functions.php:6203 functions.php:6263 functions.php:6431
 msgid "<a href=\"mailto:membership@indagare.com\">membership@indagare.com</a>"
+msgstr ""
+
+#: functions.php:6128
+msgid "Contact"
 msgstr ""
 
 #: functions.php:6332
@@ -881,12 +893,13 @@ msgstr ""
 msgid "Submit Request"
 msgstr ""
 
-#: functions.php:6778 functions.php:6779
+#: functions.php:6778 functions.php:6779 functions.php:8203
 #: template-page-user-site-invite.php:111
 msgid "Username"
 msgstr ""
 
-#: functions.php:6782 functions.php:6783
+#: functions.php:6782 functions.php:6783 functions.php:8208 functions.php:8275
+#: functions.php:8364 functions.php:8396
 #: template-page-user-site-invite.php:117
 msgid "Password"
 msgstr ""
@@ -1060,61 +1073,353 @@ msgid ""
 "acceptance of our"
 msgstr ""
 
-#: functions.php:8119
+#: functions.php:8119 functions.php:8164
 msgid "Terms of Use"
 msgstr ""
 
-#: functions.php:8119
+#: functions.php:8119 functions.php:8164
 msgid "and"
 msgstr ""
 
-#: functions.php:8119
+#: functions.php:8119 functions.php:8164
 msgid "Privacy Policy"
 msgstr ""
 
-#: functions.php:8937
+#: functions.php:8154
+msgid "Welcome!"
+msgstr ""
+
+#: functions.php:8155
+msgid ""
+"Please share your email to continue reading some of Indagare's latest travel "
+"stories and destination guides."
+msgstr ""
+
+#: functions.php:8162
+msgid ""
+"You will receive our free e-Newsletter full of travel news and insider "
+"recommendations."
+msgstr ""
+
+#: functions.php:8164
+msgid "By clicking \"Submit,\" you accept our"
+msgstr ""
+
+#: functions.php:8166 functions.php:8194
+msgid "Member Login"
+msgstr ""
+
+#: functions.php:8167
+msgid "Already a member? Please"
+msgstr ""
+
+#: functions.php:8167
+msgid "log in"
+msgstr ""
+
+#: functions.php:8204 functions.php:8270 functions.php:8359 functions.php:8391
+msgid "Your username"
+msgstr ""
+
+#: functions.php:8209 functions.php:8277 functions.php:8366 functions.php:8398
+msgid "Your password"
+msgstr ""
+
+#: functions.php:8214
+msgid "Submit"
+msgstr ""
+
+#: functions.php:8215 functions.php:8282 functions.php:8371 functions.php:8403
+msgid "Forgot Password"
+msgstr ""
+
+#: functions.php:8234 functions.php:8304
+msgid "Sorry!"
+msgstr ""
+
+#: functions.php:8235
+msgid ""
+"You've exceeded the amount of content available to non-paying members. We "
+"would love to have you as part of our community.\n"
+"\t\tIf you're not ready to join, <a href=\"/\">return to our hotel reviews</"
+"a> &#8212; these are available to everyone."
+msgstr ""
+
+#: functions.php:8239
+msgid "Why Join?"
+msgstr ""
+
+#: functions.php:8242 functions.php:8312
+msgid ""
+"To enjoy unlimited access to the online content and our Black Book magazines."
+msgstr ""
+
+#: functions.php:8243 functions.php:8313
+msgid ""
+"To receive special rates &amp; amenities at hundreds of hotels and resorts "
+"worldwide."
+msgstr ""
+
+#: functions.php:8244 functions.php:8314
+msgid "To benefit from customized trip planning from our expert team."
+msgstr ""
+
+#: functions.php:8245 functions.php:8315
+msgid "To gain access to Insider Trips, events and more."
+msgstr ""
+
+#: functions.php:8247 functions.php:8317
+msgid "Learn More"
+msgstr ""
+
+#: functions.php:8251 functions.php:8258 includes/first-visit.php:94
+msgid "Join Now"
+msgstr ""
+
+#: functions.php:8254 functions.php:8324
+msgid ""
+"Four levels of membership designed for everyone from the leisure traveler to "
+"the corporate client."
+msgstr ""
+
+#: functions.php:8255 functions.php:8325
+msgid ""
+"Savings on just one hotel booking usually surpass the cost of a basic "
+"membership thanks to special rates."
+msgstr ""
+
+#: functions.php:8256
+msgid ""
+"Skip the application and become a member now by using the Referral Code: "
+"<strong>IndagareTravel</strong>."
+msgstr ""
+
+#: functions.php:8262
+msgid "Already a Member?"
+msgstr ""
+
+#: functions.php:8268 functions.php:8357 functions.php:8389
+msgid "Username or Email"
+msgstr ""
+
+#: functions.php:8281
+msgid "Login"
+msgstr ""
+
+#: functions.php:8292
+msgid "Sign Up: Travel Newsletter"
+msgstr ""
+
+#: functions.php:8293
+msgid ""
+"Receive our free, bimonthly e-Newsletter full of travel stories, reviews and "
+"insider recommendations."
+msgstr ""
+
+#: functions.php:8305
+msgid ""
+"You've exceeded the amount of content available to non-paying members. We "
+"would love to have you as part of our community.\n"
+"\t\tIf you're not ready to renew your membership, <a href=\"/\">return to "
+"our hotel reviews</a> &#8212; these are available to everyone."
+msgstr ""
+
+#: functions.php:8309
+msgid "Why Renew?"
+msgstr ""
+
+#: functions.php:8321
+msgid "Renew or Upgrade Now"
+msgstr ""
+
+#: functions.php:8338
+msgid "Book as a Guest"
+msgstr ""
+
+#: functions.php:8340
+msgid ""
+"You are about to check room availability as a guest. If you would like to "
+"take advantage of our member rates and benefits, please <a href=\"/join/"
+"\">join Indagare now</a>."
+msgstr ""
+
+#: functions.php:8344
+msgid "Book Now"
+msgstr ""
+
+#: functions.php:8350 functions.php:8383
+msgid "Book as a Member"
+msgstr ""
+
+#: functions.php:8352
+msgid ""
+"Sign in to be able to book the best rates and amenities available only to "
+"Indagare members. If you do not see the special Indagare plus rates, contact "
+"our <a href=\"/contact/\">Bookings Team</a>."
+msgstr ""
+
+#: functions.php:8370 functions.php:8402
+msgid "Sign In"
+msgstr ""
+
+#: functions.php:8422
+msgid "Thank you for applying for Indagare membership"
+msgstr ""
+
+#: functions.php:8425
+msgid ""
+"Thank you for submitting an application to Indagare. We appreciate your "
+"interest in joining our community and will respond to you shortly."
+msgstr ""
+
+#: functions.php:8431
+msgid "Payment Error"
+msgstr ""
+
+#: functions.php:8434
+msgid ""
+"There was an error verifying your credit card information for payment. "
+"Please go to the <a href=\"/account#billing-tab\">Billing section</a> of "
+"your account, and try processing your payment again."
+msgstr ""
+
+#: functions.php:8441
+msgid "Thank you for joining Indagare"
+msgstr ""
+
+#: functions.php:8444 functions.php:8493
+msgid ""
+"Here's your new membership information for your records. A confirmation "
+"message has been sent to the email in your account."
+msgstr ""
+
+#: functions.php:8446
+msgid "Member Name"
+msgstr ""
+
+#: functions.php:8447 functions.php:8496
+msgid "Membership Level"
+msgstr ""
+
+#: functions.php:8448 functions.php:8498
+msgid "Duration"
+msgstr ""
+
+#: functions.php:8449 functions.php:8497
+msgid "Price"
+msgstr ""
+
+#: functions.php:8450 functions.php:8495
+msgid "Signup Date"
+msgstr ""
+
+#: functions.php:8451
+msgid "Valid Through"
+msgstr ""
+
+#: functions.php:8452 functions.php:8500
+msgid "Payment Using Credit Card Ending In"
+msgstr ""
+
+#: functions.php:8453 functions.php:8501
+msgid "Transaction Code"
+msgstr ""
+
+#: functions.php:8455 functions.php:8503
+msgid "Continue"
+msgstr ""
+
+#: functions.php:8466
+msgid "Account Error"
+msgstr ""
+
+#: functions.php:8469
+msgid ""
+"There was an error creating your account. Please call customer support at <a "
+"href=\"tel:+12129882611\">212-988-2611</a> and reference the following error:"
+msgstr ""
+
+#: functions.php:8481
+msgid "Credit Card Payment Error"
+msgstr ""
+
+#: functions.php:8484
+msgid ""
+"There was an error verifying your credit card information for payment. "
+"Please check the information that you entered and try again."
+msgstr ""
+
+#: functions.php:8490
+msgid "Thank you for renewing your membership with Indagare"
+msgstr ""
+
+#: functions.php:8499
+msgid "Cardholder Name"
+msgstr ""
+
+#: functions.php:8526
+msgid "Contact the Indagare Team"
+msgstr ""
+
+#: functions.php:8532
+msgid "Contact Booking Detailed"
+msgstr ""
+
+#: functions.php:8549
+msgid "Share This Page"
+msgstr ""
+
+#: functions.php:8557
+msgid "Contact Tell a Friend"
+msgstr ""
+
+#: functions.php:8580
+msgid "Contact Insider Trips"
+msgstr ""
+
+#: functions.php:8935
 msgid "Read Less"
 msgstr ""
 
-#: functions.php:9165
+#: functions.php:9163
 msgid "Booking ID"
 msgstr ""
 
-#: functions.php:9315
+#: functions.php:9313
 msgid "All "
 msgstr ""
 
-#: functions.php:9739
+#: functions.php:9737
 msgid "<strong>ERROR</strong>: Invalid username or email."
 msgstr ""
 
-#: functions.php:9752
+#: functions.php:9750
 msgid "Someone has requested a password reset for the following account:"
 msgstr ""
 
-#: functions.php:9754
+#: functions.php:9752
 #, php-format
 msgid "Username: %s"
 msgstr ""
 
-#: functions.php:9755
+#: functions.php:9753
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr ""
 
-#: functions.php:9756
+#: functions.php:9754
 msgid "To reset your password, visit the following address:"
 msgstr ""
 
-#: functions.php:9769
+#: functions.php:9767
 #, php-format
 msgid "[%s] Password Reset"
 msgstr ""
 
-#: functions.php:9797
+#: functions.php:9795
 msgid "The email could not be sent."
 msgstr ""
 
-#: functions.php:9797
+#: functions.php:9795
 msgid "Possible reason: your host may have disabled the mail() function."
 msgstr ""
 
@@ -1273,10 +1578,6 @@ msgstr ""
 
 #: includes/first-visit.php:93
 msgid "Not a member yet?"
-msgstr ""
-
-#: includes/first-visit.php:94
-msgid "Join Now"
 msgstr ""
 
 #: includes/last_viewed_posts.php:209

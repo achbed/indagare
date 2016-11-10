@@ -3963,7 +3963,7 @@ function childtheme_override_archive_loop() {
 				echo '<h3>'.__('General Inquiry','indagare').'</h3>'."\n";
 			echo '</header>'."\n";
 
-		 echo do_shortcode('[contact-form-7 id="75335" title="Contact Apply Now General"]');
+		 echo do_shortcode('[contact-form-7 id="75335" title="'.__('Contact Apply Now General','indagare').'"]');
 
 		echo '</div><!-- #lightbox -->'."\n";
 
@@ -5671,7 +5671,7 @@ function child_singlepost($content) {
 					$content .= '<h3>'.get_the_title().'</h3>'."\n";
 				$content .= '</header>'."\n";
 
-			 $content .= do_shortcode('[contact-form-7 id="75334" title="Contact Apply Now"]');
+			 $content .= do_shortcode('[contact-form-7 id="75334" title="'.__('Contact Apply Now','indagare').'"]');
 
 			$content .= '</div><!-- #lightbox -->'."\n";
 
@@ -6125,7 +6125,7 @@ function child_singlepost($content) {
 	// contact page
 	} else if (is_page_template ( 'template-page-contact.php' ) ) {
 
-		$content = do_shortcode('[contact-form-7 id="28536" title="Contact"]');
+		$content = do_shortcode('[contact-form-7 id="28536" title="'.__('Contact','indagare').'"]');
 
 	// end contact page
 
@@ -8123,7 +8123,6 @@ function childtheme_override_siteinfo() {
 }
 function childtheme_override_siteinfoclose() {}
 
-// @TODO: Translated to Here
 
 function child_after() {
 global $post;
@@ -8152,20 +8151,20 @@ global $count;
 <div id="lightbox-email-signup" class="lightbox lightbox-two-col lightbox-no-borders white-popup mfp-hide">
 	<header>
 		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/modal-signup.jpg" alt="" />
-		<h2>Welcome!</h2>
-		<p>Please share your email to continue reading some of Indagare's latest travel stories and destination guides.</p>
+		<h2><?php print __('Welcome!','indagare'); ?></h2>
+		<p><?php print __('Please share your email to continue reading some of Indagare\'s latest travel stories and destination guides.','indagare'); ?></p>
 	</header>
 
 	<footer>
 		<div id="emailsignup" class="newsletter-signup-wrapper">
 			<?php include_once( 'includes/hubspot.php' );
 			render_hubspot('2459975', 'f415c804-076a-461e-a910-ca3e85268e32'); ?>
-			<p>You will receive our free e-Newsletter full of travel news and insider recommendations.</p>
+			<p><?php print __('You will receive our free e-Newsletter full of travel news and insider recommendations.','indagare'); ?></p>
 		</div>
-		<p>By clicking "Submit," you accept our <a href="/terms-of-use/">Terms of Use</a> and <a href="/privacy-policy/">Privacy Policy</a>.</p>
+		<p><?php print __('By clicking "Submit," you accept our','indagare'); ?> <a href="/terms-of-use/"><?php print __('Terms of Use','indagare'); ?></a> <?php print __('and','indagare'); ?> <a href="/privacy-policy/"><?php print __('Privacy Policy','indagare'); ?></a>.</p>
 
-		<h3><strong>Member Login</strong></h3>
-		<p>Already a member? Please <a href="#lightbox-login" class="lightbox-inline">log in</a>.</p>
+		<h3><strong><?php print __('Member Login','indagare'); ?></strong></h3>
+		<p><?php print __('Already a member? Please','indagare'); ?> <a href="#lightbox-login" class="lightbox-inline"><?php print __('log in','indagare'); ?></a>.</p>
 	</footer>
 
 </div><!-- #lightbox-email-signup -->
@@ -8192,7 +8191,7 @@ jQuery(document).ready(function($) {
 ?>
 <div id="lightbox-login" class="lightbox white-popup login mfp-hide">
 	<header>
-		<h2>Member Login</h2>
+		<h2><?php print __('Member Login','indagare'); ?></h2>
 	</header>
 
 	<form id="form-login" class="login ajax-login" method="post" novalidate<?php
@@ -8201,19 +8200,19 @@ jQuery(document).ready(function($) {
 	}
 	?>>
 		<div id="field1-container" class="field">
-			<label for="field1">Username</label>
-			<input type="text" name="username" id="field1" required="required" placeholder="Your username">
+			<label for="field1"><?php print __('Username','indagare'); ?></label>
+			<input type="text" name="username" id="field1" required="required" placeholder="<?php print __('Your username','indagare'); ?>">
 		</div>
 
 		<div id="field2-container" class="field">
-			<label for="field2">Password</label>
-			<input type="password" name="password" id="field2" required="required" value="" placeholder="Your password">
+			<label for="field2"><?php print __('Password','indagare'); ?></label>
+			<input type="password" name="password" id="field2" required="required" value="" placeholder="<?php print __('Your password','indagare'); ?>">
 		</div>
 
 		<div id="form-submit" class="field clearfix submit">
 			<label for=""></label>
-		   <input type="submit" value="Submit" class="button primary">
-		   <a id="forgot" href="<?php print wp_lostpassword_url(); ?>" class="button secondary">Forgot Password</a>
+		   <input type="submit" value="<?php print __('Submit','indagare'); ?>" class="button primary">
+		   <a id="forgot" href="<?php print wp_lostpassword_url(); ?>" class="button secondary"><?php print __('Forgot Password','indagare'); ?></a>
 		</div>
 
 		<div class="field message">
@@ -8232,55 +8231,55 @@ jQuery(document).ready(function($) {
 ?>
 <div id="lightbox-join" class="lightbox white-popup mfp-hide">
 	<header>
-		<h2>Sorry!</h2>
-		<p>You've exceeded the amount of content available to non-paying members. We would love to have you as part of our community.
-		If you're not ready to join, <a href="/">return to our hotel reviews</a> &#8212; these are available to everyone.</p>
+		<h2><?php print __('Sorry!','indagare'); ?></h2>
+		<p><?php print __('You\'ve exceeded the amount of content available to non-paying members. We would love to have you as part of our community.
+		If you\'re not ready to join, <a href="/">return to our hotel reviews</a> &#8212; these are available to everyone.','indagare'); ?></p>
 	</header>
 	<div class="column one-third first">
-		<h3>Why Join?</h3>
+		<h3><?php print __('Why Join?','indagare'); ?></h3>
 		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/join-1.jpg" alt="" />
 		<ul>
-			<li>To enjoy unlimited access to the online content and our Black Book magazines.</li>
-			<li>To receive special rates &amp; amenities at hundreds of hotels and resorts worldwide.</li>
-			<li>To benefit from customized trip planning from our expert team.</li>
-			<li>To gain access to Insider Trips, events and more.</li>
+			<li><?php print __('To enjoy unlimited access to the online content and our Black Book magazines.','indagare'); ?></li>
+			<li><?php print __('To receive special rates &amp; amenities at hundreds of hotels and resorts worldwide.','indagare'); ?></li>
+			<li><?php print __('To benefit from customized trip planning from our expert team.','indagare'); ?></li>
+			<li><?php print __('To gain access to Insider Trips, events and more.','indagare'); ?></li>
 		</ul>
-		<a href="/why-join/" class="button">Learn More</a>
+		<a href="/why-join/" class="button"><?php print __('Learn More','indagare'); ?></a>
 	</div><!-- .column -->
 
 	<div class="column one-third">
-		<h3>Join Now</h3>
+		<h3><?php print __('Join Now','indagare'); ?></h3>
 		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/join-2.jpg" alt="" />
 		<ul>
-			<li>Four levels of membership designed for everyone from the leisure traveler to the corporate client.</li>
-			<li>Savings on just one hotel booking usually surpass the cost of a basic membership thanks to special rates.</li>
-			<li>Skip the application and become a member now by using the Referral Code: <strong>IndagareTravel</strong>.</li>
+			<li><?php print __('Four levels of membership designed for everyone from the leisure traveler to the corporate client.','indagare'); ?></li>
+			<li><?php print __('Savings on just one hotel booking usually surpass the cost of a basic membership thanks to special rates.','indagare'); ?></li>
+			<li><?php print __('Skip the application and become a member now by using the Referral Code: <strong>IndagareTravel</strong>.','indagare'); ?></li>
 		</ul>
-		<a href="/join/?referralcode=IndagareTravel" class="button">Join Now</a>
+		<a href="/join/?referralcode=IndagareTravel" class="button"><?php print __('Join Now','indagare'); ?></a>
 	</div><!-- .column -->
 
 	<div class="column one-third last">
-		<h3>Already a Member?</h3>
+		<h3><?php print __('Already a Member?','indagare'); ?></h3>
 		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/join-3.jpg" alt="" />
 
 		<form id="form-login" class="login ajax-login" method="post" novalidate>
 			<div id="field1-container" class="field">
 			   <label for="field1">
-					Username or Email
+				<?php print __('Username or Email','indagare'); ?>
 			   </label>
-			   <input type="text" name="username" id="field1" required="required" placeholder="Your username">
+			   <input type="text" name="username" id="field1" required="required" placeholder="<?php print __('Your username','indagare'); ?>">
 			</div>
 
 			<div id="field2-container" class="field">
 			   <label for="field2">
-					Password
+					<?php print __('Password','indagare'); ?>
 			   </label>
-			   <input type="password" name="password" id="field2" required="required" placeholder="Your password">
+			   <input type="password" name="password" id="field2" required="required" placeholder="<?php print __('Your password','indagare'); ?>">
 			</div>
 
 			<div id="form-submit" class="field clearfix submit">
-			   <input type="submit" value="Login" class="button">
-			   <a id="forgot" href="<?php print wp_lostpassword_url(); ?>" class="button secondary">Forgot Password</a>
+			   <input type="submit" value="<?php print __('Login','indagare'); ?>" class="button">
+			   <a id="forgot" href="<?php print wp_lostpassword_url(); ?>" class="button secondary"><?php print __('Forgot Password','indagare'); ?></a>
 			</div>
 
 			<div class="field message">
@@ -8290,8 +8289,8 @@ jQuery(document).ready(function($) {
    		</form>
 	</div><!-- .column -->
 	<footer id="emailsignup" class="newsletter-signup-wrapper">
-		<h4>Sign Up: Travel Newsletter</h4>
-		<p>Receive our free, bimonthly e-Newsletter full of travel stories, reviews and insider recommendations.</p>
+		<h4><?php print __('Sign Up: Travel Newsletter','indagare'); ?></h4>
+		<p><?php print __('Receive our free, bimonthly e-Newsletter full of travel stories, reviews and insider recommendations.','indagare'); ?></p>
 		<?php include_once( 'includes/hubspot.php' );
 		render_hubspot('2459975', '7fdb12e1-4796-440d-b01e-3425cf042b19'); ?>
 	</footer>
@@ -8302,30 +8301,30 @@ jQuery(document).ready(function($) {
 ?>
 <div id="lightbox-join" class="lightbox white-popup mfp-hide">
 	<header>
-		<h2>Sorry!</h2>
-		<p>You've exceeded the amount of content available to non-paying members. We would love to have you as part of our community.
-		If you're not ready to renew your membership, <a href="/">return to our hotel reviews</a> &#8212; these are available to everyone.</p>
+		<h2><?php print __('Sorry!','indagare'); ?></h2>
+		<p><?php print __('You\'ve exceeded the amount of content available to non-paying members. We would love to have you as part of our community.
+		If you\'re not ready to renew your membership, <a href="/">return to our hotel reviews</a> &#8212; these are available to everyone.','indagare'); ?></p>
 	</header>
 	<div class="column one-half first">
-		<h3>Why Renew?</h3>
+		<h3><?php print __('Why Renew?','indagare'); ?></h3>
 		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/join-1.jpg" alt="" />
 		<ul>
-			<li>To enjoy unlimited access to the online content and our Black Book magazines.</li>
-			<li>To receive special rates &amp; amenities at hundreds of hotels and resorts worldwide.</li>
-			<li>To benefit from customized trip planning from our expert team.</li>
-			<li>To gain access to Insider Trips, events and more.</li>
+			<li><?php print __('To enjoy unlimited access to the online content and our Black Book magazines.','indagare'); ?></li>
+			<li><?php print __('To receive special rates &amp; amenities at hundreds of hotels and resorts worldwide.','indagare'); ?></li>
+			<li><?php print __('To benefit from customized trip planning from our expert team.','indagare'); ?></li>
+			<li><?php print __('To gain access to Insider Trips, events and more.','indagare'); ?></li>
 		</ul>
-		<a href="/why-join/" class="button">Learn More</a>
+		<a href="/why-join/" class="button"><?php print __('Learn More','indagare'); ?></a>
 	</div><!-- .column -->
 
 	<div class="column one-half">
-		<h3>Renew or Upgrade Now</h3>
+		<h3><?php print __('Renew or Upgrade Now','indagare'); ?></h3>
 		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/join-2.jpg" alt="" />
 		<ul>
-			<li>Four levels of membership designed for everyone from the leisure traveler to the corporate client.</li>
-			<li>Savings on just one hotel booking usually surpass the cost of a basic membership thanks to special rates.</li>
+			<li><?php print __('Four levels of membership designed for everyone from the leisure traveler to the corporate client.','indagare'); ?></li>
+			<li><?php print __('Savings on just one hotel booking usually surpass the cost of a basic membership thanks to special rates.','indagare'); ?></li>
 		</ul>
-		<a href="/account" class="button">Renew Now</a>
+		<a href="/account" class="button"><?php print __('Renew Now','indagare'); ?></a>
 	</div><!-- .column -->
 </div><!-- #lightbox-join -->
 <?php
@@ -8336,40 +8335,40 @@ jQuery(document).ready(function($) {
 ?>
 <div id="lightbox-interstitial" class="lightbox lightbox-two-col white-popup mfp-hide contain">
 	<div class="column one-half">
-		<h3>Book as a Guest</h3>
+		<h3><?php print __('Book as a Guest','indagare'); ?></h3>
 		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/book-left.jpg" alt="" />
-		<p>You are about to check room availability as a guest. If you would like to take advantage of our member rates and benefits, please <a href="/join/">join Indagare now</a>.</p>
+		<p><?php print __('You are about to check room availability as a guest. If you would like to take advantage of our member rates and benefits, please <a href="/join/">join Indagare now</a>.','indagare'); ?></p>
 
 		<form id="book-interstitial" class="book-interstitial login" method="post" novalidate>
 			<div id="form-submit" class="field clearfix submit">
-			   <input type="submit" value="Book Now" class="button">
+			   <input type="submit" value="<?php print __('Book Now','indagare'); ?>" class="button">
 			</div>
 		</form>
 	</div><!-- .column -->
 
 	<div class="column one-half">
-		<h3>Book as a Member</h3>
+		<h3><?php print __('Book as a Member','indagare'); ?></h3>
 		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/book-right.jpg" alt="" />
-		<p>Sign in to be able to book the best rates and amenities available only to Indagare members. If you do not see the special Indagare plus rates, contact our <a href="/contact/">Bookings Team</a>.</p>
+		<p><?php print __('Sign in to be able to book the best rates and amenities available only to Indagare members. If you do not see the special Indagare plus rates, contact our <a href="/contact/">Bookings Team</a>.','indagare'); ?></p>
 
 		<form id="form-interstitial" class="login" method="post" novalidate>
 			<div id="field1-container" class="field">
 			   <label for="field1">
-					Username or Email
+				<?php print __('Username or Email','indagare'); ?>
 			   </label>
-			   <input type="text" name="username" id="field1" required="required" placeholder="Your username">
+			   <input type="text" name="username" id="field1" required="required" placeholder="<?php print __('Your username','indagare'); ?>">
 			</div>
 
 			<div id="field2-container" class="field">
 			   <label for="field2">
-					Password
+					<?php print __('Password','indagare'); ?>
 			   </label>
-			   <input type="password" name="password" id="field2" required="required" placeholder="Your password">
+			   <input type="password" name="password" id="field2" required="required" placeholder="<?php print __('Your password','indagare'); ?>">
 			</div>
 
 			<div id="form-submit" class="field clearfix submit">
-			   <input type="submit" value="Sign In" class="button">
-			   <a id="forgot" href="<?php print wp_lostpassword_url(); ?>" class="button secondary">Forgot Password</a>
+			   <input type="submit" value="<?php print __('Sign In','indagare'); ?>" class="button">
+			   <a id="forgot" href="<?php print wp_lostpassword_url(); ?>" class="button secondary"><?php print __('Forgot Password','indagare'); ?></a>
 			</div>
 
 			<div class="field message">
@@ -8381,28 +8380,28 @@ jQuery(document).ready(function($) {
 </div><!-- #lightbox-interstitial -->
 <div id="lightbox-interstitial-flights" class="lightbox lightbox-two-col white-popup mfp-hide contain">
 	<div class="column">
-		<h3>Book as a Member</h3>
+		<h3><?php print __('Book as a Member','indagare'); ?></h3>
 		<img src="<?php echo get_bloginfo('stylesheet_directory'); ?>/images/book-right-flights.jpg" alt="" />
 
 		<form id="form-interstitial-flights" class="login" method="post" novalidate>
 			<div id="field1-container" class="field">
 			   <label for="field1">
-					Username or Email
+			   		<?php print __('Username or Email','indagare'); ?>
 			   </label>
-			   <input type="text" name="username" id="field1" required="required" placeholder="Your username">
+			   <input type="text" name="username" id="field1" required="required" placeholder="<?php print __('Your username','indagare'); ?>">
 			</div>
 
 			<div id="field2-container" class="field">
 			   <label for="field2">
-					Password
+					<?php print __('Password','indagare'); ?>
 			   </label>
-			   <input type="password" name="password" id="field2" required="required" placeholder="Your password">
+			   <input type="password" name="password" id="field2" required="required" placeholder="<?php print __('Your password','indagare'); ?>">
 			</div>
 
 			<div id="form-submit" class="field clearfix submit">
-			   <input type="submit" value="Sign In" class="button">
-			   <a id="forgot" href="<?php print wp_lostpassword_url(); ?>" class="button secondary">Forgot Password</a>
-				<a href="/join/" class="button">Join</a>
+			   <input type="submit" value="<?php print __('Sign In','indagare'); ?>" class="button">
+			   <a id="forgot" href="<?php print wp_lostpassword_url(); ?>" class="button secondary"><?php print __('Forgot Password','indagare'); ?></a>
+				<a href="/join/" class="button"><?php print __('Join','indagare'); ?></a>
 			</div>
 
 			<div class="field message">
@@ -8420,41 +8419,40 @@ jQuery(document).ready(function($) {
 ?>
 <div id="lightbox-signup-application" class="lightbox white-popup login mfp-hide">
 	<header>
-		<h2>Thank you for applying for Indagare membership</h2>
+		<h2><?php print __('Thank you for applying for Indagare membership','indagare'); ?></h2>
 	</header>
 
-	<p>Thank you for submitting an application to Indagare. We appreciate your interest in joining our community and will respond to you shortly.</p>
+	<p><?php print __('Thank you for submitting an application to Indagare. We appreciate your interest in joining our community and will respond to you shortly.','indagare'); ?></p>
 
 </div><!-- #lightbox-signup-application -->
 
 <div id="lightbox-signup-error" class="lightbox white-popup login mfp-hide">
 	<header>
-		<h2>Payment Error</h2>
+		<h2><?php print __('Payment Error','indagare'); ?></h2>
 	</header>
 
-	<p>There was an error verifying your credit card information for payment. Please go to the <a href="/account#billing-tab">Billing section</a>
-	of your account, and try processing your payment again.</p>
+	<p><?php print __('There was an error verifying your credit card information for payment. Please go to the <a href="/account#billing-tab">Billing section</a> of your account, and try processing your payment again.','indagare'); ?></p>
 
 	<p class="tiny" id="errordetail"></p>
 </div><!-- #lightbox-signup-error -->
 
 <div id="lightbox-signup-complete" class="lightbox white-popup login mfp-hide">
 	<header>
-		<h2>Thank you for joining Indagare</h2>
+		<h2><?php print __('Thank you for joining Indagare','indagare'); ?></h2>
 	</header>
 
-	<p>Here's your new membership information for your records. A confirmation message has been sent to the email in your account.</p>
+	<p><?php print __('Here\'s your new membership information for your records. A confirmation message has been sent to the email in your account.','indagare'); ?></p>
 
-	<p id="membercardholder"><strong>Member Name:</strong> <span></span></p>
-	<p id="memberlevel"><strong>Membership Level:</strong> <span></span></p>
-	<p id="memberlength"><strong>Duration:</strong> <span></span></p>
-	<p id="membercost"><strong>Price:</strong> <span></span></p>
-	<p id="memberdate"><strong>Signup Date:</strong> <span></span></p>
-	<p id="memberenddate"><strong>Valid Through:</strong> <span></span></p>
-	<p id="membercard"><strong>Payment Using Credit Card Ending In:</strong> <span></span></p>
-	<p id="membertransaction"><strong>Transaction Code:</strong> <span></span></p>
+	<p id="membercardholder"><strong><?php print __('Member Name','indagare'); ?>:</strong> <span></span></p>
+	<p id="memberlevel"><strong><?php print __('Membership Level','indagare'); ?>:</strong> <span></span></p>
+	<p id="memberlength"><strong><?php print __('Duration','indagare'); ?>:</strong> <span></span></p>
+	<p id="membercost"><strong><?php print __('Price','indagare'); ?>:</strong> <span></span></p>
+	<p id="memberdate"><strong><?php print __('Signup Date','indagare'); ?>:</strong> <span></span></p>
+	<p id="memberenddate"><strong><?php print __('Valid Through','indagare'); ?>:</strong> <span></span></p>
+	<p id="membercard"><strong><?php print __('Payment Using Credit Card Ending In','indagare'); ?>:</strong> <span></span></p>
+	<p id="membertransaction"><strong><?php print __('Transaction Code','indagare'); ?>:</strong> <span></span></p>
 
-	<input id="membercomplete" type="submit" value="Continue" class="button">
+	<input id="membercomplete" type="submit" value="<?php print __('Continue','indagare'); ?>" class="button">
 
 </div><!-- #lightbox-signup-complete -->
 
@@ -8465,10 +8463,10 @@ jQuery(document).ready(function($) {
 		?>
 <div id="lightbox-signup-error" class="lightbox white-popup login mfp-hide">
 	<header>
-		<h2>Account Error</h2>
+		<h2><?php print __('Account Error','indagare'); ?></h2>
 	</header>
 
-	<p>There was an error creating your account. Please call customer support at <a href="tel:+12129882611">212-988-2611</a> and reference the following error:</p>
+	<p><?php print __('There was an error creating your account. Please call customer support at <a href="tel:+12129882611">212-988-2611</a> and reference the following error:','indagare'); ?></p>
 
 	<p class="tiny" id="errordetail"></p>
 </div><!-- #lightbox-signup-error -->
@@ -8480,29 +8478,29 @@ jQuery(document).ready(function($) {
 ?>
 <div id="lightbox-signup-error" class="lightbox white-popup login mfp-hide">
 	<header>
-		<h2 id="signup-error-title">Credit Card Payment Error</h2>
+		<h2 id="signup-error-title"><?php print __('Credit Card Payment Error','indagare'); ?></h2>
 	</header>
 
-	<p id="signup-error-message">There was an error verifying your credit card information for payment. Please check the information that you entered and try again.</p>
+	<p id="signup-error-message"><?php print __('There was an error verifying your credit card information for payment. Please check the information that you entered and try again.','indagare'); ?></p>
 
 </div><!-- #lightbox-signup-error -->
 
 <div id="lightbox-signup-complete" class="lightbox white-popup login mfp-hide">
 	<header>
-		<h2>Thank you for renewing your membership with Indagare</h2>
+		<h2><?php print __('Thank you for renewing your membership with Indagare','indagare'); ?></h2>
 	</header>
 
-	<p>Here's your new membership information for your records. A confirmation message has been sent to the email in your account.</p>
+	<p><?php print __('Here\'s your new membership information for your records. A confirmation message has been sent to the email in your account.','indagare'); ?></p>
 
-	<p id="memberdate"><strong>Signup Date:</strong> <span></span></p>
-	<p id="memberlevel"><strong>Membership Level:</strong> <span></span></p>
-	<p id="membercost"><strong>Price:</strong> <span></span></p>
-	<p id="memberlength"><strong>Duration:</strong> <span></span></p>
-	<p id="membercardholder"><strong>Cardholder Name:</strong> <span></span></p>
-	<p id="membercard"><strong>Payment Using Credit Card Ending In:</strong> <span></span></p>
-	<p id="membertransaction"><strong>Transaction Code:</strong> <span></span></p>
+	<p id="memberdate"><strong><?php print __('Signup Date','indagare'); ?>:</strong> <span></span></p>
+	<p id="memberlevel"><strong><?php print __('Membership Level','indagare'); ?>:</strong> <span></span></p>
+	<p id="membercost"><strong><?php print __('Price','indagare'); ?>:</strong> <span></span></p>
+	<p id="memberlength"><strong><?php print __('Duration','indagare'); ?>:</strong> <span></span></p>
+	<p id="membercardholder"><strong><?php print __('Cardholder Name','indagare'); ?>:</strong> <span></span></p>
+	<p id="membercard"><strong><?php print __('Payment Using Credit Card Ending In','indagare'); ?>:</strong> <span></span></p>
+	<p id="membertransaction"><strong><?php print __('Transaction Code','indagare'); ?>:</strong> <span></span></p>
 
-	<input id="membercomplete" type="submit" value="Continue" class="button">
+	<input id="membercomplete" type="submit" value="<?php print __('Continue','indagare'); ?>" class="button">
 
 </div><!-- #lightbox-signup-complete -->
 
@@ -8525,13 +8523,13 @@ jQuery(document).ready(function($) {
 ?>
 <div id="lightbox-contact-team" class="lightbox white-popup contact detailed mfp-hide">
 	<header>
-		<h2>Contact the Indagare Team</h2>
+		<h2><?php print __('Contact the Indagare Team','indagare'); ?></h2>
 	</header>
 
 
 <?php
 
-echo do_shortcode('[contact-form-7 id="'.\indagare\config\Config::$bookingform_detailed_id.'" title="Contact Booking Detailed"]');
+echo do_shortcode('[contact-form-7 id="'.\indagare\config\Config::$bookingform_detailed_id.'" title="'.__('Contact Booking Detailed','indagare').'"]');
 
 ?>
 
@@ -8548,7 +8546,7 @@ echo do_shortcode('[contact-form-7 id="'.\indagare\config\Config::$bookingform_d
 ?>
 <div id="lightbox-contact-friend" class="lightbox white-popup contact mfp-hide">
 	<header>
-		<h2>Share This Page</h2>
+		<h2><?php print __('Share This Page','indagare'); ?></h2>
 		<h3><?php echo get_the_title() ?></h3>
 	</header>
 
@@ -8556,7 +8554,7 @@ echo do_shortcode('[contact-form-7 id="'.\indagare\config\Config::$bookingform_d
 <?php
 
 // do not change across versions
-echo do_shortcode('[contact-form-7 id="38938" title="Contact Tell a Friend"]');
+echo do_shortcode('[contact-form-7 id="38938" title="'.__('Contact Tell a Friend','indagare').'"]');
 
 ?>
 
@@ -8573,13 +8571,13 @@ echo do_shortcode('[contact-form-7 id="38938" title="Contact Tell a Friend"]');
 ?>
 <div id="lightbox-contact-insidertrip" class="lightbox white-popup contact mfp-hide">
 	<header>
-		<h2>Contact Us</h2>
+		<h2><?php print __('Contact Us','indagare'); ?></h2>
 	</header>
 
 
 <?php
 
-echo do_shortcode('[contact-form-7 id="32337" title="Contact Insider Trips"]');
+echo do_shortcode('[contact-form-7 id="32337" title="'.__('Contact Insider Trips','indagare').'"]');
 
 ?>
 
@@ -9162,7 +9160,7 @@ add_filter('tiny_mce_before_init', 'customformatTinyMCE' );
 // display hotel booking ID column in admin
 add_filter('manage_hotel_posts_columns', 'new_add_hotel_post_thumbnail_column', 5);
 function new_add_hotel_post_thumbnail_column($cols) {
-	$cols['booking'] = __('Booking ID');
+	$cols['booking'] = __('Booking ID','indagare');
 	return $cols;
 }
 
