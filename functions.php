@@ -3479,7 +3479,7 @@ function childtheme_override_archive_loop() {
 						echo '<a href="'.$offerurl.'">'."\n";
 							echo '<h3>'.get_the_title().'</h3>'."\n";
 						echo '</a>'."\n";
-							echo '<span class="location">'.get_field('subtitle').'</span>'."\n";
+							echo '<span class="location"><em>'.__('Partner','indagare').'</em>: '.get_field('subtitle').'</span>'."\n";
 
 							$text = wpautop( get_the_content() );
 							$text = substr( $text, 0, strpos( $text, '</p>' ) + 4 );
