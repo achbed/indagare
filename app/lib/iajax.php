@@ -3,6 +3,8 @@ namespace indagare\iajax;
 
 use WPSF\Contact;
 
+define( "INDAGARE_IGNORE_DISCOUNT_CODES", true );
+
 class AjaxHandler {
 	/**
 	 * Holds the instance of this plugin (once initialized)
@@ -134,7 +136,7 @@ class AjaxHandler {
 			if ( is_wp_error( $codes ) || empty( $codes[0]['Id'] ) ) {
 				throw new \Exception( 'Invalid code', 0 );
 			}
-
+			
 			$response = array(
 				'valid' => true,
 				'id' => $codes[0]['Id'],
@@ -144,6 +146,20 @@ class AjaxHandler {
 				'payment' => ( empty( $codes[0]['Payment'] ) ? false : true ) ,
 				'amount' => $codes[0]['Amount'],
 			);
+			
+			// @TODO: Once the discout feature is enabled, kill this block
+			if ( $response['payment'] && $response['amount'] != 0 && INDAGARE_IGNORE_DISCOUNT_CODES ) {
+				$response = array(
+					'valid' => false,
+					'id' => 0,
+					'name' => 'Invalid code',
+					'length' => 'Invalid code',
+					'payment' => false,
+					'amount' => 0,
+				);
+			}
+			// @TODO: Once the discout feature is enabled, kill the previous block
+			
 		} catch( \Exception $e ) {
 			$response = array(
 				'valid' => false,
