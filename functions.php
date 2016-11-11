@@ -5035,7 +5035,6 @@ function child_singlepost($content) {
 		$content = '';
 
 		$content .= '<div class="header">'."\n";
-			$content .= '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>'.__('Offers','indagare').'</span></b>';
 			$content .= '<h1>'.__('Seasonal Partners','indagare').'<span class="return"><a href="/destinations/offers/seasonal"><b class="icon petite" data-icon="&#xf0d9;"></b> ';
 			$content .= __('Back to Seasonal Partners','indagare').'</a></span></h1>'."\n";
 		$content .= '</div>'."\n";
