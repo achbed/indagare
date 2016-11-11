@@ -1635,8 +1635,6 @@ function childtheme_override_access() {
 			</div>
 		  </li>
 
-		    <!-- ELENA CHANGES-->
-
             <li id="nav-offers"><a href="/offers/"><?php echo __('Offers','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
             <div class="subnav">
               <div class="main-nav-item"><a href="/destinations/"><?php echo __('View All Destinations','indagare');?></a></div>
@@ -1653,8 +1651,6 @@ function childtheme_override_access() {
 						?>
 					</ul>
 	
-<!-- .get_field('subtitle').-->
-
 
 						<ul>
 						<?php
@@ -4692,8 +4688,6 @@ function child_singlepost($content) {
 			    	$imageobj= get_field('offer_adimage');
 					$imagesize= 'thumb-feature';
 					$imgsrc = $imageobj['sizes'][$imagesize];
-//					$offerstart = get_field('date_start');
-//					$offerend = get_field('date_end');
 
 					$destinationstree = destinationstree($post_id);
 					$dest = $destinationstree['dest'];
@@ -4713,26 +4707,6 @@ function child_singlepost($content) {
 
 				}
 
-/*
-				if ( ! empty( $_GET['_y'] ) )
-					$year = absint( $_GET['_y'] );
-				else
-					$year = trim( date( 'Y ') );
-
-				if ( ! empty( $_GET['_m'] ) && in_array( $month = absint( $_GET['_m'] ), range( 1, 12 ) ) )
-					$month = zeroise( $month, 2 );
-				else
-					$month = date( 'm' );
-
-				if ( ! empty( $_GET['_d'] ) && in_array( $day = absint( $_GET['_m'] ), range( 1, 31 ) ) )
-					$day = zeroise( $day, 2 );
-				else
-					$day = date( 'd' );
-
-				$fulldate = $year.$month.$day;
-*/
-
-//				if ( $imageobj && ( $offerstart <= $fulldate || is_null( $offerstart ) || $offerstart === false || $offerstart == '' ) && ( $offerend >= $fulldate || is_null( $offerend ) || $offerend === false || $offerend == '' ) ) {
 				if ( $imageobj ) {
 
 						$content .= '<div class="destination-slide">'."\n";
@@ -5062,8 +5036,8 @@ function child_singlepost($content) {
 
 		$content .= '<div class="header">'."\n";
 			$content .= '<b class="icon custom-icon" data-icon="&#xe600;" id="ind-offers"><span>'.__('Offers','indagare').'</span></b>';
-			$content .= '<h1>'.__('Seasonal Partners','indagare').'<span class="return"><a href="/destinations/offers/"><b class="icon petite" data-icon="&#xf0d9;"></b> ';
-			$content .= __('Back to Partner Promotions','indagare').'</a></span></h1>'."\n";
+			$content .= '<h1>'.__('Seasonal Partners','indagare').'<span class="return"><a href="/destinations/offers/seasonal"><b class="icon petite" data-icon="&#xf0d9;"></b> ';
+			$content .= __('Back to Seasonal Partners','indagare').'</a></span></h1>'."\n";
 		$content .= '</div>'."\n";
 		$content .= '<article class="detail">'."\n";
 			$content .= '<div class="vcard">'."\n";
