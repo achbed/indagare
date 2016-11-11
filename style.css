@@ -5,7 +5,7 @@ Description: Use this theme to start your Thematic Child Theme development.
 Author: Sceptre Hospitality
 Author URI: 
 Template: thematic
-Version: 1.8.6
+Version: 1.8.7
 Tags: white, three-columns, two-columns, fixed-width, theme-options, left-sidebar, right-sidebar, threaded-comments, sticky-post, microformats
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -962,7 +962,7 @@ p.author { font-style: italic; font-family: Georgia,Times,serif; font-size: .858
 
 /* ELENA */
 .featured-destination-partners { padding: 10px; }
-.featured-destination-partners .fd-container { background: #e7e8e8; padding: 10px 15px; }
+.featured-destination-partners .fd-container { background: #e7e8e8; padding: 10px; }
 .featured-destination-partners .fd-container.has-slider { padding: 10px 25px; }
 .featured-destination-partners div.destination-slide { padding: 0 10px; -moz-box-sizing: border-box; box-sizing: border-box; font-size: .95em; }
 .featured-destination-partners div.destination-slide img { width: 100%; height: auto; margin-bottom: 5px; }
@@ -974,52 +974,9 @@ p.author { font-style: italic; font-family: Georgia,Times,serif; font-size: .858
 .featured-destination-partners .labels h3 { float: left; width: 75%; text-transform: none; margin-bottom: 10px; padding-left: 10px; font-weight: bold; }
 .featured-destination-partners .labels h3:last-of-type { float: right; width: 25%; text-align: right; padding-right: 10px; }
 
-@media screen and (min-width: 900px) { .slick-next { right: -35px; }
-  .slick-prev { left: -35px; }
-  .fd-container { padding: 10px; } }
 @media screen and (max-width: 600px) { .featured-destination-partners .labels h3 { font-size: 1em; } }
-/*.featured-destination-partners { padding: 10px; -moz-box-sizing: border-box; box-sizing: border-box; display: table; width: 100%; 
-
-	div {
-		background: #e7e8e8;
-		overflow: auto;
-		padding: 10px;
-		font-size: .9em; 
-
-		article {
-			float: left;
-			width: 25%;
-			padding: 0 10px;
-			margin-bottom: .4em;
-
-			img {
-				margin-bottom: .6em; 
-				width: 100%;
-				height: auto;
-			}
-		}
-
-		h3 {
-			float: left;
-			width: 75%;
-			text-transform: none;
-			margin-bottom: 10px;
-			padding-left: 10px;
-			font-weight: bold;
-
-			&:last-of-type {
-				float: right;
-				width: 25%;
-				text-align: right;
-				padding-right: 10px;
-			}
-		}
-
-	}
-}*/
+@media screen and (max-width: 730px) { .featured-destination-partners .fd-container { padding: 10px 25px; } }
 @media screen and (max-width: 600px) { .featured-destination-partners .labels h3 { font-size: 1em; } }
-@media screen and (max-width: 400px) { /*.featured-destination-partners div article{  	width: 100%; 	margin-bottom: 20px; }*/ }
-/* ELENA */
 /* subnav */
 /* ------------------------------------------------------------------------- */
 #subnav { margin: 0 10px 1.357em; border-bottom: 1px solid #ccc; }
