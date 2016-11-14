@@ -416,7 +416,9 @@ if (!signup) {
 			complete = self.validateUsername() && complete;
 			complete = self.validatePassword() && complete;
 
-			complete = jQuery('#field-account-tgCode').hasClass('validate-ok') && complete;
+			if (showTrial) {
+				complete = jQuery('#field-account-tgCode').hasClass('validate-ok') && complete;
+			}
 
 			complete = self.validateTermAcceptance() && complete;
 
