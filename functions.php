@@ -1629,13 +1629,13 @@ function childtheme_override_access() {
 			  <div class="nav-item">
 				<h3><?php echo __('Top Hotels','indagare');?></h3>
 				<?php wp_nav_menu( array('menu' => 'book-top-hotels','container' => '','container_id' => '','container_class' => '','menu_class' => '','echo' => true )); ?>
-				<div class="subnav-related"><a href="/destinations/offers/"><?php echo __('See Partner Promotions','indagare');?></a></div>
+				<div class="subnav-related"><a class="nolink"><?php echo __('See Partner Promotions','indagare');?></a></div>
 				<div class="subnav-related"><a href="/destinations/insidertrips/"><?php echo __('See Insider Trips','indagare');?></a></div>
 			  </div>
 			</div>
 		  </li>
 
-            <li id="nav-offers"><a href="/offers/"><?php echo __('Offers','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
+            <li id="nav-offers"><a class="nolink"><?php echo __('Offers','indagare');?></a><span class="show-subnav"><a href="#"></a></span>
             <div class="subnav">
               <div class="main-nav-item"><a href="/destinations/"><?php echo __('View All Destinations','indagare');?></a></div>
               <div class="nav-item">
