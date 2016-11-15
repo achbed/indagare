@@ -413,6 +413,8 @@ a:link, a:visited { color: #336699; text-decoration: none; }
 
 a:hover, a:active { color: #fd252a; }
 
+a.nolink { cursor: default; }
+
 h2 a, h3 a, h4 a, h5 a, a h1, a h2, a p { text-decoration: none; }
 
 label, .label { display: inline-block; }
@@ -619,7 +621,6 @@ div.subnav-related { font-weight: bold; }
 
 #nav-offers .subnav { background-color: #388ecd; }
 
-/*ELENA*/
 #nav-account .subnav, #nav-join.subnav { background-color: #2687ee; }
 
 /* for dropdown behavior */
