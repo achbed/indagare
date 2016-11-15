@@ -206,7 +206,7 @@ class AjaxHandler {
 		$contact['Phone'] = $_POST['phone'];
 		$contact['Email'] = $_POST['email'];
 		$contact['WP_Username__c'] = $_POST['username'];
-		$contact['WPID__c'] = $wpid;
+		//$contact['WPID__c'] = $wpid;
 
 		if(isset($_POST['s_address1'])) {
 			$contact['MailingStreet'] = $_POST['s_address1'];
