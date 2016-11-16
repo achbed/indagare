@@ -4595,9 +4595,16 @@ function child_singlepost($content) {
 
 				$imageobj = $row['home-secondary-image'];
 				$image = $imageobj['sizes']['thumb-medium'];
+				$newtab = $row['home-secondary-url-target'];
 
 				$content .= '<article>'."\n";
-					$content .= '<a href="'.$row['home-secondary-url'].'">'."\n";
+
+						if ( $newtab ) {
+							$content .= '<a href="'.$row['home-secondary-url'].'" target="_blank">'."\n";
+						} else {
+							$content .= '<a href="'.$row['home-secondary-url'].'">'."\n";
+						}
+
 						if ( $image ) {
 							$content .= '<img src="'.$image.'" alt="Related" />'."\n";
 						}
