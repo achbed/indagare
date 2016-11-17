@@ -14,7 +14,6 @@ if ( is_user_logged_in() ) {
 
 if ( empty( $_GET['c'] ) || empty( $_GET['h'] ) ) {
 	// No data.  Redirect to ..... homepage?
-	?>Missing c or h param.<?php exit();
 	wp_redirect( home_url( '/' ) );
 	exit();
 }
