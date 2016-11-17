@@ -2611,7 +2611,7 @@ $formwidth:65em;
 #account-tab-container #account-header-display [data-display-field], #signup-form-container #account-header-display [data-display-field] { font-weight: 600; }
 #account-tab-container #account-header-display #account-display-membership-level, #account-tab-container #account-header-display .valid-through, #signup-form-container #account-header-display #account-display-membership-level, #signup-form-container #account-header-display .valid-through { margin-top: 0.5em; }
 #account-tab-container #account-header-display #new-contact-link, #signup-form-container #account-header-display #new-contact-link { color: #00aeef; font-size: 0.875em; }
-#account-tab-container #account-header-display .renew-wrapper a, #signup-form-container #account-header-display .renew-wrapper a { color: #da420b; font-size: 0.875em; }
+#account-tab-container #account-header-display .renew-wrapper a, #signup-form-container #account-header-display .renew-wrapper a { font-size: 0.875em; color: white; background: #ee5a2c; border-radius: 3px; cursor: pointer; padding: 6px; margin: 5px auto; display: inline-block; overflow: auto; }
 
 .jconfirm-box form a.form-edit-link, .jconfirm-box form a.form-save-button, .jconfirm-box form a.form-cancel-button, #account-tab-container form a.form-edit-link, #account-tab-container form a.form-save-button, #account-tab-container form a.form-cancel-button, #signup-form-container form a.form-edit-link, #signup-form-container form a.form-save-button, #signup-form-container form a.form-cancel-button { color: #00aeef; font-size: 0.875em; clear: both; }
 .jconfirm-box form a.form-edit-link, #account-tab-container form a.form-edit-link, #signup-form-container form a.form-edit-link { display: block; }
