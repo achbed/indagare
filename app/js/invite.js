@@ -28,9 +28,108 @@ if (!signup) {
 
 		this.processing = false;
 		self.progressDialog = null;
+		this.usrNameChk = false;
+
+		this.buildButtonEventMgrs = function() {
+			jQuery('body')
+				.on('click','#subTab3',function(e) {
+					self.validateForm();
+				})
+				//.on('change', '#wp-username', function(e) {
+				//	self.checkUsername();
+				//})
+				;
+		};
+
+		this.checkUsername = function() {
+			self.fieldValidating('#wp-username');
+			jQuery.ajax('/wp-admin/admin-ajax.php', {
+				method : 'POST',
+				data : {
+					action : 'idj-login',
+					login : jQuery("#wp-username").val()
+				}
+			}).done(function(d, s, x) {
+				self.usrNameChk = d.exists;
+			}).fail(function(x, s, e) {
+				self.usrNameChk = null;
+			}).always(function() {
+				self.validateUsername();
+			});
+		};
+		
+		this.fieldClearValidate = function(f) {
+			jQuery(f).closest('.field').removeClass('validating').removeClass(
+					'validated').removeClass('validate-error').removeClass(
+					'validate-ok');
+		};
+
+		this.fieldValidating = function(f) {
+			self.fieldClearValidate(f);
+			jQuery(f).closest('.field').addClass('validating');
+		};
+
+		this.fieldValidated = function(f, r) {
+			self.fieldClearValidate(f);
+			var c = jQuery(f).closest('.field');
+			c.addClass('validated');
+			if (r) {
+				c.addClass('validate-ok');
+			} else {
+				c.addClass('validate-error');
+			}
+		};
+
+		this.validateField = function(f, p, c, m) {
+			self.fieldValidating(f);
+
+			var r = 0, v = jQuery(f).val();
+			if (!p) {
+				if (v) {
+					r = -1;
+				}
+			} else {
+				v = new String(v);
+				if (v.match(p)) {
+					r = -2;
+				}
+			}
+
+			if ((r == -1) && !!c) {
+				r = c(f);
+				if (r === false) {
+					r = 1;
+				}
+				if (r === true) {
+					r = -1;
+				}
+			}
+
+			self.fieldValidated(f, (r <= -1));
+			if (!!m && (r > -1)) {
+				jQuery(f).closest('.field').find('.errmsg').html(m[r]);
+			}
+			return !!r;
+		};
+
+		this.usrNameStatus = function() {
+			if (self.usrNameChk === false)
+				return -1;
+			if (self.usrNameChk === true)
+				return 1;
+			return 2;
+		};
+
+		this.validateUsername = function() {
+			return self.validateField('#wp-username', false, self.usrNameStatus, [
+					"Please enter a username.",
+					"That username is already associated with an account. Please try again, or <a href=\"/login\">log in</a>.",
+					"Error validating user name.  Try again in a moment." ]);
+		};
 
 		this.validateForm = function() {
 			var complete = shrValidate.validateForm('#accountinfo-form');
+			//complete = self.validateUsername() && complete;
 
 			if ( complete !== true ) {
 				var to = jQuery("#tab-container").find('.validate-error');
@@ -116,11 +215,9 @@ if (!signup) {
 	}
 
 	signup = new signupObj();
+	signup.buildButtonEventMgrs();
 }
 
-jQuery('body').on('click','#subTab3',function(e) {
-	signup.validateForm();
-});
 
 function _setrm(t,v) {
 	if(!v || v=='') {

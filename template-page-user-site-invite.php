@@ -14,6 +14,7 @@ if ( is_user_logged_in() ) {
 
 if ( empty( $_GET['c'] ) || empty( $_GET['h'] ) ) {
 	// No data.  Redirect to ..... homepage?
+	?>Missing c or h param.<?php exit();
 	wp_redirect( home_url( '/' ) );
 	exit();
 }
@@ -21,7 +22,8 @@ if ( empty( $_GET['c'] ) || empty( $_GET['h'] ) ) {
 $cid = $_GET['c'];
 $hash = $_GET['h'];
 $c = new \WPSF\Contact( $cid );
-if ( $hash != $c->get_invite_hash() ) {
+$vhash = $c->get_invite_hash();
+if ( $hash != $vhash ) {
 	// Hash error. Redirect to ..... homepage for now, we need to
 	// build an error page
 	wp_redirect( home_url( '/' ) );
@@ -46,6 +48,7 @@ if ( ! empty( $users ) ) {
 	if( count( $users ) > 1 ) {
 		// We have more than one user account with the requested ContactID.  Bail!
 		$errors->add( 'wpsf_multilink_id', __( '<strong>ERROR</strong>: Multiple Logins tied to this Contact.' ) );
+				
 	} else {
 		// We have an existing user account with that ContactID.
 		$user = array_pop( $users );
@@ -107,7 +110,7 @@ if ( ! empty( $users ) ) {
 
 							    <form id="accountinfo-form" class="editing clearfix">
 									<div field-instance="username" id="field-wp-username" class="input-field field clearfix iform-row-3col iform-row-clear">
-										<input name="username" id="wp-username" type="text">
+										<input name="username" id="wp-username" type="text" validate-type="wp-unique-username">
 										<label for="wp-username"><?php echo __('Username','indagare');?></label>
 									    <span class="errmsg"><?php echo __('Username is not available.  Please try another one.','indagare');?></span>
 									</div>
