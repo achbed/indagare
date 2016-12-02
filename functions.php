@@ -3958,7 +3958,7 @@ function childtheme_override_archive_loop() {
 				echo '<h3>'.__('General Inquiry','indagare').'</h3>'."\n";
 			echo '</header>'."\n";
 
-		 echo do_shortcode('[contact-form-7 id="75335" title="'.__('Contact Apply Now General','indagare').'"]');
+		 echo do_shortcode('[contact-form-7 id="75996" title="'.__('Contact Apply Now General','indagare').'"]');
 
 		echo '</div><!-- #lightbox -->'."\n";
 
@@ -5657,7 +5657,7 @@ function child_singlepost($content) {
 					$content .= '<h3>'.get_the_title().'</h3>'."\n";
 				$content .= '</header>'."\n";
 
-			 $content .= do_shortcode('[contact-form-7 id="75334" title="'.__('Contact Apply Now','indagare').'"]');
+			 $content .= do_shortcode('[contact-form-7 id="75995" title="'.__('Contact Apply Now','indagare').'"]');
 
 			$content .= '</div><!-- #lightbox -->'."\n";
 

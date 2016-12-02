@@ -597,6 +597,7 @@ if (!signup) {
 
 								showBilling = (result.payment && (result.amount > 0));
 								self.fixBilling();
+								jQuery("#formdescription").html( result.pagetext );
 								
 								if (!result.valid) {
 									self.fieldValidated('#tgCode', false);

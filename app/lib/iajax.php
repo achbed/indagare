@@ -143,6 +143,7 @@ class AjaxHandler {
 				'length' => $codes[0]['Period'],
 				'payment' => ( empty( $codes[0]['Payment'] ) ? false : true ) ,
 				'amount' => $codes[0]['Amount'],
+				'pagetext' => $codes[0]['Page_Text__c'],
 			);
 			
 		} catch( \Exception $e ) {
@@ -154,6 +155,7 @@ class AjaxHandler {
 				'err' => $e->getMessage(),
 				'payment' => false,
 				'amount' => 0,
+				'pagetext' => '',
 			);
 		}
 
@@ -463,6 +465,10 @@ class AjaxHandler {
 			$account['Membership_Status__c'] = $account->picklistValue( 'Membership_Status__c', 'Active' );
 		}
 		$account['Membership_Old__c'] = '';
+		if ( ! empty( $trial["Name"] ) && ! empty( $trial["Gift_Credit__c"] ) ) {
+			$account["Gift_Balance__c"] = $trial["Gift_Credit__c"];
+			$account["Gifted_From__c"] = $trial["Name"];
+		}
 		$account->update();
 
 		// Do this so we reduce the log output on initial creation
