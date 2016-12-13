@@ -6165,7 +6165,22 @@ function child_singlepost($content) {
 			}
 		}
 
-		$content .= '<div class="join-cta"><a href="/join/">'.__('Join','indagare').'</a></div>'."\n";
+		$content .= '<div class="join-cta">'."\n";
+
+			$content .= '<!--HubSpot Call-to-Action Code -->'."\n";
+			$content .= '<span class="hs-cta-wrapper" id="hs-cta-wrapper-880f4b07-65b6-4b5e-9ed0-fccdc1537656">'."\n";
+			    $content .= '<span class="hs-cta-node hs-cta-880f4b07-65b6-4b5e-9ed0-fccdc1537656" id="hs-cta-880f4b07-65b6-4b5e-9ed0-fccdc1537656">'."\n";
+			        $content .= '<!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->'."\n";
+			        $content .= '<a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/880f4b07-65b6-4b5e-9ed0-fccdc1537656" ><img class="hs-cta-img" id="hs-cta-img-880f4b07-65b6-4b5e-9ed0-fccdc1537656" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/2459975/880f4b07-65b6-4b5e-9ed0-fccdc1537656.png"  alt="Join"/></a>'."\n";
+			    $content .= '</span>'."\n";
+			    $content .= '<script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>'."\n";
+			    $content .= '<script type="text/javascript">'."\n";
+			        $content .= 'hbspt.cta.load(2459975, "880f4b07-65b6-4b5e-9ed0-fccdc1537656", {});'."\n";
+			$content .= '   </script>'."\n";
+			$content .= '</span>'."\n";
+			$content .= '<!-- end HubSpot Call-to-Action Code -->'."\n";
+
+		$content .= '</div>'."\n";
 
 		$i = 1;
 
@@ -6236,7 +6251,23 @@ function child_singlepost($content) {
 				$content .= $stepcontent;
 				$content .= '</div>'."\n";
 
-				$content .= '<div class="join-cta"><a href="/join/">'.__('Join','indagare').'</a></div>'."\n";
+
+				$content .= '<div class="join-cta">'."\n";
+
+					$content .= '<!--HubSpot Call-to-Action Code -->'."\n";
+					$content .= '<span class="hs-cta-wrapper" id="hs-cta-wrapper-880f4b07-65b6-4b5e-9ed0-fccdc1537656">'."\n";
+					    $content .= '<span class="hs-cta-node hs-cta-880f4b07-65b6-4b5e-9ed0-fccdc1537656" id="hs-cta-880f4b07-65b6-4b5e-9ed0-fccdc1537656">'."\n";
+					        $content .= '<!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->'."\n";
+					        $content .= '<a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/880f4b07-65b6-4b5e-9ed0-fccdc1537656" ><img class="hs-cta-img" id="hs-cta-img-880f4b07-65b6-4b5e-9ed0-fccdc1537656" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/2459975/880f4b07-65b6-4b5e-9ed0-fccdc1537656.png"  alt="Join"/></a>'."\n";
+					    $content .= '</span>'."\n";
+					    $content .= '<script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>'."\n";
+					    $content .= '<script type="text/javascript">'."\n";
+					        $content .= 'hbspt.cta.load(2459975, "880f4b07-65b6-4b5e-9ed0-fccdc1537656", {});'."\n";
+					$content .= '   </script>'."\n";
+					$content .= '</span>'."\n";
+					$content .= '<!-- end HubSpot Call-to-Action Code -->'."\n";
+
+				$content .= '</div>'."\n";
 
 				$i++;
 
@@ -6313,7 +6344,22 @@ function child_singlepost($content) {
 			$content .= '</div>'."\n";
 		}
 
-		$content .= '<div class="join-cta"><a href="/join/">'.__('Join','indagare').'</a></div>'."\n";
+		$content .= '<div class="join-cta">'."\n";
+
+			$content .= '<!--HubSpot Call-to-Action Code -->'."\n";
+			$content .= '<span class="hs-cta-wrapper" id="hs-cta-wrapper-880f4b07-65b6-4b5e-9ed0-fccdc1537656">'."\n";
+			    $content .= '<span class="hs-cta-node hs-cta-880f4b07-65b6-4b5e-9ed0-fccdc1537656" id="hs-cta-880f4b07-65b6-4b5e-9ed0-fccdc1537656">'."\n";
+			        $content .= '<!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->'."\n";
+			        $content .= '<a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/880f4b07-65b6-4b5e-9ed0-fccdc1537656" ><img class="hs-cta-img" id="hs-cta-img-880f4b07-65b6-4b5e-9ed0-fccdc1537656" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/2459975/880f4b07-65b6-4b5e-9ed0-fccdc1537656.png"  alt="Join"/></a>'."\n";
+			    $content .= '</span>'."\n";
+			    $content .= '<script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>'."\n";
+			    $content .= '<script type="text/javascript">'."\n";
+			        $content .= 'hbspt.cta.load(2459975, "880f4b07-65b6-4b5e-9ed0-fccdc1537656", {});'."\n";
+			$content .= '   </script>'."\n";
+			$content .= '</span>'."\n";
+			$content .= '<!-- end HubSpot Call-to-Action Code -->'."\n";
+
+		$content .= '</div>'."\n";
 
 		$content .= '<div class="header"><h2>'.__('What We Do Best','indagare').'</h2></div>'."\n";
 
@@ -6386,7 +6432,22 @@ function child_singlepost($content) {
 
 		}
 
-		$content .= '<div class="join-cta"><a href="/join/">Join</a></div>'."\n";
+		$content .= '<div class="join-cta">'."\n";
+
+			$content .= '<!--HubSpot Call-to-Action Code -->'."\n";
+			$content .= '<span class="hs-cta-wrapper" id="hs-cta-wrapper-880f4b07-65b6-4b5e-9ed0-fccdc1537656">'."\n";
+			    $content .= '<span class="hs-cta-node hs-cta-880f4b07-65b6-4b5e-9ed0-fccdc1537656" id="hs-cta-880f4b07-65b6-4b5e-9ed0-fccdc1537656">'."\n";
+			        $content .= '<!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->'."\n";
+			        $content .= '<a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/880f4b07-65b6-4b5e-9ed0-fccdc1537656" ><img class="hs-cta-img" id="hs-cta-img-880f4b07-65b6-4b5e-9ed0-fccdc1537656" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/2459975/880f4b07-65b6-4b5e-9ed0-fccdc1537656.png"  alt="Join"/></a>'."\n";
+			    $content .= '</span>'."\n";
+			    $content .= '<script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>'."\n";
+			    $content .= '<script type="text/javascript">'."\n";
+			        $content .= 'hbspt.cta.load(2459975, "880f4b07-65b6-4b5e-9ed0-fccdc1537656", {});'."\n";
+			$content .= '   </script>'."\n";
+			$content .= '</span>'."\n";
+			$content .= '<!-- end HubSpot Call-to-Action Code -->'."\n";
+
+		$content .= '</div>'."\n";
 
 		$content .= '<div class="header"><h2>'.__('The Indagare Advantage','indagare').'</h2></div>'."\n";
 
@@ -7358,6 +7419,19 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 
 			echo '<a class="contact lightbox-inline" href="#lightbox-contact-team"><img src="'.get_bloginfo('stylesheet_directory').'/images/contact-phone.png" /></a>'."\n";
 
+			// echo '<!--HubSpot Call-to-Action Code -->'."\n";
+			// echo ' <span class="hs-cta-wrapper" id="hs-cta-wrapper-035b6928-3527-41d0-8ad2-2af98e15233f">'."\n";
+			//     echo ' <span class="hs-cta-node hs-cta-035b6928-3527-41d0-8ad2-2af98e15233f" id="hs-cta-035b6928-3527-41d0-8ad2-2af98e15233f">'."\n";
+			//         echo '<!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->'."\n";
+			//         echo '<a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/035b6928-3527-41d0-8ad2-2af98e15233f" ><img class="hs-cta-img" id="hs-cta-img-035b6928-3527-41d0-8ad2-2af98e15233f" style="border-width:0px;" height="123" width="300" src="https://no-cache.hubspot.com/cta/default/2459975/035b6928-3527-41d0-8ad2-2af98e15233f.png"  alt="Contact the Indagare Team"/></a>'."\n";
+			//     echo '</span>'."\n";
+			//     echo '<script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>'."\n";
+			//     	echo '<script type="text/javascript">'."\n";
+			//     	echo 'hbspt.cta.load(2459975, "035b6928-3527-41d0-8ad2-2af98e15233f", {});'."\n";
+			//     echo '</script>'."\n";
+			// echo '</span>'."\n";
+			// echo '<!-- end HubSpot Call-to-Action Code -->'."\n";
+
 			// sidebar newsletter signup
 
 			echo '<div id="form-buzz" class="newsletter-signup-wrapper">'."\n";
@@ -7810,7 +7884,21 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 				echo '</div><!-- .widget -->'."\n";
 			}
 
-			echo '<a class="contact" href="/why-join/"><img src="'.get_bloginfo('stylesheet_directory').'/images/contact-magazine.png"></a>'."\n";
+			// echo '<a class="contact" href="/why-join/"><img src="'.get_bloginfo('stylesheet_directory').'/images/contact-magazine.png"></a>'."\n";
+
+			echo '<!--HubSpot Call-to-Action Code --> '."\n";
+			    echo '<span class="hs-cta-wrapper" id="hs-cta-wrapper-94bd3ef6-dd02-4887-ac6f-67c46443c7e4"> '."\n";
+					echo '<span class="hs-cta-node hs-cta-94bd3ef6-dd02-4887-ac6f-67c46443c7e4" id="hs-cta-94bd3ef6-dd02-4887-ac6f-67c46443c7e4">'."\n";
+					    echo '<!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->'."\n";
+					    echo '<a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/94bd3ef6-dd02-4887-ac6f-67c46443c7e4" ><img class="hs-cta-img" id="hs-cta-img-94bd3ef6-dd02-4887-ac6f-67c46443c7e4" style="border-width:0px;" height="175" width="300" src="https://no-cache.hubspot.com/cta/default/2459975/94bd3ef6-dd02-4887-ac6f-67c46443c7e4.png"  alt="Talk to a Travel Specialist"/></a>'."\n";
+					echo '</span>'."\n";
+				echo '<script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>'."\n";
+				echo '<script type="text/javascript">'."\n";
+				   echo ' hbspt.cta.load(2459975, "94bd3ef6-dd02-4887-ac6f-67c46443c7e4", {});'."\n";
+				echo '</script>'."\n";
+				echo '</span>'."\n";
+			echo '<!-- end HubSpot Call-to-Action Code -->'."\n";
+
 
 		echo '</div><!-- #primary -->'."\n";
 
@@ -8028,9 +8116,23 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 			echo '<div id="join-today" class="contain">'."\n";
 				echo '<div class="join-indagare">'."\n";
 					echo '<p class="action">'.__('Become an Indagare Member Today','indagare').'</p>'."\n";
-					echo '<p class="action-button"><a href="/join/" class="button">'.__('Join','indagare').'</a> <a href="#lightbox-login" class="lightbox-inline">'.__('or sign in','indagare').'</a></p>'."\n";
+					echo '<p class="action-button"><!--HubSpot Call-to-Action Code -->
+					<span class="hs-cta-wrapper" id="hs-cta-wrapper-0132d457-a685-4480-af74-ca8543fdeb45">
+					    <span class="hs-cta-node hs-cta-0132d457-a685-4480-af74-ca8543fdeb45" id="hs-cta-0132d457-a685-4480-af74-ca8543fdeb45">
+					        <!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->
+					        <a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/0132d457-a685-4480-af74-ca8543fdeb45" ><img class="hs-cta-img" id="hs-cta-img-0132d457-a685-4480-af74-ca8543fdeb45" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/2459975/0132d457-a685-4480-af74-ca8543fdeb45.png"  alt="Join"/></a>
+					    </span>
+					    <script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>
+					    <script type="text/javascript">
+					        hbspt.cta.load(2459975, "0132d457-a685-4480-af74-ca8543fdeb45", {});
+					    </script>
+					</span>
+					<!-- end HubSpot Call-to-Action Code -->
+					 <a href="#lightbox-login" class="lightbox-inline">'.__('or sign in','indagare').'</a></p>'."\n";
 				echo '</div>'."\n";
 			echo '</div>'."\n";
+
+		}
 
 		}
 
@@ -8230,7 +8332,21 @@ jQuery(document).ready(function($) {
 			<li><?php print __('To benefit from customized trip planning from our expert team.','indagare'); ?></li>
 			<li><?php print __('To gain access to Insider Trips, events and more.','indagare'); ?></li>
 		</ul>
-		<a href="/why-join/" class="button"><?php print __('Learn More','indagare'); ?></a>
+		<!--<a href="/why-join/" class="button"><?php /*print __('Learn More','indagare'); */?><!--</a>-->
+
+		<!--HubSpot Call-to-Action Code -->
+		<span class="hs-cta-wrapper" id="hs-cta-wrapper-182b2515-6279-4f41-a284-6f95d3826e2a">
+		    <span class="hs-cta-node hs-cta-182b2515-6279-4f41-a284-6f95d3826e2a" id="hs-cta-182b2515-6279-4f41-a284-6f95d3826e2a">
+		        <!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->
+		        <a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/182b2515-6279-4f41-a284-6f95d3826e2a" ><img class="hs-cta-img" id="hs-cta-img-182b2515-6279-4f41-a284-6f95d3826e2a" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/2459975/182b2515-6279-4f41-a284-6f95d3826e2a.png"  alt="Learn More"/></a>
+		    </span>
+		    <script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>
+		    <script type="text/javascript">
+		        hbspt.cta.load(2459975, '182b2515-6279-4f41-a284-6f95d3826e2a', {});
+		    </script>
+		</span>
+		<!-- end HubSpot Call-to-Action Code -->
+
 	</div><!-- .column -->
 
 	<div class="column one-third">
@@ -8241,7 +8357,22 @@ jQuery(document).ready(function($) {
 			<li><?php print __('Savings on just one hotel booking usually surpass the cost of a basic membership thanks to special rates.','indagare'); ?></li>
 			<li><?php print __('Skip the application and become a member now by using the Referral Code: <strong>IndagareTravel</strong>.','indagare'); ?></li>
 		</ul>
-		<a href="/join/?referralcode=IndagareTravel" class="button"><?php print __('Join Now','indagare'); ?></a>
+		<!--<a href="/join/?referralcode=IndagareTravel" class="button"><?php /*print __('Join Now','indagare'); */?><!--</a>-->
+
+		<!--HubSpot Call-to-Action Code -->
+		<span class="hs-cta-wrapper" id="hs-cta-wrapper-7674bb3c-b665-4d03-a569-94e61229e461">
+		    <span class="hs-cta-node hs-cta-7674bb3c-b665-4d03-a569-94e61229e461" id="hs-cta-7674bb3c-b665-4d03-a569-94e61229e461">
+		        <!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->
+		        <a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/7674bb3c-b665-4d03-a569-94e61229e461" ><img class="hs-cta-img" id="hs-cta-img-7674bb3c-b665-4d03-a569-94e61229e461" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/2459975/7674bb3c-b665-4d03-a569-94e61229e461.png"  alt="Join Now"/></a>
+		    </span>
+		    <script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>
+		    <script type="text/javascript">
+		        hbspt.cta.load(2459975, '7674bb3c-b665-4d03-a569-94e61229e461', {});
+		    </script>
+		</span>
+		<!-- end HubSpot Call-to-Action Code -->
+
+
 	</div><!-- .column -->
 
 	<div class="column one-third last">
