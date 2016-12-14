@@ -6433,7 +6433,6 @@ function child_singlepost($content) {
 			$content .= '<div class="candy-wrapper contain"><div class="candy-inner"><div class="container standard"><div class="content"><div class="hentry"><div class="entry-content">'."\n";
 
 		}
-		}
 
 		$content .= '<div class="join-cta">'."\n";
 
