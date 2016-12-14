@@ -2654,6 +2654,7 @@ $formwidth:65em;
 
 #account-tab-container form.editing div.checkboxes .checkbox-label, #signup-form-container form.editing div.checkboxes .checkbox-label, .jconfirm-box form.editing div.checkboxes .checkbox-label { margin: 0; padding: 1em 0.5em; line-height: 1em; float: left; }
 #account-tab-container form.editing div.checkboxes input, #signup-form-container form.editing div.checkboxes input, .jconfirm-box form.editing div.checkboxes input { float: left; margin: 1em 0; padding: 0; min-height: 0; top: auto; }
+#account-tab-container a.form-edit-link, #signup-form-container a.form-edit-link, .jconfirm-box a.form-edit-link { font-size: 0.875em; color: white; background: #ee5a2c; border-radius: 3px; cursor: pointer; padding: 6px; margin: 5px auto; display: inline-block; overflow: auto; clear: both; float: left; }
 
 .input-field.validated:before, .input-field.validating:before { position: absolute; right: 1.5em; top: 1.125em; left: auto; }
 .input-field.validated.validate-error span.errmsg, .input-field.validating.validate-error span.errmsg { position: absolute; background: #fee; padding: 0.5em 1em; display: none; z-index: 100; left: 0; top: 100%; margin: 0; font-size: 75%; width: 100%; border: 4px solid #c00; }

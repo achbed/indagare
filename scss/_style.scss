@@ -4493,6 +4493,20 @@ $columnwidth:5em;
       top: auto;
     }
   }
+
+  a.form-edit-link{
+    font-size: 0.875em;
+    color: white;
+    background: #ee5a2c;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 6px;
+    margin: 5px auto;
+    display: inline-block;
+    overflow: auto;
+    clear: both;
+    float: left;
+    }
 }
 
 .input-field {
