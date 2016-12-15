@@ -6167,18 +6167,18 @@ function child_singlepost($content) {
 
 		$content .= '<div class="join-cta">'."\n";
 
-			$content .= '<!--HubSpot Call-to-Action Code -->
-				<span class="hs-cta-wrapper" id="hs-cta-wrapper-7674bb3c-b665-4d03-a569-94e61229e461">
-				    <span class="hs-cta-node hs-cta-7674bb3c-b665-4d03-a569-94e61229e461" id="hs-cta-7674bb3c-b665-4d03-a569-94e61229e461">
-				        <!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->
-				        <a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/7674bb3c-b665-4d03-a569-94e61229e461" ><img class="hs-cta-img" id="hs-cta-img-7674bb3c-b665-4d03-a569-94e61229e461" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/2459975/7674bb3c-b665-4d03-a569-94e61229e461.png"  alt="Join Now"/></a>
-				    </span>
-				    <script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>
-				    <script type="text/javascript">
-				        hbspt.cta.load(2459975, "7674bb3c-b665-4d03-a569-94e61229e461", {});
-				    </script>
-				</span>
-				<!-- end HubSpot Call-to-Action Code -->'."\n";
+			$content .= '<!--HubSpot Call-to-Action Code -->'."\n";
+			$content .= '<span class="hs-cta-wrapper" id="hs-cta-wrapper-880f4b07-65b6-4b5e-9ed0-fccdc1537656">'."\n";
+			    $content .= '<span class="hs-cta-node hs-cta-880f4b07-65b6-4b5e-9ed0-fccdc1537656" id="hs-cta-880f4b07-65b6-4b5e-9ed0-fccdc1537656">'."\n";
+			        $content .= '<!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->'."\n";
+			        $content .= '<a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/880f4b07-65b6-4b5e-9ed0-fccdc1537656" ><img class="hs-cta-img" id="hs-cta-img-880f4b07-65b6-4b5e-9ed0-fccdc1537656" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/2459975/880f4b07-65b6-4b5e-9ed0-fccdc1537656.png"  alt="Join"/></a>'."\n";
+			    $content .= '</span>'."\n";
+			    $content .= '<script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>'."\n";
+			    $content .= '<script type="text/javascript">'."\n";
+			        $content .= 'hbspt.cta.load(2459975, "880f4b07-65b6-4b5e-9ed0-fccdc1537656", {});'."\n";
+			$content .= '   </script>'."\n";
+			$content .= '</span>'."\n";
+			$content .= '<!-- end HubSpot Call-to-Action Code -->'."\n";
 
 		$content .= '</div>'."\n";
 
@@ -6253,23 +6253,22 @@ function child_singlepost($content) {
 
 		}
 
-				$content .= '<div class="join-cta">'."\n";
+			$content .= '<div class="join-cta">'."\n";
 
-					$content .= '<!--HubSpot Call-to-Action Code -->
-						<span class="hs-cta-wrapper" id="hs-cta-wrapper-7674bb3c-b665-4d03-a569-94e61229e461">
-						    <span class="hs-cta-node hs-cta-7674bb3c-b665-4d03-a569-94e61229e461" id="hs-cta-7674bb3c-b665-4d03-a569-94e61229e461">
-						        <!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->
-						        <a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/7674bb3c-b665-4d03-a569-94e61229e461" ><img class="hs-cta-img" id="hs-cta-img-7674bb3c-b665-4d03-a569-94e61229e461" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/2459975/7674bb3c-b665-4d03-a569-94e61229e461.png"  alt="Join Now"/></a>
-						    </span>
-						    <script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>
-						    <script type="text/javascript">
-						        hbspt.cta.load(2459975, "7674bb3c-b665-4d03-a569-94e61229e461", {});
-						    </script>
-						</span>
-						<!-- end HubSpot Call-to-Action Code -->'."\n";
+				$content .= '<!--HubSpot Call-to-Action Code -->'."\n";
+				$content .= '<span class="hs-cta-wrapper" id="hs-cta-wrapper-880f4b07-65b6-4b5e-9ed0-fccdc1537656">'."\n";
+				    $content .= '<span class="hs-cta-node hs-cta-880f4b07-65b6-4b5e-9ed0-fccdc1537656" id="hs-cta-880f4b07-65b6-4b5e-9ed0-fccdc1537656">'."\n";
+				        $content .= '<!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->'."\n";
+				        $content .= '<a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/880f4b07-65b6-4b5e-9ed0-fccdc1537656" ><img class="hs-cta-img" id="hs-cta-img-880f4b07-65b6-4b5e-9ed0-fccdc1537656" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/2459975/880f4b07-65b6-4b5e-9ed0-fccdc1537656.png"  alt="Join"/></a>'."\n";
+				    $content .= '</span>'."\n";
+				    $content .= '<script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>'."\n";
+				    $content .= '<script type="text/javascript">'."\n";
+				        $content .= 'hbspt.cta.load(2459975, "880f4b07-65b6-4b5e-9ed0-fccdc1537656", {});'."\n";
+				$content .= '   </script>'."\n";
+				$content .= '</span>'."\n";
+				$content .= '<!-- end HubSpot Call-to-Action Code -->'."\n";
 
-				$content .= '</div>'."\n";
-
+			$content .= '</div>'."\n";
 				$i++;
 
 			}
@@ -6344,22 +6343,21 @@ function child_singlepost($content) {
 
 			$content .= '</div>'."\n";
 		}
-		}
 
 		$content .= '<div class="join-cta">'."\n";
 
-			$content .= '<!--HubSpot Call-to-Action Code -->
-				<span class="hs-cta-wrapper" id="hs-cta-wrapper-7674bb3c-b665-4d03-a569-94e61229e461">
-				    <span class="hs-cta-node hs-cta-7674bb3c-b665-4d03-a569-94e61229e461" id="hs-cta-7674bb3c-b665-4d03-a569-94e61229e461">
-				        <!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->
-				        <a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/7674bb3c-b665-4d03-a569-94e61229e461" ><img class="hs-cta-img" id="hs-cta-img-7674bb3c-b665-4d03-a569-94e61229e461" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/2459975/7674bb3c-b665-4d03-a569-94e61229e461.png"  alt="Join Now"/></a>
-				    </span>
-				    <script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>
-				    <script type="text/javascript">
-				        hbspt.cta.load(2459975, "7674bb3c-b665-4d03-a569-94e61229e461", {});
-				    </script>
-				</span>
-				<!-- end HubSpot Call-to-Action Code -->'."\n";
+			$content .= '<!--HubSpot Call-to-Action Code -->'."\n";
+			$content .= '<span class="hs-cta-wrapper" id="hs-cta-wrapper-880f4b07-65b6-4b5e-9ed0-fccdc1537656">'."\n";
+			    $content .= '<span class="hs-cta-node hs-cta-880f4b07-65b6-4b5e-9ed0-fccdc1537656" id="hs-cta-880f4b07-65b6-4b5e-9ed0-fccdc1537656">'."\n";
+			        $content .= '<!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->'."\n";
+			        $content .= '<a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/880f4b07-65b6-4b5e-9ed0-fccdc1537656" ><img class="hs-cta-img" id="hs-cta-img-880f4b07-65b6-4b5e-9ed0-fccdc1537656" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/2459975/880f4b07-65b6-4b5e-9ed0-fccdc1537656.png"  alt="Join"/></a>'."\n";
+			    $content .= '</span>'."\n";
+			    $content .= '<script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>'."\n";
+			    $content .= '<script type="text/javascript">'."\n";
+			        $content .= 'hbspt.cta.load(2459975, "880f4b07-65b6-4b5e-9ed0-fccdc1537656", {});'."\n";
+			$content .= '   </script>'."\n";
+			$content .= '</span>'."\n";
+			$content .= '<!-- end HubSpot Call-to-Action Code -->'."\n";
 
 		$content .= '</div>'."\n";
 
@@ -6436,18 +6434,18 @@ function child_singlepost($content) {
 
 		$content .= '<div class="join-cta">'."\n";
 
-			$content .= '<!--HubSpot Call-to-Action Code -->
-				<span class="hs-cta-wrapper" id="hs-cta-wrapper-7674bb3c-b665-4d03-a569-94e61229e461">
-				    <span class="hs-cta-node hs-cta-7674bb3c-b665-4d03-a569-94e61229e461" id="hs-cta-7674bb3c-b665-4d03-a569-94e61229e461">
-				        <!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->
-				        <a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/7674bb3c-b665-4d03-a569-94e61229e461" ><img class="hs-cta-img" id="hs-cta-img-7674bb3c-b665-4d03-a569-94e61229e461" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/2459975/7674bb3c-b665-4d03-a569-94e61229e461.png"  alt="Join Now"/></a>
-				    </span>
-				    <script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>
-				    <script type="text/javascript">
-				        hbspt.cta.load(2459975, "7674bb3c-b665-4d03-a569-94e61229e461", {});
-				    </script>
-				</span>
-				<!-- end HubSpot Call-to-Action Code -->'."\n";
+			$content .= '<!--HubSpot Call-to-Action Code -->'."\n";
+			$content .= '<span class="hs-cta-wrapper" id="hs-cta-wrapper-880f4b07-65b6-4b5e-9ed0-fccdc1537656">'."\n";
+			    $content .= '<span class="hs-cta-node hs-cta-880f4b07-65b6-4b5e-9ed0-fccdc1537656" id="hs-cta-880f4b07-65b6-4b5e-9ed0-fccdc1537656">'."\n";
+			        $content .= '<!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->'."\n";
+			        $content .= '<a href="http://cta-redirect.hubspot.com/cta/redirect/2459975/880f4b07-65b6-4b5e-9ed0-fccdc1537656" ><img class="hs-cta-img" id="hs-cta-img-880f4b07-65b6-4b5e-9ed0-fccdc1537656" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/2459975/880f4b07-65b6-4b5e-9ed0-fccdc1537656.png"  alt="Join"/></a>'."\n";
+			    $content .= '</span>'."\n";
+			    $content .= '<script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>'."\n";
+			    $content .= '<script type="text/javascript">'."\n";
+			        $content .= 'hbspt.cta.load(2459975, "880f4b07-65b6-4b5e-9ed0-fccdc1537656", {});'."\n";
+			$content .= '   </script>'."\n";
+			$content .= '</span>'."\n";
+			$content .= '<!-- end HubSpot Call-to-Action Code -->'."\n";
 
 		$content .= '</div>'."\n";
 
