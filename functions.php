@@ -4677,7 +4677,7 @@ function child_singlepost($content) {
 				echo "jQuery().ready(function($) {";
 					 echo "if($('.destination-slide').length > 4) {";
 		  				echo "$('.fd-container').addClass('has-slider');";
-					 echo  "}"; 
+					 echo  "}";
 				echo  "});";
 			echo "</script>";
 
@@ -6251,8 +6251,6 @@ function child_singlepost($content) {
 				$content .= $stepcontent;
 				$content .= '</div>'."\n";
 
-		}
-
 				$content .= '<div class="join-cta">'."\n";
 
 					$content .= '<!--HubSpot Call-to-Action Code -->
@@ -6343,7 +6341,6 @@ function child_singlepost($content) {
 			$content .= '</div>'."\n";
 
 			$content .= '</div>'."\n";
-		}
 		}
 
 		$content .= '<div class="join-cta">'."\n";
@@ -8133,8 +8130,6 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 					 <a href="#lightbox-login" class="lightbox-inline">'.__('or sign in','indagare').'</a></p>'."\n";
 				echo '</div>'."\n";
 			echo '</div>'."\n";
-
-		}
 
 		}
 
