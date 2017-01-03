@@ -2,9 +2,9 @@
 /*
 Plugin Name: Last Viewed Posts
 Plugin URI: http://www.wpbeginner.com
-Description: Show a list of posts (and pages) the visitor had recently viewed. It's cookie based. Every visitor has his own listing. This is not a global output for all users! Edit plugin-file to see and change options.
+Description: Show a list of posts (and pages) the visitor had recently viewed. It's session based. Every visitor has his own listing. This is not a global output for all users! Edit plugin-file to see and change options.
 Author: Syed Balkhi
-Version: 0.7.2
+Version: 0.8.0
 Author URI: http://www.wpbeginner.com
 */
 
@@ -30,7 +30,7 @@ For the ouput use the sidebar widget OR place following code just anywhere (outs
 Note that the output will not appear if there's no cookie set (because cookies are disabled or the user didn't view any single post).
 -------------------------------------------
 
-<?php if (function_exists('zg_recently_viewed')):  if (isset($_COOKIE["WP-LastViewedPosts"])) { ?>
+<?php if (function_exists('zg_recently_viewed')):  if (isset($_SESSION["WP-LastViewedPosts"])) { ?>
  <h2>Last viewed posts</h2>
  <?php zg_recently_viewed(); ?>
 <?php }  endif; ?>
@@ -72,10 +72,10 @@ global $wp_query;
 		$zg_post_ID = $wp_query->post->ID; // Read post-ID
 	}
 
-if (! isset($_COOKIE["WP-LastViewedPosts"])) {
+if (! isset($_SESSION["WP-LastViewedPosts"])) {
 		$zg_cookiearray = array($zg_post_ID); // If there's no cookie set, set up a new array
 	} else {
-		$zg_cookiedata = stripslashes(  $_COOKIE["WP-LastViewedPosts"] );
+		$zg_cookiedata = stripslashes(  $_SESSION["WP-LastViewedPosts"] );
 		$zg_cookiedata = preg_replace_callback( '!s:(\d+):"(.*?)";!', "zg_pregrepl_callback", $zg_cookiedata );
 //		$zg_cookiedata = preg_replace( '!s:(\d+):"(.*?)";!e', "'s:'.strlen('$2').':\"$2\";'", $zg_cookiedata );
 		$zg_cookiearray = unserialize( $zg_cookiedata ); // Read serialized array from cooke and unserialize it
@@ -108,8 +108,8 @@ if (! isset($_COOKIE["WP-LastViewedPosts"])) {
 }
 
 function zg_recently_viewed_array() { // Output post array for one element
-	if (isset($_COOKIE["WP-LastViewedPosts"])) {
-		$zg_cookiedata = stripslashes(  $_COOKIE["WP-LastViewedPosts"] );
+	if (isset($_SESSION["WP-LastViewedPosts"])) {
+		$zg_cookiedata = stripslashes(  $_SESSION["WP-LastViewedPosts"] );
 		$zg_cookiedata = preg_replace_callback( '!s:(\d+):"(.*?)";!', "zg_pregrepl_callback", $zg_cookiedata );
 //		$zg_cookiedata = preg_replace( '!s:(\d+):"(.*?)";!e', "'s:'.strlen('$2').':\"$2\";'", $zg_cookiedata );
 		$zg_post_IDs = unserialize( $zg_cookiedata ); // Read serialized array from cooke and unserialize it
@@ -128,10 +128,10 @@ function zg_recently_viewed_array() { // Output post array for one element
 }
 
 function zg_recently_viewed() { // Output
-	if (isset($_COOKIE["WP-LastViewedPosts"])) {
+	if (isset($_SESSION["WP-LastViewedPosts"])) {
 		//echo "Cookie was set.<br/>";  // For bugfixing - uncomment to see if cookie was set
-		//echo $_COOKIE["WP-LastViewedPosts"]; // For bugfixing (cookie content)
-		$zg_cookiedata = stripslashes(  $_COOKIE["WP-LastViewedPosts"] );
+		//echo $_SESSION["WP-LastViewedPosts"]; // For bugfixing (cookie content)
+		$zg_cookiedata = stripslashes(  $_SESSION["WP-LastViewedPosts"] );
 		$zg_cookiedata = preg_replace_callback( '!s:(\d+):"(.*?)";!', "zg_pregrepl_callback", $zg_cookiedata );
 		//$zg_cookiedata = preg_replace( '!s:(\d+):"(.*?)";!e', "'s:'.strlen('$2').':\"$2\";'", $zg_cookiedata );
 		$zg_post_IDs = unserialize( $zg_cookiedata ); // Read serialized array from cooke and unserialize it
@@ -187,7 +187,7 @@ function zg_lwp_widget($args) { // Widget output
 	$options = get_option('zg_lwp_widget');
 	$title = htmlspecialchars(stripcslashes($options['title']), ENT_QUOTES);
 	$title = empty($options['title']) ? 'Last viewed posts' : $options['title'];
-	if (isset($_COOKIE["WP-LastViewedPosts"])) {
+	if (isset($_SESSION["WP-LastViewedPosts"])) {
 		echo $before_widget . $before_title . $title . $after_title;
 		zg_recently_viewed();
 		echo $after_widget;

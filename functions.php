@@ -8070,7 +8070,7 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 	) {
 
 		// recently viewed
-		if (function_exists('zg_recently_viewed') && !is_page_template ( 'template-page-welcome.php' )):  if (isset($_COOKIE["WP-LastViewedPosts"])) {
+		if (function_exists('zg_recently_viewed') && !is_page_template ( 'template-page-welcome.php' )):  if (isset($_SESSION["WP-LastViewedPosts"])) {
 			echo '<div class="header divider"><h2>'.__('Recently Viewed','indagare').'</h2></div>'."\n";
 			echo '<section class="recent-articles contain">'."\n";
 
