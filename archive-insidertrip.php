@@ -36,13 +36,10 @@
         	// action hook for placing content above the archive loop
         	thematic_above_archiveloop();
 
-        	if ( ! is_user_logged_in() ) {
-        		$counter_show = \indagare\cookies\Counters::getPageCountGroup( 'restricted' );
-        		if ( $counter_show <= INDG_PREVIEW_COUNT_MAX ) {
+        	if ( user_has_permission() ) {
 			// action hook creating the archive loop
 			thematic_archiveloop();
         		}
-        	}
 
         	// action hook for placing content below the archive loop
         	thematic_below_archiveloop();

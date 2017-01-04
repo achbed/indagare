@@ -35,10 +35,11 @@
 
         	// action hook for placing content above the archive loop
         	thematic_above_archiveloop();
+        	if ( user_has_permission() ) {
 
 			// action hook creating the archive loop
 			thematic_archiveloop();
-
+        	}
         	// action hook for placing content below the archive loop
         	thematic_below_archiveloop();
 

@@ -24,6 +24,7 @@
 				// filter for manipulating the element that wraps the content 
 				echo apply_filters( 'thematic_open_id_content', '<div id="content">' . "\n\n" );
 							
+				if ( user_has_permission() ) {
 	            // start the loop
 	            while ( have_posts() ) : the_post();
     	        
@@ -50,6 +51,7 @@
 		
     	        // calling the widget area 'single-bottom'
     	        get_sidebar('single-bottom');
+				}
 			?>
 		
 			</div><!-- #content -->

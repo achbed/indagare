@@ -1541,25 +1541,9 @@ add_filter('wp_head','headerIE',10);
 function login_cookie() {
 global $post;
 
-	// single restaurant | shop | activity | article | insidertrip || archive insidertrip
-	if (   is_posttype( 'restaurant', POSTTYPE_SINGLEONLY )
-		|| is_posttype( 'shop', POSTTYPE_SINGLEONLY )
-		|| is_posttype( 'activity', POSTTYPE_SINGLEONLY )
-		|| is_posttype( 'article', POSTTYPE_SINGLEONLY )
-		|| is_posttype( 'insidertrip' )
-	) {
-
-		if ( ! is_user_logged_in() ) {
-			$counter_show = \indagare\cookies\Counters::getPageCountGroup( 'restricted' );
-			if ( $counter_show > INDG_PREVIEW_COUNT_MAX ) {
+	if ( ! user_has_permission() ) {
 				wp_enqueue_script('show.join.popup');
 			}
-		}
-
-	// archive itinerary - lock out unless visitor is logged-in user
-	} else if ( ! user_has_permission() ) {
-		wp_enqueue_script('show.join.popup');
-	}
 
 }
 add_filter('wp_head','login_cookie',20);
@@ -9939,6 +9923,22 @@ function user_has_permission() {
 		return ( current_user_can( 'ind_read_magazine_archive' ) ||
 			( $current /* && current_user_can( 'ind_read_magazine' ) */ ) );
 	}
+	
+	if ( is_posttype( 'restaurant', POSTTYPE_SINGLEONLY )
+		|| is_posttype( 'shop', POSTTYPE_SINGLEONLY )
+		|| is_posttype( 'activity', POSTTYPE_SINGLEONLY )
+		|| is_posttype( 'article', POSTTYPE_SINGLEONLY )
+		|| is_posttype( 'insidertrip' ) ) {
+		if ( current_user_can( 'ind_read_itinerary' ) ) {
+			return true;
+		}
+		
+		$counter_show = \indagare\cookies\Counters::getPageCountGroup( 'restricted' );
+		if ( $counter_show > INDG_PREVIEW_COUNT_MAX ) {
+			return false;
+		}
+	}
+	
 
 	return true;
 }

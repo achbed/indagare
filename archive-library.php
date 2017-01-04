@@ -33,8 +33,10 @@
 			// create the navigation above the content
 //			thematic_navigation_above();
 
+			if ( user_has_permission() ) {
         	// action hook for placing content above the archive loop
         	thematic_above_archiveloop();
+			}
 
 			// action hook creating the archive loop
 			thematic_archiveloop();

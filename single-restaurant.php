@@ -24,9 +24,7 @@
 				// filter for manipulating the element that wraps the content 
 				echo apply_filters( 'thematic_open_id_content', '<div id="content">' . "\n\n" );
 							
-				if ( ! is_user_logged_in() ) {
-					$counter_show = \indagare\cookies\Counters::getPageCountGroup( 'restricted' );
-					if ( $counter_show <= INDG_PREVIEW_COUNT_MAX ) {
+				if ( user_has_permission() ) {
 				
 	            // start the loop
 	            while ( have_posts() ) : the_post();
@@ -56,7 +54,6 @@
     	        get_sidebar('single-bottom');
 				
 					}
-				}
 			?>
 		
 			</div><!-- #content -->
