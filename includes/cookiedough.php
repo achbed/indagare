@@ -36,6 +36,15 @@ if ( ! class_exists( '\indagare\cookies\CookieDough' ) ) {
 		private $expires = null;
 
 		public function __construct( $key ) {
+			if ( version_compare( phpversion(), '5.4.0', '<' ) ) {
+				if ( session_id() == '' ) {
+					session_start();
+				}
+			} else {
+				if ( session_status() == PHP_SESSION_NONE ) {
+					session_start();
+				}
+			}
 			$this->key = $key;
 			$this->load( true );
 		}
@@ -89,14 +98,10 @@ if ( ! class_exists( '\indagare\cookies\CookieDough' ) ) {
 				if ( array_key_exists( $this->key, $_SESSION ) ) {
 					$value = $_SESSION[$this->key];
 					if ( is_array( $value ) && array_key_exists( 'expires', $value ) && array_key_exists( 'data', $value ) ) {
-						if ( ( $value['expires'] !== 0 ) && ( $value['expires'] < time() ) ) {
-							// Expired data!  Remove it.
-							$this->destroy();
-						} else {
 							$this->value = $value['data'];
 							$this->expires = $value['expires'];
 							$this->loaded = true;
-						}
+						$this->clean();
 					}
 				}
 			}
@@ -115,8 +120,30 @@ if ( ! class_exists( '\indagare\cookies\CookieDough' ) ) {
 			$this->expires = $expires;
 			if ( ! empty( $this->key ) ) {
 				$_SESSION[$this->key] = array( 'expires' => $expires, 'data' => $this->value );
-				// setcookie( $this->key, $this->value, $expires, $path, urlencode( $_SERVER['HTTP_HOST'] ) );
+				// setcookie( $this->key, self::$instance->value, $expires, $path, urlencode( $_SERVER['HTTP_HOST'] ) );
 			}
+		}
+		
+		/**
+		 * Assume that the value is an integer, and increment it.  If there's no current value, start at 0.
+		 * @param number $expires
+		 */
+		public function inc( $expires = 0 ) {
+			$v = $this->get();
+			$v = intval( $v ) + 1;
+			$this->set( $v, $expires );
+			return $v;
+		}
+		
+		/**
+		 * Assume that the value is an integer, and increment it.  If there's no current value, start at 0.
+		 * @param number $expires
+		 */
+		public function dec( $expires = 0 ) {
+			$v = $this->get();
+			$v = intval( $v ) - 1;
+			$this->set( $v, $expires );
+			return $v;
 		}
 		
 		/**
@@ -139,7 +166,8 @@ if ( ! class_exists( '\indagare\cookies\CookieDough' ) ) {
 				return;
 			}
 			
-			if ( ( $this->expires !== 0 ) && ( $this->expires < time() ) ) {
+			$time = time();
+			if ( ( $this->expires !== 0 ) && ( $this->expires < $time ) ) {
 				// Expired data!  Remove it.
 				$this->destroy();
 			}

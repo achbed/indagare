@@ -366,6 +366,10 @@ function markersdisplay( args ) {
 var map_marker_list = [];
 
 function gmap_initialize() {
+	if(jQuery('#mapmarkerjson').length == 0) {
+	    jQuery('.detail p.view-more').hide();
+	    return;
+	}
 	var t = jQuery('#mapmarkerjson').text();
 	t = t.replace('&lt;','<');
 	map_marker_list = jQuery.parseJSON(t);

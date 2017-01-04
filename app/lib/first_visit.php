@@ -1,5 +1,5 @@
 <?php
-
+/*
 namespace indagare\cookies;
 
 if ( ! class_exists( 'indagare\cookies\FirstVisit' ) ) {
@@ -24,3 +24,4 @@ if ( ! class_exists( 'indagare\cookies\FirstVisit' ) ) {
 		}
 	}
 }
+*/

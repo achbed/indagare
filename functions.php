@@ -63,6 +63,12 @@ define('INDG_SEARCHPAGE_SECTIONCOUNT', 8);
 // opened, False collapses it at page load.
 define('INDG_ALWAYSSHOW_DESTFILTERS', true);
 
+/**
+ * The maximum number of free pieces of content that a guest can view within 24 hours.
+ * @var integer
+ */
+define( 'INDG_PREVIEW_COUNT_MAX', 10 );
+
 include_once('includes/utilities.php');
 include_once('ajax-handler.php');
 include_once('includes/search-destination.php');
@@ -1544,8 +1550,8 @@ global $post;
 	) {
 
 		if ( ! is_user_logged_in() ) {
-			indagare\cookies\Counter::updateCounter();
-			if( ! indagare\cookies\Counter::updateCounter() ) {
+			$counter_show = \indagare\cookies\Counters::getPageCountGroup( 'restricted' );
+			if ( $counter_show > INDG_PREVIEW_COUNT_MAX ) {
 				wp_enqueue_script('show.join.popup');
 			}
 		}
@@ -9971,7 +9977,8 @@ function ind_show_email_popup() {
 		}
 	}
 
-	if ( \indagare\cookies\PageCountAll::getPageCountAll() == 5 ) {
+	$c = \indagare\cookies\Counters::getPageCountAll( 0 );
+	if ( $c == 5 ) {
 		return true;
 	}
 

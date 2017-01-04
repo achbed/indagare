@@ -24,6 +24,10 @@
 				// filter for manipulating the element that wraps the content 
 				echo apply_filters( 'thematic_open_id_content', '<div id="content">' . "\n\n" );
 							
+				if ( ! is_user_logged_in() ) {
+					$counter_show = \indagare\cookies\Counters::getPageCountGroup( 'restricted' );
+					if ( $counter_show <= INDG_PREVIEW_COUNT_MAX ) {
+				
 	            // start the loop
 	            while ( have_posts() ) : the_post();
     	        
@@ -43,13 +47,16 @@
 //				thematic_navigation_below();
 		
        			// action hook for calling the comments_template
-    	        thematic_comments_template();
+						//    	        thematic_comments_template();
     	        
     	        // end the loop
         		endwhile;
 		
     	        // calling the widget area 'single-bottom'
     	        get_sidebar('single-bottom');
+				
+					}
+				}
 			?>
 		
 			</div><!-- #content -->
