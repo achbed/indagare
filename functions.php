@@ -376,7 +376,7 @@ function childtheme_header_style() {
 	</style>
 	<?php
 
-	if ( is_singular() && is_page_template ( 'template-page-intro.php' ) ) {
+	if ( is_page_template ( 'template-page-intro.php' ) ) {
 
 		$gallery = get_field('gallery');
 
@@ -1167,22 +1167,22 @@ function enqueue_scripts() {
 	}
 
 	// book page - responsive slides
-	if (is_singular() && is_page_template ( 'template-page-book.php' ) ) {
+	if (is_page_template ( 'template-page-book.php' ) ) {
 		wp_enqueue_script('rslidesalt');
 	}
 
 	// join page - responsive slides
-	if (is_singular() && is_page_template ( 'template-page-user-signup.php' ) ) {
+	if (is_page_template ( 'template-page-user-signup.php' ) ) {
 		wp_enqueue_script('rslidesalt');
 	}
 
 	// why join page - responsive slides
-	if (is_singular() && is_page_template ( 'template-page-join-why-indagare.php' ) ) {
+	if (is_page_template ( 'template-page-join-why-indagare.php' ) ) {
 		wp_enqueue_script('rslidesalt');
 	}
 
 	// new join page - responsive slides and equal height
-	if ( is_singular() && is_page_template( 'template-page-join-signup.php' ) ) {
+	if ( is_page_template( 'template-page-join-signup.php' ) ) {
 		wp_enqueue_script('rslidesalt');
 		wp_enqueue_script('equalheight');
 		wp_enqueue_style('slickcss', $f.'/css/slick.css');
@@ -1191,7 +1191,7 @@ function enqueue_scripts() {
 	}
 
 	// welcome page - responsive slides
-	if (is_singular() && is_page_template ( 'template-page-welcome.php' ) ) {
+	if (is_page_template ( 'template-page-welcome.php' ) ) {
 		wp_enqueue_script('rslidesalt');
 	}
 
@@ -1210,26 +1210,26 @@ function enqueue_scripts() {
 	}
 
 	// mission page - imagesloaded and masonry
-	if (is_singular() && is_page_template ( 'template-page-about-mission.php' ) ) {
+	if (is_page_template ( 'template-page-about-mission.php' ) ) {
 		wp_enqueue_script('imagesloaded');
 		wp_enqueue_script('masonry');
 	}
 
 	// signup page - tabs
-	if (is_singular() && is_page_template ( 'template-page-user-signup-step-two.php' ) ) {
+	if (is_page_template ( 'template-page-user-signup-step-two.php' ) ) {
 		wp_enqueue_script('tabs');
 	}
 
 	// my account page - tabs
-	if (is_singular() && is_page_template ( 'template-page-account-edit.php' ) ) {
+	if (is_page_template ( 'template-page-account-edit.php' ) ) {
 		wp_enqueue_script('tabs');
 //		wp_enqueue_script('customselect');
 	}
 
 	// article archive | map page | book page | home page | region level | destination top level | hotel post | restaurant post | shop post | activity post | itinerary | library | offer - autocomplete
 	if ( is_archive() && get_query_var('post_type') == 'article'
-		|| ( is_singular() && is_page_template ( 'template-page-map.php' ) )
-		|| ( is_singular() && is_page_template ( 'template-page-book.php' ) )
+		|| is_page_template ( 'template-page-map.php' )
+		|| is_page_template ( 'template-page-book.php' )
 		|| is_singular( 'hotel' ) || is_singular( 'restaurant' ) || is_singular( 'shop' ) || is_singular( 'activity' ) || is_singular( 'offer' )
 		|| ( is_archive() && get_query_var('post_type') == 'hotel' )
 		|| ( is_archive() && get_query_var('post_type') == 'restaurant' )
@@ -1249,7 +1249,7 @@ function enqueue_scripts() {
 	}
 
 	// map page tool tip REMOVED | responsive image map REMOVED | lazy load
-	if (is_singular() && is_page_template ( 'template-page-map.php' ) ) {
+	if (is_page_template ( 'template-page-map.php' ) ) {
 		export_destinations( false );
 		wp_enqueue_script('lazyload');
 		wp_enqueue_script('template-page-map_footer');
@@ -1318,7 +1318,7 @@ function enqueue_scripts_here() {
 		wp_enqueue_script('indagare.maps-locations.google');
 	}
 
-	if( is_singular() && is_page_template ( 'template-page-map.php' ) ) {
+	if( is_page_template ( 'template-page-map.php' ) ) {
 		wp_enqueue_script('indagare.maps.destinations');
 	}
 }
@@ -1416,20 +1416,20 @@ global $post;
 		$classes[] = 'about join';
 	}
 
-	if ( is_singular() && ( is_page_template ( 'template-page-how-we-work.php' ) ||
-		 is_page_template ( 'template-page-join-how-we-work.php' ) ) ) {
+	if ( is_page_template ( 'template-page-how-we-work.php' ) ||
+		 is_page_template ( 'template-page-join-how-we-work.php' ) ) {
 		$classes[] = 'ourprocess';
 	}
 
-	if ( is_singular() && is_page_template ( 'template-page-user-signup-step-two.php' ) ) {
+	if ( is_page_template ( 'template-page-user-signup-step-two.php' ) ) {
 		$classes[] = 'signup';
 	}
 
-	if ( is_singular() && is_page_template( 'template-page-user-site-invite.php' ) ) {
+	if ( is_page_template( 'template-page-user-site-invite.php' ) ) {
 		$classes[] = 'site-invite';
 	}
 
-	if ( is_page() && ( get_field('about') == 'yes') || ( is_singular() && is_page_template ( 'template-page-about-founder.php' ) ) || is_author() ) {
+	if ( is_page() && ( get_field('about') == 'yes') || is_page_template ( 'template-page-about-founder.php' ) || is_author() ) {
 		$classes[] = 'about';
 	}
 
@@ -1454,15 +1454,15 @@ global $post;
 		}
 	}
 
-	if ( is_singular() && is_page_template ( 'template-page-about-founder.php' ) ) {
+	if ( is_page_template ( 'template-page-about-founder.php' ) ) {
 		$classes[] = 'founder';
 	}
 
-	if ( is_singular() && ( is_page_template ( 'template-page-about-team.php' ) || is_page_template ( 'template-page-about-contributors.php' ) ) ) {
+	if ( is_page_template ( 'template-page-about-team.php' ) || is_page_template ( 'template-page-about-contributors.php' ) ) {
 		$classes[] = 'listall';
 	}
 
-	if ( is_singular() && is_page_template ( 'template-page-new.php' ) ) {
+	if ( is_page_template ( 'template-page-new.php' ) ) {
 		$classes[] = 'new';
 	}
 
@@ -1482,19 +1482,19 @@ global $post;
 		$classes[] = 'insiderlanding insider';
 	}
 
-	if ( is_singular() && is_page_template ( 'template-page-map.php' ) ) {
+	if ( is_page_template ( 'template-page-map.php' ) ) {
 		$classes[] = 'map';
 	}
 
-	if ( is_singular() && is_page_template ( 'template-page-book.php' ) ) {
+	if ( is_page_template ( 'template-page-book.php' ) ) {
 		$classes[] = 'book';
 	}
 
-	if ( is_singular() && is_page_template ( 'template-page-welcome.php' ) ) {
+	if ( is_page_template ( 'template-page-welcome.php' ) ) {
 		$classes[] = 'welcome';
 	}
 
-	if ( is_singular() && is_page_template ( 'template-page-intro.php' ) ) {
+	if ( is_page_template ( 'template-page-intro.php' ) ) {
 		$classes[] = 'intro';
 	}
 
@@ -2636,14 +2636,14 @@ jQuery().ready(function($) {
 	// end archive for destination
 
 	// map page
-	} else if (is_singular() && is_page_template ( 'template-page-map.php' ) ) {
+	} else if (is_page_template ( 'template-page-map.php' ) ) {
 	include_once 'includes/map-locations.php';
 		echo map_canvas(false, 'hero');
 		maplocations();  // Make sure the JSON is there!
 	// end map page
 
 	// book page
-	} else if (is_singular() && is_page_template ( 'template-page-book.php' ) ) {
+	} else if (is_page_template ( 'template-page-book.php' ) ) {
 
 		echo '<div class="header">'."\n";
 		echo '<h1>'.get_the_title().'</h1>'."\n";
@@ -2711,7 +2711,7 @@ jQuery().ready(function($) {
 	// end book page
 
 	// sign up step one page
-	} else if (is_singular() && is_page_template ( 'template-page-user-signup.php' ) ) {
+	} else if (is_page_template ( 'template-page-user-signup.php' ) ) {
 
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
 		$image = $imageobj[0];
@@ -2735,7 +2735,7 @@ jQuery().ready(function($) {
 	// end sign up step one page
 
 	// how to book page
-	} else if (is_singular() && is_page_template ( 'template-page-how-to-book.php' ) ) {
+	} else if (is_page_template ( 'template-page-how-to-book.php' ) ) {
 
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
 		$image = $imageobj[0];
@@ -2758,7 +2758,7 @@ jQuery().ready(function($) {
 	// end how to book page
 
 	// contact page
-	} else if (is_singular() && is_page_template ( 'template-page-contact.php' ) ) {
+	} else if (is_page_template ( 'template-page-contact.php' ) ) {
 
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
 		$image = $imageobj[0];
@@ -2781,7 +2781,7 @@ jQuery().ready(function($) {
 	// end contact page
 
 	// why join page
-	} else if (is_singular() && is_page_template ( 'template-page-why-join.php' ) ) {
+	} else if (is_page_template ( 'template-page-why-join.php' ) ) {
 
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
 		$image = $imageobj[0];
@@ -2807,7 +2807,7 @@ jQuery().ready(function($) {
 	// end why join page
 
 	// how we work page
-	} else if (is_singular() && is_page_template ( 'template-page-how-we-work.php' ) ) {
+	} else if (is_page_template ( 'template-page-how-we-work.php' ) ) {
 
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
 		$image = $imageobj[0];
@@ -2822,7 +2822,7 @@ jQuery().ready(function($) {
 	// end how we work page
 
 	// welcome page
-	} else if ( is_singular() && is_page_template ( 'template-page-welcome.php' ) ) {
+	} else if ( is_page_template ( 'template-page-welcome.php' ) ) {
 
 /*
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
@@ -2891,7 +2891,7 @@ jQuery().ready(function($) {
 	// end welcome page
 
 	// new page
-	} else if ( is_singular() && is_page_template ( 'template-page-new.php' ) ) {
+	} else if ( is_page_template ( 'template-page-new.php' ) ) {
 
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
 		$image = $imageobj[0];
@@ -2919,8 +2919,8 @@ jQuery().ready(function($) {
 
 	// password reset page || external login page
 	} else if (
-		is_singular() && ( is_page_template ( 'template-page-password-reset.php' ) ||
-		is_page_template ( 'template-page-external-login.php' ) )
+		is_page_template ( 'template-page-password-reset.php' ) ||
+		is_page_template ( 'template-page-external-login.php' )
 	) {
 
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'hero-full' );
@@ -4407,31 +4407,31 @@ global $post;
 	} else if ( is_page() && ( get_field('about') == 'yes') ) {
 
 	// join pages
-	} else if ( is_page() && ( (get_field('membership') == 'yes') || ( is_singular() && is_page_template ( 'template-page-welcome.php' ) ) ) ) {
+	} else if ( is_page() && ( (get_field('membership') == 'yes') || is_page_template ( 'template-page-welcome.php' ) ) ) {
 
 	// new page
-	} else if ( is_singular() && is_page_template ( 'template-page-new.php' ) ) {
+	} else if ( is_page_template ( 'template-page-new.php' ) ) {
 
 	// password reset page
-	} else if ( is_singular() && is_page_template ( 'template-page-password-reset.php' ) ) {
+	} else if ( is_page_template ( 'template-page-password-reset.php' ) ) {
 
 	// external login page
-	} else if ( is_singular() && is_page_template ( 'template-page-external-login.php' ) ) {
+	} else if ( is_page_template ( 'template-page-external-login.php' ) ) {
 
 	// wish list
-	} else if ( is_singular() && is_page_template ( 'template-page-account-wish-list.php' ) ) {
+	} else if ( is_page_template ( 'template-page-account-wish-list.php' ) ) {
 
 	// my account page
-	} else if ( is_singular() && is_page_template ( 'template-page-account-edit.php' ) ) {
+	} else if ( is_page_template ( 'template-page-account-edit.php' ) ) {
 
 	// map page
-	} else if ( is_singular() && is_page_template ( 'template-page-map.php' ) ) {
+	} else if ( is_page_template ( 'template-page-map.php' ) ) {
 
 	// book page
-	} else if ( is_singular() && is_page_template ( 'template-page-book.php' ) ) {
+	} else if ( is_page_template ( 'template-page-book.php' ) ) {
 
 	// intro page
-	} else if (is_singular() && is_page_template ( 'template-page-intro.php' ) ) {
+	} else if (is_page_template ( 'template-page-intro.php' ) ) {
 
 	} else {
 
@@ -5736,7 +5736,7 @@ function child_singlepost($content) {
 	// end search page
 
 	// map page
-	} else if (is_singular() && is_page_template ( 'template-page-map.php' ) ) {
+	} else if (is_page_template ( 'template-page-map.php' ) ) {
 
 		if (isset($_GET['destinations'])) {
 
@@ -5764,7 +5764,7 @@ function child_singlepost($content) {
 	// end map page
 
 	// book page
-	} else if (is_singular() && is_page_template ( 'template-page-book.php' ) ) {
+	} else if (is_page_template ( 'template-page-book.php' ) ) {
 
 		export_destinations( false );
 		export_hotels( false );
@@ -5918,7 +5918,7 @@ function child_singlepost($content) {
 	// end book page
 
 	// sign up step one page
-	} else if (is_singular() && is_page_template ( 'template-page-user-signup.php' ) ) {
+	} else if (is_page_template ( 'template-page-user-signup.php' ) ) {
 
 		$content = '';
 
@@ -5994,7 +5994,7 @@ function child_singlepost($content) {
 	// end sign up step one page
 
 	// new sign up step one page
-	} else if (is_singular() && is_page_template ( 'template-page-join-signup.php' ) ) {
+	} else if (is_page_template ( 'template-page-join-signup.php' ) ) {
 
 		$content = '';
 
@@ -6089,24 +6089,24 @@ function child_singlepost($content) {
 	// end new sign up step one page
 
 	// sign up step two page
-	} else if (is_singular() && is_page_template ( 'template-page-user-signup-step-two.php' ) ) {
+	} else if (is_page_template ( 'template-page-user-signup-step-two.php' ) ) {
 		$content = \indagare\wp\WPContent::getContent('signup');
 	// end sign up step two page
 
 	// site invite email link landing page
-	//} else if (is_singular() && is_page_template ( 'template-page-user-site-invite.php' ) ) {
+	//} else if (is_page_template ( 'template-page-user-site-invite.php' ) ) {
 	//	$content = \indagare\wp\WPContent::getContent('invite');
 	// end site invite email link landing page
 
 	// contact page
-	} else if (is_singular() && is_page_template ( 'template-page-contact.php' ) ) {
+	} else if (is_page_template ( 'template-page-contact.php' ) ) {
 
 		$content = do_shortcode('[contact-form-7 id="28536" title="'.__('Contact','indagare').'"]');
 
 	// end contact page
 
 	// how to book page
-	} else if (is_singular() && is_page_template ( 'template-page-how-to-book.php' ) ) {
+	} else if (is_page_template ( 'template-page-how-to-book.php' ) ) {
 
 		$content = '';
 
@@ -6132,7 +6132,7 @@ function child_singlepost($content) {
 	// end how to book page
 
 	// new how to book page
-	} else if (is_singular() && is_page_template ( 'template-page-join-faq.php' ) ) {
+	} else if (is_page_template ( 'template-page-join-faq.php' ) ) {
 
 		$content = '';
 
@@ -6197,7 +6197,7 @@ function child_singlepost($content) {
 	// end new how to book page
 
 	// 	how we work page
-	} else if (is_singular() && is_page_template ( 'template-page-how-we-work.php' ) ) {
+	} else if (is_page_template ( 'template-page-how-we-work.php' ) ) {
 
 		$content = '';
 
@@ -6208,7 +6208,7 @@ function child_singlepost($content) {
 	// end how we work page
 
 	// 	how we work page
-	} else if (is_singular() && is_page_template ( 'template-page-join-how-we-work.php' ) ) {
+	} else if (is_page_template ( 'template-page-join-how-we-work.php' ) ) {
 
 		$rows = get_field('steps');
 
@@ -6271,7 +6271,7 @@ function child_singlepost($content) {
 	// end how we work page
 
 	// why join page
-	} else if (is_singular() && is_page_template ( 'template-page-why-join.php' ) ) {
+	} else if (is_page_template ( 'template-page-why-join.php' ) ) {
 
 		$content = '';
 
@@ -6306,7 +6306,7 @@ function child_singlepost($content) {
 	// end why join page
 
 	// new why join page
-	} else if (is_singular() && is_page_template ( 'template-page-join-why-indagare.php' ) ) {
+	} else if (is_page_template ( 'template-page-join-why-indagare.php' ) ) {
 
 		$imgsrc = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' );
 
@@ -6469,7 +6469,7 @@ function child_singlepost($content) {
 	// end new why join page
 
 	// welcome page
-	} else if (is_singular() && is_page_template ( 'template-page-welcome.php' ) ) {
+	} else if (is_page_template ( 'template-page-welcome.php' ) ) {
 
 		$content = '';
 
@@ -6561,7 +6561,7 @@ function child_singlepost($content) {
 	// end welcome page
 
 	// intro page
-	} else if (is_singular() && is_page_template ( 'template-page-intro.php' ) ) {
+	} else if (is_page_template ( 'template-page-intro.php' ) ) {
 
 		$content = '';
 
@@ -6631,7 +6631,7 @@ function child_singlepost($content) {
 	// end intro page
 
 	// new page
-	} else if (is_singular() && is_page_template ( 'template-page-new.php' ) ) {
+	} else if (is_page_template ( 'template-page-new.php' ) ) {
 
 		$content = '';
 
@@ -6695,7 +6695,7 @@ function child_singlepost($content) {
 	// end new page
 
 	// my account page
-	} else if ( is_singular() && is_page_template ( 'template-page-account-edit.php' ) ) {
+	} else if ( is_page_template ( 'template-page-account-edit.php' ) ) {
 		if ( is_user_logged_in() ) {
 			$content = \indagare\wp\WPContent::getContent("account");
 		} else {
@@ -6705,7 +6705,7 @@ function child_singlepost($content) {
 	// end my account page
 
 	// wish list page
-	} else if ( is_singular() && is_page_template ( 'template-page-account-wish-list.php' ) ) {
+	} else if ( is_page_template ( 'template-page-account-wish-list.php' ) ) {
 
 		$content = '';
 
@@ -6779,7 +6779,7 @@ function child_singlepost($content) {
 	// end wish list page
 
 	// password reset page
-	} else if (is_singular() && is_page_template ( 'template-page-password-reset.php' ) ) {
+	} else if (is_page_template ( 'template-page-password-reset.php' ) ) {
 
 		$content = '';
 
@@ -6804,7 +6804,7 @@ function child_singlepost($content) {
 	// end password reset page
 
 	// external login page
-	} else if (is_singular() && is_page_template ( 'template-page-external-login.php' ) ) {
+	} else if (is_page_template ( 'template-page-external-login.php' ) ) {
 
 		$content = '';
 		$content .= '<div class="styledform">'."\n";
@@ -6843,7 +6843,7 @@ function child_singlepost($content) {
 	// end external login page
 
 	// about mission page
-	} else if (is_singular() && is_page_template ( 'template-page-about-mission.php' ) ) {
+	} else if (is_page_template ( 'template-page-about-mission.php' ) ) {
 
 	$statement = get_field('mission-statement');
 	$rows = get_field('mission');
@@ -6893,7 +6893,7 @@ function child_singlepost($content) {
 	// end about mission page
 
 	// about founder page
-	} else if (is_singular() && is_page_template ( 'template-page-about-founder.php' ) ) {
+	} else if (is_page_template ( 'template-page-about-founder.php' ) ) {
 
 		$content = '';
 		$content .= '<h2>'.get_the_title().'</h2>'."\n";
@@ -6902,11 +6902,11 @@ function child_singlepost($content) {
 	// end about founder page
 
 	// about team page | about contributor page
-	} else if (is_singular() && ( is_page_template ( 'template-page-about-team.php' ) || is_page_template ( 'template-page-about-contributors.php' ) ) ) {
+	} else if (is_page_template ( 'template-page-about-team.php' ) | is_page_template ( 'template-page-about-contributors.php' ) ) {
 
 		$content = '';
 
-		if ( is_singular() && is_page_template ( 'template-page-about-team.php' ) ) {
+		if ( is_page_template ( 'template-page-about-team.php' ) ) {
 			$args = array( 'meta_key' => 'author-group', 'meta_value' => 'team' );
 		} else {
 			$args = array( 'meta_key' => 'author-group', 'meta_value' => 'contributor' );
@@ -7675,7 +7675,7 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 	} // end sidebar for author page
 
 	// sidebar for founder page
-	if ( is_singular() && is_page_template('template-page-about-founder.php') ) {
+	if ( is_page_template('template-page-about-founder.php') ) {
 		global $post;
 
 		$imageobj = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'large' );
@@ -7748,7 +7748,7 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 	} // end sidebar for founder page
 
 	// sidebar for how we work page
-	if ( is_singular() && is_page_template('template-page-how-we-work.php') ) {
+	if ( is_page_template('template-page-how-we-work.php') ) {
 
 		echo '<div id="primary">'."\n";
 
@@ -7954,13 +7954,13 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 		|| ( is_archive() && get_query_var('post_type') == 'library' )
 		|| ( is_archive() && $dest && $depth == 2 && !get_query_var('post_type') )
 		|| ( is_archive() && $reg && $depth == 1 && !get_query_var('post_type') )
-		|| ( is_singular() && is_page_template ( 'template-page-welcome.php' ) )
+		|| is_page_template ( 'template-page-welcome.php' )
 		|| is_404()
 	) {
 
 		// recent or related articles
 		$args = array('numberposts' => 1, 'post_type' => 'notvalid-dontgetany', 'orderby' => 'date', 'order' => 'DESC');
-		if ( is_singular() && is_page_template ( 'template-page-welcome.php' ) ) {
+		if ( is_page_template ( 'template-page-welcome.php' ) ) {
 			$args = array('numberposts' => -1, 'post_type' => 'article', 'orderby' => 'date', 'order' => 'DESC');
 		} else if ( $reg && $depth == 1 ) {
 			$args = array('numberposts' => -1, 'post_type' => 'article', 'destinations' => $reg->slug, 'meta_key' => 'related-article', 'meta_value' => 'yes', 'orderby' => 'rand');
@@ -7976,7 +7976,7 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 
 			$i = 0;
 
-			if ( ( is_singular() && is_page_template ( 'template-page-welcome.php' ) ) || is_404() ) {
+			if ( is_page_template ( 'template-page-welcome.php' ) || is_404() ) {
 		  		echo '<div class="header divider"><h2>'.__('Recent Articles','indagare').'</h2><p class="view-more"><a href="/destinations/articles/">'.__('View All Articles','indagare').'</a></p></div>'."\n";
 			} else if ( $reg && $depth == 1 ) {
 //		  		echo '<div class="header divider"><h2>'.__('Related Articles','indagare').'</h2><p class="view-more"><a href="/destinations/'.$top->slug .'/'. $reg->slug .'/articles/">'.__('View All Related Articles','indagare').'</a></p></div>'."\n";
@@ -8055,12 +8055,12 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 		|| ( is_archive() && get_query_var('post_type') == 'offer' )
 		|| ( is_archive() && $dest && $depth == 2 && !get_query_var('post_type') )
 		|| ( is_archive() && $reg && $depth == 1 && !get_query_var('post_type') )
-		|| ( is_singular() && is_page_template ( 'template-page-welcome.php' ) )
-		|| ( is_singular() && is_page_template ( 'template-page-book.php' ) )
+		|| is_page_template ( 'template-page-welcome.php' )
+		|| is_page_template ( 'template-page-book.php' )
 	) {
 
 		// recently viewed
-		if (function_exists('zg_recently_viewed') && ( !is_singular() || !is_page_template ( 'template-page-welcome.php' ))):  if (isset($_SESSION["WP-LastViewedPosts"])) {
+		if (function_exists('zg_recently_viewed') && !is_page_template ( 'template-page-welcome.php' )):  if (isset($_SESSION["WP-LastViewedPosts"])) {
 			echo '<div class="header divider"><h2>'.__('Recently Viewed','indagare').'</h2></div>'."\n";
 			echo '<section class="recent-articles contain">'."\n";
 
@@ -8089,12 +8089,12 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 		|| ( is_archive() && get_query_var('post_type') == 'press' )
 		|| ( is_archive() && $dest && $depth == 2 && !get_query_var('post_type') )
 		|| ( is_archive() && $reg && $depth == 1 )
-		|| ( is_singular() && is_page_template( 'template-page-map.php' ))
-		|| ( is_singular() && is_page_template( 'template-page-new.php' ))
+		|| ( is_page_template( 'template-page-map.php' ))
+		|| ( is_page_template( 'template-page-new.php' ))
 		|| is_home() || is_front_page()
 		|| is_search()
-		|| is_author()
-		|| ( is_singular() && ( is_page_template( 'template-page-about-team.php' ) || is_page_template( 'template-page-about-mission.php' ) || is_page_template( 'template-page-about-founder.php' ) ||  is_page_template( 'template-page-why-join.php') ) )
+		|| is_author() || ( is_page_template( 'template-page-about-team.php' ) || ( is_page_template( 'template-page-about-mission.php' ) ) || ( is_page_template( 'template-page-about-founder.php' ) ) )
+		|| is_page_template( 'template-page-why-join.php')
 		|| is_404()
 	 ) {
 
@@ -8269,7 +8269,7 @@ jQuery(document).ready(function($) {
 	</header>
 
 	<form id="form-login" class="login ajax-login" method="post" novalidate<?php
-	if (is_singular() && is_page_template ( 'template-page-intro.php' ) ) {
+	if (is_page_template ( 'template-page-intro.php' ) ) {
 		print ' data-successurl="/"';
 	}
 	?>>
@@ -8518,7 +8518,7 @@ jQuery(document).ready(function($) {
 	} // end lightbox interstitial modals for booking and flights
 
 	// signup modals
-	if (is_singular() && is_page_template ( 'template-page-user-signup-step-two.php' ) ) {
+	if (is_page_template ( 'template-page-user-signup-step-two.php' ) ) {
 ?>
 <div id="lightbox-signup-application" class="lightbox white-popup login mfp-hide">
 	<header>
@@ -8562,7 +8562,7 @@ jQuery(document).ready(function($) {
 <?php
 	} // end signup modals
 
-	if ( is_singular() && is_page_template( 'template-page-user-site-invite.php' ) ) {
+	if ( is_page_template( 'template-page-user-site-invite.php' ) ) {
 		?>
 <div id="lightbox-signup-error" class="lightbox white-popup login mfp-hide">
 	<header>
@@ -8577,7 +8577,7 @@ jQuery(document).ready(function($) {
 	}
 
 	// my account modals
-	if (is_singular() && is_page_template ( 'template-page-account-edit.php' ) ) {
+	if (is_page_template ( 'template-page-account-edit.php' ) ) {
 ?>
 <div id="lightbox-signup-error" class="lightbox white-popup login mfp-hide">
 	<header>
@@ -8620,7 +8620,7 @@ jQuery(document).ready(function($) {
 		|| ( is_archive() && get_query_var('post_type') == 'itinerary' )
 		|| ( is_archive() && get_query_var('post_type') == 'library' )
 		|| ( is_archive() && $dest && $depth == 2 && !get_query_var('post_type') )
-		|| (is_singular() && is_page_template ( 'template-page-book.php' ) )
+		|| (is_page_template ( 'template-page-book.php' ) )
 	) {
 
 ?>
@@ -8709,7 +8709,7 @@ echo do_shortcode('[contact-form-7 id="32337" title="'.__('Contact Insider Trips
 		|| ( is_archive() && get_query_var('post_type') == 'itinerary' )
 		|| ( is_archive() && get_query_var('post_type') == 'library' )
 		|| is_home() || is_front_page()
-		|| ( is_singular() && is_page_template ( 'template-page-book.php' ) ) ) : ?>
+		|| is_page_template ( 'template-page-book.php' ) ) : ?>
 	<script type="text/javascript" src="<?php echo get_bloginfo('stylesheet_directory'); ?>/js/booking_widget.js"></script>
 <?php endif;  // end booking widget - date selector, destination input field, URL builder ?>
 
@@ -8746,7 +8746,7 @@ echo do_shortcode('[contact-form-7 id="32337" title="'.__('Contact Insider Trips
 			|| ( is_archive() && get_query_var('post_type') == 'itinerary' )
 			|| ( is_archive() && get_query_var('post_type') == 'library' )
 			|| is_home() || is_front_page()
-			|| ( is_singular() && is_page_template ( 'template-page-book.php' ) ) ) : ?>
+			|| is_page_template ( 'template-page-book.php' ) ) : ?>
 
 		var ssotokenvalue_default = 'x4T306PLm1KWuXktHqtGzw%3D%3D',
 			ssotokenvalue = ssotokenvalue_default;
@@ -8761,7 +8761,7 @@ echo do_shortcode('[contact-form-7 id="32337" title="'.__('Contact Insider Trips
 
 ////////////////////////////////////////////////////////////////////////////
 jQuery().ready(function($) {
-	<?php if (is_singular() && is_page_template ( 'template-page-password-reset.php' ) ) :  // password reset page ?>
+	<?php if (is_page_template ( 'template-page-password-reset.php' ) ) :  // password reset page ?>
 		/*
 		$("#form-reset").submit(function(event) {
 			var url = theme_path+'/process_password_reset.php';
@@ -8846,7 +8846,7 @@ jQuery().ready(function($) {
 	} // end home page
 
  	// book page
- 	if ( is_singular() && is_page_template('template-page-book.php') ) {
+ 	if ( is_page_template('template-page-book.php') ) {
 ?>
 
 	$('.benefitwrapper').click(function() {
@@ -8871,7 +8871,7 @@ jQuery().ready(function($) {
 	} // end book page
 
  	// join page
- 	if ( is_singular() && is_page_template('template-page-user-signup.php') ) {
+ 	if ( is_page_template('template-page-user-signup.php') ) {
 ?>
 
   $(function() {
@@ -8891,7 +8891,7 @@ jQuery().ready(function($) {
 	} // end join page
 
  	// new join page
- 	if ( is_singular() && is_page_template('template-page-join-signup.php') ) {
+ 	if ( is_page_template('template-page-join-signup.php') ) {
 ?>
 
 	$('.memberlevels').slick({
@@ -8940,7 +8940,7 @@ jQuery().ready(function($) {
 	} // end new join page
 
  	// welcome page
- 	if ( is_singular() && is_page_template('template-page-welcome.php') ) {
+ 	if ( is_page_template('template-page-welcome.php') ) {
 ?>
 
   $(function() {
@@ -8960,7 +8960,7 @@ jQuery().ready(function($) {
 	} // end welcome page
 
 	// about mission page - imagesloaded and masonry
-	if ( is_singular() && is_page_template('template-page-about-mission.php') ) {
+	if ( is_page_template('template-page-about-mission.php') ) {
 ?>
 
 	var $container = $('#masonry');
@@ -8980,7 +8980,7 @@ jQuery().ready(function($) {
 	} // end about mission page - imagesloaded and masonry
 
 	// map page
-	if ( is_singular() && is_page_template('template-page-map.php') ) {
+	if ( is_page_template('template-page-map.php') ) {
 ?>
 
 //	$("img.lazy").lazyload({
@@ -9088,14 +9088,14 @@ jQuery().ready(function($) {
 			}
 		}
 	// sign up step one page
-	} else if ( is_singular() && is_page_template ( 'template-page-join-signup.php' ) ) {
+	} else if ( is_page_template ( 'template-page-join-signup.php' ) ) {
 		$gallery = get_field('gallery');
 		if ( $gallery ) {
 			$gallerycount = count($gallery);
 		}
 
 	// why join page
-	} else if ( is_singular() && is_page_template ( 'template-page-join-why-indagare.php' ) ) {
+	} else if ( is_page_template ( 'template-page-join-why-indagare.php' ) ) {
 		$gallery = get_field('gallery');
 		if ( $gallery ) {
 			$gallerycount = count($gallery);
@@ -9106,7 +9106,7 @@ jQuery().ready(function($) {
 
 	if (
 		$gallerycount > 1 && !is_singular( 'hotel' ) && !is_singular( 'restaurant' ) && !is_singular( 'shop' ) && !is_singular( 'activity' ) && !is_singular('article') && !is_singular('offer') && !is_singular( 'insidertrip' ) && !is_post_type_archive('itinerary')
-		&& ( ! is_singular() || ( !is_page_template ( 'template-page-join-signup.php' ) && !is_page_template ( 'template-page-join-why-indagare.php' ) ) )
+		&& !is_page_template ( 'template-page-join-signup.php' ) && !is_page_template ( 'template-page-join-why-indagare.php' )
 	) {
 ?>
 <script>
@@ -9171,7 +9171,7 @@ jQuery(document).ready(function($) {
 });
 </script>
 <?php
-	} else if ( $gallerycount > 1 && is_singular() && is_page_template ( 'template-page-join-signup.php' ) ) {
+	} else if ( $gallerycount > 1 && is_page_template ( 'template-page-join-signup.php' ) ) {
 ?>
 <script>
 jQuery(document).ready(function($) {
@@ -9189,7 +9189,7 @@ jQuery(document).ready(function($) {
 });
 </script>
 <?php
-	} else if ( $gallerycount > 1 && is_singular() && is_page_template ( 'template-page-join-why-indagare.php' ) ) {
+	} else if ( $gallerycount > 1 && is_page_template ( 'template-page-join-why-indagare.php' ) ) {
 ?>
 <script>
 jQuery(document).ready(function($) {
@@ -9809,7 +9809,7 @@ function is_posttype( $type, $archive = POSTTYPE_ARCHIVEORSINGLE ) {
 }
 
 function has_map() {
-	return ( ( is_singular() && is_page_template ( 'template-page-map.php' ) ) ||
+	return ( is_page_template ( 'template-page-map.php' )  ||
 			is_posttype('hotel') ||
 			is_posttype('restaurant') ||
 			is_posttype('shop') ||
