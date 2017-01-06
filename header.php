@@ -64,24 +64,24 @@
 	// Action hook for placing content above the theme header
 	thematic_aboveheader();
 
-	if ( !is_page_template ( 'template-page-intro.php' ) ) {
+	if ( !is_singular() || !is_page_template ( 'template-page-intro.php' ) ) {
 		echo ( apply_filters( 'thematic_open_header',  '<header>' ) );
 	}
 
 	// Action hook creating the theme header
-	if ( !is_page_template ( 'template-page-intro.php' ) ) {
+	if ( !is_singular() || !is_page_template ( 'template-page-intro.php' ) ) {
 		thematic_header();
 	}
 
 	// Filter provided for altering output of the header closing element
-	if ( !is_page_template ( 'template-page-intro.php' ) ) {
+	if ( !is_singular() || !is_page_template ( 'template-page-intro.php' ) ) {
 		echo ( apply_filters( 'thematic_close_header', '</header>' ) );
 	}
 
 	// Action hook for placing content below the theme header
 	thematic_belowheader();
 
-	if ( is_page_template ( 'template-page-intro.php' ) ) {
+	if ( is_singular() && is_page_template ( 'template-page-intro.php' ) ) {
 		echo '<div id="scrim"></div>'."\n";
 	}
 

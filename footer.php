@@ -25,17 +25,17 @@
 
 			// Filter provided for altering output of the footer opening element
 			// echo ( apply_filters( 'thematic_open_footer', '<div id="footer">' ) );
-			if ( !is_page_template ( 'template-page-intro.php' ) ) {
+			if ( !is_singular() || !is_page_template ( 'template-page-intro.php' ) ) {
 	    		echo ( apply_filters( 'thematic_open_footer', '<footer>' ) );
 	    	}
         		// action hook creating the footer
-			if ( !is_page_template ( 'template-page-intro.php' ) ) {
+			if ( !is_singular() || !is_page_template ( 'template-page-intro.php' ) ) {
 	    		thematic_footer();
 	    	}
 
 			// Filter provided for altering output of the footer closing element
 			// echo ( apply_filters( 'thematic_close_footer', '</div><!-- #footer -->' . "\n" ) );
-			if ( !is_page_template ( 'template-page-intro.php' ) ) {
+			if ( !is_singular() || !is_page_template ( 'template-page-intro.php' ) ) {
 	    		echo ( apply_filters( 'thematic_close_footer', '</footer><!-- #footer -->' . "\n" ) );
 	    	}
 
