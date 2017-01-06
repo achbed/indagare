@@ -4562,14 +4562,14 @@ $columnwidth: ( $formwidth - $itempadding * 7 ) / 8;
 //  &.iform-row-1col { width: $formwidth; }
   &.iform-row-1col { width: 100%; }
 //  &.iform-row-2col { width: floor( $columnwidth * 7 * 100 ) / 100; }
-  &.iform-row-2col { width: 49.5%; }
+  &.iform-row-2col { width: 49.4%; }
 //  &.iform-row-3col { width: floor( ( ( $formwidth - ( $itempadding * 2 ) ) / 3 ) * 100 ) / 100; }
   &.iform-row-3col { width: 32.8%; }
 //  &.iform-row-4col { width: floor( ( ( $formwidth - ( $itempadding * 3 ) ) / 4 ) * 100 ) / 100; }
-  &.iform-row-4col { width: 24.6%; }
+  &.iform-row-4col { width: 24.5%; }
   &.iform-row-5col { width: floor( ( ( $formwidth - ( $itempadding * 4 ) ) / 5 ) * 100 ) / 100; }
 //  &.iform-row-6col { width: floor( ( ( $formwidth - ( $itempadding * 5 ) ) / 6 ) * 100 ) / 100; }
-  &.iform-row-6col { width: 16.3%; }
+  &.iform-row-6col { width: 16.2%; }
   &.iform-row-7col { width: floor( ( ( $formwidth - ( $itempadding * 6 ) ) / 7 ) * 100 ) / 100; }
   &.iform-row-8col { width: floor( ( ( $formwidth - ( $itempadding * 7 ) ) / 8 ) * 100 ) / 100; }
 }
@@ -4912,3 +4912,4 @@ form.processing .button {
 	    .input-field {min-width: 100%;}
     }
 }
+
