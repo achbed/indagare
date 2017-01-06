@@ -4898,3 +4898,10 @@ form.processing .button {
     }
   }
 }
+
+@media screen and (max-width:768px) {
+	#account-tab-container,
+	#signup-form-container { 
+	    .input-field {min-width: 100%;}
+    }
+}

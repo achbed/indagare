@@ -5,7 +5,7 @@ Description: Custom child theme for Indagare based on Thematic.
 Author: SHR
 Author URI: https://shr.global/
 Template: thematic
-Version: 2017.0.2
+Version: 2017.0.3
 Tags: white, three-columns, two-columns, fixed-width, theme-options, left-sidebar, right-sidebar, threaded-comments, sticky-post, microformats
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -2743,6 +2743,7 @@ form.processing .button { background: gray; color: #bbb; cursor: progress; }
   #account-tab-container #account-tab-container-nav ul li.prevbutton { left: 0; }
   #account-tab-container #account-tab-container-nav ul li.prevbutton div:after { content: "\F0D9"; padding: 0 0.5em; cursor: pointer; }
   #account-tab-container #account-tab-container-nav ul li.activeli { display: block; } }
+@media screen and (max-width: 768px) { #account-tab-container .input-field, #signup-form-container .input-field { min-width: 100%; } }
 .destinationlist-wrapper { display: block; min-height: 270px; }
 
 #destinationlist img { height: 200px; width: 300px; }
