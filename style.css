@@ -2123,6 +2123,8 @@ section.team .rollover .more { position: absolute; bottom: 20px; }
 
 .insider .vcard .book { position: absolute; top: 0px; right: 0px; font-size: 1.15em; }
 
+.insider .vcard2 .book { font-size: 1.15em; display: inline-block; margin-top: 10px; }
+
 .insider #primary ul { margin: 0px; }
 
 .insider #primary ul li { list-style-type: none; margin: 0px 0px 20px 0px; }
