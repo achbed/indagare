@@ -3527,32 +3527,8 @@ function childtheme_override_archive_loop() {
 	// archive for insidertrip
 	} else if ( is_archive() && get_query_var('post_type') == 'insidertrip' ) {
 
-		// faqs
-		echo '<div class="header">'."\n";
-			echo '<h2>'.__('Frequently Asked Questions','indagare').'</h2>'."\n";
-		echo '</div><!-- .header -->'."\n";
-
-		$rows = get_field('faq','option');
-
-		if($rows) {
-
-			echo '<div id="faq">'."\n";
-
-			foreach($rows as $row) {
-
-				$q = $row['faq-question'];
-				$a = $row['faq-answer'];
-
-				echo '<h3>'.$q.'</h3>';
-				echo $a;
-			}
-
-			echo '</div><!-- #faq -->'."\n";
-
-		}
-
 		// list view of current insidertrip
-		echo '<article class="divider">'."\n";
+		echo '<article>'."\n";
 			echo '<h2>'.__('Current Insider Trips','indagare').'</h2>'."\n";
 		echo '</article>'."\n";
 
@@ -3611,6 +3587,30 @@ function childtheme_override_archive_loop() {
 			endwhile;
 
 			echo '</section>'."\n";
+
+			// faqs
+			echo '<article class="divider">'."\n";
+				echo '<h2>'.__('Frequently Asked Questions','indagare').'</h2>'."\n";
+			echo '</article><!-- .header -->'."\n";
+
+			$rows = get_field('faq','option');
+
+			if($rows) {
+
+				echo '<div id="faq">'."\n";
+
+				foreach($rows as $row) {
+
+					$q = $row['faq-question'];
+					$a = $row['faq-answer'];
+
+					echo '<h3>'.$q.'</h3>';
+					echo $a;
+				}
+
+				echo '</div><!-- #faq -->'."\n";
+
+			}
 
 		}
 
@@ -5195,9 +5195,9 @@ function child_singlepost($content) {
 			$content .= '<a class="book" href="'.$offerurl.'">'.__('Take Me There','indagare').'</a>'."\n";
 			$content .=  '</p>'."\n";
 			
-	// end archives destination offer ELENA
+	// end archives destination offer
 
-	// END PARTNER PROMOTIONS ARCHIVES ELENA
+	// END PARTNER PROMOTIONS ARCHIVES
 
 	// insidertrip post
 	}  else if ( is_singular( 'insidertrip' ) ) {
@@ -5257,6 +5257,10 @@ function child_singlepost($content) {
 			$content .= article_meta($post->ID);
 
 			$content .= $basecontent;
+
+			$content .= '<div class="vcard-2">'."\n";
+				$content .= '<a class="lightbox-inline book" href="#lightbox-contact-insidertrip" class="book">'.__('Inquire Now','indagare').'</a>'."\n";
+			$content .= '</div>  '."\n";
 
 		$content .= '</article>'."\n";
 
