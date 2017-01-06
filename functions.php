@@ -5258,7 +5258,7 @@ function child_singlepost($content) {
 
 			$content .= $basecontent;
 
-			$content .= '<div class="vcard-2">'."\n";
+			$content .= '<div class="vcard2">'."\n";
 				$content .= '<a class="lightbox-inline book" href="#lightbox-contact-insidertrip" class="book">'.__('Inquire Now','indagare').'</a>'."\n";
 			$content .= '</div>  '."\n";
 
