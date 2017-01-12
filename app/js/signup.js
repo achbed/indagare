@@ -405,6 +405,21 @@ if (!signup) {
 			return true;
 		};
 
+		this.isFieldValidatedOk = function(id) {
+			var t = jQuery('#'+id);
+			if ( ! t.length ) {
+				return false;
+			}
+			t = t.parent();
+			if ( t.hasClass( 'validated' ) ) {
+				return t.hasClass( 'validate-ok' );
+			}
+			if ( t.hasClass( 'validating' ) ) {
+				return false;
+			}
+			return true;
+		}
+
 		this.validateForm = function() {
 			var msg = "";
 			var complete = true;
@@ -412,10 +427,10 @@ if (!signup) {
 
 			// jQuery('.validate').text('');
 
-			complete = self.validateThisField('contact-FirstName') && complete;
-			complete = self.validateThisField('contact-LastName') && complete;
-			complete = (self.usrEmailStatus() == -1) && complete;
-			complete = self.validateThisField('contact-HomePhone') && complete;
+			complete = self.isFieldValidatedOk('contact-FirstName') && complete;
+			complete = self.isFieldValidatedOk('contact-LastName') && complete;
+			complete = self.isFieldValidatedOk('contact-Email') && complete;
+			complete = self.isFieldValidatedOk('contact-HomePhone') && complete;
 
 			complete = self.validateUsername() && complete;
 			complete = self.validatePassword() && complete;
@@ -427,11 +442,11 @@ if (!signup) {
 			complete = self.validateTermAcceptance() && complete;
 
 			if (showBilling) {
-				complete = self.validateThisField('s_address1') && complete;
-				complete = self.validateThisField('s_city') && complete;
-				complete = self.validateThisField('s_state') && complete;
-				complete = self.validateThisField('s_zip') && complete;
-				complete = self.validateThisField('s_country') && complete;
+				complete = self.isFieldValidatedOk('s_address1') && complete;
+				complete = self.isFieldValidatedOk('s_city') && complete;
+				complete = self.isFieldValidatedOk('s_state') && complete;
+				complete = self.isFieldValidatedOk('s_zip') && complete;
+				complete = self.isFieldValidatedOk('s_country') && complete;
 
 				complete = self.validateCC() && complete;
 				complete = self.checkCCDate() && complete;
