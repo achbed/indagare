@@ -1,398 +1,310 @@
-<?php ?>
-<div id="tab-container">   
-    
-    <ul id="tab-container-nav" class="show">
-        <li><span class="link"><a id="aTab1" href="#tab1">Contact</a></span></li>
-        <li><span class="link"><a id="aTab2" href="#tab2">Membership</a></span></li>
-        <li><span class="link"><a id="aTab3" href="#tab3">Benefits</a></span></li>
-        <li><span class="link"><a id="aTab4" href="#tab4">Travel Profile</a></span></li>
-        <li><span class="link"><a id="aTab5" href="#tab5">Travel Preferences</a></span></li>
-    </ul>
-    
-    <div class="tab" id="tab1">
-        <!--<h1>Contact</h1>-->
-        <form action="/wp-content/themes/indagare/app/lib/account_user_update.php" method="POST">
-            <div class="field"><label>Name</label><span class="form-item"><select id="user_prefix" name="prefix" class="small"><option value=""></option>
-                <option value="Mr.">Mr.</option>
-                <option value="Mrs.">Mrs.</option>
-                <option value="Ms.p">Ms.</option>
-                <option value="Dr.">Dr.</option>
-            </select><b class="icon" data-icon="&#xf0d7;"></b></span>
-                <input type="text" name="fn" id="fn" value=""><input class="mini" type="text" name="initial" id="initial" value="" size="3"><input type="text" name="ln" id="ln" value=""><span id="lnval" class="validate"></span></div>
-            <div class="field"><label>Email *</label><input type="email" name="email" id="email" value=""><span id="emailval" class="validate"></span></div>
-            <h3></h3>
-            <div class="field"><label>Street Address 1</label><input type="text" name="s_address1" id="s_address1"><span id="shipval" class="validate validatetext"></span></div>
-            <div class="field"><label>Street Address 2</label><input type="text" name="s_address2" id="s_address2"></div>
-            <div class="field"><label>City</label><input type="text" name="s_city" id="s_city"></div>
-            <div class="field"><label>State/Province</label><input type="text" name="s_state" id="s_state"></div>
-            <div class="field"><label>Zip/Postal Code</label><input type="text" name="s_zip" id="s_zip"></div>
-            <div class="field"><label>Country</label><input type="text" name="s_country" id="s_country"></div>
-            <div class="field"><label>Phone (Home)</label><input type="text" name="phone" id="phone" value=""><span id="phoneval" class="validate"></span></div>
-            <div class="field"><label>Phone (Work)</label><input type="text" name="phone_w" id="phone_w" value=""><span id="phoneval" class="validate"></span></div>
-            <div class="field"><label>Phone (Mobile)</label><input type="text" name="phone_m" id="phone_m" value=""><span id="phoneval" class="validate"></span></div>
-
-            <div class="field"><label></label><input type="submit" name="subTab1" id="subTab1" class="button primary" value="Update"></div>
-        </form>
+<h1 class="hidden">Account Details</h1>
+<div id="account-tab-container">
+	<div id="account-tab-container-nav">
+	    <ul id="account-tab-nav-list" class="clearfix">
+	    	<li class="mobile prevbutton"><div class="" onclick="tabber1.previous();"></div></li>
+		    <li class="tab-nav-item"><a href="#dashboard">Dashboard</a></li>
+		    <li class="tab-nav-item billingtab hidden"><a href="#billing">Billing</a></li>
+		    <li class="tab-nav-item"><a href="#contactdetails">Contact Details</a></li>
+		    <li class="tab-nav-item"><a href="#prefs">Travel Preferences</a></li>
+		    <li class="tab-nav-item"><a href="#accounts">Travel Accounts</a></li>
+	    	<li class="mobile nextbutton"><div class="" onclick="tabber1.next();"></div></li>
+	    </ul>
+    </div>
+    	
+    <div id="account-header-display">
+	    <div id="account-isprimary-display" data-source-object="Account" data-display-if="IsPrimaryContact__x=true" style="display:none;">Primary Account</div>
+	    <div id="account-display-contact-wrapper"><select name="contactselect" id="contactselect"></select></div>
+		<div class="new-contact-wrapper" data-source-object="Account" data-display-if="IsPrimaryContact__x=true" style="display:none;"><a id="new-contact-link" href="#">Add Travel Companion</a></div>
+		<div id="account-display-membership-level">
+			<label for="account-bar-status">Membership
+				Level:</label><div id="account-bar-status" data-source-object="Membership"
+				data-display-field="Name"></div>
+		</div>
+		<div class="renew-wrapper" data-source-object="Account" data-display-if="IsPrimaryContact__x=true" style="display:none;"><a id="renew-link" href="#billing">Upgrade<span  data-source-object="Account" data-display-if="Is_Renewal__c=false" style="display:none;">/Renew</span> Membership</a></div>
+   		<div class="valid-through">
+   			<label for="account-bar-end">Valid Through</label>
+   			<span id="account-bar-end" data-source-object="Account"
+			data-display-field="Membership_End_Date__c"></span>
+	    </div>
+   		<div class="member-since">
+   			<label for="account-bar-end">Member Since</label>
+   			<span id="account-bar-end" data-source-object="Account"
+			data-display-field="Member_Since__c"></span>
+	    </div>
+   		<div class="renewal-text" data-source-object="Account" data-display-if="Is_Renewal__c=true" style="display:none;">
+   			(Your Indagare account will renew 7 days prior to your membership lapsing.)
+	    </div>
     </div>
     
-    <div class="tab" id="tab2">
-        <!--<h1>Membership</h1>-->
-        <div class="field"><label>Membership Level: </label><span class="form-item"><b class="icon" data-icon="&#xf0d7;"><span id="member_level"></span></b></span></div>
-        <div class="field"><label>Expiration: </label><span class="form-item"><b class="icon" data-icon="&#xf0d7;"><span id="member_exp"></span></b></span><input type="submit" name="renew" id="renew" class="button primary" value="Renew"></div>
-    
-        <div class="renew_pane" id="renew_pane">
-            <h1>Payment</h1>
-            <h3>Membership Information</h3>
-            <div class="field contain"><label>Membership Level</label><span id="renew_pane_member_level"></span></div>
-            <div class="field"><label>Amount/Duration</label><span class="form-item"><select id="membership_years"></select><b class="icon" data-icon="&#xf0d7;"></b></span></div>
-
-            <div id="billingBlock">
-                <h3>Billing Address</h3>
-                <div class="field"><label></label><input type="checkbox" name="chkShip" id="chkShip" value="1"> Same as shipping address</span></div>
-                <div class="field"><label>Street *</label><input type="text" name="address1" id="address1"><span id="billval" class="validate validatetext"></span></div>
-                <div class="field"><label></label><input type="text" name="address2" id="address2"></div>
-                <div class="field"><label>City *</label><input type="text" name="city" id="city"></div>
-                <div class="field"><label>State/Province *</label><input type="text" name="state" id="state"></div>
-                <div class="field"><label>Zip/Postal Code *</label><input type="text" name="zip" id="zip"></div>
-                <div class="field"><label>Country *</label><input type="text" name="country" id="country"></div>
-
-                <h3>Billing Information</h3>
-                <div class="field"><label>Name on Card *</label><input type="text" name="cc_holder" id="cc_holder"><span id="ccnameval" class="validate validatetext"></span></div>
-                <div class="field"><label>Credit Card Number *</label><input type="text" name="cc_num" id="cc_num"><span id="ccval" class="validate validatetext"></span></div>
-                <div class="field"><label>Expiration Date *</label><span class="form-item"><select class="small" name="cc_month" id="cc_month">
-                    <option value="01">01</option>
-                    <option value="02">02</option>
-                    <option value="03">03</option>
-                    <option value="04">04</option>
-                    <option value="05">05</option>
-                    <option value="06">06</option>
-                    <option value="07">07</option>
-                    <option value="08">08</option>
-                    <option value="09">09</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>    
-                </select><b class="icon" data-icon="&#xf0d7;"></b></span> / <span class="form-item"><select class="small" name="cc_year" id="cc_year"></select><b class="icon" data-icon="&#xf0d7;"></b></span><span id="ccexpval" class="validate validatetext"></div>
-                <div class="field"><label>CCV *</label><input class="small" type="text" name="ccv" id="ccv"><span id="ccccvval" class="validate validatetext"></span></div>
-            </div>
-            <div class="field"><label></label><input type="checkbox" id="agree2terms"> I have read and agree to the <a href="#" id="view_terms">Terms & Conditions</a> * <span id="tab3_TandC_info" class="validate"></span></div>
-            <div id="terms" style="display: none">
-                <p><strong>Terms</strong><br />
-                If you are not satisfied with your membership, you may cancel within 30 days of purchase and receive a full refund. Otherwise, all membership fees are non-refundable. By clicking on the Complete Payment button below, I authorize Indagare Travel to initiate an electronic debit to my bank account in the amount stated above.</p>
-                <p>In order to set up a an Indagare Travel membership you must provide us with valid credit card information. By submitting such credit card information, you give Indagare Travel permission to charge all fees incurred through your account to the credit card you designate on your registration form. All such fees (including renewal fees) will be charged at the time they are incurred. Renewal fees will be incurred upon the commencement of each renewal term.</p>
-                <p>Indagare Travel will send an e-mail to the e-mail address in your registration form reminding you that your Indagare Travel membership is about to expire. We will send you this notice at least 60 days before the expiration date of your membership. If you do not contact Indagare Travel, as instructed on your e-mail reminder, indicating that you do not wish to renew, Indagare Travel will automatically renew your membership for the same membership term as your previous Indagare Travel membership and charge your credit card on the first day of your renewal membership term. The renewal charge will be equal to the then-current membership fee for your membership term. By registering, you give permission to Indagare Travel to automatically charge your membership fee to your credit card for each renewal term.</p>
-            </div>
-
-            <div class="field"><label></label><input type="Button" name="subRenewal" id="subRenewal" class="button primary" value="Submit"></div>
-	    <div class="field"><label></label>* Indicates required field</div>
-        </div>
+    <div class="tab" id="dashboard">
+	    <div class="tab-content">
+		    <h2>Get Inspired</h2>
+	    </div>
     </div>
-    
-    <div class="tab" id="tab3">
-        <!--<h1>Benefits</h1>-->
-<?php
+	
+    <div class="tab billingtab hidden" id="billing">
+	    <div class="tab-content">
+		    <h2>Billing Address</h2>
+		    <div>
+				<form class="clearfix" id="billing-detail-form" data-source-object="Account"
+					data-edit-field="Id,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry">
+					<a class="form-save-button" action="save" href="#">Save</a>
+					<a class="form-cancel-button" href="#">Close</a>
+					<a class="form-edit-link" href="#">Edit Billing Address</a>
+				</form>
+		    </div>
+		    
+		    <h2>Payment Type</h2>
+		    <div>
+				<form class="clearfix" id="payment-detail-form" data-source-object="Account"
+					data-edit-field="Id,Name,
+						Credit_Card_Type__c|type=hidden|validate-type=cc_type|validate-group=b,
+						Credit_Card_Number__c|validate-type=cc_num|validate-group=b,
+						Credit_Card_Month__c|type=month|validate-type=cc_month|validate-group=c,
+						Credit_Card_Year__c|type=cc_year|validate-type=cc_year|validate-group=c,
+						Card_CVV_Number__c|validate-type=cc_cvv|validate-group=b
+				">
 
-		echo 'benefits list';
-
-?>
+					<a class="form-save-button" action="save" href="#">Save</a>
+					<a class="form-cancel-button" href="#">Close</a>
+					<a class="form-edit-link" href="#">Edit Card Information</a>
+				</form>
+		    </div>
+		    
+		    <h2>Membership Level</h2>
+		    <div>
+				<form class="clearfix editing" id="account-membership-upgrade-form">
+				
+					<div id="field-account-membership-upgrade-select" class="input-field field clearfix">
+						<select id="account-membership-upgrade-select"></select>
+						<label for="account-membership-upgrade-select">Membership Level</label>
+					</div>
+					<a id="upgrade-button" class="form-save-button" action="upgrade" href="#">Upgrade Now</a>
+					<a id="autorenew-button" class="form-save-button" action="autorenew" href="#" style="display:none;">Enable Autorenew</a>
+				</form>
+		    </div>
+	    </div>
     </div>
-    
-    <div class="tab" id="tab4">
-        <!--<h1>Travel Profile</h1>-->
-        <form action="/wp-content/themes/indagare/app/lib/account_update.php" method="POST">
-        <div class="field"><label>Member Birthday</label><input class="mini" type="text" size="2" name="m_bday_m" id="m_bday_m"> / <input class="mini" type="text" size="2" name="m_bday_d" id="m_bday_d"> / <input class="mini" type="text" size="4" name="m_bday_y" id="m_bday_y"><span id="shipval" class="validate validatetext"></span></div>
-        <div class="field"><label>Passport issuing country:</label><input type="text" name="m_pass" id="m_pass"></div>
-        <div id="ffa_list"></div>
-        <div class="field">
-            <label>Airline</label><input type="text" name="m_ff_a" id="m_ffa">
-            <label>Frequent Flier #</label><input type="text" name="m_ffn" id="m_ffn">
-        </div>
-        <div class="field"><label></label><input class="small" id="addFFa" type="Button" value="Add"></div>
-        <h3></h3>
-        <div class="field"><label>Spouse/Domestic Partner Name</label><input type="text" name="s_name" id="s_name"></div>
-        <div class="field"><label>Spouse/Domestic Partner Email</label><input type="text" name="s_email" id="s_email"></div>
-        <div class="field"><label>Spouse/Domestic Partner Birthday</label><input class="mini" type="text" name="s_bday_m" size="2" id="s_bday_m"> / <input class="mini" type="text" size="2" name="s_bday_d" id="s_bday_d"> / <input class="mini" type="text" size="4" name="s_bday_y" id="s_bday_y"></div>
-        <div class="field"><label>Passport issuing country:</label><input type="text" name="s_pass" id="s_pass"></div>
-        <div id="spouse_ffa_list"></div>
-        <div class="field">
-            <label>Airline</label><input type="text" name="s_ff_a" id="s_ffa">
-            <label>Frequent Flier #</label><input type="text" name="s_ffn" id="s_ffn">
-        </div>
-        <div class="field"><label></label><input class="small" id="addSpouseFFa" type="Button" value="Add"></div>
-        <h3></h3>
-        <div id="children_list"></div>
-        <p>Add a Child</p>
-        <div class="field"><label>Child Name</label><input type="text" name="c_name" id="c_name"></div>
-        <div class="field"><label>Child Birthday</label><input class="mini" type="text" size="2" name="c_bday_m" id="c_bday_m"> / <input class="mini" type="text" size="2" name="c_bday_d" id="c_bday_d"> / <input class="mini" type="text" size="4" name="c_bday_y" id="c_bday_y"></div>
-        <div class="field"><label></label><input class="small" id="addChild" type="Button" value="Add"></div>
-        <h3></h3>
-        <div class="field"><label>Assistant's Name</label><input type="text" name="a_name" id="a_name"></div>
-        <div class="field"><label>Assistant's Email</label><input type="text" name="a_email" id="a_email"></div>
-        <div class="field"><label>Assistant's Phone</label><input type="text" name="a_phone" id="a_phone"></div>
-        <h3></h3>
-        <div class="field">
-            How do you prefer to be contacted?<br>
-            <input type="radio" value="Email" name="contact_pref" id="contact_pref"> Email 
-            <input type="radio" value="Phone" name="contact_pref" id="contact_pref"> Phone
-        </div>
-        <div class="field">
-            How do you prefer to receive itineraries and travel documents?<br>
-            <input type="radio" value="Digitally" name="delivery_pref" id="delivery_pref"> Digitally
-            <input type="radio" value="HardCopy" name="delivery_pref" id="delivery_pref"> Hard Copy (shipping fees may apply)
-        </div>
-        <p>Thank you for filling in your travel profile. Indagare's travel specialist will review this information to help better assist with your trip planning.</p>
-        <div class="field"><label></label><input type="submit" name="subTab4" id="subTab4" class="button primary" value="Update"></div>
-        </form>
+	
+    <div class="tab" id="contactdetails">
+	    <div class="tab-content">
+	    	<h2>Login</h2>
+	    	<form class="clearfix" id="contact-login" data-source-object="Contact"
+				data-edit-field="Id,Email|validate-type=wp-unique-email">
+				<div field-instance="chpassword1" id="field-wp-chpassword1" class="input-field field clearfix iform-row-3col">
+					<input name="pwd1" id="wp-chpassword1" type="password" validate-group="pw" validate-type="password">	
+					<label for="wp-password1">Password</label>
+				    <span class="errmsg">Passwords must:<br/>
+				    	<ul>
+						 	<li id="passlen">Be at least <span id="passlen_num">6</span> characters long</li>
+						 	<li id="passcase">Contain a mix of uppercase and lowercase letters</li>
+						 	<li id="passnum">Contain at least one number</li>
+						 	<li id="passchar">Contain at least one special character (non-letter or number)</li>
+					 	</ul>
+				 	</span>
+				</div>
+		
+				<div field-instance="chpassword2" id="field-wp-chpassword2" class="input-field field clearfix iform-row-3col">
+					<input name="pwd2" id="wp-chpassword2" type="password" validate-group="pw" validate-type="password-verify">
+					<label for="wp-password2">Verify Password</label>
+				    <span class="errmsg">Passwords must match.</span>
+				</div>
+
+				<a class="form-save-button" action="save" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Login Information</a>
+	    	</form>
+	    	
+		    <h2>Personal Details</h2>
+	    	<form class="clearfix" id="contact" data-source-object="Contact"
+				data-edit-field="Id,Salutation,FirstName|validate-type=name,LastName|validate-type=name,Title,Birthdate,Anniversary_Date__c">
+				<a class="form-save-button" action="save" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Personal Details</a>
+		    </form>
+		    
+		    <h2>Address</h2>
+	    	<form class="clearfix" id="contact" data-source-object="Contact"
+				data-edit-field="Id,
+			        MailingStreet,MailingCity,MailingState,MailingPostalCode,MailingCountry,
+			        OtherStreet,OtherCity,OtherState,OtherPostalCode,OtherCountry">
+				<a class="form-save-button" action="save" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Address</a>
+		    </form>
+		    
+		    <h2>Telephone</h2>
+	    	<form class="clearfix" id="contact" data-source-object="Contact"
+				data-edit-field="Id,
+			        HomePhone|type=tel,Phone|type=tel,MobilePhone|type=tel">
+				<a class="form-save-button" action="save" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Telephone</a>
+		    </form>
+		    
+		    <h2>Assistant</h2>
+	    	<form class="clearfix" id="contact" data-source-object="Contact"
+				data-edit-field="Id,AssistantName|validate-type=name,Assistant_Email__c|validate-type=email">
+				<a class="form-save-button" action="save" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Assistant Information</a>
+		    </form>
+		    
+		</div>
     </div>
-    
-    <div class="tab" id="tab5">
-        <!--<h1>Travel Preferences</h1>-->
-        <form action="/wp-content/themes/indagare/app/lib/account_user_survey.php" method="POST">
-        <div class="field"><label>How often do you travel?</label> <br>
-            <input type="radio" value="1" name="count" id="count"> Every school holiday plus a summer trip<br>
-            <input type="radio" value="2" name="count" id="count"> One big trip a year<br>
-            <input type="radio" value="3" name="count" id="count"> 2-3 weeks per year plus long weekends<br>
-            <input type="radio" value="4" name="count" id="count"> 4-5 weeks per year plus long weekends<br>
-            <input type="radio" value="5" name="count" id="count"> 6+ weeks a year
-        </div>
-        
-        <div class="field"><label>How would you describe your trip planning style?</label> <br>
-            <input type="radio" value="1" name="planning_style" id="planning_style"> Last minute booker (within one month of travel)<br>
-            <input type="radio" value="2" name="planning_style" id="planning_style"> Average advance planner (within 1-4 months of travel)<br>
-            <input type="radio" value="3" name="planning_style" id="planning_style"> Scheduled traveler (4-8 months)<br>
-            <input type="radio" value="4" name="planning_style" id="planning_style"> Early-booker (8-12 months prior)
-        </div>
-        
-        <div class="field"><label>Who do you travel with? Check all that apply.</label> <br>
-            <input type="checkbox" name="tw1" id="tw1"> My family (including children) <br>
-            <input type="checkbox" name="tw2" id="tw2"> My family (all adults)<br>
-            <input type="checkbox" name="tw3" id="tw3"> Couple<br>
-            <input type="checkbox" name="tw4" id="tw4"> Friend getaways<br>
-            <input type="checkbox" name="tw5" id="tw5"> Multi-generational trips<br>
-            <input type="checkbox" name="tw6" id="tw6"> Large-scale destination celebrations<br> 
-            <input type="checkbox" name="tw7" id="tw7"> Multi-family trips
-        </div>
-        
-        <div class="field"><label>When choosing a hotel, which features are most important to you? Rank in order.</label> <br>
-            <select name="features_1" id="features_1">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>Service <br>
-            <select name="features_2" id="features_1">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>Location <br>
-            <select name="features_3" id="features_3">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>Reputation “best in town” <br>
-            <select name="features_4" id="features_4">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>Design style <br>
-            <select name="features_5" id="features_5">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>Sense of place (reflects local culture) <br>
-            <select name="features_6" id="features_6">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>Brand name <br>
-            <select name="features_7" id="features_7">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>Pool <br>
-            <select name="features_8" id="features_8">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>Gym <br>
-            <select name="features_9" id="features_9">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>Family-friendly service and amenities <br>
-            <select name="features_10" id="features_10">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>Price
-        </div>
-        
-        <div class="field"><label>What style of hotel do you prefer? </label> <br>
-            <textarea name="hotel_style" id="hotel_style"></textarea>
-        </div>
-
-        <div class="field"><label>What hotel amenities do you value most? </label> <br>
-            <textarea name="hotel_amenities" id="hotel_amenities"></textarea>
-        </div>
-
-        <div class="field"><label>Please list your beverages of choice. </label> <br>
-            <textarea name="beverages" id="beverages"></textarea>
-        </div>
-
-        <div class="field"><label>How do you like to travel: </label> <br> 
-                
-                <input type="radio" value="1" name="itinerary_pref" id="itinerary_pref"> Do you prefer a robust and busy itinerary  <br>
-                <input type="radio" value="2" name="itinerary_pref" id="itinerary_pref"> or a more relaxed schedule with a mix of activities and down time?  <br>
-                 <br>    
-                <input type="radio" value="1" name="itinerary_pref2" id="itinerary_pref2"> Do you like everything planned out for you including things like spa appointments and airport transfers  <br>
-                <input type="radio" value="2" name="itinerary_pref2" id="itinerary_pref2">or do you prefer to do those things on your own?  <br>
-        </div>        
-                
-        <div class="field"><label>Please share some of your most fond travel memories and tell us why they were so special.</label> <br>
-            <textarea name="memories" id="memories"></textarea>
-        </div>
-
-        <div class="field"><label>What are your pet peeves when traveling?</label> <br>
-            <textarea name="peeves" id="peeves"></textarea>
-        </div>
-
-        <div class="field"><label>Tell us what influences your travel decisions.</label> <br>
-            <textarea name="decisions" id="decisions"></textarea>
-        </div>
-
-        <div class="field"><label>Is there anything else you would like to share about your travel preferences?</label> <br>
-            <textarea name="else" id="else"></textarea>
-        </div>
-
-        <div class="field"><label>Please select your interests:</label> <br>
-            <input type="checkbox" name="interest1" id="interest1"> Sports<br>
-            <input type="checkbox" name="interest2" id="interest2"> Food & Wine<br>
-            <input type="checkbox" name="interest3" id="interest3"> Shopping<br>
-            <input type="checkbox" name="interest4" id="interest4"> Museums and Galleries<br>
-            <input type="checkbox" name="interest5" id="interest5"> History<br>
-            <input type="checkbox" name="interest6" id="interest6"> Nature<br>
-            <input type="checkbox" name="interest7" id="interest7"> Cooking<br>
-            <input type="checkbox" name="interest8" id="interest8"> Hiking<br>
-            <input type="checkbox" name="interest9" id="interest9"> Live music<br>
-            <input type="checkbox" name="interest10" id="interest10"> Performing Arts<br>
-            <input type="checkbox" name="interest11" id="interest11"> Other
-        </div>
-        
-        <h2>Airline Seating and Meal Preference</h2>
-        <h3>Short Haul</h3>
-        <div class="field"><label>Class of service: </label>
-            <input type="radio" value="1" name="sh_class" id="sh_class">economy, 
-            <input type="radio" value="2" name="sh_class" id="sh_class">premium economy, 
-            <input type="radio" value="3" name="sh_class" id="sh_class">business, 
-            <input type="radio" value="4" name="sh_class" id="sh_class">first
-        </div>
-        <div class="field"><label>Seat preference: </label>
-            <input type="radio" value="1" name="sh_seat" id="sh_seat">front,
-            <input type="radio" value="2" name="sh_seat" id="sh_seat">back,
-            <input type="radio" value="3" name="sh_seat" id="sh_seat">right,
-            <input type="radio" value="4" name="sh_seat" id="sh_seat">left
-        </div>
-        <div class="field"><label>Location: </label>
-            <input type="radio" value="1" name="sh_location" id="sh_location">window,
-            <input type="radio" value="2" name="sh_location" id="sh_location">aisle,
-            <input type="radio" value="3" name="sh_location" id="sh_location">middle
-        </div>
-        <h3>Long Haul</h3>
-        <div class="field"><label>Class of service: </label>
-            <input type="radio" value="1" name="lh_class" id="lh_class">economy, 
-            <input type="radio" value="2" name="lh_class" id="lh_class">premium economy, 
-            <input type="radio" value="3" name="lh_class" id="lh_class">business, 
-            <input type="radio" value="4" name="lh_class" id="lh_class">first
-        </div>
-        <div class="field"><label>Seat preference: </label>
-            <input type="radio" value="1" name="lh_seat" id="lh_seat">front,
-            <input type="radio" value="2" name="lh_seat" id="lh_seat">back,
-            <input type="radio" value="3" name="lh_seat" id="lh_seat">right,
-            <input type="radio" value="4" name="lh_seat" id="lh_seat">left
-        </div>
-        <div class="field"><label>Location: </label>
-            <input type="radio" value="1" name="lh_location" id="lh_location">window,
-            <input type="radio" value="2" name="lh_location" id="lh_location">aisle,
-            <input type="radio" value="3" name="lh_location" id="lh_location">middle
-        </div>
-        
-        <div>
-            Allergies/Food Restrictions<br>
-            <textarea name="allergies" id="allergies"></textarea>
-        </div>
-        <div class="field"><label></label><input type="submit" name="subTab1" id="subTab1" class="button primary" value="Update"></div>
-        </form>
+	
+    <div class="tab" id="prefs">
+	    <div class="tab-content">
+		    <h2>Communication</h2>
+			<form class="clearfix" id="travel-preferences" data-source-object="Contact"
+				data-edit-field="Id,Preferred_Method_of_Contact__c,Phone_Communication_Preferences__c,
+	        		Preferred_Format_to_Receive_Itineraries__c">
+				<a class="form-save-button" action="save" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Communication Preferences</a>
+			</form>
+			
+		    <h2>Itinerary</h2>
+			<form class="clearfix" id="travel-preferences" data-source-object="Contact"
+				data-edit-field="Id,How_Often_Do_You_Travel__c,How_Do_You_Like_to_Travel__c,Travel_Planning_Style__c,Who_Do_You_Travel_With__c,Prefer_a_Planned_Out_Schedule__c,
+	        		Prefer_Doing_Things_on_Own__c">
+				<a class="form-save-button" action="save" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Itinerary Preferences</a>
+			</form>
+			
+		    <h2>Flights</h2>
+			<form class="clearfix" id="travel-preferences" data-source-object="Contact"
+				data-edit-field="Id,Short_Haul_Class_of_Service__c,Long_Haul_Class_of_Service__c">
+				<a class="form-save-button" action="save" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Flight Preferences</a>
+			</form>
+			
+		    <h2>Hotels</h2>
+			<form class="clearfix" id="travel-preferences" data-source-object="Contact"
+				data-edit-field="Id,Hotel_Style__c,Hotel_Amenities__c">
+				<a class="form-save-button" action="save" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Hotel Preferences</a>
+			</form>
+			
+		    <h2>Food</h2>
+			<form class="clearfix" id="travel-preferences" data-source-object="Contact"
+				data-edit-field="Id,Meal_Choice__c,Allergies_Food_Restrictions__c,Type_of_Restaurants_Preferred__c,
+	        		Beverage_of_Choice__c">
+				<a class="form-save-button" action="save" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Food Preferences</a>
+			</form>
+			
+		    <h2>Other Travel Preferences</h2>
+			<form class="clearfix" id="questionnaire" data-source-object="Contact"
+				data-edit-field="Id,
+	        		Travel_Memories__c,Pet_Peeves__c,Influences__c,Interests__c,
+	        		Other_Travel_Preferences__c">
+				<a class="form-save-button" action="save" href="#">Save</a>
+				<a class="form-cancel-button" href="#">Close</a>
+				<a class="form-edit-link" href="#">Edit Other Preferences</a>
+			</form>
+			
+	    </div>
     </div>
+	
+    <div class="tab" id="accounts">
+	    <div class="tab-content">
+		    <h2>Travel Accounts</h2>
+			<div id="profile-freq" class="card-list clearfix"></div>
+			<div id="profile-freq-buttons" class="card-button-list card-list clearfix">
+				<div class="card-item card-item-button">
+					<a id="profile-freq-new" href="#" class="card-button-large">
+						Add New Frequent Traveler Account
+					</a>
+				</div>
+			</div>
+		    
+		    <h2>Travel Documents</h2>
+			<div id="profile-passports" class="card-list clearfix"></div>
+			<div id="profile-passports-buttons" class="card-button-list card-list clearfix">
+				<div class="card-item card-item-button">
+					<a id="profile-passport-new" href="#" class="card-button-large">
+						Add New Travel Document
+					</a>
+				</div>
+			</div>
+	    </div>
+    </div>
+	
 </div>
-    
+
+<div class="help-box-wrapper">
+	<div class="help-box">
+		<h2 class="help-box-title">Questions about your account?</h2>
+		<div class="help-box-content">
+			<span class="keep-together">Contact our membership team</span>
+			<span class="keep-together">at <a href="tel:+12129882611">212-988-2611</a></span>
+			<span class="keep-together">or email <a href="mailto:membership@indagare.com">membership@indagare.com</a>.</span>
+		</div>
+	</div>
+</div>
+
+
+
+<div id="new-contact-form" style="display: none !important;">
+	<div class="detail-element clearfix">
+		<form class="editing clearfix">
+			<div id="field-Username" class="input-field field clearfix">
+				<input maxlength="80" name="Username" id="newcontact-Username"
+					type="text" validate-type="wp-unique-username"><label for="contactUsername">Username</label>
+				    <span class="errmsg">Username is not available.  Please try another one.</span>
+			</div>
+			<div id="field-Password" class="input-field field clearfix">
+				<input maxlength="80" name="Password" id="newcontact-Password"
+					type="password" validate-type="password" validate-group="a"><label for="contactPassword">Password</label>
+				    <span class="errmsg">Passwords must:<br/>
+				    	<ul>
+						 	<li class="passlen-msg">Be at least <span class="passlen-num">6</span> characters long</li>
+						 	<li class="passcase-msg">Contain a mix of uppercase and lowercase letters</li>
+						 	<li class="passnum-msg">Contain at least one number</li>
+						 	<li class="passchar-msg">Contain at least one special character (non-letter or number)</li>
+					 	</ul>
+				 	</span>
+			</div>
+			<div id="field-PasswordVerify" class="input-field field clearfix">
+				<input maxlength="80" name="PasswordVerify"
+					id="newcontact-PasswordVerify" type="password" validate-type="password-verify" validate-group="a"><label
+					for="contactPasswordVerify">Verify Password</label>
+				    <span class="errmsg">Passwords must match.</span>
+			</div>
+			<div id="field-FirstName" class="input-field field clearfix">
+				<input maxlength="40" name="FirstName" id="newcontact-FirstName"
+					type="text" validate-type="exists"><label for="contactFirstName">First
+					Name</label>
+				    <span class="errmsg">You must enter a First Name</span>
+			</div>
+			<div id="field-LastName" class="input-field field clearfix">
+				<input maxlength="80" name="LastName" id="newcontact-LastName"
+					type="text" validate-type="exists"><label for="contactLastName">Last Name</label>
+				    <span class="errmsg">You must enter a Last Name.</span>
+			</div>
+			<div id="field-Email" class="input-field field clearfix">
+				<input maxlength="80" name="Email" id="newcontact-Email" type="text" validate-type="wp-unique-email"><label
+					for="contactEmail">Email</label>
+				    <span class="errmsg"></span>
+			</div>
+			<div id="field-Phone" class="input-field field clearfix">
+				<input maxlength="40" name="Phone" id="newcontact-Phone" type="tel" validate-type="phone"><label
+					for="contactPhone">Phone</label>
+				    <span class="errmsg">You must enter a phone number.</span>
+			</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript" src="/wp-content/themes/indagare/app/js/countries.js"></script>
+<script type="text/javascript" src="/wp-content/themes/indagare/app/js/numeral.min.js"></script>
+<script type="text/javascript" src="/wp-content/themes/indagare/app/js/jquery.scrollTo.js"></script>
+<script type="text/javascript" src="/wp-content/themes/indagare/app/js/jquery-confirm.min.js"></script>
+<script type="text/javascript" src="/wp-content/themes/indagare/app/js/jquery.creditCardValidator.js"></script>
+<script type="text/javascript" src="/wp-content/themes/indagare/app/js/shr.validate.js"></script>
 <script type="text/javascript" src="/wp-content/themes/indagare/app/js/account.js"></script>
-<?php ?>

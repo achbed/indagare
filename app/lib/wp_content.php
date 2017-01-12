@@ -18,8 +18,10 @@ class WPContent {
 		if ( ! file_exists( $path ) ) {
 			return '<!-- missing '. $path.' -->';
 		}
-
-		$r = file_get_contents( $path );
+		
+		ob_start();
+		include( $path );
+		$r = ob_get_clean();
 
 		if( $r === false ) {
 			$r = '';
@@ -130,8 +132,7 @@ class WPContent {
 		$content .= "};\n";
 		$content .= "</script>\n";
 
-		//$content .= file_get_contents( $_SERVER['DOCUMENT_ROOT'].'/wp-content/themes/indagare/app/resources/account.html');
-		$content .= self::get_resource('account.html');
+		$content .= self::get_resource('account.php');
 
 		$front = get_option('page_on_front');
 		$rows = get_field('home-featured', $front );
@@ -231,8 +232,7 @@ class WPContent {
 		}
 		$content.="</script>\n";
 
-		//$content = $content . file_get_contents( $_SERVER['DOCUMENT_ROOT'].'/wp-content/themes/indagare/app/resources/signup.html');
-		$content .= self::get_resource('signup.html');
+		$content .= self::get_resource('signup.php');
 
 		return $content;
 	}

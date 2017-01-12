@@ -21,6 +21,10 @@ var QueryString = function () {
   return query_string;
 }();
 
+var showTrial;
+if (typeof showTrial === 'undefined') {
+	showTrial = false;
+}
 var showBilling = !showTrial;
 
 var signup;
@@ -73,15 +77,15 @@ if (!signup) {
 			}).on('change', '#tgCode', function(e) {
 				self.tgCodeLookup();
 			}).on('change', '#wp-username', function(e) {
-				self.checkUsername();
+				//self.checkUsername();
 			}).on('change', '#contact-HomePhone', function(e) {
 				self.formatPhone();
 			}).on('change', '#contact-Email', function(e) {
-				self.checkEmail();
+				//self.checkEmail();
 			}).on('change', '#Membership_Level__c', function(e) {
-				//self.setSelectedMBYears();
+				self.setSelectedMBYears();
 			}).on('change', 'input,select,textarea', function(e) {
-				self.validateThisField(jQuery(this).attr('id'));
+				//self.validateThisField(jQuery(this).attr('id'));
 			});
 		};
 		
@@ -473,7 +477,9 @@ if (!signup) {
 				cc_yr : jQuery('#cc_year').val(),
 				cc_cvv : jQuery('#ccv').val(),
 				cc_type : jQuery('#cc_type').val(),
-				trialid : jQuery("#tgCode").val()
+				trialid : jQuery("#tgCode").val(),
+				hearabout : jQuery("#contact-HearAbout").val(),
+				referby : jQuery("#contact-ReferredBy").val()
 			};
 			var otherparam = [ "pc", "gdsType", "cin", "cout" ];
 			var addparam = "";

@@ -1,4 +1,4 @@
-<div id="signup-form-container">
+<?php print '<!-- PHP VERSION -->'; ?><div id="signup-form-container">
 	<div class="tab">
 		<div class="tab-content">
 		
@@ -14,7 +14,7 @@
 				</div>
 		
 				<div field-instance="password1" id="field-wp-password1" class="input-field field clearfix iform-row-3col">
-					<input name="pwd1" id="wp-password1" type="password" validate-group="pw" validate-type="password">	
+					<input name="pwd1" id="wp-password1" type="password" validate-group="pw" validate-type="password">
 					<label for="wp-password1">Password</label>
 				    <span class="errmsg">Passwords must:<br/>
 				    	<ul>
@@ -54,6 +54,27 @@
 					<input name="HomePhone" id="contact-HomePhone" type="tel">
 					<label for="contact-HomePhone">Phone</label>
 				    <span class="errmsg">You must enter a phone number.</span>
+				</div>
+		
+				<div field-instance="HearAbout" id="field-contact-HearAbout" class="input-field field clearfix iform-row-2col iform-row-clear">
+					<select name="HearAbout" id="contact-HearAbout" validate-type="ignore">
+					<option value="">Choose one...</option>
+					<?php
+						$a = new \WPSF\Account();
+						$options = $a->picklistValues('How_Did_You_Hear_About_Us__c');
+						foreach ( $options as $o ) {
+							print "<option value=\"{$o['value']}\">{$o['label']}</option>";
+						}
+					?>
+					</select>
+					<label for="contact-HearAbout">How Did You Hear About Us?</label>
+				    <span class="errmsg"></span>
+				</div>
+				
+				<div field-instance="ReferredBy" id="field-contact-ReferredBy" class="input-field field clearfix iform-row-2col">
+					<input name="ReferredBy" id="contact-ReferredBy" type="text" validate-type="ignore">
+					<label for="contact-ReferredBy">Referred By?</label>
+				    <span class="errmsg"></span>
 				</div>
 		
 			</form>

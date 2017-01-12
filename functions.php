@@ -229,6 +229,7 @@ add_action( 'admin_init', 'ind_restrict_admin_with_redirect', 1 );
 add_action('wp','indagare_wp_handle');
 function indagare_wp_handle() {
 	// first visit - intro page on home page only
+	/*
 	if( ! isset( $_COOKIE['STYXKEY_firstview'] ) ) {
 		setcookie( 'STYXKEY_firstview', '1', time() + 315360000, '/', $_SERVER['HTTP_HOST'] );
 		if ( is_home() || is_front_page() ) {
@@ -238,6 +239,7 @@ function indagare_wp_handle() {
 			}
 		}
 	} // end first visit - intro page
+	*/
 
 	if(function_exists('acf_add_options_page'))
 	acf_add_options_page(array(
@@ -928,7 +930,7 @@ function my_register_image_sizes() {
 	add_image_size('hero-medium', 620, 300, true); // used for region
 	add_image_size('hero-review', 620, 413, true); // used for reviews - ie, hotel, restaurant, etc
 	add_image_size('thumb-large', 300, 200, true); // used for destination landing page, home page, special offer page
-	add_image_size('thumb-feature', 450, 375, true); // used for featured destination partners ELENA
+	add_image_size('thumb-feature', 450, 375, true); // used for featured destination partners
 	add_image_size('thumb-medium', 220, 146, true); // used for related items, and listing pages for hotel, restaurant
 	add_image_size('thumb-small', 140, 95, true); // used for recent items
 }
@@ -2124,11 +2126,11 @@ function child_abovecontainer() {
 
 	// end archive for hotel | restaurant | shop | activity | itinerary | library
 
-	// archive for seasonal offer elena
+	// archive for seasonal offer
 	} else if (is_tax('offertype','seasonal'))  {
 
 		echo '<div class="header top">'."\n";
-		echo '<h1>'.__('Seasonal Partners','indagare').'</h1>'."\n"; //ELENA
+		echo '<h1>'.__('Seasonal Partners','indagare').'</h1>'."\n";
 		echo '</div><!-- .header -->'."\n";
 
 	// end archive for seasonal offer
@@ -2137,7 +2139,7 @@ function child_abovecontainer() {
 	} else if (is_tax('offertype','destinations')) {
 
 		echo '<div class="header top">'."\n";
-		echo '<h1>'.__('Destination Partners','indagare').'</h1>'."\n"; //ELENA
+		echo '<h1>'.__('Destination Partners','indagare').'</h1>'."\n";
 		echo '</div><!-- .header -->'."\n";
 
 	// end archive for destination offer
@@ -4607,7 +4609,7 @@ function child_singlepost($content) {
 			$content .= '</section><!-- .related-articles -->'."\n";
 		}
 
-		// ELENA FEATURED DESTINATION PARTNERS
+		// FEATURED DESTINATION PARTNERS
 
 		$today = current_time('Ymd');
 
@@ -5094,8 +5096,6 @@ function child_singlepost($content) {
 
 	// BEGIN PARTNER PROMOTIONS ARCHIVES
 
-	// archives destination offer ELENA
-
 	} else if (is_tax('offertype','seasonal')) {
 
 		// generate thumbnail from gallery header, if not, use featured image
@@ -5136,7 +5136,7 @@ function child_singlepost($content) {
 				$content .= '<a class="book" href="'.get_permalink().'">'.__('Details','indagare').'</a>'."\n";
 			$content .= '</p>'."\n";
 
-	// end archives seasonal offer ELENA
+	// end archives seasonal offer
 
 	} else if ( is_tax( 'offertype', 'destinations' ) ) {
 
@@ -5317,8 +5317,6 @@ function child_singlepost($content) {
 		$content .= '<article class="magazine detail">'."\n";
 
 		$content .= $basecontent;
-
-		// ELENA TOP TABLE
 
 		$ttcolumn = wp_get_post_terms( $post->ID, 'column' );
 		$ttcolummname = ($ttcolumn[0]->name);
@@ -7430,7 +7428,6 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 				echo '<h2>'.__('The Buzz','indagare').'</h2>'."\n";
 				echo '<p>'.__('Subscribe to our free e-Newsletter for current travel news and tips.','indagare').'</p>'."\n";
 
-				//elena hubspot
 				include_once( 'includes/hubspot.php' );
 				render_hubspot('2459975', 'baef34f1-256a-4bda-9add-686bff25887e');
 

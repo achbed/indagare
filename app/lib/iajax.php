@@ -286,6 +286,16 @@ class AjaxHandler {
 
 		$contact['Primary_Contact__c'] = true;
 
+		if ( isset( $_POST['hearabout'] ) && ! empty( $_POST['hearabout'] ) ) {
+			$account['How_Did_You_Hear_About_Us__c'] = $_POST['hearabout'];
+		}
+		if ( isset( $_POST['referby'] ) && ! empty( $_POST['referby'] ) ) {
+			$account['Referred_By_non_lookup__c'] = $_POST['referby'];
+		}
+		if ( ! empty( $trial['Code'] ) ) {
+			$account['Sign_Up_Promo_Code__c'] = $trial['Code'];
+		}
+		
 		$account->add_contact( $contact );
 
 //		var_dump ( $account );
