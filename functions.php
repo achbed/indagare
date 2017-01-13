@@ -4885,8 +4885,38 @@ function child_singlepost($content) {
 
 		$content .= $basecontent;
 
-		$content .= '<p class="author">&ndash; '.get_the_author_meta( 'display_name', $post->post_author ).'</p>'."\n";
+//		$content .= '<p class="author">&ndash; '.get_the_author_meta( 'display_name', $post->post_author ).'</p>'."\n";
 
+		
+		$content .= '<div class="author-block author-byline divider">'."\n";
+		$content .= '<h3>'.__('Author','indagare').'</h3>'."\n";
+		
+		$imageobj = get_field( 'author-image', 'user_' . $post->post_author );
+		if ( ! empty( $imageobj['sizes'] ) ) {
+			$imagesize = 'thumb-feature';
+			$imgsrc = $imageobj['sizes'][$imagesize];
+			$content .= '<div class="author-thumbnail thumbnail">'."\n";
+			$content .= '<a href="'.get_author_posts_url( $post->post_author ).'">'."\n";
+			//$content .= '<!-- ';
+			//$content .= print_r($imageobj,true);
+			//$content .= ' -->';
+			$content .= '<img src="'.$imgsrc.'" class="author-image" />';
+			$content .= '</a>'."\n";
+			$content .= '</div><!-- .thumbnail -->'."\n";
+		}
+		
+		$content .= '<ul><li>'."\n";
+		if ( ! empty( $imageobj['sizes'] ) ) {
+			$content .= '<a href="'.get_author_posts_url( $post->post_author ).'">'."\n";
+		}
+		$content .= get_the_author_meta( 'display_name', $post->post_author )."\n";
+		if ( ! empty( $imageobj['sizes'] ) ) {
+			$content .= '</a>'."\n";
+		}
+		$content .= '</li></ul>'."\n";
+	
+		$content .= '</div><!-- .author-byline -->'."\n";
+		
 		$content .= '</article>'."\n";
 
 		// benefits
@@ -7798,6 +7828,33 @@ $datadestinations = file_get_contents($path = $uploadpath.'/datadestinations.jso
 			$column = wp_get_post_terms( $post->ID, 'column' );
 			$interests = wp_get_post_terms( $post->ID, 'interest' );
 
+			//ELENA AUTHOR
+
+			$imageobj = get_field( 'author-image', 'user_' . $post->post_author );
+			if ( ! empty( $imageobj['sizes'] ) ) {
+				$imagesize = 'thumb-feature';
+				$imgsrc = $imageobj['sizes'][$imagesize];
+	
+	
+				echo '<div class="author-block widget">'."\n";
+					echo '<h3>'.__('Author','indagare').'</h3>'."\n";
+					echo '<div class="author-thumbnail thumbnail">'."\n";
+						echo '<a href="'.get_author_posts_url( $post->post_author ).'">'."\n";
+							//echo '<!-- ';
+							//print_r($imageobj);
+							//echo ' -->';
+							echo '<img src="'.$imgsrc.'" class="author-image" />';
+						echo '</a>'."\n";
+					echo '</div><!-- .thumbnail -->'."\n";
+	
+					echo '<ul><li>'."\n";
+						echo '<a href="'.get_author_posts_url( $post->post_author ).'">'."\n";
+							echo get_the_author_meta( 'display_name', $post->post_author )."\n";
+						echo '</a>'."\n";
+					echo '</li></ul>'."\n";
+	
+				echo '</div><!-- .widget -->'."\n";
+			}
 
 			echo '<div class="widget">'."\n";
 				echo '<h3>'.__('Column','indagare').'</h3>'."\n";

@@ -4913,3 +4913,33 @@ form.processing .button {
     }
 }
 
+.author-block{
+
+	ul{
+		padding: 0;
+		margin: 0 0 1em 0;
+
+		li{
+			list-style-type: none;
+
+		}
+	}
+
+	.author-thumbnail.thumbnail {
+	    overflow: hidden;
+	    width: 12em;
+	    height: 10em;
+	    margin-bottom: 6px;
+	}
+
+
+}
+
+.magazine .author-block .author-thumbnail.thumbnail {
+    border-radius: 6em !important;
+    width: 12em;
+    height: 12em;
+}
+
+
+
