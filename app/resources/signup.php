@@ -8,7 +8,7 @@
 		    
 		    <form class="editing clearfix">
 				<div field-instance="username" id="field-wp-username" class="input-field field clearfix iform-row-3col iform-row-clear">
-					<input name="username" id="wp-username" type="text">
+					<input name="username" id="wp-username" type="text" validate-type="wp-unique-username">
 					<label for="wp-username">Username</label>
 				    <span class="errmsg">Username is not available.  Please try another one.</span>
 				</div>
@@ -45,13 +45,13 @@
 				</div>
 				
 				<div field-instance="Email" id="field-contact-Email" class="input-field field clearfix iform-row-2col iform-row-clear">
-					<input name="Email" id="contact-Email" type="text">
+					<input name="Email" id="contact-Email" type="text" validate-type="sf-unique-email">
 					<label for="contact-Email">Email</label>
 				    <span class="errmsg"></span>
 				</div>
 				
 				<div field-instance="HomePhone" id="field-contact-HomePhone" class="input-field field clearfix iform-row-2col">
-					<input name="HomePhone" id="contact-HomePhone" type="tel">
+					<input name="HomePhone" id="contact-HomePhone" type="tel" validate-type="phone">
 					<label for="contact-HomePhone">Phone</label>
 				    <span class="errmsg">You must enter a phone number.</span>
 				</div>
@@ -83,13 +83,13 @@
 		
 			<form class="editing clearfix">
 				<div id="field-account-tgCode" class="input-field field clearfix iform-row-2col iform-row-clear">
-					<input maxlength="40" name="tgCode" id="tgCode" type="text" value="">
+					<input maxlength="40" name="tgCode" id="tgCode" type="text" value="" validate-type="sf-promocode">
 					<label for="contact-FirstName">Membership Code</label>
 				    <span class="errmsg">Invalid membership code.</span>
 				</div>
 			    
 				<div id="field-account-Membership_Level__c" class="input-field field clearfix iform-row-2col">
-					<select name="Membership_Level__c" id="Membership_Level__c">
+					<select name="Membership_Level__c" id="Membership_Level__c" validate-type="ignore">
 					</select>
 					<label for="membership_level">Membership</label>
 				</div>
@@ -99,55 +99,55 @@
 	        
 	        <form class="editing clearfix billing">
 				<div id="field-contact-s_address1" class="input-field field clearfix iform-row-1col">
-					<textarea name="s_address1" id="s_address1"></textarea>
+					<textarea name="s_address1" id="s_address1" validate-type="exists"></textarea>
 					<label for="s_address1">Street Address</label>
 				    <span class="errmsg">You must enter a street address.</span>
 				</div>
 		
 				<div id="field-contact-s_city" class="input-field field clearfix iform-row-4col">
-					<input name="s_city" id="s_city" type="text">
+					<input name="s_city" id="s_city" type="text" validate-type="exists">
 					<label for="s_city">City</label>
 				    <span class="errmsg">You must enter a city.</span>
 				</div>
 		
 				<div id="field-s_state" class="input-field field clearfix iform-row-4col">
-					<select name="s_state" id="s_state"></select>
+					<select name="s_state" id="s_state" validate-type="exists"></select>
 					<label for="s_state">State / Province</label>
 				    <span class="errmsg">You must choose a state/province.</span>
 				</div>
 		
 				<div id="field-s_zip" class="input-field field clearfix iform-row-4col">
-					<input name="s_zip" id="s_zip" type="text">
+					<input name="s_zip" id="s_zip" type="text" validate-type="exists">
 					<label for="s_zip">Zip / Postal Code</label>
 				    <span class="errmsg">You must enter a postal code.</span>
 				</div>
 		
 				<div id="field-s_country" class="input-field field clearfix iform-row-4col">
-					<select name="s_country" id="s_country"></select>
+					<select name="s_country" id="s_country" validate-type="exists"></select>
 					<label for="s_country">Country</label>
 				    <span class="errmsg">You must choose a country.</span>
 				</div>
 				
 				<div id="field-cc_num" class="input-field field clearfix iform-row-2col">
-					<input name="cc_num" id="cc_num" type="text">
+					<input name="cc_num" id="cc_num" type="text" validate-group="cc" validate-type="cc_num">
 					<label for="cc_num">Credit Card Number</label>
 				    <span class="errmsg">Please enter a valid credit card number.</span>
 				</div>
 		
 				<div id="field-cc_month" class="input-field field clearfix iform-row-6col">
-					<select name="cc_month" id="cc_month"></select>
+					<select name="cc_month" id="cc_month" validate-group="cc" validate-type="cc_month"></select>
 					<label for="cc_month">Expiration Month</label>
 				    <span class="errmsg">You must choose a valid month.</span>
 				</div>
 		
 				<div id="field-cc_year" class="input-field field clearfix iform-row-6col">
-					<select name="cc_year" id="cc_year"></select>
+					<select name="cc_year" id="cc_year" validate-group="cc" validate-type="cc_year"></select>
 					<label for="cc_year">Expiration Year</label>
 				    <span class="errmsg">You must choose a valid year.</span>
 				</div>
 		
 				<div id="field-ccv" class="input-field field clearfix iform-row-6col">
-					<input name="ccv" id="ccv" type="text">
+					<input name="ccv" id="ccv" type="text" validate-group="cc" validate-type="cvv">
 					<label for="ccv">CVV</label>
 				    <span class="errmsg">Please enter the security code on the back of your credit card.</span>
 				</div>
@@ -157,10 +157,11 @@
 		    <div class="inputgroup hidden">
 			    <input type="hidden" name="refCode" id="refCode" value="">
 			    <input type="hidden" name="cc_type" id="cc_type" value="">
+			    <?php wp_nonce_field( IND_SIGNUP_NONCE_ACTION, IND_SIGNUP_NONCE_NAME ); ?>
 	        </div>
 	        
 		    <div class="inputgroup">
-		        <div class="field validate noicon"><label></label><input type="checkbox" id="agree2terms"> I have read and agree to the <a href="#" id="view_terms">Terms &amp; Conditions</a> <span class="errmsg">You must check this box to show that you agree to our Terms & Conditions.</span></div>
+		        <div class="field validate noicon"><label></label><input type="checkbox" id="agree2terms" validate-type="checked"> I have read and agree to the <a href="#" id="view_terms">Terms &amp; Conditions</a> <span class="errmsg">You must check this box to show that you agree to our Terms & Conditions.</span></div>
 	        	<div id="terms" style="display: none">
 		            <h4><strong>Terms</strong></h4>
 		            <p>If you are not satisfied with your membership, you may cancel within 30 days of purchase and receive a full refund. Otherwise, all membership fees are non-refundable. By clicking on the Create Account button below, I authorize Indagare Travel to initiate an electronic debit to my bank account in the amount stated above.</p>

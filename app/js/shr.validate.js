@@ -144,6 +144,22 @@ if (!shrValidate) {
 					self.checkEmail(f);
 					return null;
 					
+				case 'sf-unique-email':
+					r = 0;
+					self.fieldValidating(f);
+					if ( jQuery(f).val() == '' ) {
+						r = 1;
+					} else if ( ! self.checkEmailString( jQuery(f).val() ) ) {
+						r = 2;
+					}
+					if(r) {
+						jQuery(f).closest('.field').find('.errmsg').html( self.getEmailMessage(r) );
+						self.fieldValidated( f, false );
+						return false;
+					}
+					self.checkSFEmail(f);
+					return null;
+					
 				case 'wp-unique-username':
 					self.fieldValidating(f);
 					if ( jQuery(f).val() == '' ) {
@@ -395,6 +411,36 @@ if (!shrValidate) {
 						login : jQuery(f).val()
 					}
 				};
+			if ( ( typeof _x !== "undefined" ) & ( typeof _x.signupnonce !== "undefined" ) ) {
+				a.data._n = jQuery("#"+_x.signupnonce).val();
+			}
+			jQuery.ajax('/wp-admin/admin-ajax.php', a)
+				.done(function(d, s, x) {
+					r = false;
+					if(d.exists) {
+						jQuery(f).closest('.field').find('.errmsg').html( self.getUsernameMessage(4) );
+					} else {
+						r = true;
+					}
+					self.fieldValidated( f, r );
+				})
+				.fail(function(x, s, e) {
+					jQuery(f).closest('.field').find('.errmsg').html( self.getUsernameMessage(3) );
+					self.fieldValidated( f, false );
+				});
+		};
+		
+		this.checkEmail = function(f) {
+			var a = {
+					method : 'POST',
+					data : {
+						action : 'idj-email',
+						email : jQuery(f).val()
+					}
+				};
+			if ( ( typeof _x !== "undefined" ) & ( typeof _x.signupnonce !== "undefined" ) ) {
+				a.data._n = jQuery("#"+_x.signupnonce).val();
+			}
 			jQuery.ajax('/wp-admin/admin-ajax.php', a)
 				.done(function(d, s, x) {
 					r = false;
@@ -411,7 +457,7 @@ if (!shrValidate) {
 				});
 		};
 		
-		this.checkEmail = function(f) {
+		this.checkSFEmail = function(f) {
 			var a = {
 					method : 'POST',
 					data : {
@@ -419,11 +465,25 @@ if (!shrValidate) {
 						email : jQuery(f).val()
 					}
 				};
+			if ( ( typeof _x !== "undefined" ) & ( typeof _x.signupnonce !== "undefined" ) ) {
+				a.data._n = jQuery("#"+_x.signupnonce).val();
+			}
 			jQuery.ajax('/wp-admin/admin-ajax.php', a)
 				.done(function(d, s, x) {
 					r = false;
 					if(d.exists) {
 						jQuery(f).closest('.field').find('.errmsg').html( self.getEmailMessage(4) );
+						if((typeof d.active !== "undefined") && d.active) {
+							// Active account
+							if ( typeof self.emailHandleActiveAcct === "function" ) {
+								self.emailHandleActiveAcct(d);
+							}
+						} else {
+							// Inactive account (expired memberships)
+							if ( typeof self.emailHandleInactiveAcct === "function" ) {
+								self.emailHandleInactiveAcct(d);
+							}
+						}
 					} else {
 						r = true;
 					}

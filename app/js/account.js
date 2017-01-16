@@ -727,29 +727,120 @@ function handleDisplayIf() {
 		var d = jQuery(f).attr('data-source-object');
 		if(!d || !SFData.hasOwnProperty(d)) return;
 		d = SFData[d];
-		var i = jQuery(f).attr('data-display-if'), q=i.split('='), i=q[0], v=q[1], h='';
+		var i = jQuery(f).attr('data-display-if'),q="",i,v,h="",ops=["=>","<=",">=","=<","<>","!=","=!","=",">","<"],op;
+		for ( var o in ops ) {
+			if ( i.indexOf(ops[o]) > -1 ) {
+				op = ops[o];
+				break;
+			}
+		}
+		q=i.split(op);
+		i=q[0];
+		v=q[1];
 		if(d.hasOwnProperty(i)) {
 			if(v == 'null') {
-				if(!d[i]) {
-					jQuery(f).show();
+				if( op == "=") {
+					if(!d[i]) {
+						jQuery(f).show();
+					} else {
+						jQuery(f).hide();
+					}
 				} else {
-					jQuery(f).hide();
+					if(!!d[i]) {
+						jQuery(f).show();
+					} else {
+						jQuery(f).hide();
+					}
 				}
 				return;
 			}
-			
-			if(v == '!null') {
-				if(!!d[i]) {
-					jQuery(f).show();
+
+			var truth = null;
+
+			if(v == 'true') {
+				if(["=","<=","=>","=<",">="].indexOf(op) === -1) {
+					if(d[i]) {
+						truth = false;
+					} else {
+						truth = true;
+					}
 				} else {
-					jQuery(f).hide();
+					if(d[i]) {
+						truth = true;
+					} else {
+						truth = false;
+					}
 				}
-				return;
+			} else if(v == 'false') {
+				if(["=","<=","=>","=<",">="].indexOf(op) === -1) {
+					if(d[i]) {
+						truth = true;
+					} else {
+						truth = false;
+					}
+				} else {
+					if(d[i]) {
+						truth = false;
+					} else {
+						truth = true;
+					}
+				}
+			} else {
+				switch(op) {
+					case "=":
+						if(v == d[i]) {
+							truth = true;
+						} else {
+							truth = false;
+						}
+						break;
+						
+					case "!=":
+					case "=!":
+					case "<>":
+						if(v != d[i]) {
+							truth = true;
+						} else {
+							truth = false;
+						}
+						break;
+						
+					case "=>":
+					case ">=":
+						if(d[i] >= v) {
+							truth = true;
+						} else {
+							truth = false;
+						}
+						break;
+						
+					case "=<":
+					case "<=":
+						if(d[i] <= v) {
+							truth = true;
+						} else {
+							truth = false;
+						}
+						break;
+						
+					case "<":
+						if(d[i] < v) {
+							truth = true;
+						} else {
+							truth = false;
+						}
+						break;
+						
+					case ">":
+						if(d[i] > v) {
+							truth = true;
+						} else {
+							truth = false;
+						}
+						break;
+				}
 			}
-			
-			if(v == 'true') v=true;
-			if(v == 'false') v=false;
-			if(v == d[i]) {
+			if(truth) {
 				jQuery(f).show();
 			} else {
 				jQuery(f).hide();

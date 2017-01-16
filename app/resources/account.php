@@ -35,6 +35,10 @@
    		<div class="renewal-text" data-source-object="Account" data-display-if="Is_Renewal__c=true" style="display:none;">
    			(Your Indagare account will renew 7 days prior to your membership lapsing.)
 	    </div>
+	    <div class="gift-balance" data-source-object="Account" data-display-if="Gift_Balance__c>0">
+	    	<label for="gift-balance-amt">Travel Credit</label>
+	    	<span>$</span><span id="gift-balanace-amt" data-source-object="Account" data-display-field="Gift_Balance__c"></span>
+	    </div>
     </div>
     
     <div class="tab" id="dashboard">
@@ -93,7 +97,7 @@
 	    	<form class="clearfix" id="contact-login" data-source-object="Contact"
 				data-edit-field="Id,Email|validate-type=wp-unique-email">
 				<div field-instance="chpassword1" id="field-wp-chpassword1" class="input-field field clearfix iform-row-3col">
-					<input name="pwd1" id="wp-chpassword1" type="password" validate-group="pw" validate-type="password">	
+					<input name="pwd1" id="wp-chpassword1" type="password" validate-group="pw" validate-type="password">
 					<label for="wp-password1">Password</label>
 				    <span class="errmsg">Passwords must:<br/>
 				    	<ul>

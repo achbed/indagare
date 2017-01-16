@@ -2752,6 +2752,8 @@ form.processing .button { background: gray; color: #bbb; cursor: progress; }
 
 .magazine .author-block .author-thumbnail.thumbnail { border-radius: 6em !important; width: 12em; height: 12em; }
 
+#gift-balanace-amt:before { content: "$"; }
+
 .destinationlist-wrapper { display: block; min-height: 270px; }
 
 #destinationlist img { height: 200px; width: 300px; }

@@ -16,6 +16,9 @@
  * @subpackage ThemeInit
  */
 
+define( 'IND_SIGNUP_NONCE_ACTION', 'ind_signup' );
+define( 'IND_SIGNUP_NONCE_NAME', 'signup_nonce_832na04' );
+
 require_once 'app/lib/wpdef.php';
 require_once 'app/lib/wp_content.php';
 include_once 'includes/cookiedough.php';
@@ -1030,6 +1033,7 @@ function register_scripts() {
 	$upload_url = wp_upload_dir();
 	$upload_url = $upload_url['url'];
 	wp_localize_script( 'hammer', '_x', array(
+		'signupnonce' => IND_SIGNUP_NONCE_NAME,
 		'loading' => __('Logging in...'),
 		'thankyou' => __('Thank you','indagare'),
 		'thankyousignup' => __('Thank you for signing up.','indagare'),

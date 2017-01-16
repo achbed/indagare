@@ -1,3 +1,15 @@
+var shrValidate,showTrial,trialCode;
+
+if(typeof shrValidate !== "undefined") {
+	shrValidate.emailHandleInactiveAcct = function(d) {
+		var t = jQuery('#tgCode').val();
+		t = t.toLowerCase();
+		if ( ( t == 'elite-upgrade' ) || ( t == 'connoisseur-upgrade' ) ) {
+			window.location = "http://travel.indagare.com/membership-renewal";
+		}
+	};
+}
+
 var QueryString = function () {
   // This function is anonymous, is executed immediately and 
   // the return value is assigned to QueryString!
@@ -21,11 +33,15 @@ var QueryString = function () {
   return query_string;
 }();
 
-var showTrial;
 if (typeof showTrial === 'undefined') {
 	showTrial = false;
 }
 var showBilling = !showTrial;
+if( showTrial ) {
+	if((typeof trialCode === "undefined") || ( trialCode === "" )) {
+		trialCode = "trial";
+	}
+}
 
 var signup;
 if (!signup) {
@@ -496,6 +512,11 @@ if (!signup) {
 				hearabout : jQuery("#contact-HearAbout").val(),
 				referby : jQuery("#contact-ReferredBy").val()
 			};
+			
+			if ( ( typeof _x !== "undefined" ) & ( typeof _x.signupnonce !== "undefined" ) ) {
+				args._n = jQuery("#"+_x.signupnonce).val();
+			}
+			
 			var otherparam = [ "pc", "gdsType", "cin", "cout" ];
 			var addparam = "";
 			var otherempty = false;

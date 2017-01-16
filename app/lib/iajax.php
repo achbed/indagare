@@ -31,8 +31,8 @@ class AjaxHandler {
 
 			add_action( 'wp_ajax_idj-email', array( $this, 'chkEmail_wp' ) );
 			add_action( 'wp_ajax_nopriv_idj-email', array( $this, 'chkEmail_wp' ) );
-
-			add_action( 'wp_ajax_idj-login', array( $this, 'chkLogin_wp' ) );
+			
+				add_action( 'wp_ajax_idj-login', array( $this, 'chkLogin_wp' ) );
 			add_action( 'wp_ajax_nopriv_idj-login', array( $this, 'chkLogin_wp' ) );
 
 			add_action( 'wp_ajax_idj-signup', array( $this, 'payment_wp' ) );
@@ -91,22 +91,58 @@ class AjaxHandler {
 		header('Content-Type: application/json');
 		$response = array();
 		try {
+			self::validate_nonce( IND_SIGNUP_NONCE_ACTION );
 			if ( empty( $_POST['email'] ) ) {
 				throw new \Exception( 'Empty input', 0 );
 			}
 			$response['email'] = $_POST['email'];
 			$l = sanitize_email( $_POST['email'] );
-			$response['exists'] = ( email_exists( $l ) !== false );
+			$wpid = email_exists( $l );
+			$cid = \WPSF\Contact::get_id_email( $l );
+			if ( $wpid !== false ) {
+				// We have a wordpress account.
+				if ( empty( $cid ) ) {
+					// ... but we also have no SF account. This is bad.
+					throw new \Exception( 'WP account without matching SF account.', 0 );
+				}
+				// Use the WP account to get to the SF account
+				$account = \WPSF\Contact::get_account_wp( $wpid );
+				$response['exists'] = true;
+				$response['active'] = $account->is_active();
+			} else if ( ! empty( $cid ) ) {
+				// We have no WP account, but we do have a SF account.
+				// We should be using the site invite process instead.
+				throw new \Exception( 'SF account exists. Use the Site Invite process to create the WP Account.', 0 );
+			} else {
+				$response['exists'] = false;
+				$response['active'] = false;
+			}
 		} catch ( \Exception $e ) {
 			$response = array(
-				'err' => $e->getMessage(),
+					'err' => $e->getMessage(),
 			);
 		}
-
+	
 		print json_encode( $response );
 		exit();
 	}
-
+	
+	/**
+	 * Validates the nonce for a given action.
+	 * @param string $action
+	 * @throws \Exception
+	 * @return boolean
+	 */
+	private static function validate_nonce( $action ) {
+		if ( empty( $_REQUEST['_n'] ) ) {
+			throw new \Exception( 'Invalid input', 0 );
+		}
+		if ( ! wp_verify_nonce( $_REQUEST['_n'], $action ) ) {
+			throw new \Exception( 'Invalid input', 0 );
+		}
+		return true;
+	}
+	
 	/**
 	 * Validates that a trial key exists, and returns various information
 	 * about it.
