@@ -37,7 +37,7 @@
 	    </div>
 	    <div class="gift-balance" data-source-object="Account" data-display-if="Gift_Balance__c>0">
 	    	<label for="gift-balance-amt">Travel Credit</label>
-	    	<span>$</span><span id="gift-balanace-amt" data-source-object="Account" data-display-field="Gift_Balance__c"></span>
+	    	<span id="gift-balanace-amt" data-source-object="Account" data-display-field="Gift_Balance__c"></span>
 	    </div>
     </div>
     
